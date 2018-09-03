@@ -112,10 +112,10 @@ export const API_ECS = {
     },
     images: {
         createImage: '/compute/ecs/createImage/{instanceId}',
-        getImages: ECS_CTRL + '/images',
+        getImages: 'compute/image/list',
         imageGroups: ECS_CTRL + '/images/groups',
-        updateImages: ECS_CTRL + '/images/{imageId}',
-        deleteImages: ECS_CTRL + '/images/{imageId}'
+        updateImages: '/compute/images/{imageId}',
+        deleteImages: '/compute/image/{imageId}'
     },
     floatIp: {
         create: ECS_CTRL + '/floating/create',

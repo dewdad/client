@@ -6,8 +6,13 @@
                     <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field" :key="field.field"></el-option>
                 </el-select>
             </zt-form-item>
-            <zt-form-item label="">
+            <zt-form-item v-if="allSearchVal.selValue.tagType !== 'SELECT'" label="">
                 <el-input placeholder="" style="width:260px;" v-model="allSearchVal.selInputValue"></el-input>
+            </zt-form-item>
+            <zt-form-item v-if="allSearchVal.selValue.tagType === 'SELECT'" label="">
+                <el-select placeholder="请选择" style="width:260px;" v-model="allSearchVal.selInputValue">
+                    <el-option v-for="item in allSearchVal.selValue.options" :value="item.value" :label="item.text" :key="item.value">{{item.text}}</el-option>
+                </el-select>
             </zt-form-item>
             <zt-form-item>
                 <el-button type="primary" @click="getSearchVal" icon="el-icon-search">搜索</el-button>

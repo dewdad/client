@@ -1,6 +1,6 @@
 .el-message-box__status {
     position: absolute;
-    vertical-align: top;
+    top: 40px;
     &.el-icon-warning,
     &.el-icon-help {
         color: #f60;
