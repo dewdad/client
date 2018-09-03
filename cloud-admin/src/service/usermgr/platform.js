@@ -1,6 +1,6 @@
-import http from '../utils/http';
-import { PlatForm} from '../constants/apiUrl';
-import { replaceParamVal } from '../utils/utils';
+import http from '../../utils/http';
+import { PlatForm} from '../../constants/apiUrl';
+import { replaceParamVal } from '../../utils/utils';
 
 /**
  *查询平台列表
@@ -107,13 +107,23 @@ export async function searchBindAuth(data) {
     return response.data;
 }
 /**
+ *获取平台列表下的角色
+ * @param {*}
+ */
+export async function getPlatformList(data) {
+    console.log('data',data);
+    let url=PlatForm.getPlatformList+'/'+data;
+    let response = await http.get(url);
+    return response.data;
+}
+/**
  *查询用户角色类型绑定的平台权限
  * @param {*}
  */
 export async function bindAuth(data) {
     console.log('data',data);
-    var utl=PlatForm.bindAuth+data.id;
-    let response = await http.put(utl,data.form);
+    var utl=PlatForm.bindAuth+'/'+data.roleType;
+    let response = await http.put(utl,data.ids);
     return response.data;
 }
 

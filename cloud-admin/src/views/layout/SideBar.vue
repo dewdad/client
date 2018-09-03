@@ -8,12 +8,12 @@
                 <em class="icon-new-概览"></em>
                 {{menuText1}}
             </div>
-            <el-submenu :index="menu.id" v-for="menu in menuList" :key="menu.routeHref" >
+            <el-submenu :index="menu.id" v-for="(menu,index) in menuList" :key="index" >
                 <template slot="title" router="true">
                     <em :class="menu.menuIcon" v-if="menu.menuIcon"></em>
                     {{menu.menuName}}
                 </template>
-                <el-menu-item v-if="menu.submenus"  v-for="submenu in menu.submenus" :index="submenu.routeHref" :key="submenu.routeHref">
+                <el-menu-item v-if="menu.submenus"  v-for="(submenu,idx) in menu.submenus" :index="submenu.routeHref" :key="idx">
                     {{submenu.menuName}}
                 </el-menu-item>
                 <!--<el-submenu v-if="submenu.submenu"  router="true" :index="menu.id" v-for="menu in submenu">-->

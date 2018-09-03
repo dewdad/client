@@ -6,7 +6,7 @@
         </el-breadcrumb>
         <el-dropdown style="float:right;line-height: 1;margin-top:-15px;" :hide-on-click="false">
             <span class="el-dropdown-link">
-                {{user.userName}}<i class="el-icon-arrow-down el-icon--right"></i>
+                {{user.name}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="editPwd">修改密码</el-dropdown-item>
