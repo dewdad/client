@@ -192,6 +192,7 @@
     {
         "text": "云数据库RDS",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.rds",
         "icon": "iconfont icon-yunshujuRDS",
@@ -402,8 +403,41 @@
         ]
     },
     {
+        "text": "应用容器WAC",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.wac",
+        "icon": "iconfont icon-icon_wac",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "概览",
+                "sref": "app.wac.overview",
+                "psref": "app.wac"
+            },
+            {
+                "text": "中间器管理",
+                "sref": "app.wac.skeymgr",
+                "psref": "app.wac"
+            },
+            {
+                "text": "基础应用",
+                "sref": "app.wac.skeymgr",
+                "psref": "app.wac"
+            },
+            {
+                "text": "业务应用",
+                "sref": "app.wac.skeymgr",
+                "psref": "app.wac"
+            }
+        ]
+    },
+    {
         "text": "弹性公网IP",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.ip",
         "icon": "iconfont icon-danxinggongwangIP",
@@ -421,6 +455,7 @@
     {
         "text": "负载均衡",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.loadbalance",
         "icon": "iconfont icon-fuzaijunheng",
@@ -497,6 +532,7 @@
     {
         "text": "云监控",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.monitor",
         "icon": "iconfont icon-yunjiankong",
@@ -548,6 +584,7 @@
     {
         "text": "云主机安全",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.security",
         "icon": "iconfont  icon-yunzhujianquan ",

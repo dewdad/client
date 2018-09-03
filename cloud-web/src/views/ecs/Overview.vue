@@ -246,7 +246,7 @@ export default {
             snapInfos,
             timeOption,
             fullscreenLoading: false,
-            loadingShow: true,
+            loadingShow: false,
             cpuUsedRate: [],
             memUsedRate: [],         
             nets:[],
@@ -480,14 +480,14 @@ export default {
     },
 
     async mounted () {
-        this.getInstInfos();
-        this.getSnapInfos();
-        this.getNetworkAll();
-        await this.getAllCpuData();
-        await this.getAllMemData();
-        setTimeout(() =>{
-            this.fullscreenLoading = false;
-        }, 500);
+        // this.getInstInfos();
+        // this.getSnapInfos();
+        // this.getNetworkAll();
+        // await this.getAllCpuData();
+        // await this.getAllMemData();
+        // setTimeout(() =>{
+        //     this.fullscreenLoading = false;
+        // }, 500);
         
     }
 };
