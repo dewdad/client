@@ -28,15 +28,15 @@
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
                                     <div class="pop-box__popover__popMain lh-normal font14">
-                                        <p @click.stop="$router.push({'name': 'accountMg.SecutitySet'})">
+                                        <!-- <p @click.stop="$router.push({'name': 'accountMg.SecutitySet'})">
                                             <i class="iconfont icon-user_setting_people color-white font14 mr5"></i>{{$t('header.avatarMenu.securitySet')}}
-                                        </p>
+                                        </p> -->
                                         <p @click.stop="$router.push({'name': 'accountMg.info'})">
-                                            <i class="iconfont icon-user_profile_people color-white font14 mr5"></i>{{$t('header.avatarMenu.basicInfo')}}
+                                            {{$t('header.avatarMenu.basicInfo')}}
                                         </p>
-                                        <p @click.stop="$router.push({'name': 'accountMg.manager'})">
+                                        <!-- <p @click.stop="$router.push({'name': 'accountMg.manager'})">
                                             <i class="iconfont icon-icon-p_lianxirenguanli color-white font14 mr5"></i>{{$t('header.avatarMenu.contactManager')}}
-                                        </p>
+                                        </p> -->
                                     </div>
                                     <!-- 退出控制台 -->
                                     <div class="pop-box__popover__popBottom lh-normal">
@@ -82,12 +82,12 @@ export default {
 .pop-box {
     &__popover{
         background-color: #222a3f;
-        height: 270px;
+        // height: 270px;
         width: 188px;
         position: absolute;
         right: 0;
         box-sizing: border-box;
-        display: none;
+        // display: none;
         transition: all .5s;
         // opacity: 0;
         box-shadow: 0px 1px 3px 0px 
@@ -110,11 +110,10 @@ export default {
         }
         &__popMain{
             padding: 10px 0;
-            border-top: 1px solid rgba(238,238,238,.2);
             border-bottom: 1px solid rgba(238,238,238,.2);
             color: #fff;
             p{
-                padding-left: 30px;
+                text-align: center;
                 line-height: 32px;
                 height: 32px;
                 margin: 0;
