@@ -122,8 +122,8 @@ export async function getPlatformList(data) {
  */
 export async function bindAuth(data) {
     console.log('data',data);
-    var utl=PlatForm.bindAuth+data.id;
-    let response = await http.put(utl,data.form);
+    var utl=PlatForm.bindAuth+'/'+data.roleType;
+    let response = await http.put(utl,data.ids);
     return response.data;
 }
 

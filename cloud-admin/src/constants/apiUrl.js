@@ -3,6 +3,7 @@
 const USER_CONTROLLER = '/identity';
 const USER_RSA = '/identity';
 const PLATFORM= '/identity/platform';
+const MENU= '/menu';
 
 
 // 登录模块
@@ -24,6 +25,7 @@ export const RoleMgr = {
     rolelist: USER_RSA + '/role/list',
     getMgrUser: USER_RSA + '/user/getUserListByRId',
     createRole: USER_RSA + '/role/',
+    getAllrelateList: MENU + '/getMenuListByType',
 };
 //平台管理
 export const PlatForm = {
