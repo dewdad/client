@@ -792,27 +792,9 @@
         "hidden": true,
         "submenu": [
             {
-                "text": "安全设置",
-                "sref": "accountMg.SecutitySet",
-                "evn": "pro",
-                "psref": "app.accountMg"
-            },
-            {
                 "text": "基本资料",
                 "sref": "accountMg.info",
                 "evn": "pro",
-                "psref": "app.accountMg"
-            },
-            {
-                "text": "实名认证",
-                "sref": "accountMg.auth",
-                "evn": "pro",
-                "psref": "app.accountMg"
-            },
-            {
-                "text": "联系人管理",
-                "evn": "pro",
-                "sref": "accountMg.manager",
                 "psref": "app.accountMg"
             }
         ]

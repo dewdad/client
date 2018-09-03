@@ -22,21 +22,15 @@
                             <i class="iconfont icon-head_workorder_peop"></i>{{$t('header.nav.workOrder')}}
                         </el-menu-item>
                         <!-- 头像 -->
-                        <el-menu-item index="app.accountMg" key="app.accountMg" class="headImg">
+                        <el-menu-item index="accountMg.info" key="app.accountMg" class="headImg">
                             <avatar-show class="inline-block" :boxSize="30" :avatarUrl="getAvatarUrl"></avatar-show>                            
                             <div @click.stop="preventBubble" class="pop-box">
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
                                     <div class="pop-box__popover__popMain lh-normal font14">
-                                        <!-- <p @click.stop="$router.push({'name': 'accountMg.SecutitySet'})">
-                                            <i class="iconfont icon-user_setting_people color-white font14 mr5"></i>{{$t('header.avatarMenu.securitySet')}}
-                                        </p> -->
                                         <p @click.stop="$router.push({'name': 'accountMg.info'})">
                                             {{$t('header.avatarMenu.basicInfo')}}
                                         </p>
-                                        <!-- <p @click.stop="$router.push({'name': 'accountMg.manager'})">
-                                            <i class="iconfont icon-icon-p_lianxirenguanli color-white font14 mr5"></i>{{$t('header.avatarMenu.contactManager')}}
-                                        </p> -->
                                     </div>
                                     <!-- 退出控制台 -->
                                     <div class="pop-box__popover__popBottom lh-normal">
@@ -87,7 +81,7 @@ export default {
         position: absolute;
         right: 0;
         box-sizing: border-box;
-        // display: none;
+        display: none;
         transition: all .5s;
         // opacity: 0;
         box-shadow: 0px 1px 3px 0px 
@@ -139,7 +133,6 @@ export default {
 }
 .headImg:hover .pop-box__popover{
     display: block;
-    // opacity: 1;
 }
 .color-phone{
     color: #abd037 !important;
