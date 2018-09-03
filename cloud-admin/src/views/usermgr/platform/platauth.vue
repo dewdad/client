@@ -61,10 +61,11 @@
                         </el-table-column>
                     </template>
                 </el-table>
-                //分页
+                <!--分页-->
                 <div class="pagination">
                     <el-pagination background
-                                   @handleCurrentChange="handleCurrentChange"
+                                   @current-change="currentChange"
+                                   @size-change="handleSizeChange"
                                    :current-page="searchObj.paging.pageIndex"
                                    :page-sizes="[10, 20, 50, 100]"
                                    :page-size="searchObj.paging.limit"
@@ -134,7 +135,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.totalItems = resData.total || 0;
+                    this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
             });
@@ -178,7 +179,12 @@ export default {
                 this.searchPlatAuth();
             });
         },
-        handleCurrentChange:function (params) {
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.searchPlatAuth();
+        },
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
             this.searchPlatAuth();
         },
         goBack(){
