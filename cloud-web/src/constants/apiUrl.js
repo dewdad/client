@@ -144,7 +144,7 @@ export const API_ECS = {
         network: '/compute/network/list',
         creatNetwork: '/compute/network',
         networkID: '/compute/network/{vpcId}',
-        flexIP: '/compute/server/list', // 查询浮动IP列表
+        flexIP: '/compute/floatip/list', // 查询浮动IP列表
         networkCount: ECS_CTRL + '/networks/count/{vpcId}',
         getNetwork: ECS_CTRL + '/networks',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',

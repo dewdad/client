@@ -27,36 +27,36 @@
         <el-table-column prop="title" label="VPCID/名称" :min-width="180">
             <template slot-scope="scope">
                 <div>
-                    <router-link :to="{name: 'app.vpc.pn-detail', params: {id: scope.row.id}}">
-                        <span class="font12">{{scope.row.id}}</span>
-                    </router-link>
+                    <span class="font12">{{scope.row.floatingNetworkId}}</span>
                 </div>
-                <div>{{scope.row.name}}</div>
+                <div>{{scope.row.networkName}}</div>
             </template>
         </el-table-column>
         <el-table-column label="IP地址">
             <template slot-scope="scope">
-                {{scope.row.status}}
+                {{scope.row.floatingIpAddress}}
             </template>
         </el-table-column>
         <el-table-column label="已映射固定IP地址">
             <template slot-scope="scope">
-                {{scope.row.shared ? '是' : '否' }}
+                {{scope.row.fixedIpAddress}}
             </template>
         </el-table-column>
         <el-table-column label="状态">
             <template slot-scope="scope">
-                {{scope.row['router:external'] ? '是' : '否'}}
+                <span :class="{'color-danger': scope.row.state === 'DOWN'}">
+                    {{scope.row.state === 'DOWN' ? '未绑定' : '已绑定'}}
+                </span>
             </template>
         </el-table-column>
         <el-table-column label="绑定实例" :min-width="50">
             <template slot-scope="scope">
-                <span>{{scope.row.subnets.length}}</span>
+                <span>{{scope.row.subnets}}</span>
             </template>
         </el-table-column>
         <el-table-column prop="name" label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}">绑定</router-link> | 
+                <a @click="bindFlexFn()">绑定</a> | 
                 <a>解绑</a> | 
                 <a>释放</a>
             </template>
@@ -77,17 +77,19 @@
         </el-pagination>
     </div>
     <create ref="create"></create>
+    <!-- 绑定浮动IP -->
+    <BindFLexIP ref="BindFLexIP"></BindFLexIP>
 </div>
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import searchBox from '@/components/search/SearchBox';
 import Create from './Create';
+import BindFLexIP from './dialog/BindFLexIP';
 import {queryFlexIP} from '@/service/ecs/network.js';
 
 let fields = [
-    { field: 'id', label: '安全组ID',inputval:'', tagType: 'ID' },
-    { field: 'name', label:'安全组名称',inputval:'', tagType: 'Name' }
+    { field: 'id', label: '浮动IP地址',inputval:'', tagType: 'ID' }
 ];
         
 let searchObjExtra = {
@@ -134,7 +136,9 @@ export default {
                 let params = {
                     offset: 1,
                     limit: this.limit,
-                    pageIndex: this.pageIndex
+                    statusroptionValue: 'all',
+                    pageIndex: this.pageIndex,
+                    status: ''
                 };
 
                 let ret = await queryFlexIP(params);
@@ -155,12 +159,26 @@ export default {
         // 
         getScreenVal(params) {
             $log(params);
+        },
+        // 绑定浮动Ip
+        bindFlexFn(){
+            let BindFLexIP = this.$refs.BindFLexIP;
+            if (BindFLexIP) {
+                BindFLexIP.show({
+                    type: 'create'
+                }).then(ret => {
+                    if (ret) {
+                        this.fetchData();
+                    }
+                });
+            }
         }
     },
     components: {
         RegionRadio,
         Create,
-        searchBox
+        searchBox,
+        BindFLexIP
     }
 };
 </script>
