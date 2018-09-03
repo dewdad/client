@@ -30,7 +30,7 @@ export default [
     {
         path: 'ecs',
         name: 'app.ecs',
-        redirect: '/people/ecs/overview',
+        redirect: '/app/ecs/overview',
         component: {
             render(c) {
                 return c('router-view');
@@ -125,7 +125,7 @@ export default [
                     backUrl: 'app.ecs.list'
                 },
                 children: [
-                    {                     
+                    {
                         path: 'detail',
                         name: 'app.ecs.inst.detail',
                         component: EcsInstDetail
