@@ -67,8 +67,8 @@ export default {
         },
 
         //编辑
-        editMenu(){
-
+        editMenu(rowItem){            
+            return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:2,code:rowItem.code,rowItem}});
         },
 
         //关联操作

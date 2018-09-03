@@ -5,17 +5,17 @@
         </page-header>
         <div class="page-body">
             <!-- <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box> -->
-            <el-row :gutter="20" class="mt10 mb20">
-                <el-col :span="8" ><el-button type="primary" size="small" @click="search" icon="el-icon-search">新建一级菜单</el-button></el-col>
+            <el-row :gutter="20" class="mb10">
+                <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})" icon="el-icon-search">新建一级菜单</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">
-                        <el-select class="ml10" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">
+                        <el-select class="width152" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">
                             <el-option v-for="menutype in searchObjExtra.menutypes" :label="menutype.label" :value="menutype.value" :key="menutype.value"></el-option>
                         </el-select>
-                        <el-select class="ml10" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">
+                        <el-select class="ml10 width152" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">
                             <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field.field" :key="field.field"></el-option>
                         </el-select>
-                        <el-input class="ml10"  size="small" placeholder="" style="width:260px;" v-model="searchObj.searchText"></el-input>
+                        <el-input class="ml10"  size="small" placeholder="" style="width:208px;" v-model="searchObj.searchText"></el-input>
                         <el-button class="ml10" size="small" type="primary" @click="search" icon="el-icon-search">搜索</el-button>  
                         <el-button type="primary" size="small" class="ml10 search-refresh-btn icon-new-刷新" @click="search"></el-button>                      
                     </div>                    
@@ -120,8 +120,8 @@
 </template>
 <script src="./menumgr.js"></script>
 <style  lang="scss" scoped>
-.operateDisk{
-    float: right;
+.width152{
+    width: 152px;
 }
 
 </style>

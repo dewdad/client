@@ -2,7 +2,7 @@
 // const USER_CONTROLLER = 'people-services-user-tanjin';
 const USER_CONTROLLER = '/identity';
 const USER_RSA = '/identity';
-const PLATFORM= '/identity/platform';
+const PLATFORM = '/identity/platform';
 
 
 // 登录模块
@@ -38,6 +38,43 @@ export const PlatForm = {
 };
 //获取公钥加密
 export const API_USR_AUTH = {
-    RSA:USER_RSA+ '/rsa', //GET 获取公钥加密
+    RSA:USER_RSA + '/rsa', //GET 获取公钥加密
 };
+
+//菜单管理
+// {
+//     "arrow": "string",
+//     "id": "string",
+//     "isNew": "string",
+//     "menuCode": "string",
+//     "menuIcon": "string",
+//     "menuName": "string",
+//     "opertions": [
+//       {
+//         "description": "string",
+//         "id": "string",
+//         "menuCode": "string",
+//         "opKey": "string",
+//         "opMethod": "string",
+//         "opName": "string",
+//         "opUrl": "string",
+//         "selected": true
+//       }
+//     ],
+//     "orderBy": 0,
+//     "parentMenuCode": "string",
+//     "routeHref": "string",
+//     "routeUrl": "string",
+//     "selected": true,
+//     "status": 0,
+//     "submenus": [
+//       {}
+//     ]
+//   }
+export const API_MENU_MGR = {
+    addMenu: USER_RSA + '/menu/add', //post 新增菜单 menu
+    updateMenu: USER_RSA + '/menu/update', //put 更新菜单menu
+    listMenu: USER_RSA + '/menu/list', //get 查询菜单列表
+};
+
 

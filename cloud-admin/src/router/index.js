@@ -95,6 +95,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/Menu')
                         },
                         {
+                            path: 'edit/:opType/:code',
+                            name: 'app.usrmgr.menumgr.edit',
+                            meta: {
+                                title: '菜单编辑'
+                            },
+                            component: () => import('@/views/usermgr/menumgr/editMenu')
+                        },
+                        {
                             path: 'platform',
                             name: 'app.platform.resource',
                             meta: {

@@ -1,6 +1,6 @@
 import http from '../../utils/http';
 import { RoleMgr} from '../../constants/apiUrl';
-import { replaceParamVal } from '../../utils/utils';
+//import { replaceParamVal } from '../../utils/utils';
 
 /**
  *查询角色列表
@@ -21,7 +21,7 @@ export async function getRoleList(data) {
 export async function getMgrUser(data) {
     console.log('data',data);
     console.log('RoleMgr.getMgrUser',RoleMgr.getMgrUser);
-    let url=RoleMgr.getMgrUser+'/'+data.roleId;
+    let url = RoleMgr.getMgrUser + '/' + data.roleId;
     let response = await http.get(url);
     return response.data;
 }
