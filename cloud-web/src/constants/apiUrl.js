@@ -63,8 +63,8 @@ export const API_ECS = {
     inst: {
         getInstList: '/compute/server/list',
         createECS: ECS_CTRL + '/servers',
-        getInstanceCountInfo: ECS_CTRL + '/servers/{instanceId}/count-info',
-        getInstanceDetail: ECS_CTRL + '/servers/{instanceId}/detail',
+        getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
+        getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
         modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
@@ -78,7 +78,7 @@ export const API_ECS = {
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
     },
     monitor: {
-        moniterEchartMetricData: ECS_CTRL + '/moniter/echart-metric-data'
+        moniterEchartMetricData: '/compute/overview/getEchartMetricData'
     },
     flavors: {
         getFlavors: ECS_CTRL + '/flavors',

@@ -14,13 +14,9 @@ import {
 
 
 import { 
-    getInstanceDetail,    
-    getFlavorsDetail,
-    getInstanceNet,
+    getInstanceDetail,
     getInstanceCountInfo
 } from '@/service/ecs/detail/index';
-// import { Loading } from 'element-ui';
-// import { convertToVchartData } from '@/utils/utils';
 
 
 export default {
@@ -40,9 +36,8 @@ export default {
             flavorId: '',
             ECS_STATUS,
             stateParams,
-            // dataPickOpt:this.dataPick(),
             ecsInst: stateParams.item ? stateParams.item : {id:stateParams.id},
-            flavor:{},
+            addresses:{},
             instanceNet:{},
             instDetailTop:{},
             seriesData_cpu: [],
@@ -71,9 +66,6 @@ export default {
         };
     },
     methods: {
-        // dataPick(){
-        //     console.log(this.searchDate);
-        // },
         getSecurityGroupName(val) {
             return val === 'default' ? '默认安全组' : val;
         },
@@ -139,8 +131,6 @@ export default {
         },
         async search (type) {
             await this.getInstanceDetail(this.stateParams.id);
-            this.getFlavorsDetail(this.flavorId);
-            this.getInstanceNet(this.stateParams.id);
             this.getInstanceCountInfo(this.stateParams.id);
             await this.searchCharts('mem');
             await this.searchCharts('cpu');
@@ -149,40 +139,14 @@ export default {
                 this.loadingBodyFn();
             }
         },
-        // 获取基本信息
+        // 获取基本信息与配置信息
         getInstanceDetail:function (instanceId) {
             return getInstanceDetail(instanceId).then( (res) => {
                 if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
-                    // console.log('getInstanceDetail',res);                       
-                    let ecsInst = res.result;
-                    this.ecsInst = ecsInst;  
-                    this.flavorId = ecsInst.flavorId;
-                    console.log('getInstanceDetail ecsInst',this.ecsInst);                                       
-                } 
-            });            
-        },
-
-        //获取实例规格（配置信息）
-        getFlavorsDetail:function (flavorId) {
-            getFlavorsDetail(flavorId).then( (res) => {
-                if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
-                    console.log('getFlavorsDetail',res);
-                    let jsonData = res.result;
-                    this.flavor = jsonData;
-                    // let flavor = JSON.parse(jsonData) || jsonData;
-                    // console.log('getFlavorsDetail flavor',flavor);
-                    // if(flavor && flavor.flavor)      
-                    //     this.flavor = flavor.flavor;            
-                } 
-            });            
-        },
-
-        //获取实例网络信息
-        getInstanceNet:function (instanceId) {
-            getInstanceNet(instanceId).then( (res) => {
-                if(res && res.code && res.code === this.CODE.SUCCESS_CODE){ 
-                    this.instanceNet = res.result;  
-                    console.log('getInstanceNet',this.instanceNet);                                       
+                    console.warn('getInstanceDetail',res);                       
+                    let ecsInst = res.data;
+                    this.ecsInst = ecsInst;
+                    this.addresses = ecsInst.addresses.addresses                               
                 } 
             });            
         },
@@ -191,7 +155,7 @@ export default {
             getInstanceCountInfo(instanceId).then( (res) => {
                 if(res.code && res.code === this.CODE.SUCCESS_CODE){
                     console.log('getInstanceCountInfo',res);   
-                    let instDetailTop = res.result;
+                    let instDetailTop = res.data;
                     this.instDetailTop = instDetailTop;  
                     console.log('getInstanceCountInfo ecsInst',this.ecsInst);                                       
                 } 
@@ -220,9 +184,7 @@ export default {
             };
             moniterEchartMetricData(data).then( (res) => {
                 if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
-                    let datas = res.result || [];
-
-                    // let echartDatas = convertToVchartData(datas);
+                    let datas = res.data || [];
                     switch(dataType){
                         case 'cpu':{  
                             this.seriesData_cpu = datas;
@@ -255,8 +217,7 @@ export default {
     created () {
         this.stateParams = this.$route.params || {}; 
         console.log('stateParams' + JSON.stringify(this.stateParams),this.stateParams.item );
-        this.search();   
-            
+        this.search();      
     },
     computed: {
         ...mapGetters(['userInfo']),
@@ -275,10 +236,18 @@ export default {
         },
         // 私有网络
         vpcName() {
-            return this.instanceNet && this.instanceNet.vpcName && this.instanceNet.vpcName.join(',');
+            let vpcNameStr = [];
+            for(let k in this.addresses) {
+                vpcNameStr.push(k);
+            }
+            return vpcNameStr.join(',');
         },
-        // 子网
-        subnetName() {
+        // 浮动IP
+        floatIP() {
+            return this.instanceNet && this.instanceNet.subnetName && this.instanceNet.subnetName.join(',');
+        },
+        // 私有IP
+        privateIP() {
             return this.instanceNet && this.instanceNet.subnetName && this.instanceNet.subnetName.join(',');
         }
     }
