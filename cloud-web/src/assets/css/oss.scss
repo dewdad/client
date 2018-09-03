@@ -1,0 +1,34 @@
+.oss {
+    .oss-box {
+        .oss-box-header {
+            height: 32px;
+            line-height: 32px;
+            font-size: 16px;
+        }
+        .oss-box-content {
+            .oss-box-content__inner {
+                padding: 10px;
+                .title {
+                    line-height: 32px;
+                }
+                .data {
+                    height: 60px;
+                    line-height: 70px;
+                    span {
+                        font-size: 36px;
+                    }
+                }
+                .el-col {
+                    border-right: 1px solid #dde3ec;
+                    &:last-child {
+                        border-right: 0;
+                    }
+                }
+
+                .monthRequest .el-select--small {
+                    width: 100px;
+                }
+            }
+        }
+    }
+}

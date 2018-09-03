@@ -1,0 +1,28 @@
+.el-table .el-tag {
+    border-radius: 0;
+    border-color: transparent;
+    text-decoration: inherit;
+
+    &:hover {
+        border: 1px solid rgba(64, 158, 255, 0.2);
+    }
+}
+
+.el-tag{
+    border-radius: 0!important;
+
+    .el-tag__close{
+        font-size: 16px;
+        color: inherit;
+    }
+}
+
+.el-tag + .el-tag{
+    margin-left: 5px;
+}
+
+.el-tag--mini {
+    line-height: 20px;
+    height: 22px;
+    color: $--color-text-regular;
+}

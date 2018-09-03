@@ -1,0 +1,64 @@
+.el-alert {
+    border-radius: 0;
+    padding: 8px 10px;
+    .el-alert__content {
+        padding: 0px;
+        font-size: 12px;
+    }
+    .el-alert__icon,
+    .iconfont {
+        font-size: 13px;
+        margin-right: 5px;
+        &.is-big {
+            width: auto;
+        }
+        // + .el-alert__content {
+        //     padding: 0 8px;
+        // }
+    }
+    .iconfont {
+        margin-right: 5px;
+    }
+    .el-alert__title {
+        font-size: 12px;
+        word-break: break-all;
+    }
+}
+
+.el-alert--success {
+    border: 1px solid $--color-success;
+    color: $--color-success;
+    .el-alert__description {
+        color: $--color-success;
+    }
+}
+
+.el-alert--error {
+    border: 1px solid $--alert-danger-color-border;
+    background-color: $--alert-danger-color;
+    color: $--color-danger;
+    .el-alert__description {
+        color: $--color-danger;
+    }
+}
+
+.el-alert--warning {
+    border: 1px solid $--alert-warning-color-border;
+    background-color: $--alert-warning-color;
+    color: $--color-warning;
+    .el-alert__description {
+        color: $--color-warning;
+    }
+    .el-checkbox__label {
+        color: $--color-warning !important;
+        .is-checked & {
+            color: $--color-warning !important;
+        }
+    }
+}
+
+.el-alert--info {
+    background-color: #eee;
+    color:$--basic-font-color;
+    border: solid 1px #ddd;
+}

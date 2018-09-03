@@ -1,0 +1,100 @@
+@import 'common';
+// 基础颜色
+$--color-primary: #0d7ef2;
+$--green-color-primary: #ad0d0d;
+$--color-primary-light-1: mix($--color-white, $--color-primary, 10%) !default;
+$--color-primary-light-2: mix($--color-white, $--color-primary, 20%) !default;
+$--color-primary-light-3: mix($--color-white, $--color-primary, 30%) !default;
+$--color-primary-light-4: mix($--color-white, $--color-primary, 40%) !default;
+$--color-primary-light-5: mix($--color-white, $--color-primary, 50%) !default;
+$--color-primary-light-6: mix($--color-white, $--color-primary, 60%) !default;
+$--color-primary-light-7: mix($--color-white, $--color-primary, 70%) !default;
+$--color-primary-light-8: mix($--color-white, $--color-primary, 80%) !default;
+$--color-primary-light-9: mix($--color-white, $--color-primary, 90%) !default;
+$--color-success: #009900;
+$--color-warning: #f68300;
+$--color-danger: #f40000;
+$--color-info: #f6f8fa;
+
+$--color-text-primary: #0d7ef2 !default;
+$--color-text-regular: #333 !default;
+$--color-text-secondary: #999 !default;
+$--color-text-placeholder: #9b9ea0 !default;
+
+$--color-success-light: mix($--color-white, $--color-success, 80%) !default;
+$--color-warning-light: mix($--color-white, $--color-warning, 80%) !default;
+$--color-danger-light: mix($--color-white, $--color-danger, 80%) !default;
+$--color-info-light: mix($--color-white, $--color-info, 80%) !default;
+
+$--color-success-lighter: mix($--color-white, $--color-success, 90%) !default;
+$--color-warning-lighter: mix($--color-white, $--color-warning, 90%) !default;
+$--color-danger-lighter: mix($--color-white, $--color-danger, 90%) !default;
+$--color-info-lighter: mix($--color-white, $--color-info, 90%) !default;
+
+/* Alert
+-------------------------- */
+$--alert-padding: 8px 16px !default;
+$--alert-border-radius: 0px !default;
+$--alert-title-font-size: 13px !default;
+$--alert-description-font-size: 12px !default;
+$--alert-close-font-size: 12px !default;
+$--alert-close-customed-font-size: 13px !default;
+
+$--alert-success-color: $--color-success-lighter !default;
+$--alert-info-color: $--color-info-lighter !default;
+$--alert-warning-color: #fbf7cf !default;
+$--alert-warning-color-border: #f6e0c4 !default;
+$--alert-danger-color: #ffe8e8 !default;
+$--alert-danger-color-border: $--color-danger;
+
+$--alert-icon-size: 16px !default;
+$--alert-icon-large-size: 28px !default;
+// 菜单配色
+$--color-nav: #19233c;
+$--color-header-nav-active: #222a3f;
+$--color-sideBar-nav: #30364c;
+$--color-sideBar-top: #3f485f;
+$--color-sideBar-nav-hover: #475068;
+$--color-sideBar-nav-active: #0d7ef2;
+$--color-submenu: #f0f1f5;
+$--color-submenu-active: #ffffff;
+$--color-submenu-focus: rgba(225, 239, 246, 1);
+$--color-submenu-hover: rgba(255, 255, 255, 0.4);
+$--color-submenu-link-acitve: #2b65c5;
+// 面板颜色
+$--color-panel-heading: #f3f5fa;
+$--color-panel-border: #d1d5de;
+// 按钮配色
+$--button-disabled-color: #999999;
+$--button-info-border: #cdcdcd;
+// 链接颜色
+$--link-color: $--color-primary;
+$--link-color-hover: $--color-primary-light-2;
+$--link-color--disabled: $--button-disabled-color;
+
+/* Message
+-------------------------- */
+$--message-shadow: $--box-shadow-base !default;
+$--message-min-width: 380px !default;
+$--message-background-color: #edf2fc !default;
+$--message-padding: 15px 15px 15px 20px !default;
+$--message-content-color: $--color-text-regular !default;
+$--message-close-color: $--color-text-placeholder !default;
+$--message-close-size: 16px !default;
+$--message-close-hover-color: $--color-text-secondary !default;
+
+$--message-success-color: $--color-success !default;
+$--message-info-color: $--color-info !default;
+$--message-warning-color: $--color-warning !default;
+$--message-danger-color: $--color-danger !default;
+
+/* Tooltip
+-------------------------- */
+$--tooltip-fill: $--basic-input-border-color;
+$--tooltip-color: $--color-white !default;
+$--tooltip-font-size: 12px !default;
+$--tooltip-border-color: $--basic-input-border-color;
+$--tooltip-arrow-size: 6px !default;
+$--tooltip-padding: 10px !default;
+$--tooltip-color-dark: #303133 !default;
+$--tooltip-arrow-color-dark: #303133 !default; // 303133

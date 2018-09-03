@@ -1,0 +1,438 @@
+{
+    "exception": {
+        "server": "服务器开小差了，请稍后再试..."
+    },
+    "common":{
+        "selectButtonTip":"请选择",
+        "searchButtonText":"查询",
+        "createButtonText":"创建",
+        "addButtonText":"新增",        
+        "modifyButtonText":"修改",
+        "deleteButtonText":"删除",
+        "tooltipRefreshText":"刷新",
+        "lableButtonText":"标签",
+        "tableHeaderOperateText":"操作",
+        
+        "memory":"内存",
+        "bandWidth":"带宽",
+        "cpuAlias":"核",
+        "more":"更多",
+        "name":"名称",
+        "instName":"实例名称",
+        "ipaddr":"IP地址",
+        "status":"状态",
+        "all":"全部",
+        "description":"描述",
+        "region":"所在区域",
+        "logonCredentials":"登录凭证",
+
+        "subnet":"子网",
+        "image":"镜像",
+        "disk":"磁盘",
+        "snap":"快照",
+        "securityGroup":"安全组",        
+        "sysDisk":"系统盘",
+        "dataDisk":"数据盘",
+        "pn":"专有网络",
+        "os":"操作系统",
+        "publicNetworkIP":"公网IP",
+        "intranetIP":"内网IP",
+        "oNet":"出网",
+        "iNet":"入网",
+
+        "year":"年",
+        "month":"月",
+        "day":"日",
+        "hour":"时",
+        "minute":"分",
+        "second":"秒",
+        "monday":"周一",
+        "tuesday":"周二",
+        "wednesday":"周三",
+        "thursday":"周四",
+        "fridy":"周五",
+        "saturday":"周六",
+        "sunday":"周日",
+        "createTime":"创建时间",
+        "startTime":"开始时间",
+        "endTime":"结束时间",
+        "beginDate":"起始日期",
+        "endDate":"结束日期",
+        "expireTime":"到期时间",
+        "to":"至",
+
+        "toBeContinued":"敬请期待",
+
+        "state":{
+            "running":"运行中",
+            "creating":"创建中",
+            "deleting":"删除中",
+            "restarting":"启动中",            
+            "rebooting":"重启中",
+            "rebootingAlias":"正在重启",
+            "awaitReboot":"等待重启",
+            "rebuilding":"重建中",
+            "adjusting":"调整中",
+            "reinstalling":"重装中",
+            "configing":"配置中",
+            "changing":"更换中",
+            "error":"错误",
+            "failed":"失败",
+            "suspend":"挂起",
+            "hardwareReboot":"硬重启",
+            "shutoff":"关机",
+            "using":"使用中",
+            "toBemounted":"待挂载",
+            "hasOpen":"已开启",
+            "noOpen":"未开启",
+            "comingSoon":"即将上线",
+            "invalid":"无效",
+            "valid":"有效"
+        },
+        "tip":{
+            "mustStopInst":"请先停止实例"           
+        }
+    },
+    "abbr":{
+        "api":"API",
+        "cpu":"CPU",
+        "vcpu":"vCPU",        
+        "vpc":"VPC",
+        "ip":"IP",
+        "top":"TOP",
+        "iops":"IOPS",
+        "bit":"位",
+        "ecs":"ECS",
+        "oss":"OSS",
+        "rds":"RDS",
+        "id":"ID",
+        "redis":"Redis",
+        "put":"PUT",
+        "get":"GET",
+        "kb":"KB",
+        "mb":"MB",
+        "gb":"GB"
+    },
+    "header": {
+        "console": "管理控制台",
+        "nav": {
+            "cost": "费用",
+            "workOrder": "工单",
+            "record": "备案",
+            "document": "文档与支持"
+        }
+    },
+    "footer": {
+        "copyright": "人民网版权所有",
+        "icp": "京ICP备17082812号"
+    },
+    "login": {
+        "userNameIsEmpty": "请输入登录账号",
+        "mobileIsEmpty": "请输入手机号码",
+        "pwdIsEmpty": "请输入密码",
+        "messageCodeIsEmpty": "请输入短信验证码",
+        "helpTips": "账号登录支持手机号码/邮箱+密码，短信登录支持手机号码+验证码"
+    },
+    "register": {
+        "title": "欢迎加入人民日报媒体云",
+        "mobileIsEmpty": "请输入手机号码",
+        "mobileIsError": "手机号码错误",
+        "mobileIsRegisted": "手机号码已注册",
+        "mobileIsNotRegisted": "手机号码未注册",
+        "loginPassIsEmpty": "请输入登录密码",
+        "confirmPassIsEmpty": "请再次输入您的密码",
+        "loginPassLength": "8-32个字符，字母区分大小写",
+        "loginPassIsError": "密码格式不正确",
+        "passAgain": "请再次输入密码",
+        "passIsUnEqual": "两次输入密码不一致",
+        "imageCodeIsEmpty": "请输入图片验证码",
+        "imageCodeIsError": "图片验证码错误",
+        "mobileCodeIsEmpty": "请输入短信验证码",
+        "mobileCodeIsError": "短信验证码错误"
+    },
+    "account": {
+        "emailIsEmpty": "请输入邮箱地址",
+        "emailIsError": "邮箱地址格式错误",
+        "emailIsUsed": "邮箱地址已使用",
+        "baseInfo" : {
+            "emailIsEmpty": "请输入邮箱地址",
+            "comAgeIsError":"请选择营业年限",
+            "comScaleIsEmpty":"请选择企业规模",
+            "mainBusinnessIsEmpty":"请选择主要营业范围",
+            "majorappIsEmpty":"请填写主营业务",
+            "areaIsEmpty":"请选择省市区",
+            "telephoneIsError":"电话格式错误",
+            "faxIsError":"传真格式错误",
+            "websiteIsError":"网站格式错误"
+        },
+        "Auth" : {
+            "title":"实名认证",
+            "authType":"认证类型",
+            "companyAuth":{
+                "companyAuthTitle":"企业认证",
+                "title":"尊敬的客户，您因为订购媒体云服务需进行认证。",
+                "subtitle":"请确认贵公司工商在册，并按规定通过年检，谢谢!",
+                "area":"街道地址",
+                "areaTips":"请填写街道地址",
+                "companyName":"公司名称",
+                "companyNameTips":"请按照营业执照上的名称逐字核对",
+                "bankName":"公司账号开户行",
+                "bankNameTips":"请填写对公账号开户行",
+                "bankAcctNo":"公司对公账号",
+                "bankAcctNoTips":"请填写公司对公账号",
+                "bankAcctNoLengthError":"对公账号长度错误",
+                "bankAcctNoIsError":"对公账号格式错误",
+                "companyLicense":"公司营业执照",
+                "creditCode":"统一社会信用代码",
+                "creditCodeTips":"请填写统一社会信用代码",
+                "creditCodeIsEmpty":"统一社会信用代码不能为空",
+                "creditCodeLengthError":"统一社会信用代码长度不正确",
+                "creditCodeIsError":"统一社会信用代码格式不正确",
+                "areaIsEmpty":"街道地址不能为空",
+                "companyNameIsEmpty":"公司名称不能为空",
+                "bankNameIsEmpty":"对公账号开户行不能为空",
+                "bankAcctNoIsEmpty":"公司对公账号不能为空",
+                "companyLicenseIsEmpty":"营业执照不能为空",
+                "tips":" 请再次确认您的信息，确认后不能修改!",
+                "uploadTips":"附件大小不得超过8M，支持的格式：'jpg','jpeg','png','gif'"
+
+            },
+            "departAuth":{
+                "departAuthTitle":"部门认证",
+                "title":"尊敬的客户，您因为订购媒体云服务需进行认证。",
+                "subtitle":"请确认您所在的企业已通过实名认证，谢谢!",
+                "companyName":"已认证企业",
+                "companyNameTips":"请填写已认证企业",
+                "companyDept":"部门名称",
+                "companyDeptTips":"请填写部门名称",
+                "link":"认证联系人",
+                "linkTips":"请填写认证联系人",
+                "linkPhoneNum":"认证联系人手机号码",
+                "linkPhoneNumTips":"请填写认证联系人手机号码",
+                "material":"材料证明",
+                "MaterialTips":"附件大小不得超过8M，支持的格式：'jpg','jpeg','png','gif'"
+            },
+            "authApply":{
+                "authApplyTitle":"您已提交企业认证信息，耐心等候！",
+                "authApplyTitleTips":"打款需要2-3个工作日，请关注系统通知，及时进行打款金额确认！"
+            }   
+        },
+       
+    },
+    "oss": {
+        "overviewTips": "总概览及存储空间概览基础数据都非实时数据，数据延迟2～3个小时。",
+        "skeymgrTips": "Access Key ID和Access Key Secret是您访问人民日报媒体云API的密钥，具有该账户的完全的权限，请您妥善保管，且至少要保留一条有效的密钥。"
+    },
+    "ecs":{
+        "overview": {
+            "baseData": "基础数据",
+            "storageSize": "存储容量",
+            "monthFlow": "本月流量",
+            "monthRequest": "本月请求次数",
+            "fileNums": "文件数量",
+            "headTitle1": "综述",
+            "headTitle2": "监控信息",
+            "cpuUsageRate": "CPU使用率",
+            "cpuUsageRateRank": "CPU使用率TOP5",
+            "memUsageRate": "内存使用率",
+            "memUsageRateRank": "内存使用率TOP5",
+            "specialService": {
+                "name": "特色服务",
+                "viewLinkText": "查看",
+                "pictureProcessing": "图片处理",
+                "videoProcessing": "音视频处理",
+                "siteMove": "站点平滑迁移",
+                "highAvailability": "高可用同城双活",
+                "websiteTrusteeship": "静态网站托管",
+                "antiStealingLink": "防盗链",
+                "pictureProcessingDesc": "提供多种图片处理模式，至少包括图片的缩放、缩率、剪裁、旋转、渐进显示、格式转换、文字水印、图片水印、计算平均色调，并可以提供图片格式、大小、色彩、EXIF等模型信息",
+                "videoProcessingDesc": "支持音视频实时转码功能；提供多种音视频处理模式，至少包括音视频的多码率自适应转码、截取、切片、水印、拼接、抽帧、采样；并且支持音视频元信息提取等功能",
+                "siteMoveDesc": "利用媒体云提供的镜像存储功能，可以非常简单地将源站的数据被动地同步到媒体云存储中，所谓被动同步即——只有在资源被访问时，媒体云才会回源站获取一次，此后对该资源的访问都不会再发生回源动作，是直接从媒体云这里拿到数据。",
+                "highAvailabilityDesc": "支持系统跨机房部署，当发生不可预知的离线事故时，仍可对外提供服务。系统采用高可用架构设计，任何一个节点出现故障，不影响数据的正常访问，整集群无单点故障。免人工干预的磁盘、主机自动故障检测和告警，在线更换磁盘，主机自动进行数据修复工作。",
+                "websiteTrusteeshipDesc": "媒体云对象存储无缝集合各类第三方扩展插件，如 WordPress、Discuz、Emlog 等，并支持一键将各类插件里的静态资源托管到媒体云对象存储。",
+                "antiStealingLinkDesc": "下载有一种常见的场景，即公开资源的防盗链，例如禁止特定来源域名的访问，禁止非浏览器发起的访问等。可以通过 HTTP 协议支持的 Referer 机制，来进行相应的来源识别和管理。"
+            },
+            "keypairs":{
+
+            }
+        },
+        "inst":{
+            "list":{
+                "title":"实例列表",
+                "createInst":"创建实例",
+                "instIdAndName":"实例ID/名称",
+                "netType":"网络类型",
+                "configInfo":"配置",
+                "payType":"付费方式",
+                "region":"所在区域",
+                "linkIP":"连接IP",
+                "publicNet":"公",
+                "innerNet":"内",
+                "memory":"内存",
+                "bandWidth":"带宽",
+                "configChanged":"配置变更",                
+                "freeTrial ":"免费试用",
+                "manage":"管理",
+                "remoteLogin":"远程登录",
+                "modifyConfig":"升降配",
+                
+                "dropdownBtns":{
+                    "start":"启动",
+                    "stop":"停止",
+                    "restart":"重启",
+                    "reinstallOperateSysem":"重装操作系统",
+                    "changeSystemDisk":"更换系统盘",
+                    "modifyInfo":"修改信息",
+                    "editLable":"编辑标签",
+                    "createCustomImage":"创建自定义镜像",
+                    "securityGroupConfig":"安全组配置",
+                    "bindPublicIP":"绑定公网IP",
+                    "unbindPublicIP":"解绑公网IP",
+                    "bindConnIp":"绑定连接IP",
+                    "unbindConnIp":"解绑连接IP",
+                    "delete":"删除",
+                    "modifyRemoteLoginPassword":"修改远程登录密码",
+                    "remoteConnGuide":"远程连接指导",
+                    "submitTicket":"提交工单"                    
+                },
+
+                "vMachineIsReady":"虚拟机已经可用",
+                "newMediaBuildingBindconnectip":"新媒体大楼办公的用户可以使用该主机连接云主机"
+            },
+            
+            "details":{
+                "title":{
+                    "basicInfo":"基本信息",
+                    "monitorInfo":"监控信息",
+                    "configInfo":"配置信息",
+                    "payInfo":"付费信息"
+                },
+                "oNet":"出网",
+                "iNet":"入网",
+                "cpuPercentUsed":"CPU使用率",
+                "memoryPercentUsed":"内存使用率",
+                "outerNetwork":"外网网络",
+                "instType":"实例类型",   
+                "instSpecification":"实例规格",              
+                "bandwidth":"当前使用带宽"  
+            }
+        },
+        "store":{
+            "disk":{
+
+            },
+            "snap":{
+
+            },
+            "snapStrategy":{
+
+            }
+        },
+        "image":{
+
+        },
+        "overview": {
+            "baseData": "基础数据",
+            "storageSize": "存储容量",
+            "monthFlow": "本月外网流量",
+            "monthRequest": "本月请求次数",
+            "fileNums": "文件数量",
+            "specialService": {
+                "name": "特色服务",
+                "viewLinkText": "查看",
+                "pictureProcessing": "图片处理",
+                "videoProcessing": "音视频处理",
+                "siteMove": "站点平滑迁移",
+                "highAvailability": "高可用同城双活",
+                "websiteTrusteeship": "静态网站托管",
+                "antiStealingLink": "防盗链",
+                "pictureProcessingDesc": "提供多种图片处理模式，至少包括图片的缩放、缩率、剪裁、旋转、渐进显示、格式转换、文字水印、图片水印、计算平均色调，并可以提供图片格式、大小、色彩、EXIF等模型信息",
+                "videoProcessingDesc": "支持音视频实时转码功能；提供多种音视频处理模式，至少包括音视频的多码率自适应转码、截取、切片、水印、拼接、抽帧、采样；并且支持音视频元信息提取等功能",
+                "siteMoveDesc": "利用媒体云提供的镜像存储功能，可以非常简单地将源站的数据被动地同步到媒体云存储中，所谓被动同步即——只有在资源被访问时，媒体云才会回源站获取一次，此后对该资源的访问都不会再发生回源动作，是直接从媒体云这里拿到数据。",
+                "highAvailabilityDesc": "支持系统跨机房部署，当发生不可预知的离线事故时，仍可对外提供服务。系统采用高可用架构设计，任何一个节点出现故障，不影响数据的正常访问，整集群无单点故障。免人工干预的磁盘、主机自动故障检测和告警，在线更换磁盘，主机自动进行数据修复工作。",
+                "websiteTrusteeshipDesc": "媒体云对象存储无缝集合各类第三方扩展插件，如 WordPress、Discuz、Emlog 等，并支持一键将各类插件里的静态资源托管到媒体云对象存储。",
+                "antiStealingLinkDesc": "下载有一种常见的场景，即公开资源的防盗链，例如禁止特定来源域名的访问，禁止非浏览器发起的访问等。可以通过 HTTP 协议支持的 Referer 机制，来进行相应的来源识别和管理。"
+            },
+            "keypairs":{
+
+            }
+        },
+        "lableMgr":{
+
+        },
+        "overviewTips":"总概览及存储空间概览基础数据都非实时数据，数据延迟2～3个小时。",
+        "skeymgrTips":
+            "Access Key ID和Access Key Secret是您访问人民日报媒体云API的密钥，具有该账户的完全的权限，请您妥善保管，且至少要保留一条有效的密钥。"
+    },
+    "security": {
+        "overview": {
+            "safetyExamination": "安全体检",
+            "safetyExaminationTips": "云媒体每天会对您的资源进行一次安全检查",
+            "checkInspectionStrategy": "查看巡检策略",
+            "detectionResult": "检测结果"
+        },
+        "assetslist": {
+            "title": "资产列表",
+            "tips": "Windows机器不在资产列表里面",
+            "weaknessTrend": "弱点发展趋势",
+            "topWeakness": "TOP主机弱点",
+            "topSecurityEvent": "TOP安全事件主机",
+            "intrusionEvent": "主机入侵事件",
+            "intrusionEventTrend": "入侵事件趋势"
+        },
+        "vulnerablity": {
+            "title": "漏洞管理",
+            "vulnerablityMrgSetting": "漏洞管理设置",
+            "VulnerabilityLevelDescription": "漏洞等级说明"
+        }
+    },
+    "majorTerm": {
+        "VPC": "VPC",
+        "IP": "IP ",
+        "NAS": "NAS ",
+        "CPU": "CPU",
+        "ECS": "ECS ",
+        "RDS": "VPC",
+        "GHz": "GHz ",
+        "MHz": "MHz ",
+        "TB": "TB ",
+        "GB": "GB ",
+        "MB": "MB ",
+        "KB": "KB "
+    },
+    "commonUse": {
+        "goback": "返回上一步",
+        "cancel": "取消",
+        "skeymgrTips": "Access Key ID和Access Key Secret是您访问人民日报媒体云API的密钥，具有该账户的完全的权限，请您妥善保管，且至少要保留一条有效的密钥。",
+        "createOss": "创建存储空间",
+        "searchTips": "搜索Bucket",
+        "ossName": "存储空间",
+        "sortText": {
+            "default": "默认排序",
+            "name": "按名称排序",
+            "time": "按时间排序"
+        },
+        "overview": {
+            "baseData": "基础数据",
+            "storageSize": "存储容量",
+            "monthFlow": "本月流量",
+            "monthRequest": "本月请求次数",
+            "specialService": {
+                "name": "特色服务",
+                "viewLinkText": "查看",
+                "pictureProcessing": "图片处理",
+                "videoProcessing": "音视频处理",
+                "siteMove": "站点平滑迁移",
+                "highAvailability": "高可用同城双活",
+                "websiteTrusteeship": "静态网站托管",
+                "antiStealingLink": "防盗链",
+                "pictureProcessingDesc": "提供多种图片处理模式，至少包括图片的缩放、缩率、剪裁、旋转、渐进显示、格式转换、文字水印、图片水印、计算平均色调，并可以提供图片格式、大小、色彩、EXIF等模型信息",
+                "videoProcessingDesc": "支持音视频实时转码功能；提供多种音视频处理模式，至少包括音视频的多码率自适应转码、截取、切片、水印、拼接、抽帧、采样；并且支持音视频元信息提取等功能",
+                "siteMoveDesc": "利用媒体云提供的镜像存储功能，可以非常简单地将源站的数据被动地同步到媒体云存储中，所谓被动同步即——只有在资源被访问时，媒体云才会回源站获取一次，此后对该资源的访问都不会再发生回源动作，是直接从媒体云这里拿到数据。",
+                "highAvailabilityDesc": "支持系统跨机房部署，当发生不可预知的离线事故时，仍可对外提供服务。系统采用高可用架构设计，任何一个节点出现故障，不影响数据的正常访问，整集群无单点故障。免人工干预的磁盘、主机自动故障检测和告警，在线更换磁盘，主机自动进行数据修复工作。",
+                "websiteTrusteeshipDesc": "媒体云对象存储无缝集合各类第三方扩展插件，如 WordPress、Discuz、Emlog 等，并支持一键将各类插件里的静态资源托管到媒体云对象存储。",
+                "antiStealingLinkDesc": "下载有一种常见的场景，即公开资源的防盗链，例如禁止特定来源域名的访问，禁止非浏览器发起的访问等。可以通过 HTTP 协议支持的 Referer 机制，来进行相应的来源识别和管理。"
+            }
+        }
+    }
+}

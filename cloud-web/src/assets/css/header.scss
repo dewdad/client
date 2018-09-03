@@ -1,0 +1,89 @@
+.el-header {
+    background: $--color-nav;
+    padding: 0px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 3000;
+    .el-menu {
+        background: $--color-nav !important;
+    }
+    .el-menu--horizontal {
+        border-bottom: 0px !important;
+    }
+    .el-menu--horizontal > .el-menu-item {
+        height: 50px;
+        line-height: 50px;
+        padding: 0px 20px;
+        background: $--color-nav;
+        font-size: 12px !important;
+        color: #d4d5da !important;
+        border-bottom: 0px;
+        border-left: 1px solid $--color-header-nav-active !important;
+        &.is-active {
+            border-bottom: 0px !important;
+            background: $--color-nav !important;
+        }
+        &:first-child {
+            text-align: center;
+        }
+        > i {
+            color: #d4d5da !important;
+            margin-right: 5px;
+        }
+        &:hover,
+        &:active {
+            background: $--color-header-nav-active !important;
+            color: #ffffff !important;
+            > i {
+                color: #ffffff !important;
+            }
+        }
+    }
+}
+
+.el-header {
+    height: $--basic-header-height !important;
+    line-height: $--basic-header-height;
+}
+
+.single-header {
+    height: $--basic-header-height;
+    .el-header {
+        z-index: 3001;
+    }
+    .logo {
+        display: inline-block;
+        margin-left: 88px;
+        margin-right: 15px;
+
+        img {
+            vertical-align: text-bottom;
+        }
+    }
+    .title {
+        display: inline-block;
+        line-height: $--basic-header-height;
+        color: #d4d5da;
+        font-size: 16px;
+        margin-left: 15px;
+        position: relative;
+        font-weight: 600;
+        &::before {
+            content: " ";
+            position: absolute;
+            top: 10px;
+            left: -15px;
+            width: 1px;
+            height: 30px;
+            background: #fff;
+        }
+    }
+    .headerRight {
+        color: #d4d5da;
+        float: right;
+        margin-right: 86px;
+        font-size: 14px;
+        line-height: $--basic-header-height;
+    }
+}

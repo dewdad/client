@@ -1,0 +1,23 @@
+.unBindMailbox{
+    .panal-body{
+        margin-top: 160px;
+    .main-box{
+        text-align: center;
+        .bigTitle{
+            font-size: 18px;
+        }
+        .subMessage{ 
+        width:320px;
+        margin:30px auto;
+        text-align: left
+        }
+        button{
+            width: 180px;
+            margin-left: 20px;
+        }
+        .el-form-item__error.el-form-item__error--inline {
+            text-align: left;
+        }
+    }
+    }
+}

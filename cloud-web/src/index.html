@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="pragram" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+  <meta http-equiv="expires" content="0">
+  <link rel="icon" href="<%= BASE_URL %>logo.ico">
+  <title>
+    <%=VUE_APP_TITLE%>
+  </title>
+  <!-- 引入样式 -->
+  <link href="statics/css/bootstrap.min.css" rel="stylesheet">
+  <script src="server/const.js"></script>
+  <script src="config/config.<%=NODE_ENV%>.js"></script>
+  <style>
+    #checkIE {
+      position: absolute;
+      width: 100%;
+      display: none;
+      height: 40px;
+      top: 50px;
+      line-height: 40px;
+      color: #fff;
+      text-align: center;
+      background: #082155;
+      opacity: .8;
+      font-size: 14px
+    }
+  </style>
+</head>
+
+<body>
+  <div id="checkIE">浏览器版本较低可能会影响页面展示效果，建议使用Chrome或者更高版本的浏览器</div>
+  <div id="app">
+    <div class="text-center" style="position: absolute;width: 200px;left:50%; top:50%; margin-left: -100px;height: 50px;margin-top:-25px;">
+      <img src="statics/images/logo.png" alt="">
+    </div>
+  </div>
+
+  <!-- 引入组件库 -->
+  <script>
+    console.log('Promise', Promise);
+    console.log('Promise', Promise.prototype);
+    var Promiseprototypefinally = Promise.prototype.finally
+  </script>
+  <script src="statics/js/security.js"></script>
+  <script src="https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js"></script>
+  <script src="statics/js/echarts-liquidfill.min.js"></script>
+  <script src="https://cdn.bootcss.com/babel-polyfill/7.0.0-beta.49/polyfill.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment.js/2.22.1/locale/zh-cn.js"></script>
+  <script src="https://unpkg.com/element-ui@2.4.6/lib/index.js"></script>
+  <script src="//at.alicdn.com/t/font_796489_0p7i1ac5crbr.js"></script>
+  <!-- built files will be auto injected -->
+  <script>
+    function IEVersion() {
+      var e = document.getElementById("checkIE"),
+        n = navigator.userAgent,
+        i = -1 < n.indexOf("compatible") && -1 < n.indexOf("MSIE"),
+        t = -1 < n.indexOf("Trident") && -1 < n.indexOf("rv:11.0");
+      return i || t ? (e.style.display = "inline-block", 1) : (e.style.display = "none", -1)
+    }
+    IEVersion()
+  </script>
+  <script>
+    if (Promise) {
+      if (Promiseprototypefinally && !Promise.prototype.finally) {
+        console.log('回写 Promise');
+        Promise.prototype.finally = Promiseprototypefinally
+      }
+    }
+  </script>
+</body>
+
+</html>
