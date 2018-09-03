@@ -3,19 +3,21 @@
     <!-- 搜素栏 -->
     <page-header class="mb10">
         <div slot="content"  class="pull-right">
-            <el-button type="primary" size="small" class="mr10" @click="create">
-                创建专有网络
+            <el-button type="primary" size="small" class="mr10">
+                申请浮动IP
             </el-button>
             <el-button type="info" size="small" @click="fetchData">
                 <i class="iconfont icon-refresh_people"></i>
             </el-button>
         </div>
     </page-header>
+    <!-- 搜索栏 -->
+    <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box>
     <!-- 表格 -->
     <el-table
         v-loading="isLoading"
         :data="tableData"
-        class="data-list mt20"
+        class="data-list"
         row-class-name="data-list"
         header-row-class-name="data-list"
         size="small"
@@ -32,38 +34,31 @@
                 <div>{{scope.row.name}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="IP地址">
             <template slot-scope="scope">
                 {{scope.row.status}}
             </template>
         </el-table-column>
-        <el-table-column label="是否共享">
+        <el-table-column label="已映射固定IP地址">
             <template slot-scope="scope">
                 {{scope.row.shared ? '是' : '否' }}
             </template>
         </el-table-column>
-        <el-table-column label="外部网络">
+        <el-table-column label="状态">
             <template slot-scope="scope">
                 {{scope.row['router:external'] ? '是' : '否'}}
             </template>
         </el-table-column>
-        <el-table-column label="子网数量" :min-width="50">
+        <el-table-column label="绑定实例" :min-width="50">
             <template slot-scope="scope">
-                <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}"> -->
-                    <el-tag>{{scope.row.subnets.length}}</el-tag>
-                <!-- </router-link> -->
-            </template>
-        </el-table-column>
-        <el-table-column label="管理状态"  :min-width="50">
-            <template slot-scope="scope">
-                {{scope.row.admin_state_up ? 'UP' : ''}}
+                <span>{{scope.row.subnets.length}}</span>
             </template>
         </el-table-column>
         <el-table-column prop="name" label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}">管理子网</router-link> | 
-                <a @click="updateNetwork(scope.row)">编辑</a> | 
-                <a @click="deleteNetwork(scope.row)">删除</a>
+                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}">绑定</router-link> | 
+                <a>解绑</a> | 
+                <a>释放</a>
             </template>
         </el-table-column>
     </el-table>
@@ -86,8 +81,20 @@
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
+import searchBox from '@/components/search/SearchBox';
 import Create from './Create';
-import {queryNetwork, deleteNetwork} from '@/service/ecs/network.js';
+import {queryFlexIP} from '@/service/ecs/network.js';
+
+let fields = [
+    { field: 'id', label: '安全组ID',inputval:'', tagType: 'ID' },
+    { field: 'name', label:'安全组名称',inputval:'', tagType: 'Name' }
+];
+        
+let searchObjExtra = {
+    frominfo: '',
+    fields:fields,
+    selField:fields[0]
+};
 
 export default {
     data() {
@@ -97,7 +104,9 @@ export default {
             pageIndex: 1,
             limit: 10,
             total: 0,
-            listData: {}
+            listData: {},
+            fields,
+            searchObjExtra
         };
     },
     computed: {
@@ -109,55 +118,6 @@ export default {
         this.fetchData();
     },
     methods: {
-        create() {
-            let create = this.$refs.create;
-            if (create) {
-                create.show({
-                    type: 'create'
-                }).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
-                });
-            }
-        },
-        updateNetwork(data) {
-            let create = this.$refs.create;
-            if (create) {
-                create.show({
-                    type: 'update',
-                    ...data
-                }).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
-                });
-            }
-        },
-        deleteNetwork(row) {
-            $log('删除数据', row);
-            this.$confirm(`您确定要删除专有网络：${row.name} 吗？`, '删除', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'danger'
-            })
-                .then(() => {
-                    return deleteNetwork({
-                        vpcId: row.id
-                    });
-                })
-                .then(ret => {
-                    $log('deleteNetwork ret <-', ret);
-                    if (ret) {
-                        this.fetchData();
-                    }
-                })
-                .catch((error) => {
-                    // 取消
-                    $log('deleteNetwork', error.message);
-                });
-            
-        },
         sizeChange(val) {
             this.pageIndex = 1;
             this.limit = val;
@@ -172,12 +132,12 @@ export default {
                 // 清空数据
                 this.isLoading = true;
                 let params = {
-                    zone: this.region,
+                    offset: 1,
                     limit: this.limit,
                     pageIndex: this.pageIndex
                 };
 
-                let ret = await queryNetwork(params);
+                let ret = await queryFlexIP(params);
                 console.warn('fetchData', ret);
 
                 this.listData = ret;
@@ -191,11 +151,16 @@ export default {
                 this.isLoading = false;
                 console.error('fetchData', error.message);
             }
+        },
+        // 
+        getScreenVal(params) {
+            $log(params);
         }
     },
     components: {
         RegionRadio,
-        Create
+        Create,
+        searchBox
     }
 };
 </script>

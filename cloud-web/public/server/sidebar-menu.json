@@ -335,6 +335,11 @@
                 "psref": "app.vpc"
             },
             {
+                "text": "浮动IP",
+                "sref": "app.vpc.pn-flexip",
+                "psref": "app.vpc"
+            },
+            {
                 "text": "虚拟防火墙",
                 "sref": "app.vpc.vfirewall",
                 "psref": "app.vpc"
