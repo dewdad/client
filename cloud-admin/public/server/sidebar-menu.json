@@ -1,0 +1,779 @@
+[
+    {
+        "text": "云服务器ECS",
+        "heading": true,
+        "evn": "pro",
+        "psref": "#",
+        "sref": "app.ecs",
+        "icon": "iconfont icon-yunfuwuqiECS",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "概览",
+                "sref": "app.ecs.overview",
+                "evn": "pro",
+                "psref": "app.ecs"
+            },
+            {
+                "text": "实例",
+                "sref": "app.ecs.list",
+                "psref": "app.ecs"
+            },
+            {
+                "text": "存储",
+                "sref": "app.ecs.storage",
+                "psref": "app.ecs",
+                "submenu": [
+                    {
+                        "text": "云盘",
+                        "sref": "app.ecs.clouddisc-list",
+                        "psref": "app.ecs.storage"
+                    },
+                    {
+                        "text": "云盘快照",
+                        "sref": "app.ecs.snaplist",
+                        "psref": "app.ecs.storage"
+                    },
+                    {
+                        "text": "自动快照策略",
+                        "sref": "app.ecs.autosnapstrategy",
+                        "psref": "app.ecs.storage"
+                    }
+                ]
+            },
+            {
+                "text": "镜像",
+                "sref": "app.ecs.image",
+                "psref": "app.ecs"
+            },
+            {
+                "text": "网络和安全",
+                "sref": "app.ecs.netsecurity",
+                "psref": "app.ecs",
+                "submenu": [
+                    {
+                        "text": "安全组",
+                        "sref": "app.ecs.netsecurity.safegrp",
+                        "psref": "ecs.netsecurity",
+                        "submenu": [
+                            {
+                                "text": "安全组内实例列表",
+                                "sref": "app.ecs.netsecurity.safegrpList",
+                                "psref": "ecs.netsecurity"
+                            },
+                            {
+                                "text": "安全组内实例列表",
+                                "sref": "app.ecs.netsecurity.safegrpRule",
+                                "psref": "ecs.netsecurity"
+                            }
+                        ]
+                    },
+                    {
+                        "text": "密钥对",
+                        "sref": "app.ecs.netsecurity.keypair",
+                        "psref": "ecs.netsecurity"
+                    },
+                    {
+                        "text": "专有网络VPC",
+                        "sref": "app.vpc.pn",
+                        "psref": "ecs.netsecurity",
+                        "icon": "icon ecs-menu_link-icon_people",
+                        "opennewtab": true
+                    },
+                    {
+                        "text": "弹性公网IP",
+                        "heading": true,
+                        "psref": "#",
+                        "sref": "app.ip",
+                        "icon": "iconfont icon-danxinggongwangIP",
+                        "translate": "",
+                        "arrow": "nav-dropdown-toggle",
+                        "alert": "new",
+                        "submenu": [
+                            {
+                                "text": "弹性公网IP",
+                                "sref": "app.ip.flexip",
+                                "psref": "app.ip"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "text": "标签管理",
+                "sref": "app.ecs.lablemgr",
+                "psref": "app.ecs"
+            },
+            {
+                "text": "ECS详情",
+                "sref": "app.ecs.inst",
+                "psref": "app.ecs",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "实例详情",
+                        "sref": "app.ecs.inst.detail",
+                        "psref": "ecs.inst"
+                    },
+                    {
+                        "text": "本实例磁盘",
+                        "sref": "app.ecs.inst.disk",
+                        "psref": "ecs.inst"
+                    },
+                    {
+                        "text": "本实例快照",
+                        "sref": "app.ecs.inst.snap",
+                        "psref": "ecs.inst"
+                    },
+                    {
+                        "text": "本实例安全组",
+                        "sref": "app.ecs.inst.securitygrp",
+                        "psref": "ecs.inst"
+                    }
+                ]
+            },
+            {
+                "text": "云盘详情",
+                "sref": "app.ecs.clouddisc",
+                "psref": "app.ecs",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "磁盘详情",
+                        "sref": "app.ecs.clouddisc.detail",
+                        "psref": "ecs.inst"
+                    },
+                    {
+                        "text": "磁盘监控信息",
+                        "sref": "app.ecs.clouddisc.monitorinfo",
+                        "psref": "ecs.inst"
+                    }
+                ]
+            },
+            {
+                "text": "快照列表",
+                "sref": "app.ecs.snapshot",
+                "psref": "app.ecs",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "快照列表",
+                        "sref": "app.ecs.snapshot.detail",
+                        "psref": "ecs.inst"
+                    }
+                ]
+            },
+            {
+                "text": "安全组规则",
+                "sref": "app.ecs.groupRule",
+                "psref": "app.ecs",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "安全组内实例列表",
+                        "sref": "app.ecs.groupRule.safegrpList",
+                        "psref": "ecs.groupRule"
+                    },
+                    {
+                        "text": "安全组规则",
+                        "sref": "app.ecs.groupRule.safegrpRule",
+                        "psref": "ecs.groupRule"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "text": "云数据库RDS",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.rds",
+        "icon": "iconfont icon-yunshujuRDS",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "实例列表",
+                "sref": "app.rds.list",
+                "psref": "app.rds"
+            },
+            {
+                "text": "标签管理",
+                "sref": "app.rds.lablemgr",
+                "psref": "app.rds",
+                "hidden": true
+            },
+            {
+                "text": "数据迁移",
+                "sref": "app.rds.data_migrate",
+                "psref": "app.rds",
+                "hidden": true
+            },
+            {
+                "text": "读写分离",
+                "sref": "app.rds.rw",
+                "psref": "app.rds",
+                "hidden": true
+            },
+            {
+                "text": "RDS详情",
+                "sref": "app.rds.inst",
+                "psref": "app.rds",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "基本信息",
+                        "sref": "app.rds.inst.detail",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "账号管理",
+                        "sref": "app.rds.inst.account",
+                        "psref": "rds.inst",
+                        "hidden": true
+                    },
+                    {
+                        "text": "监控实例",
+                        "sref": "app.rds.inst.monitor",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "日志管理",
+                        "sref": "app.rds.inst.logmgr",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "白名单",
+                        "sref": "app.rds.inst.whitelist",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "性能优化",
+                        "sref": "app.rds.inst.upperforman",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "备份与恢复",
+                        "sref": "app.rds.inst.backrecover",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "参数设置",
+                        "sref": "app.rds.inst.paraset",
+                        "psref": "rds.inst"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "text": "对象存储OSS",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.oss",
+        "icon": "iconfont icon-duixiangcunchuOSS",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "概览",
+                "sref": "app.oss.overview",
+                "psref": "app.oss"
+            },
+            {
+                "text": "密钥管理",
+                "sref": "app.oss.skeymgr",
+                "psref": "app.oss"
+            }
+        ]
+    },
+    {
+        "text": "云数据库Redis",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.redis",
+        "icon": "iconfont icon-yunshujukuRedis",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "hidden": true,
+        "submenu": [
+            {
+                "text": "实例",
+                "sref": "app.redis.inst-list",
+                "psref": "app.redis"
+            },
+            {
+                "text": "数据迁移",
+                "sref": "app.redis.data_migrate",
+                "psref": "app.redis"
+            }
+        ]
+    },
+    {
+        "text": "专有网络VPC",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.vpc",
+        "icon": "iconfont icon-zhuanyouwangluoVPC",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "专有网络",
+                "sref": "app.vpc.pn",
+                "psref": "app.vpc"
+            },
+            {
+                "text": "虚拟防火墙",
+                "sref": "app.vpc.vfirewall",
+                "psref": "app.vpc"
+            },
+            {
+                "text": "快捷连接",
+                "sref": "#",
+                "psref": "app.vpc",
+                "submenu": [
+                    {
+                        "text": "对等连接",
+                        "sref": "app.vpc.peerconn.list",
+                        "psref": "app.vpc"
+                    }
+                ]
+            },
+            {
+                "text": "专有网络-详情",
+                "sref": "app.vpc.pn",
+                "hidden": true,
+                "psref": "app.vpc.pn-detail",
+                "submenu": [
+                    {
+                        "text": "返回",
+                        "sref": "app.vpc.pn",
+                        "psref": "vpc.pn"
+                    },
+                    {
+                        "text": "专有网络详情",
+                        "sref": "app.vpc.pn-detail",
+                        "psref": "vpc.pn"
+                    },
+                    {
+                        "text": "子网",
+                        "sref": "app.vpc.pn-subnet",
+                        "psref": "vpc.pn"
+                    }
+                ]
+            },
+
+            {
+                "text": "返回",
+                "hidden": true,
+                "sref": "app.vpc.vfirewall",
+                "psref": "vpc.vfirewall"
+            },
+            {
+                "hidden": true,
+                "text": "防火墙详情",
+                "sref": "app.vpc.vfirewall-detail",
+                "psref": "vpc.vfirewall"
+            },
+
+            {
+                "text": "返回",
+                "hidden": true,
+                "sref": "app.vpc.peerconn",
+                "psref": "vpc.peerconn"
+            },
+            {
+                "hidden": true,
+                "text": "对等连接详情",
+                "sref": "app.vpc.peerconn-detail",
+                "psref": "vpc.peerconn"
+            }
+        ]
+    },
+    {
+        "text": "弹性公网IP",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.ip",
+        "icon": "iconfont icon-danxinggongwangIP",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "弹性公网IP",
+                "sref": "app.ip.list",
+                "psref": "app.ip"
+            }
+        ]
+    },
+    {
+        "text": "负载均衡",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.loadbalance",
+        "icon": "iconfont icon-fuzaijunheng",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "实例管理",
+                "sref": "app.loadbalance.inst-list",
+                "psref": "app.loadbalance"
+            },
+            {
+                "text": "证书管理",
+                "sref": "app.loadbalance.certmgr",
+                "psref": "app.loadbalance"
+            },
+            {
+                "text": "日志管理",
+                "sref": "app.loadbalance.logmgr",
+                "psref": "app.loadbalance"
+            },
+            {
+                "text": "标签管理",
+                "sref": "app.loadbalance.labelmgr",
+                "psref": "app.loadbalance",
+                "hidden": true
+            },
+            {
+                "text": "产品文档",
+                "sref": "app.loadbalance.productdoc",
+                "psref": "app.loadbalance",
+                "hidden": true
+            },
+
+            {
+                "text": "返回",
+                "sref": "app.loadbalance.inst-list",
+                "psref": "loadbalance.inst"
+            },
+            {
+                "text": "详情",
+                "sref": "app.loadbalance.inst.detail",
+                "psref": "loadbalance.inst"
+            },
+            {
+                "text": "监听",
+                "sref": "app.loadbalance.inst.listen",
+                "psref": "loadbalance.inst"
+            },
+            {
+                "text": "后端服务器",
+                "sref": "app.loadbalance.inst.backendsrv",
+                "psref": "loadbalance.inst"
+            },
+            {
+                "text": "监控",
+                "sref": "app.loadbalance.inst.monitor",
+                "psref": "loadbalance.inst"
+            },
+
+            {
+                "text": "返回",
+                "sref": "app.loadbalance.inst.listen",
+                "psref": "loadbalance.linst-listen"
+            },
+            {
+                "text": "监听详细信息",
+                "sref": "app.loadbalance.inst.listen-detail",
+                "psref": "loadbalance.linst-listen"
+            }
+        ]
+    },
+    {
+        "text": "云监控",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.monitor",
+        "icon": "iconfont icon-yunjiankong",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "报警服务",
+                "sref": "#",
+                "psref": "app.monitor",
+                "aref": "app.monitor.alarmrule",
+                "submenu": [
+                    {
+                        "text": "报警规则",
+                        "sref": "app.monitor.alarmrule-list",
+                        "psref": "app.monitor",
+                        "aref": "app.monitor.alarmrule"
+                    },
+                    {
+                        "text": "报警历史",
+                        "sref": "app.monitor.alarmhistory",
+                        "psref": "app.monitor"
+                    },
+                    {
+                        "text": "报警联系人",
+                        "sref": "app.monitor.alarmcontacts",
+                        "psref": "app.monitor"
+                    }
+                ]
+            },
+            {
+                "text": "返回",
+                "sref": "app.monitor.alarmrule-list",
+                "psref": "monitor.alarmrule"
+            },
+            {
+                "text": "基本信息",
+                "sref": "app.monitor.alarmrule.info",
+                "psref": "monitor.alarmrule"
+            },
+            {
+                "text": "报警历史",
+                "sref": "app.monitor.alarmrule.history",
+                "psref": "monitor.alarmrule"
+            }
+        ]
+    },
+    {
+        "text": "云主机安全",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.security",
+        "icon": "iconfont  icon-yunzhujianquan ",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "总览",
+                "sref": "app.security.overview",
+                "psref": "app.security"
+            },
+            {
+                "text": "资产列表",
+                "sref": "app.security.assetslist",
+                "psref": "app.security"
+            },
+            {
+                "text": "安全防护",
+                "sref": "app.security",
+                "psref": "app.security",
+                "submenu": [
+                    {
+                        "text": "漏洞管理",
+                        "sref": "app.security.vulnerablity",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "基线检查",
+                        "sref": "app.security.baselinecheck",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "弱口令检查",
+                        "sref": "app.security.weakpwdchk-list",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "防暴力破解",
+                        "sref": "app.security.anti-violence-cracking",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "防端口扫描",
+                        "sref": "app.security.anti-port-scan",
+                        "psref": "app.security"
+                    }
+                ]
+            },
+            {
+                "text": "入侵检测",
+                "sref": "#",
+                "psref": "app.security",
+                "submenu": [
+                    {
+                        "text": "异常登录",
+                        "sref": "app.security.exceptionlogin",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "主机木马",
+                        "sref": "app.security.webshell",
+                        "psref": "app.security"
+                    },
+                    {
+                        "text": "主机异常",
+                        "sref": "app.security.hostanomaly",
+                        "psref": "app.security"
+                    }
+                ]
+            },
+            {
+                "text": "操作审计",
+                "sref": "app.security.audit",
+                "psref": "app.security"
+            },
+            {
+                "text": "安全配置",
+                "sref": "app.security.safecfg",
+                "psref": "app.security"
+            },
+            {
+                "text": "告警配置",
+                "sref": "app.security.alarmcfg",
+                "psref": "app.security"
+            },
+            {
+                "text": "黑名单",
+                "sref": "app.security.blacklist",
+                "psref": "app.security"
+            },
+            {
+                "text": "白名单",
+                "sref": "app.security.whitelist",
+                "psref": "app.security"
+            },
+            {
+                "text": "安装/卸载",
+                "sref": "app.security.install",
+                "psref": "app.security"
+            },
+
+            {
+                "text": "资产列表详情",
+                "sref": "app.security.assetslist.details",
+                "psref": "security.assetslist",
+                "hidden": true,
+                "submenu": [
+                    {
+                        "text": "基本信息",
+                        "sref": "app.security.assetslist.baseInfo",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "主机信息",
+                        "sref": "app.security.assetslist.hostinfo",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "漏洞信息",
+                        "sref": "app.security.assetslist.vulnerablity",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "基线检查",
+                        "sref": "app.security.assetslist.baselinecheck",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "弱口令检查",
+                        "sref": "app.security.assetslist.weakpwdchk",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "防暴力破解",
+                        "sref": "app.security.assetslist.antiviolencecracking",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "防端口扫描",
+                        "sref": "app.security.assetslist.antiportscan",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "异常登录",
+                        "sref": "app.security.assetslist.exceptionlogin",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "主机木马",
+                        "sref": "app.security.assetslist.webshell",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "主机异常",
+                        "sref": "app.security.assetslist.hostanomaly",
+                        "psref": "security.assetslist"
+                    },
+                    {
+                        "text": "安全配置",
+                        "sref": "app.security.assetslist.safecfg",
+                        "psref": "security.assetslist"
+                    }
+                ]
+            },
+
+            {
+                "text": "漏洞管理-详情",
+                "sref": "app.security.Vulnerabilitymgr.details",
+                "hidden": true,
+                "psref": "security.vulnerablity",
+                "submenu": [
+                    {
+                        "text": "详情",
+                        "sref": "app.security.assetslist.vulnerablity.detail",
+                        "psref": "security.vulnerablity"
+                    }
+                ]
+            },
+
+            {
+                "text": "基线检查-详情",
+                "sref": "app.security.baselinecheck.detail",
+                "hidden": true,
+                "psref": "app.security.baselinecheck",
+                "submenu": [
+                    {
+                        "text": "详情",
+                        "sref": "app.security.assetslist.baselinecheck.detail",
+                        "psref": "app.security.baselinecheck"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "text": "账号管理",
+        "heading": true,
+        "psref": "#",
+        "evn": "pro",
+        "sref": "app.accountMg",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "hidden": true,
+        "submenu": [
+            {
+                "text": "安全设置",
+                "sref": "accountMg.SecutitySet",
+                "evn": "pro",
+                "psref": "app.accountMg"
+            },
+            {
+                "text": "基本资料",
+                "sref": "accountMg.info",
+                "evn": "pro",
+                "psref": "app.accountMg"
+            },
+            {
+                "text": "实名认证",
+                "sref": "accountMg.auth",
+                "evn": "pro",
+                "psref": "app.accountMg"
+            },
+            {
+                "text": "联系人管理",
+                "evn": "pro",
+                "sref": "accountMg.manager",
+                "psref": "app.accountMg"
+            }
+        ]
+    }
+]

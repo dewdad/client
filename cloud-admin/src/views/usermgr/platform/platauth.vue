@@ -1,0 +1,205 @@
+<template>
+    <div>
+        <el-row>
+            <el-col :span="24">
+                <el-form :inline="true" :model="formInline" size="small">
+                    <el-form-item>
+                        <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="addPlatAuth({},1)">添加平台权限</el-button>
+                    </el-form-item>
+                    <!--<el-form-item>-->
+                        <!--<el-select placeholder="请选择" v-model="type">-->
+                            <!--<el-option label="角色名称" value="name"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="关键字">-->
+                        <!--<el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item>-->
+                        <!--<el-button type="primary" @click="searchPlatAuth">查询</el-button>-->
+                    <!--</el-form-item>-->
+                    <el-form-item class="pull-right">
+                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="searchPlatAuth"></el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-table :data="tableData"  header-row-class-name="data-list">
+                    <template v-for="col in cols">
+                        <!-- 角色id -->
+                        <template v-if="col.column=='name'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='roleVal'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.roleVal}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='description'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.description | date }}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='createTime'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.createTime | date }}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                    </template>
+                    <!-- 操作 -->
+                    <template>
+                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                            <template slot-scope="scope">
+                                <a  @click="addPlatAuth(scope.row,2)" class="btn-linker" >编辑</a>
+                                <b class="link-division-symbol"></b>
+                                <a  @click="delPlatAuth(scope.row)" class="btn-linker" >删除</a>
+
+                            </template>
+                        </el-table-column>
+                    </template>
+                </el-table>
+                <div class="pagination">
+                    <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+                    </el-pagination>
+                </div>
+            </el-col>
+        </el-row>
+        <add-plat-auth ref="AddPlatAuth"></add-plat-auth>
+    </div>
+</template>
+<script>
+import PageHeader from '@/components/pageHeader/PageHeader';
+import AddPlatAuth from './AddPlatAuth';
+
+import {searchPlatAuth,delPlatAuth} from '@/service/platform.js';
+export default {
+    name: 'app',
+
+    data() {
+        let stateParams = this.$route.params || {};
+        let searchObj = {
+            //分页
+            paging: {
+                pageIndex: 1,
+                limit: 10,
+                totalItems: 0
+            },
+        };
+        let cols = [
+            { column: 'name', text:'权限名称' , width: '15%'},
+            { column: 'roleVal', text:'角色' , width: '15%'},
+            { column: 'description', text: '描述', width: '15%' },
+            { column: 'createTime', text: '创建时间', width: '15%' },
+        ];
+        // let fields = [
+        //     { field: 'name', label: '角色名称',inputval:'', tagType: 'INPUT' },
+        // ];
+        //
+        // let searchObjExtra = {
+        //     fields:fields,
+        //     selField:fields[0]
+        // };
+        return {
+            cols,
+            searchObj,
+            platId:stateParams.id,
+
+            tableData: []
+
+        };
+    },
+    components: {
+        PageHeader,
+        AddPlatAuth
+
+    },
+    methods: {
+        searchPlatAuth(){
+            let params = {
+                paging:this.searchObj.paging
+            };
+            $log('params', params);
+            searchPlatAuth(params).then(ret => {
+                $log('data', ret);
+                let resData = ret.data;
+                if(resData && resData.data){
+                    this.tableData = resData.data || [];
+                    this.searchObj.totalItems = resData.total || 0;
+                }
+
+            });
+        },
+        /**
+         * 删除平台
+         */
+        delPlatAuth(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.delAuth(item);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
+        //创建平台
+        addPlatAuth(item,optype){
+            let id = this.platId;
+            this.$refs.AddPlatAuth.show(item,optype,id)
+                .then(ret => {
+                    console.log('操作成功', ret);
+                    this.searchPlatAuth();
+                    return this.$confirm('操作成功');
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log('取消');
+                    }
+                });
+        },
+        delAuth(item){
+            delPlatAuth(item).then(ret=>{
+                this.searchPlatAuth();
+            });
+        },
+        handleSizeChange:function (params) {
+            console.log('params:',params);
+        },
+        handleCurrentChange:function (params) {
+            console.log('handleCurrentChange:',params);
+        },
+        handleSearch: function(labels) {
+            console.log(labels);
+        },
+        goBack(){
+            window.history.back();
+        },
+        onSubmit() {}
+    },
+    mounted(){
+        this.searchPlatAuth();
+    }
+};
+</script>
+<style scoped>
+</style>

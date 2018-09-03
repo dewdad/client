@@ -1,0 +1,56 @@
+﻿{
+    "regionObj": {
+        "regions": [{
+                "key": "bj1",
+                "text": "北京可用地区1",
+                "value": "az1.dc1",
+                "classes": "btn-blue",
+                "respool": [{
+                    "key": 1,
+                    "text": "资源池A",
+                    "value": "az1.dc11",
+                    "classes": "areaselect",
+                    "region": "az1.dc1"
+                },
+                {
+                    "key": 2,
+                    "text": "资源池B",
+                    "value": "az1.dc13",
+                    "classes": "areaselect",
+                    "region": "az1.dc3"
+                }]
+            },
+            {
+                "key": "bj2",
+                "text": "北京可用地区2",
+                "value": "az1.dc2",
+                "classes": "btn-white",
+                "disabled": true,
+                "respool": [{
+                    "key": 1,
+                    "text": "即将开放",
+                    "value": "az1.dc21",
+                    "classes": "color9",
+                    "region": "az1.dc2"
+                }]
+            }
+        ],
+        "regions_radio": [{
+                "key": "bj1",
+                "text": "北京1",
+                "value": "az1.dc1",
+                "active": true,
+                "disabled": false,
+                "classes": "btn citybtn mr6"
+            },
+            {
+                "key": "bj2",
+                "text": "北京2(即将开放)",
+                "value": "az1.dc2",
+                "active": false,
+                "disabled": true,
+                "classes": "btn disabled citybtn mr6"
+            }
+        ]
+    }
+}

@@ -1,0 +1,121 @@
+@import url('./reset.scss');
+@import url('./icon.scss');
+@import url('./dialog.scss');
+@import url('./transition.scss');
+@import url('./fontwson.scss');
+@import url('./theme/commonset.scss');
+@import url('./theme/default.scss');
+
+@import url('./common.scss');
+
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+}
+body,
+html {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 14px;
+    font-family: 'PingFangSC', 'helvetica neue', 'hiragino sans gb', 'arial', 'microsoft yahei ui', 'microsoft yahei', 'simsun', 'sans-serif';
+    color: #333;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    outline: none !important;
+    :disabled,
+    :focus {
+        outline: none !important;
+    }
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+.layout {
+    background: #f5f7f9;
+    height: 100%;
+}
+
+.mt10 {
+    margin-top: 10px !important;
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+// button
+.el-button[long] {
+    width: 100%;
+}
+label{
+    font-weight: normal !important;
+}
+// table
+.el-table {
+    width: 100%;
+    th {
+        background: #f8f8f9;
+        padding: 6px 0;
+    }
+}
+
+// 分页样式
+.pagination {
+    margin-top: 20px;
+    width: 100%;
+    text-align: right;
+    .el-pagination {
+        padding: 2px 0px;
+    }
+}
+
+// card
+.box-card {
+    border: none;
+    box-shadow: none;
+    &.card-info {
+        border-top-width: 3px;
+        .el-card__header {
+            color: #444444;
+            background-color: #ffffff;
+            border-color: #cfdbe2;
+            font-size: 14px;
+            width: 100%;
+            border: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8 !important;
+            background-color: #fafafa;
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+        }
+    }
+}
+// dialog
+@media screen and (min-width: 1380px) and (max-width: 1920px) {
+    .el-dialog {
+        .el-dialog__body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    }
+}
+@media screen and (max-width: 1380px) {
+    .el-dialog {
+        .el-dialog__body {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+    }
+}

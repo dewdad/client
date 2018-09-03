@@ -1,0 +1,327 @@
+@font-face {
+  font-family: 'icomoon-new';
+  src:  url('../fonts/newfont/icomoon.eot?scfwpc');
+  src:  url('../fonts/newfont/icomoon.eot?scfwpc#iefix') format('embedded-opentype'),
+  url('../fonts/newfont/icomoon.ttf?scfwpc') format('truetype'),
+  url('../fonts/newfont/icomoon.woff?scfwpc') format('woff'),
+  url('../fonts/newfont/icomoon.svg?scfwpc#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-new-"], [class*=" icon-new-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon-new' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-new-点:before {
+  content: "\e949";
+}
+.icon-new-成功提示:before {
+  content: "\e942";
+}
+.icon-new-返回:before {
+  content: "\e941";
+  font-size:20px;
+  vertical-align:middle;
+  color: #a7abb2;
+}
+.icon-new-监控环境:before {
+  content: "\e943";
+}
+.icon-new-ACTIVE {
+  color:#76b86e;
+}
+.icon-new-ACTIVE:before {
+  content: "\e932";
+}
+.icon-new-DELETED-SOFT_DELETED-RESIZED {
+  color:#ce666e;
+}
+.icon-new-DELETED-SOFT_DELETED-RESIZED:before {
+  content: "\e934";
+}
+.icon-new-DELETED:before {
+  content: "\e933";
+}
+.icon-new-ERROR {
+  color:#ce666e;
+}
+.icon-new-ERROR:before {
+  content: "\e934";
+}
+.icon-new-MIGRATING {
+  color:#76b86e;
+}
+.icon-new-MIGRATING:before {
+  content: "\e935";
+}
+.icon-new-PASSWORD {
+  color:#76b86e;
+}
+.icon-new-PASSWORD:before {
+  content: "\e936";
+}
+.icon-new-PAUSED {
+  color:#828b9a;
+}
+.icon-new-PAUSED:before {
+  content: "\e937";
+}
+.icon-new-REBUILD {
+  color:#76b86e;
+}
+.icon-new-REBUILD:before {
+  content: "\e938";
+}
+.icon-new-RESCUED {
+  color:#76b86e;
+}
+.icon-new-RESCUED:before {
+  content: "\e939";
+}
+.icon-new-SHELVED_OFFLOADED {
+  color:#828b9a;
+}
+.icon-new-SHELVED_OFFLOADED:before {
+  content: "\e93a";
+}
+.icon-new-SHUTOFF {
+  color:#ce666e;
+}
+.icon-new-SHUTOFF:before {
+  content: "\e93b";
+}
+.icon-new-STOPPED {
+  color:#ce666e;
+}
+.icon-new-STOPPED:before {
+  content: "\e93c";
+}
+.icon-new-SUSPENDED {
+  color:#76b86e;
+}
+.icon-new-SUSPENDED:before {
+  content: "\e93d";
+}
+.icon-new-RESIZE-BUILDING-UNKNOWN {
+  color:#fe9d13;
+}
+.icon-new-RESIZE-BUILDING-UNKNOWN:before {
+  content: "\e93e";
+}
+.icon-new-BUILD-REBOOT-HARD_REBOOT {
+  color:#828b9a;
+}
+.icon-new-BUILD-REBOOT-HARD_REBOOT:before {
+  content: "\e93f";
+}
+.icon-new-关闭:before {
+  content: "\e940";
+}
+.icon-new-眼睛:before {
+  content: "\e931";
+}
+.icon-new-logo:before {
+  color:#ffffff;
+  font-size:1.5em;
+  line-height:1.5!important;
+  content: "\e900";
+}
+.icon-new-logo2:before {
+  color:#ffffff;
+  font-size:5em;
+  margin-left: -5px;
+  line-height:0.3!important;
+  content: "\e901";
+}
+.icon-new-导入:before {
+  content: "\e944";
+}
+.icon-new-路由表:before {
+  content: "\e945";
+}
+.icon-new-接口n端口:before {
+  content: "\e946";
+}
+.icon-new-子网:before {
+  content: "\e947";
+}
+.icon-new-详情:before {
+  content: "\e948";
+}
+.icon-new-眼睛:before {
+  content: "\e931";
+}
+.icon-new-logo:before {
+  content: "\e900";
+}
+.icon-new-logo2:before {
+  content: "\e901";
+}
+.icon-new-toast提示:before {
+  content: "\e902";
+}
+.icon-new-安全监控:before {
+  content: "\e903";
+}
+.icon-new-部门:before {
+  content: "\e904";
+  margin-right:10px;
+
+}
+.icon-new-菜单-收缩:before {
+  content: "\e905";
+  color:#fff;
+  font-size:16px;
+}
+.icon-new-菜单-展开:before {
+  content: "\e906";
+  color:#fff;
+  font-size:16px;
+}
+.icon-new-成员:before {
+  content: "\e907";
+}
+.icon-new-详情:before {
+  content: "\e948";
+}
+.icon-new-磁盘信息:before {
+  content: "\e908";
+  color:#ffffff;
+}
+.icon-new-当前配置:before {
+  content: "\e909";
+}
+.icon-new-第一页:before {
+  content: "\e90a";
+}
+.icon-new-概览:before {
+  content: "\e90b";
+}
+.icon-new-高级设置:before {
+  content: "\e90c";
+}
+.icon-new-更多:before {
+  content: "\e90d";
+}
+.icon-new-更多网络:before {
+  content: "\e90e";
+}
+.icon-new-工单管理:before {
+  content: "\e90f";
+}
+.icon-new-关机:before {
+  content: "\e910";
+}
+.icon-new-基本信息:before {
+  content: "\e911";
+}
+.icon-new-监控:before {
+  content: "\e912";
+}
+.icon-new-键值对:before {
+  content: "\e913";
+}
+.icon-new-接受转让:before {
+  content: "\e914";
+}
+.icon-new-开机:before {
+  content: "\e915";
+}
+.icon-new-配额:before {
+  content: "\e916";
+}
+.icon-new-配置:before {
+  content: "\e917";
+}
+.icon-new-切换:before {
+  content: "\e918";
+}
+.icon-new-删除:before {
+  content: "\e919";
+}
+.icon-new-删减成员:before {
+  content: "\e91a";
+}
+.icon-new-上:before {
+  content: "\e91b";
+}
+.icon-new-上一页:before {
+  content: "\e91c";
+}
+.icon-new-设置规则:before {
+  content: "\e91d";
+}
+.icon-new-收起:before {
+  content: "\e91e";
+}
+.icon-new-收起2:before {
+  content: "\e91f";
+}
+.icon-new-数据中心:before {
+  content: "\e920";
+}
+.icon-new-刷新:before {
+  content: "\e921";
+}
+.icon-new-搜索:before {
+  content: "\e922";
+}
+.icon-new-提示{
+  margin-top:8px;
+}
+.icon-new-提示:before {
+  content: "\e923";
+}
+.icon-new-添加成员:before {
+  content: "\e924";
+}
+.icon-new-通知方式:before {
+  content: "\e925";
+}
+.icon-new-网络:before {
+  content: "\e926";
+  color: #a7abb2;
+}
+.icon-new-系统管理:before {
+  content: "\e927";
+}
+.icon-new-下:before {
+  content: "\e928";
+}
+.icon-new-下一页:before {
+  content: "\e929";
+}
+.icon-new-新建:before {
+  content: "\e92a";
+  color:#ffffff;
+}
+.icon-new-远程连接:before {
+  content: "\e92b";
+}
+.icon-new-云资源:before {
+  content: "\e92c";
+}
+.icon-new-展开:before {
+  content: "\e92d";
+  font-size:8px;
+}
+.icon-new-展开2:before {
+  content: "\e92e";
+}
+.icon-new-重启:before {
+  content: "\e92f";
+}
+.icon-new-最后一页:before {
+  content: "\e930";
+}
