@@ -106,9 +106,9 @@
                                     <!-- 私有IP -->
                                     <tr>
                                         <td>{{ $t('common.privateIP') }}：</td>
-                                        <td>{{ecsInst.ip ||'-'}}
-                                            <span v-show="ecsInst.ip">
-                                                <copy-text :bindText="ecsInst.ip"></copy-text>
+                                        <td>{{privateIP ||'-'}}
+                                            <span v-show="privateIP">
+                                                <copy-text :bindText="privateIP"></copy-text>
                                             </span>
                                         </td>
                                     </tr>

@@ -248,7 +248,13 @@ export default {
         },
         // 私有IP
         privateIP() {
-            return this.instanceNet && this.instanceNet.subnetName && this.instanceNet.subnetName.join(',');
+            let vpcNameStr = [];
+            for(let k in this.addresses) {
+                if (this.addresses[k][0]['OS-EXT-IPS:type'] === 'fixed') {
+                    vpcNameStr.push(this.addresses[k][0]['addr']);
+                }
+            }
+            return vpcNameStr.join(',');
         }
     }
 
