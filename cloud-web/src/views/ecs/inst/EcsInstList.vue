@@ -84,9 +84,9 @@
                         </ul>
                     </template>
                 </el-table-column>
-                <el-table-column prop="createTime" :label="getLabel('createTime')" min-width="70">
+                <el-table-column prop="createTime" :label="getLabel('createTime')" min-width="120">
                     <template slot-scope="scope">
-                        {{scope.row.created|date}}
+                        {{scope.row.created|date('YYYY-MM-DD HH:mm:ss')}}
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('common.tableHeaderOperateText')" key="op" width="260" class-name="option-column text-nowrap">
@@ -185,8 +185,6 @@
         <stop-inst-dialog ref="stopInstDialog" />
         <!-- 对话框 修改信息 -->
         <modify-info-dialog ref="ModifyInfoDialog" />
-        <!-- 对话框 远程登录 -->
-        <telnet-dialog ref="telnetDialog" />
         <!-- 对话框 编辑标签 -->
         <!-- <edit-label-dialog ref="editLabelDialog"/> -->
         <!-- 对话框 远程登录指导 -->
@@ -198,7 +196,7 @@
         <!-- 对话框 删除 -->
         <delete-inst-dialog ref="deleteInstDialog" />
         <!-- 对话框 创建自定义镜像 -->
-        <!-- <custom-image-dialog ref="CustomImageDialog"/> -->
+        <custom-image-dialog ref="CustomImageDialog"/>
         <!-- 对话框 更换系统磁盘 -->
         <!-- <rep-sys-disk-dialog ref="RepSysDiskDialog"/> -->
         <!-- 对话框 更换系统磁盘二级对话框 -->
@@ -216,7 +214,6 @@
         <bind-public-ip-dialog :opType="opType" ref="bindPublicIpDialog" />
         <!-- 对话框 绑定连接IP -->
         <bind-link-ip-dialog :opType="opType" ref="bindLinkIpDialog" />
-
         <!-- 手机验证弹框 -->
         <mobile-code-dialog ref="mobileCodeDialog" :code-type="CHECK"></mobile-code-dialog>
 
