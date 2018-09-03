@@ -87,17 +87,21 @@ export default {
     },    
     methods: {
         show() {
-            if (this.isVerify) {
-                let res = {
-                    code: '0000'
-                };
-                return Promise.resolve(res);
-            }
-            this.isShow = true;
-            return new Promise((resolve, reject) => {
-                this.reject = reject;
-                this.resolve = resolve;
-            });
+            let res = {
+                code: '0000'
+            };
+            return Promise.resolve(res);
+            // if (this.isVerify) {
+            //     let res = {
+            //         code: '0000'
+            //     };
+            //     return Promise.resolve(res);
+            // }
+            // this.isShow = true;
+            // return new Promise((resolve, reject) => {
+            //     this.reject = reject;
+            //     this.resolve = resolve;
+            // });
         },
         hide() {
             this.isShow = false;

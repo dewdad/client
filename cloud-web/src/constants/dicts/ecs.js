@@ -38,7 +38,7 @@ export const ECS_STATUS = [
     },
     {
         text: '创建中',
-        value: 'BUILD',
+        value: 'build',
         className: 'color-primary',
         type: 'progress'
     },
@@ -112,21 +112,21 @@ export const ECS_DROPDOWN = [
             },
             {
                 key: 16,
-                text: $t('ecs.inst.list.dropdownBtns.remoteConnGuide'),
-                activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT', 'HARD_REBOOT', 'REBOOT', 'SHUTDOWN', 'STARTUP'],
+                text: '创建自定义镜像',
+                activedStatus: ['SHUTOFF'],
                 tip: '',
-                handle: 'showGuide'
+                handle: 'createImage'
             }
         ]
     },
     // 密码/秘钥
-    {
-        text: '密码', //禅道4680bug单去掉秘钥
-        children: [
-            {key: 15, text: $t('ecs.inst.list.dropdownBtns.modifyRemoteLoginPassword'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'modifyVncpwd'},
-            {key: 20, text: $t('ecs.inst.list.dropdownBtns.resetPassword'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'resetPassword'}
-        ]
-    },
+    // {
+    //     text: '密码', //禅道4680bug单去掉秘钥
+    //     children: [
+    //         {key: 15, text: $t('ecs.inst.list.dropdownBtns.modifyRemoteLoginPassword'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'modifyVncpwd'},
+    //         {key: 20, text: $t('ecs.inst.list.dropdownBtns.resetPassword'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'resetPassword'}
+    //     ]
+    // },
     // 网络和安全
     {
         flag: true, //需要处理显示和隐藏按钮
@@ -134,9 +134,9 @@ export const ECS_DROPDOWN = [
         children: [
             {key: 9, text: $t('ecs.inst.list.dropdownBtns.securityGroupConfig'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'instSafeGroup', show: true},
             {key: 10, text: $t('ecs.inst.list.dropdownBtns.bindPublicIP'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindip', show: false},
-            {key: 11, text: $t('ecs.inst.list.dropdownBtns.unbindPublicIP'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false},
-            {key: 12, text: $t('ecs.inst.list.dropdownBtns.bindConnIp'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindconnectip', show: false},
-            {key: 13, text: $t('ecs.inst.list.dropdownBtns.unbindConnIp'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindconnectip', show: false}
+            {key: 11, text: $t('ecs.inst.list.dropdownBtns.unbindPublicIP'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false}
+            // {key: 12, text: $t('ecs.inst.list.dropdownBtns.bindConnIp'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindconnectip', show: false},
+            // {key: 13, text: $t('ecs.inst.list.dropdownBtns.unbindConnIp'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindconnectip', show: false}
         ]
     }
 ];

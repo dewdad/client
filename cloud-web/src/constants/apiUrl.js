@@ -69,10 +69,10 @@ export const API_ECS = {
         modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
-        actionInst: ECS_CTRL + '/servers/{instanceId}/action/{type}',
-        editInstInfo: ECS_CTRL + '/servers/{instanceId}',
-        deleteInst: ECS_CTRL + '/servers/{instanceId}',
-        getPortByEcsId: ECS_CTRL + '/servers/{ecsId}/port',
+        actionInst: '/compute/server/action/{instanceId}',
+        editInstInfo: '/compute/ecs/editEcs/{instanceId}',
+        deleteInst: '/compute/server/{instanceId}',
+        getPortByEcsId: 'compute/floatip/associateToPort/{ecsId}/{ipId}',
         getBindedPublicIpByEcsId: ECS_CTRL + '/servers/{ecsId}/float-ip',
         getAllPortList: ECS_CTRL + '/servers/ports',
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
@@ -86,7 +86,7 @@ export const API_ECS = {
     },
     vnc: {
         vncCheck: ECS_CTRL + '/vnc/{instanceId}/check',
-        vncGetUrl: ECS_CTRL + '/compute/ecs/getVNCConsole/{instanceId}',
+        vncGetUrl: '/compute/ecs/getVNCConsole/{instanceId}',
         vncModify: ECS_CTRL + '/vnc/modify'
     },
     disk: {
@@ -111,7 +111,7 @@ export const API_ECS = {
         deletePolicy: ECS_CTRL + '/policy/{policy_id}'
     },
     images: {
-        createImage: ECS_CTRL + '/images',
+        createImage: '/compute/ecs/createImage/{instanceId}',
         getImages: ECS_CTRL + '/images',
         imageGroups: ECS_CTRL + '/images/groups',
         updateImages: ECS_CTRL + '/images/{imageId}',
@@ -122,7 +122,7 @@ export const API_ECS = {
         bundlingIp: ECS_CTRL + '/floating/bundlingIp',
         getPortByInstanceId: ECS_CTRL + '/floating/getPortByInstanceId',
         llistFloatIpist: ECS_CTRL + '/floating/interface/list',
-        list: ECS_CTRL + '/floating/list',
+        list: '/compute/floatip/list',
         updateFloatingIp: ECS_CTRL + '/floating/{id}',
         unbundlingIp: ECS_CTRL + '/floating/unbundlingIp',
         deleteFloatIp: ECS_CTRL + '/floating/{id}',

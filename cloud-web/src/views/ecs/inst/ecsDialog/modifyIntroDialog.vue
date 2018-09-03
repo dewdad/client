@@ -105,15 +105,15 @@ export default {
                         res => {
                             this.loading = false;                    
                             let {name,remark} = this.ecsInst;
-                            this.resolve({name,remark});                    
-                            this.hide();
-                            this.$message.success($t('common.successOpt'));                  
-                        },
-                        err => {
-                            this.loading = false;
-                            $log(err);
+                            if (res.code === '0000') {
+                                this.resolve({code: res.code, name,remark}); 
+                                this.hide();
+                            }
                         }
-                    );
+                    ).catch(err => {
+                        this.loading = false;
+                        $log(err);
+                    });
                 }
             });
             
