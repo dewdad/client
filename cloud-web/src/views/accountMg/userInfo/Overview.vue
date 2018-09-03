@@ -172,7 +172,7 @@ export default {
         // 获取基本资料详情
         getUserInfoDetail() {
             this.fullscreenLoading = true;
-            getUserInfoDetail({uid: this.userInfo.uid}).then(res => {
+            getUserInfoDetail({uid: this.userInfo.userId}).then(res => {
                 this.PeopleUserInfo = res.result || {};
                 // 初始化传递省市区参数
                 this.$set(this.areaInfo, 'province', this.PeopleUserInfo.province);
