@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-03 19:31:51
+ * @Last Modified time: 2018-09-03 19:41:50
  * ecs模块 列表页面
  */
 
@@ -140,7 +140,7 @@ export async function reloadSystem({instanceId}) {
 //根据实例id查询端口（端口和内网IP是一对一的关系，可以理解是内网IP）
 export async function getPortByEcsId(ecsId, ipId) {
     let url = replaceParamVal(API_ECS.inst.getPortByEcsId, [ecsId, ipId]);
-    let res = await http.get(url, {});
+    let res = await http.put(url, {});
     return res && res.data;
 }
 
