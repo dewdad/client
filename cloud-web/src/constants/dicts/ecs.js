@@ -20,7 +20,7 @@ export const ECS_STATUS = [
     },
     {
         text: '运行中',
-        value: 'ACTIVE',
+        value: 'active',
         className: 'color-success',
         icon: 'zticon-running_people'
     },

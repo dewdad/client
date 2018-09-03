@@ -93,7 +93,7 @@ const http = axios.create({
     // 请求方法同上
     method: 'post', // default
     // 表明是否有跨域请求
-    withCredentials: false,
+    withCredentials: true,
     responseType: 'json',
     headers: {
         // 'X-People-Token': store.state.token || '6dca163cd317fc2408669dfdb8a26be85e3f9e62cb21def7f94b6b8af08011126ca0bc1b68c54d153e28accf412edfd8'

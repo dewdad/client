@@ -23,7 +23,7 @@
                         </el-menu-item>
                         <!-- 头像 -->
                         <el-menu-item index="app.accountMg" key="app.accountMg" class="headImg">
-                            <avatar-show class="inline-block" :boxSize="30" :avatarUrl="getAvatarUrl"></avatar-show>                            
+                            <avatar-show class="inline-block" :boxSize="30"></avatar-show>
                             <div @click.stop="preventBubble" class="pop-box">
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
@@ -57,13 +57,11 @@ export default {
     name: 'AppHeader',
     data() {
         return {
-            input: '',
+            input: ''
         };
     },
-    created() {
-    },
-    computed: {
-    },
+    created() {},
+    computed: {},
     methods: {
         handleSelect(index, path) {
             this.$router.push({name: index});
@@ -80,7 +78,7 @@ export default {
 </script>
 <style  lang="scss">
 .pop-box {
-    &__popover{
+    &__popover {
         background-color: #222a3f;
         height: 270px;
         width: 188px;
@@ -88,81 +86,80 @@ export default {
         right: 0;
         box-sizing: border-box;
         display: none;
-        transition: all .5s;
+        transition: all 0.5s;
         // opacity: 0;
-        box-shadow: 0px 1px 3px 0px 
-        rgba(0, 0, 0, 0.1);
-        &__popHeader{
+        box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+        &__popHeader {
             height: 88px;
             padding: 20px 30px;
             color: #fff !important;
-            .bind-state{
+            .bind-state {
                 display: flex;
                 margin-top: 8px;
-                &__item{
+                &__item {
                     margin-right: 15px;
                     flex: 1;
-                    &:last-child{
-                        margin:0;
+                    &:last-child {
+                        margin: 0;
                     }
                 }
             }
         }
-        &__popMain{
+        &__popMain {
             padding: 10px 0;
-            border-top: 1px solid rgba(238,238,238,.2);
-            border-bottom: 1px solid rgba(238,238,238,.2);
+            border-top: 1px solid rgba(238, 238, 238, 0.2);
+            border-bottom: 1px solid rgba(238, 238, 238, 0.2);
             color: #fff;
-            p{
+            p {
                 padding-left: 30px;
                 line-height: 32px;
                 height: 32px;
                 margin: 0;
             }
-            p:hover{
+            p:hover {
                 background-color: #19233c;
                 color: #0d7ef2;
             }
         }
-        &__popBottom{
-            .el-button{
+        &__popBottom {
+            .el-button {
                 background-color: #222a3f;
                 border: 0;
                 color: #fff;
             }
         }
-        &__popBottom:hover{
-            .el-button{
+        &__popBottom:hover {
+            .el-button {
                 color: #0d7ef2;
             }
         }
     }
 }
-.headImg:hover .pop-box__popover{
+.headImg:hover .pop-box__popover {
     display: block;
     // opacity: 1;
 }
-.color-phone{
+.color-phone {
     color: #abd037 !important;
 }
-.color-error{
+.color-error {
     color: #dcdcdc !important;
 }
-.color-white{
-    color: #FFF !important;
+.color-white {
+    color: #fff !important;
 }
 .app-header-popover {
     padding: 0 !important;
 }
-.h15{
+.h15 {
     height: 15px;
 }
-.tooltip-box{
+.tooltip-box {
     display: inline-block;
     position: relative;
-    &__tip{
+    &__tip {
         position: absolute;
-        background-color: #FFF;
+        background-color: #fff;
         left: -42px;
         display: inline-block;
         bottom: -35px;
@@ -170,20 +167,20 @@ export default {
         text-align: center;
         color: #333;
         opacity: 0;
-        transition: all .5s;
+        transition: all 0.5s;
         padding: 5px 8px;
         border: 1px solid #c3c5c6;
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.34);
-        &__arrow{
+        &__arrow {
             display: inline-block;
             border: 6px solid transparent;
             border-bottom-color: #fff;
             position: absolute;
             top: -12px;
-            left:48px;
+            left: 48px;
         }
     }
-    .arrow_tip{
+    .arrow_tip {
         min-width: 80px;
         left: -42px;
     }
@@ -192,7 +189,7 @@ export default {
     //     opacity: 1;
     // }
 }
-.tooltip-box:hover .tooltip-box__tip{
+.tooltip-box:hover .tooltip-box__tip {
     opacity: 1;
 }
 </style>
