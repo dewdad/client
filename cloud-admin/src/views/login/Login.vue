@@ -184,6 +184,9 @@ export default {
                     this.errorMsg = 'dsds';
                 });
         }
+    },
+    mounted(){
+
     }
 };
 </script>

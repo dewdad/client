@@ -1,6 +1,6 @@
-import http from '../utils/http';
-import { PlatForm} from '../constants/apiUrl';
-import { replaceParamVal } from '../utils/utils';
+import http from '../../utils/http';
+import { PlatForm} from '../../constants/apiUrl';
+import { replaceParamVal } from '../../utils/utils';
 
 /**
  *查询平台列表
@@ -103,6 +103,16 @@ export async function roleTypeList(data) {
 export async function searchBindAuth(data) {
     console.log('data',data);
     let url=PlatForm.searchBindAuth+'/'+data;
+    let response = await http.get(url);
+    return response.data;
+}
+/**
+ *获取平台列表下的角色
+ * @param {*}
+ */
+export async function getPlatformList(data) {
+    console.log('data',data);
+    let url=PlatForm.getPlatformList+'/'+data;
     let response = await http.get(url);
     return response.data;
 }

@@ -105,6 +105,7 @@
     </div>
 </template>
 <script>
+import {getDomains} from '@/service/login';
 import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import {getDeptList} from '@/service/overview.js';
@@ -141,6 +142,34 @@ export default {
         }),
     },
     methods:{
+        // //获取可用域并保存
+        // getZoons(){
+        //     getZoons().then(ret => {
+        //         $log('zoons', ret);
+        //         if(ret && ret.data){
+        //             // 记录可用域信息
+        //             this.$store.commit('user/SET_ZOONS', ret.data.data);
+        //         }
+        //
+        //     });
+        // },
+        //获取部门列表并保存
+        getDomains(){
+            let param = {
+                pageIndex:1,
+                limit:999,
+                totalItems:0,
+                offset:1
+            };
+            getDomains(param).then(ret => {
+                $log('getDomains', ret);
+                if(ret && ret.data){
+                    // 记录部门信息
+                    this.$store.commit('user/SET_DEPTS', ret.data.data);
+                }
+
+            });
+        },
         calcChart(documentId,data1,data2,name) {
             let thisdom = document.getElementById(documentId);
             let myChart = this.$echarts.init(thisdom);
@@ -335,6 +364,8 @@ export default {
     },
     mounted() {
         this.queryDeptlist();
+        // this.getZoons();
+        this.getDomains();
     }
 };
 </script>
