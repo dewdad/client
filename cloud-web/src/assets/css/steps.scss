@@ -1,0 +1,85 @@
+.el-steps {
+    width: 752px;
+    // FIX 修复底部文字高度不对
+    margin: 0 auto -25px;
+    .el-step__line-inner {
+        transition: 0.3s ease-out;
+        border-width: 1px !important;
+        border-color: $--color-primary;
+    }
+    .el-step__head.is-finish {
+        color: $--color-primary;
+        border-color: $--color-primary;
+        .el-step__icon.is-text {
+            background-color: $--color-primary;
+        }
+        .el-step__icon-inner {
+            color: #fff;
+        }
+        .el-step__line {
+            // background-color: $--color-primary;
+            .el-step__line-inner {
+                width: 100% !important;
+            }
+        }
+        // 无效样式
+        // .el-step__line {
+        //     background-color: #0d7ef2;
+        // }
+        .el-step__icon.is-text {
+            border-color: #0d7ef2;
+        }
+    }
+    .el-step__head.is-success {
+        color: $--color-primary;
+        border-color: $--color-primary;
+        .el-step__icon.is-text {
+            background-color: $--color-primary;
+        }
+        .el-step__icon-inner {
+            color: #fff;
+        }
+        .el-step__line {
+            // background-color: $--color-primary;
+            .el-step__line-inner {
+                width: 100% !important;
+            }
+        }
+    }
+    .el-step__head.is-process {
+        .el-step__icon.is-text {
+            border-color: $--color-primary;
+        }
+        .el-step__icon-inner {
+            color: $--color-primary;
+        }
+    }
+    .el-step__title {
+        font-size: 14px;
+        margin-top: 7px;
+
+        &.is-finish,
+        &.is-success {
+            color: $--color-primary;
+        }
+    }
+    .el-step__title.is-process {
+        color: $--color-primary;
+        font-weight: normal;
+    }
+
+    .el-step:last-child {
+        .el-step__head.is-process {
+            .el-step__icon.is-text {
+                background-color: $--color-primary;
+            }
+            .el-step__icon-inner {
+                color: #fff;
+            }
+        }
+    }
+
+    .el-step__main {
+        margin-top: -13px;
+    }
+}

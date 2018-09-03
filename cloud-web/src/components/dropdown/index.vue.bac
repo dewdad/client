@@ -1,0 +1,55 @@
+<template>
+<div class="zt-dropdown">
+    <div @click.capture.stop="clickHandler">
+        <slot></slot>
+    </div>
+    <el-cascader ref="cascader"
+        @change="select"
+        :options="options"
+        :show-all-levels="false"
+        popper-class="zt-dropdown-popper"
+        expand-trigger="hover"
+    ></el-cascader>
+</div>
+</template>
+
+<script>
+export default {
+    props: {
+        options: Array,
+        data: {}
+    },
+    computed: {
+        cascader() {
+            return this.$refs.cascader;
+        }
+    },
+    methods: {
+        clickHandler() {
+            this.cascader.handleClick();
+        },
+        select(command) {
+            if (command) {
+                let len = command.length;
+                this.$emit('command', {
+                    type: command[len - 1],
+                    data: this.data
+                });
+            }
+        }
+    }
+};
+</script>
+
+<style lang="scss">
+.zt-dropdown .el-cascader{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+}
+.zt-dropdown-popper {
+    display: flex;
+    flex-direction: row-reverse;
+}
+</style>

@@ -1,0 +1,918 @@
+@font-face {
+    font-family: 'icomoon123';
+    src:  url('../fonts/ecs/icomoon123.eot?vbx363');
+    src:  url('../fonts/ecs/icomoon123.eot?vbx363#iefix') format('embedded-opentype'),
+    url('../fonts/ecs/icomoon123.ttf?vbx363') format('truetype'),
+    url('../fonts/ecs/icomoon123.woff?vbx363') format('woff'),
+    url('../fonts/ecs/icomoon123.svg?vbx363#icomoon123') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  [class^="ecs-"], [class*=" ecs-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon123' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: middle;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .ecs-menu_rds_people:before {
+    content: "\e901";
+  }
+  .ecs-menu_redis_people:before {
+    content: "\e902";
+  }
+  .ecs-menu_link-icon_people:before {
+    content: "\e900";
+  }
+  .ecs-centos .path1:before {
+    content: "\e903";
+    color: rgb(173, 212, 59);
+  }
+  .ecs-centos .path2:before {
+    content: "\e904";
+    margin-left: -1em;
+    color: rgb(167, 58, 138);
+  }
+  .ecs-centos .path3:before {
+    content: "\e905";
+    margin-left: -1em;
+    color: rgb(245, 181, 46);
+  }
+  .ecs-centos .path4:before {
+    content: "\e906";
+    margin-left: -1em;
+    color: rgb(52, 55, 139);
+  }
+  .ecs-centos .path5:before {
+    content: "\e907";
+    margin-left: -1em;
+    color: rgb(173, 212, 59);
+  }
+  .ecs-centos .path6:before {
+    content: "\e908";
+    margin-left: -1em;
+    color: rgb(52, 55, 139);
+  }
+  .ecs-centos .path7:before {
+    content: "\e909";
+    margin-left: -1em;
+    color: rgb(167, 58, 138);
+  }
+  .ecs-centos .path8:before {
+    content: "\e90a";
+    margin-left: -1em;
+    color: rgb(245, 181, 46);
+  }
+  .ecs-centos .path9:before {
+    content: "\e90b";
+    margin-left: -1em;
+    color: rgb(52, 55, 139);
+  }
+  .ecs-centos .path10:before {
+    content: "\e90c";
+    margin-left: -1em;
+    color: rgb(245, 181, 46);
+  }
+  .ecs-centos .path11:before {
+    content: "\e90d";
+    margin-left: -1em;
+    color: rgb(173, 212, 59);
+  }
+  .ecs-centos .path12:before {
+    content: "\e90e";
+    margin-left: -1em;
+    color: rgb(52, 55, 139);
+  }
+  .ecs-centos .path13:before {
+    content: "\e90f";
+    margin-left: -1em;
+    color: rgb(167, 58, 138);
+  }
+  .ecs-centos .path14:before {
+    content: "\e910";
+    margin-left: -1em;
+    color: rgb(245, 181, 46);
+  }
+  .ecs-centos .path15:before {
+    content: "\e911";
+    margin-left: -1em;
+    color: rgb(173, 212, 59);
+  }
+  .ecs-freeBSD-os:before {
+    content: "\e912";
+    color: #008cdb;
+  }
+  .ecs-redhat:before {
+    content: "\e913";
+    color: #008cdb;
+  }
+  .ecs-ubuntu:before {
+    content: "\e914";
+    color: #e0620d;
+  }
+  .ecs-windows .path1:before {
+    content: "\e915";
+    color: rgb(144, 195, 0);
+  }
+  .ecs-windows .path2:before {
+    content: "\e916";
+    margin-left: -1em;
+    color: rgb(248, 103, 44);
+  }
+  .ecs-windows .path3:before {
+    content: "\e917";
+    margin-left: -1em;
+    color: rgb(255, 196, 0);
+  }
+  .ecs-windows .path4:before {
+    content: "\e918";
+    margin-left: -1em;
+    color: rgb(0, 180, 242);
+  }
+  .ecs-backups_people:before {
+    content: "\e942";
+  }
+  .ecs-case-distribution_people:before {
+    content: "\e943";
+  }
+  .ecs-change-configuration_people:before {
+    content: "\e944";
+  }
+  .ecs-connection-information_people:before {
+    content: "\e945";
+  }
+  .ecs-ecport_people:before {
+    content: "\e946";
+  }
+  .ecs-edit2_people:before {
+    content: "\e947";
+  }
+  .ecs-eliminate_people:before {
+    content: "\e948";
+  }
+  .ecs-grade_people:before {
+    content: "\e949";
+  }
+  .ecs-inspect_people:before {
+    content: "\e94a";
+  }
+  .ecs-label_people:before {
+    content: "\e94b";
+  }
+  .ecs-offline_people:before {
+    content: "\e94c";
+  }
+  .ecs-online_people:before {
+    content: "\e94d";
+  }
+  .ecs-operational-guidelines_people:before {
+    content: "\e94e";
+  }
+  .ecs-rds_creat_account-number_people:before {
+    content: "\e94f";
+  }
+  .ecs-rds_creat_backups_people:before {
+    content: "\e950";
+  }
+  .ecs-rds_creat_label_people:before {
+    content: "\e951";
+  }
+  .ecs-release_people:before {
+    content: "\e952";
+  }
+  .ecs-reset-password_people:before {
+    content: "\e953";
+  }
+  .ecs-screen_people:before {
+    content: "\e954";
+  }
+  .ecs-security_abnormal-login_people:before {
+    content: "\e955";
+  }
+  .ecs-security_back-door-of-the-website_people:before {
+    content: "\e956";
+  }
+  .ecs-security_baseline_people:before {
+    content: "\e957";
+  }
+  .ecs-security_brute-force_people:before {
+    content: "\e958";
+  }
+  .ecs-security_bug_people:before {
+    content: "\e959";
+  }
+  .ecs-security_host-exception_people:before {
+    content: "\e95a";
+  }
+  .ecs-security_port-scan_people:before {
+    content: "\e95b";
+  }
+  .ecs-security_weak-password_people:before {
+    content: "\e95c";
+  }
+  .ecs-usage-statistics_people:before {
+    content: "\e95d";
+  }
+  .ecs-alarm_state_alarm_people:before {
+    content: "\e919";
+  }
+  .ecs-alarm_state_insufficient-data_people:before {
+    content: "\e91a";
+  }
+  .ecs-ecs_bandwidth_people:before {
+    content: "\e91b";
+    font-size: 16px;
+  }
+  .ecs-ecs_cancel-the-label_people:before {
+    content: "\e91c";
+  }
+  .ecs-ecs_cloud-disk_people:before {
+    content: "\e91d";
+  }
+  .ecs-ecs_cloud-monitoring_people:before {
+    content: "\e91e";
+    line-height: 32px;
+  
+  }
+  .ecs-ecs_configuration-information_people:before {
+    content: "\e91f";
+  }
+  .ecs-ecs_dashboard_display_people:before {
+    content: "\e920";
+    color: #454a51;
+  }
+  .ecs-ecs_dashboard_example_people:before {
+    content: "\e921";
+  }
+  .ecs-ecs_dashboard_hide_people:before {
+    content: "\e922";
+    color: #454a51;
+  }
+  .ecs-ecs_dashboard_server_abnormal_icon_people:before {
+    content: "\e923";
+  }
+  .ecs-ecs_dashboard_server_abnormal_people:before {
+    content: "\e924";
+  }
+  .ecs-ecs_dashboard_server_normal_icon_people:before {
+    content: "\e925";
+  }
+  .ecs-ecs_dashboard_server_normal_people:before {
+    content: "\e926";
+  }
+  .ecs-ecs_dashboard_snapshot_people:before {
+    content: "\e927";
+  }
+  .ecs-ecs_edit_people:before {
+    content: "\e928";
+  }
+  .ecs-ecs_essential-information_people:before {
+    content: "\e929";
+  }
+  .ecs-ecs_example_people:before {
+    content: "\e92a";
+    font-size: 16px;
+  }
+  .ecs-ecs_host-monitoring_people:before {
+    content: "\e92b";
+  }
+  .ecs-ecs_image_people:before {
+    content: "\e92c";
+    font-size: 16px;
+  }
+  .ecs-ecs_import_people:before {
+    content: "\e92d";
+  }
+  .ecs-ecs_monitoring-information_people:before {
+    content: "\e92e";
+  }
+  .ecs-ecs_network_people:before {
+    content: "\e92f";
+    font-size: 16px;
+  }
+  .ecs-ecs_number_people:before {
+    content: "\e930";
+  }
+  .ecs-ecs_off_people:before {
+    content: "\e931";
+  }
+  .ecs-ecs_pay-information_people:before {
+    content: "\e932";
+  }
+  .ecs-ecs_reelection-security-group_people:before {
+    content: "\e933";
+  }
+  .ecs-ecs_region_people:before {
+    content: "\e934";
+    font-size: 16px;
+  }
+  .ecs-ecs_restart_people:before {
+    content: "\e935";
+  }
+  .ecs-ecs_save-label_people:before {
+    content: "\e936";
+  }
+  .ecs-ecs_security-group_people:before {
+    content: "\e937";
+    font-size: 16px;
+  }
+  .ecs-ecs_set-up_people:before {
+    content: "\e938";
+  }
+  .ecs-ecs_settings_people:before {
+    content: "\e939";
+  }
+  .ecs-ecs_state_locked_people:before {
+    content: "\e93a";
+  }
+  .ecs-ecs_state_release_people:before {
+    content: "\e93b";
+  }
+  .ecs-ecs_state_running_people:before {
+    content: "\e93c";
+  }
+  .ecs-ecs_state_start-upncessation_people:before {
+    content: "\e93d";
+  }
+  .ecs-ecs_state_stop_people:before {
+    content: "\e93e";
+  }
+  .ecs-ecs_state_stop_people_deletefile:before{
+    content: "\e93e";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    color: #EB4C4C;
+    font-size: 15px;
+  }
+  .ecs-ecs_storage_people:before {
+    content: "\e93f";
+    font-size: 16px;
+  }
+  .ecs-slb_access-control_people:before {
+    content: "\e940";
+  }
+  .ecs-slb_health-examination_people:before {
+    content: "\e941";
+  }
+  .ecs-open_people:before {
+    content: "\e961";
+  }
+  .ecs-pack-up_people:before {
+    content: "\e962";
+  }
+  .ecs-menu_people:before {
+    content: "\e963";
+  }
+  .ecs-menu2_people:before {
+    content: "\e964";
+  }
+  .ecs-data-migration_add_people:before {
+    content: "\e965";
+  }
+  .ecs-data-migration_reduce_people:before {
+    content: "\e966";
+  }
+  .ecs-ecs_billing-method_people:before {
+    content: "\e967";
+    font-size: 16px;
+  }
+  .ecs-head_console_people:before {
+    content: "\e968";
+  }
+  .ecs-head_cost_people:before {
+    content: "\e969";
+  }
+  .ecs-head_file_people:before {
+    content: "\e96a";
+  }
+  .ecs-head_record_people:before {
+    content: "\e96b";
+  }
+  .ecs-head_work-order_people:before {
+    content: "\e96c";
+  }
+  .ecs-menu_rubber-sheeting_people:before {
+    content: "\e96d";
+  
+  }
+  .ecs-overview_operation-log_people:before {
+    content: "\e96e";
+  }
+  .ecs-rds_data-migration_people:before {
+    content: "\e96f";
+  }
+  .ecs-record_input_people:before {
+    content: "\e970";
+  }
+  .ecs-record_ipc_people:before {
+    content: "\e971";
+  }
+  .ecs-rubber-sheeting_create_people:before {
+    content: "\e972";
+  }
+  .ecs-security-setting_certified_people:before {
+    content: "\e973";
+  }
+  .ecs-security-setting_phone_people:before {
+    content: "\e974";
+  }
+  .ecs-security-setting_seal_people:before {
+    content: "\e975";
+  }
+  .ecs-security-setting_uncertified_people:before {
+    content: "\e976";
+  }
+  .ecs-step_current-location_people:before {
+    content: "\e977";
+  }
+  .ecs-step_done_people:before {
+    content: "\e978";
+  }
+  .ecs-step_normal_people:before {
+    content: "\e979";
+  }
+  .ecs-work-order_attachment_people:before {
+    content: "\e97a";
+  }
+  .ecs-work-order_communication-record_people:before {
+    content: "\e97b";
+  }
+  .ecs-work-order_submit_people:before {
+    content: "\e97c";
+  }
+  .ecs-start_people:before {
+    content: "\e97d";
+  }
+  .ecs-offline_people2:before {
+    content: "\e97e";
+  }
+  .ecs-pause_people:before {
+    content: "\e97f";
+  }
+
+  @font-face {
+    font-family: 'icomoon1';
+    src:  url('../fonts/font/icomoon.eot?tsjk2h');
+    src:  url('../fonts/font/icomoon.eot?tsjk2h#iefix') format('embedded-opentype'),
+    url('../fonts/font/icomoon.ttf?tsjk2h') format('truetype'),
+    url('../fonts/font/icomoon.woff?tsjk2h') format('woff'),
+    url('../fonts/font/icomoon.svg?tsjk2h#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  [class^="icon1-"], [class*=" icon1-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoonfile' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: middle;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon1-pdf_people:before {
+    content: "\e81a";
+    color: #4786d1;
+  }
+  .icon1-rar_people:before {
+    content: "\e81b";
+    color: #4786d1;
+  }
+  .icon1-zip_people:before {
+    content: "\e81d";
+    color: #4786d1;
+  }
+  .icon1-bmp:before {
+    content: "\e81e";
+    color: #4786d1;
+  }
+  .icon1-txt_people:before {
+    content: "\e81f";
+    color: #4786d1;
+  }
+  .icon1-doc_people:before {
+    content: "\e81c";
+    color: #4786d1;
+  }
+  .icon1-conf_people:before {
+    content: "\e80a";
+    color: #4786d1;
+  }
+  .icon1-xlsx_people:before {
+    content: "\e80b";
+    color: #4786d1;
+  }
+  .icon1-eml_people:before {
+    content: "\e80c";
+    color: #4786d1;
+  }
+  .icon1-ini_people:before {
+    content: "\e80d";
+    color: #4786d1;
+  }
+  .icon1-docx_people:before {
+    content: "\e80e";
+    color: #4786d1;
+  }
+  .icon1-bmp_people:before {
+    content: "\e85a";
+    color: #4786d1;
+  }
+  .icon1-dashboard_icon03a_people:before {
+    content: "\e809";
+    color: #4B7DE1;
+    font-size:35px;
+  }
+  .icon1-dashboard_icon02a_people:before {
+    content: "\e805";
+    color: #4B7DE1;
+    font-size:35px;
+  }
+  .icon1-dashboard_icon04a_people:before {
+    content: "\e804";
+    color: #4B7DE1;
+    font-size:35px;
+  }
+  .el-icon-info{
+    color:$--color-warning
+}
+  .icon1-dashboard_icon01a_people:before {
+    content: "\e803";
+    color: #4B7DE1;
+    font-size:35px;
+  }
+  .icon1-suse_people:before {
+    content: "\e801";
+  }
+  .icon1-coreos_people:before {
+    content: "\e802";
+  }
+  .icon1-debian_people:before {
+    content: "\e800";
+  }
+  .el-icon-success {
+    color: #abd037;
+    width: 18px;
+    height: 18px;
+}
+  
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../fonts/icomoon.eot?tsjk2h');
+    src:  url('../fonts/icomoon.eot?tsjk2h#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?tsjk2h') format('truetype'),
+    url('../fonts/icomoon.woff?tsjk2h') format('woff'),
+    url('../fonts/icomoon.svg?tsjk2h#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  [class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  vertical-align: middle;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-creat_people:before {
+    content: "\e900";
+  }
+  .icon-dashboard_circle_people:before {
+    content: "\e901";
+  }
+  .icon-dashboard_go_people:before {
+    content: "\e902";
+  }
+  .icon-dashboard_icon1_people:before {
+    content: "\e903";
+   // color:#9E9DF0;
+    top: 35%;
+    left: 35%;
+    font-size: 33px;
+    position: absolute;
+  }
+  .icon-dashboard_icon2_people:before {
+    content: "\e904";
+     top: 35%;
+    left: 35%;
+   // color:#65C2D8;
+    font-size: 33px;
+    position: absolute;
+  }
+  .icon-dashboard_icon3_people:before {
+    content: "\e905";
+    font-size: 35px;
+    color:#DDE3EC;
+  }
+  .icon-dashboard_icon3a_people:before {
+    content: "\e905";
+    font-size: 35px;
+    color:#4B7DE1;
+  }
+  .icon-dashboard_icon4_people:before {
+    content: "\e906";
+    font-size: 35px;
+    color:#DDE3EC;
+  }
+  .icon-dashboard_icon4a_people:before {
+    content: "\e906";
+    font-size: 35px;
+    color:#4B7DE1;
+  }
+  .icon-dashboard_icon5_people:before {
+    content: "\e907";
+    font-size: 35px;
+    color:#DDE3EC;
+  }
+  .icon-dashboard_icon5a_people:before {
+    content: "\e907";
+    font-size: 35px;
+    color:#4267B2;
+  }
+  .icon-date_people:before {
+    content: "\e908";
+    color: #454a51;
+  }
+  .icon-edit_people:before {
+    content: "\e909";
+    //color: #484d54;
+  }
+  .icon-empty_people:before {
+    content: "\e90a";
+    color: #484d54;
+  }
+  .icon-id_people:before {
+    content: "\e90b";
+  }
+  .icon-inform_people:before {
+    content: "\e90c";
+  }
+  .icon-message_people:before {
+    content: "\e90d";
+  }
+  .icon-notice3_people:before {
+    content: "\e90e";
+    //color: #A0CF5B;
+  }
+  .icon-oss_people:before {
+    content: "\e90f";
+  }
+  .icon-phone_people:before {
+    content: "\e910";
+    color: #80adff;
+  }
+  .icon-refresh_people:before {
+    content: "\e911";
+    //color: #454a51;
+  }
+  .icon-restart_people:before {
+    content: "\e912";
+  }
+  .icon-sort_people:before {
+    content: "\e913";
+  }
+  .icon-upload_people1:before {
+    content: "\e914";
+    margin-right: 8px;
+  }
+  //.icon-upload_people1:after {
+  //  content: "(支持多选)";
+  //  color: #999;
+  //  margin-left: 8px;
+  //}
+  .icon-upload_people:before {
+    content: "\e914";
+    //color: #454a51;
+  }
+  .icon-user_id_people:before {
+    content: "\e915";
+    font-size: 18px;
+    //color: #666;
+  }
+  .icon-user_profile_people:before {
+    content: "\e916";
+    font-size: 18px;
+    //color: #666;
+  }
+  .icon-user_profile_people1:before {
+    content: "\e916";
+    font-size: 14px;
+  }
+  .icon-user_setting_people:before {
+    content: "\e917";
+    font-size: 18px;
+   // color: #666;
+  }
+  .icon-arrow1_people:before {
+    content: "\e918";
+  }
+  .icon-password_people:before {
+    content: "\e919";
+  }
+  .icon-user_people:before {
+    content: "\e91a";
+  }
+  .icon-windows_people:before {
+    content: "\e91b";
+  }
+  .icon-test_people:before {
+    content: "\e91c";
+  }
+  .icon-redhat_people:before {
+    content: "\e91d";
+  }
+  .icon-freebsd_people:before {
+    content: "\e91e";
+  }
+  .icon-centos_people:before {
+    content: "\e91f";
+  }
+  .icon-ubuntu_people:before {
+    content: "\e920";
+  }
+  .icon-quit_people:before {
+    content: "\e921";
+  }
+  .icon-icon1_people:before {
+    content: "\e922";
+  }
+  .icon-icon2_people:before {
+    content: "\e923";
+  }
+  .icon-notice_people:before {
+    content: "\e924";
+  }
+  .icon-error_people:before {
+    content: "\e925";
+  }
+  .icon-fail_people:before {
+    content: "\e926";
+    color: #f75452;
+  }
+  .icon-success_people:before {
+    content: "\e927";
+    color: #abd037;
+  }
+  .icon-success1_people:before {
+    content: "\e927";
+  }
+  .icon-copysuccess_people:before {
+    content: "\e927";
+    color: #409B35;
+  }
+  .icon-setting2_people:before {
+    content: "\e928";
+    color: #4267b2;
+  }
+  .icon-check_people:before {
+    content: "\e929";
+    color: #4267b2;
+  }
+  .icon-close_people:before {
+    content: "\e92a";
+  }
+  .icon-setting_people:before {
+    content: "\e92b";
+  }
+  .icon-quantity_people:before {
+    content: "\e92c";
+  }
+  .icon-login_people:before {
+    content: "\e92d";
+  }
+  .icon-delete_people:before {
+    content: "\e92e";
+  }
+  
+  .icon-notice2_people:before {
+    content: "\e92f";
+  }
+  .icon-network_people:before {
+    content: "\e930";
+  }
+  .icon-information_people:before {
+    content: "\e931";
+  }
+  .icon-back_people:before {
+    content: "\e932";
+   // color: #d1d5de;
+  }
+  .icon-selected_people:before {
+    content: "\e933";
+  }
+  .icon-more_people:before {
+    content: "\e934";
+  }
+  .icon-arrow6_people:before {
+    content: "\e935";
+    //color:#666;
+    font-size: 12px;
+  }
+  .icon-arrow5_people:before {
+    content: "\e936";
+  }
+  .icon-arrow4_people:before {
+    content: "\e937";
+  }
+  .icon-arrow3_people:before {
+    content: "\e938";
+  }
+  .icon-add_people:before {
+    content: "\e939";
+  }
+  .icon-search_people:before {
+    content: "\e93a";
+  }
+  .icon-arrow2_people:before {
+    content: "\e93b";
+  }
+  .icon-dot_people:before {
+    content: "\e93c";
+  }
+  
+  .icon-arrow_people:before {
+    content: "\e93d";
+  }
+  .icon-logo_people:before {
+    content: "\e93e";
+  }
+  .icon-menu2_people:before {
+    content: "\e93f";
+  }
+  .icon-menu1_people:before {
+    content: "\e940";
+  }
+  .icon-ecs_people:before {
+    content: "\e941";
+  }
+  .icon-account-number_people:before {
+    content: "\e942";
+  }
+  .icon-mail_people:before {
+    content: "\e943";
+  }
+  .icon-pin_people:before {
+    content: "\e944";
+    color: #f08f1c;
+  }
+  .icon-error-tip:before{
+    content: "\e925";
+    margin-right: 5px;
+  }
+  .icon-download_people:before{
+    content: "\e946";
+  }
+  .icon-security_people:before {
+    content: "\e947";
+  
+  }
+  .icon-vpc_people:before {
+    content: "\e948";
+  
+  }
+  .icon-ip_people:before {
+    content: "\e949";
+  
+  }
+  .icon-slb_people:before {
+    content: "\e94a";
+  
+  }
+  .icon-monitor_people:before {
+    content: "\e94b";
+   // color: #fff;
+  }
+  .icon-setting3_people:before {
+    content: "\e94c";
+  }
+  .icon-binding_people:before {
+    content: "\e94d";
+    color: #fff;
+  }
+  .icon-notice2_people:hover
+  {
+    color:#4267b2;
+  }
+  
+  

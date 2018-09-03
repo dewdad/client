@@ -1,0 +1,176 @@
+.auth {
+    padding-top: 50px;
+    .panal-body {
+        margin: 0 auto;
+        .auth-box {
+            border: 1px solid #eee;
+            padding: 20px 20px 0 20px;
+            height: 102px;
+            font-size: 12px;
+            margin: 20px 0;
+            .auth-box-title {
+                font-size: 14px;
+                color: black;
+                padding-bottom: 5px;
+                font-weight: 700;
+            }
+            .subContent {
+                color: $--color-primary;
+            }
+        }
+    }
+}
+.message {
+    margin: 0 auto;
+    .bigTitle {
+        font-size: 18px;
+        line-height: 1px;
+        // padding-top: 40px;
+        // padding-bottom: 20px;
+    }
+    .subTitle {
+        margin-top: 20px;
+        padding-left: 127px;
+        font-size: 14px;
+        line-height: 1;
+    }
+}
+.companyAuth,
+.departAuth {
+    .Auth-box {
+        .toFill {
+            .el-form {
+                width: 522px;
+                margin: 60px auto 0 auto;
+                .el-form-item {
+                    .avatar-uploader .el-upload:hover {
+                        border-color: #409eff;
+                    }
+                    .avatar-uploader-icon {
+                        font-size: 28px;
+                        color: #8c939d;
+                        width: 117px;
+                        height: 117px;
+                        line-height: 117px;
+                        text-align: center;
+                        border-radius: 0px;
+                    }
+                    .avatar {
+                        width: 117px;
+                        height: 117px;
+                        display: block;
+                    }
+                    input[type='file'] {
+                        display: none;
+                    }
+                    .el-upload--picture-card {
+                        width: 117px;
+                        height: 117px;
+                        line-height: 117px;
+                        margin: 0;
+                        border-radius: 0px;
+                    }
+                    .el-upload-list--picture-card .el-upload-list__item {
+                        margin-right: 14px;
+                    }
+                    .el-upload-list--picture-card .el-upload-list__item:nth-child(3n) {
+                        margin-right: 0px;
+                    }
+                }
+            }
+        }
+        .toSub {
+            .tips {
+                margin-top: 30px;
+                background: $--color-info;
+                height: 60px;
+                text-align: center;
+                line-height: 60px;
+                font-size: 16px;
+                border: 1px solid #e6e6eb;
+            }
+            .inform-box {
+                font-size: 14px;
+                width: 523px;
+                margin: auto;
+                padding: 45px 100px;
+                p {
+                    margin-bottom: 20px;
+                    .infor-name {
+                        display: inline-block;
+                        text-align: right;
+                        width: 180px;
+                        margin-right: 40px;
+                        .authBtn {
+                            margin-left: -36px;
+                        }
+                    }
+                    .authBtn {
+                        width: 180px;
+                        height: 38px;
+                        text-align: center;
+                        margin-top: 20px;
+                        margin-left: -2px;
+                    }
+                }
+            }
+        }
+        .el-button--prev {
+            color: $--color-warning;
+            border: 1px solid $--color-warning;
+            background: $--color-white;
+            &:hover {
+                background: mix($--color-warning, $--color-white, 20%);
+            }
+        }
+    }
+    .el-form .el-form-item {
+        margin-bottom: 20px;
+    }
+}
+.companyAuth,
+.departAuth {
+    .panal-body {
+        margin: 60px auto 0;
+    }
+    .panal-body-info {
+        padding:30px 90px;
+        .Auth-box {
+            min-width: 512px;
+            .bigTitle2 {
+                height: 60px;
+                font-size: 16px;
+                line-height: 60px;
+                background-color: #f9fafd;
+                border: solid 1px #dde6f4;
+            }
+            .zt-info {                
+                width: 522px;
+                margin: 38px auto 0;
+                line-height: 33px;
+                .zt-text-info{
+                    padding:0 20px;
+                }
+                .avatar {                   
+                    padding-top:8px;
+                    width: 117px;
+                    height: 117px;
+                    display: block;
+                }
+                .authBtn {
+                    width: 180px;
+                    height: 38px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+}

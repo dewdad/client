@@ -1,0 +1,91 @@
+.el-radio {
+    .el-radio__inner {
+        border: solid 1px #b8c2cc;
+    }
+    .el-radio__input.is-checked .el-radio__inner {
+        border-color: $--color-primary;
+        background: $--color-primary;
+    }
+
+    .el-radio__input.is-checked + .el-radio__label {
+        color: $--basic-font-color; //$--color-primary;
+    }
+    .el-radio__label {
+        font-size: 12px;
+    }
+    & + .el-radio {
+        margin-left: 20px;
+    }
+}
+
+.el-radio-group {
+    .el-radio + .el-radio {
+        margin-left: 10px;
+    }
+    .el-radio__label {
+        padding-left: 5px;
+        font-size: 12px;
+    }
+    .el-radio.is-bordered + .el-radio.is-bordered {
+        margin-left: 6px;
+    }
+    .el-radio.is-bordered {
+        border-radius: 0;
+        min-width: 80px;
+        text-align: center;
+        .is-checked {
+            border-color: $--color-primary;
+        }
+        .el-radio__input {
+            display: none;
+        }
+        .el-radio__label {
+            padding-left: 0px;
+        }
+    }
+    .el-radio-button {
+        margin-right: 10px;
+        .el-radio-button__inner {
+            min-width: 80px;
+            border-left: 1px solid #dcdfe6;
+            border-radius: 0px !important;
+        }
+    }
+    &.primary {
+        .el-radio {
+            &.is-checked {
+                background-color: $--color-primary;
+                border-color: $--color-primary;
+                .el-radio__label {
+                    color: $--color-white;
+                }
+            }
+            &:hover {
+                border-color: $--color-primary;
+            }
+        }
+    }
+}
+
+.header-radio-group {
+    .el-radio {
+        min-width: 60px;
+        padding: 5px 10px;
+        height: auto;
+        background: $--color-white;
+        color: $--color-primary;
+        border-color: $--color-primary;
+
+        .el-radio__label {
+            color: inherit;
+            font-size: 12px;
+        }
+
+        &.is-checked {
+            background: $--color-primary;
+            .el-radio__label {
+                color: $--color-white;
+            }
+        }
+    }
+}

@@ -1,0 +1,430 @@
+{
+    "assetsList": {
+        "limit": "10",
+        "offset": "0",
+        "marker": null,
+        "sort": null,
+        "sortKey": null,
+        "pageIndex": "1",
+        "searchText": "",
+        "total": 2,
+        "data": [
+            {
+                "serverID": "fa:16:3e:13:58:a7",
+                "userid": "wuzhenru",
+                "name": "勿删_测试中",
+                "version": "CentOS",
+                "versiondes": "CentOS Linux release 7.5.1804 (Core)  ",
+                "ip": "172.16.0.251",
+                "wwwip": "43.250.238.39",
+                "addr": "XX-XX-内网IP-内网IP-内网IP",
+                "detail": "勿删_测试中",
+                "uptime": "1531299682",
+                "country": "XX",
+                "area": "XX-XX-内网IP",
+                "alias": "10.3.123.193",
+                "time_zone": "CST",
+                "id": "207",
+                "mdate": "2018-07-11 17:01:20",
+                "cdate": "2018-07-11 17:01:20",
+                "sync_status": "0",
+                "online": "1",
+                "time_offset": "+0800",
+                "status": "0",
+                "server_group": "test",
+                "protect_switch": "1",
+                "leak": "0",
+                "baseline": "0",
+                "abnlogin": "1",
+                "webshell": "0",
+                "mac_address": "fa:16:3e:13:58:a7",
+                "host": "0",
+                "process": "79",
+                "port": "13",
+                "is_install": "1",
+                "sec_id": "e-qejfarqbjiql"
+            },
+            {
+                "serverID": "fa:16:3e:b3:aa:0f",
+                "userid": null,
+                "name": "三号运维服务器",
+                "version": null,
+                "versiondes": null,
+                "ip": "192.168.0.82",
+                "wwwip": "10.3.38.196",
+                "addr": null,
+                "detail": "三号运维服务器",
+                "uptime": null,
+                "country": null,
+                "area": null,
+                "alias": null,
+                "time_zone": "",
+                "id": "208",
+                "mdate": "2018-07-11 15:43:20",
+                "cdate": "2018-07-11 15:43:20",
+                "sync_status": "0",
+                "online": "0",
+                "time_offset": "0",
+                "status": "0",
+                "server_group": null,
+                "protect_switch": "1",
+                "leak": "0",
+                "baseline": "0",
+                "abnlogin": "0",
+                "webshell": "0",
+                "mac_address": "fa:16:3e:b3:aa:0f",
+                "host": "0",
+                "process": "0",
+                "port": "0",
+                "is_install": "0",
+                "sec_id": "e-cawthqwrcvbt"
+            }
+        ],
+        "param": {},
+        "mapParam": {
+            "offset": "0",
+            "limit": "10",
+            "start": "0"
+        }
+    },
+    "weakness": {
+        "code": 0,
+        "message": "success",
+        "data": {
+            "day_data": {
+                "leak": [
+                    {"day": "06-14", "count": 0},
+                    {"day": "06-15", "count": 0},
+                    {"day": "06-16", "count": 0},
+                    {"day": "06-17", "count": 0},
+                    {"day": "06-18", "count": 0},
+                    {"day": "06-19", "count": 0},
+                    {"day": "06-20", "count": 0},
+                    {"day": "06-21", "count": 0},
+                    {"day": "06-22", "count": 0},
+                    {"day": "06-23", "count": 0},
+                    {"day": "06-24", "count": 0},
+                    {"day": "06-25", "count": 0},
+                    {"day": "06-26", "count": 0},
+                    {"day": "06-27", "count": 0},
+                    {"day": "06-28", "count": 0},
+                    {"day": "06-29", "count": 0},
+                    {"day": "06-30", "count": 0},
+                    {"day": "07-01", "count": 0},
+                    {"day": "07-02", "count": 0},
+                    {"day": "07-03", "count": 0},
+                    {"day": "07-04", "count": 0},
+                    {"day": "07-05", "count": 0},
+                    {"day": "07-06", "count": 0},
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 134},
+                    {"day": "07-13", "count": 0}
+                ],
+                "baseline": [
+                    {"day": "06-14", "count": 0},
+                    {"day": "06-15", "count": 0},
+                    {"day": "06-16", "count": 0},
+                    {"day": "06-17", "count": 0},
+                    {"day": "06-18", "count": 0},
+                    {"day": "06-19", "count": 0},
+                    {"day": "06-20", "count": 0},
+                    {"day": "06-21", "count": 0},
+                    {"day": "06-22", "count": 0},
+                    {"day": "06-23", "count": 0},
+                    {"day": "06-24", "count": 0},
+                    {"day": "06-25", "count": 0},
+                    {"day": "06-26", "count": 0},
+                    {"day": "06-27", "count": 0},
+                    {"day": "06-28", "count": 0},
+                    {"day": "06-29", "count": 0},
+                    {"day": "06-30", "count": 0},
+                    {"day": "07-01", "count": 0},
+                    {"day": "07-02", "count": 0},
+                    {"day": "07-03", "count": 0},
+                    {"day": "07-04", "count": 0},
+                    {"day": "07-05", "count": 0},
+                    {"day": "07-06", "count": 0},
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 74},
+                    {"day": "07-13", "count": 0}
+                ],
+                "weakpwd": [
+                    {"day": "06-14", "count": 0},
+                    {"day": "06-15", "count": 0},
+                    {"day": "06-16", "count": 0},
+                    {"day": "06-17", "count": 0},
+                    {"day": "06-18", "count": 0},
+                    {"day": "06-19", "count": 0},
+                    {"day": "06-20", "count": 0},
+                    {"day": "06-21", "count": 0},
+                    {"day": "06-22", "count": 0},
+                    {"day": "06-23", "count": 0},
+                    {"day": "06-24", "count": 0},
+                    {"day": "06-25", "count": 0},
+                    {"day": "06-26", "count": 0},
+                    {"day": "06-27", "count": 0},
+                    {"day": "06-28", "count": 0},
+                    {"day": "06-29", "count": 0},
+                    {"day": "06-30", "count": 0},
+                    {"day": "07-01", "count": 0},
+                    {"day": "07-02", "count": 0},
+                    {"day": "07-03", "count": 0},
+                    {"day": "07-04", "count": 0},
+                    {"day": "07-05", "count": 0},
+                    {"day": "07-06", "count": 0},
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 1},
+                    {"day": "07-13", "count": 0}
+                ]
+            },
+            "sum_data": [
+                {
+                    "low": 58,
+                    "medium": 98,
+                    "high": 31,
+                    "super": 22,
+                    "server_info": {
+                        "mac_address": "fa:16:3e:13:58:a7",
+                        "server_detail": {
+                            "ip": "172.16.0.251 ",
+                            "wwwip": "10.3.123.193",
+                            "host_name":
+                                "Server-31f40355-dd58-4906-9ee0-cdfd05a759ea.novalocal"
+                        }
+                    }
+                },
+                {
+                    "low": 0,
+                    "medium": 0,
+                    "high": 0,
+                    "super": 0,
+                    "server_info": {
+                        "mac_address": "fa:16:3e:b3:aa:0f",
+                        "server_detail": {
+                            "ip": "192.168.0.82",
+                            "wwwip": "10.3.38.196",
+                            "host_name":
+                                "\u4e09\u53f7\u8fd0\u7ef4\u670d\u52a1\u5668"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "info": {
+        "code": 0,
+        "message": "success",
+        "data": {
+            "leak": {
+                "pending": [
+                    {"level": 1, "count": 1},
+                    {"level": 2, "count": 0},
+                    {"level": 3, "count": 0},
+                    {"level": 4, "count": 0}
+                ],
+                "oecd": {"sum": 1, "handle": 0}
+            },
+            "base_line": {
+                "pending": [
+                    {"level": 1, "count": 0},
+                    {"level": 2, "count": 0},
+                    {"level": 3, "count": 0},
+                    {"level": 4, "count": 0}
+                ],
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "brute_force": {
+                "pending": {"count": 0},
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "weak_pwd": {
+                "pending": {"count": 0},
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "port_scan": {
+                "pending": {"count": 0},
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "abn_login": {
+                "pending": {"count": 0},
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "webshell": {
+                "pending": {"count": 0},
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "host_anomaly": {
+                "pending": [
+                    {"level": 1, "count": 0},
+                    {"level": 2, "count": 0},
+                    {"level": 3, "count": 0},
+                    {"level": 4, "count": 0}
+                ],
+                "oecd": {"sum": 0, "handle": 0}
+            },
+            "score": 100,
+            "level": 3,
+            "online_info": [],
+            "server_score_info": {"high": 0, "risk": 0, "safe": 1},
+            "last_scan_time": null
+        }
+    },
+    "event": {
+        "code": 0,
+        "message": "success",
+        "data": {
+            "day_data": {
+                "portscan": [
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 0},
+                    {"day": "07-13", "count": 0}
+                ],
+                "abnlogin": [
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 1},
+                    {"day": "07-13", "count": 0}
+                ],
+                "host_anomaly": [
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 2},
+                    {"day": "07-13", "count": 0}
+                ],
+                "webshell": [
+                    {"day": "07-07", "count": 0},
+                    {"day": "07-08", "count": 0},
+                    {"day": "07-09", "count": 0},
+                    {"day": "07-10", "count": 0},
+                    {"day": "07-11", "count": 0},
+                    {"day": "07-12", "count": 96},
+                    {"day": "07-13", "count": 0}
+                ],
+                "bruteforce": []
+            },
+            "sum_data": [
+                {
+                    "low": 0,
+                    "medium": 0,
+                    "high": 3,
+                    "super": 96,
+                    "server_info": {
+                        "mac_address": "fa:16:3e:13:58:a7",
+                        "server_detail": {
+                            "ip": "172.16.0.251 ",
+                            "wwwip": "10.3.123.193",
+                            "host_name":
+                                "Server-31f40355-dd58-4906-9ee0-cdfd05a759ea.novalocal"
+                        }
+                    }
+                },
+                {
+                    "low": 10,
+                    "medium": 20,
+                    "high": 33,
+                    "super": 6,
+                    "server_info": {
+                        "mac_address": "fa:16:3e:13:58:a7",
+                        "server_detail": {
+                            "ip": "172.16.0.11 ",
+                            "wwwip": "10.3.123.193",
+                            "host_name":
+                                "Server-31f40355-dd58-4906-9ee0-cdfd05a759ea.novalocal"
+                        }
+                    }
+                },
+                {
+                    "low": 1,
+                    "medium": 2,
+                    "high": 0,
+                    "super": 0,
+                    "server_info": {
+                        "mac_address": "fa:16:3e:13:58:a7",
+                        "server_detail": {
+                            "ip": "172.16.0.11 ",
+                            "wwwip": "10.3.123.193",
+                            "host_name":
+                                "Server-31f40355-dd58-4906-9ee0-cdfd05a759ea.novalocal"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "assetList": {
+        "limit": "10",
+        "offset": "0",
+        "marker": null,
+        "sort": null,
+        "sortKey": null,
+        "pageIndex": "1",
+        "searchText": "1",
+        "total": 100,
+        "data": [
+            {
+                "serverID": "fa:16:3e:13:58:a7",
+                "userid": "wuzhenru",
+                "name": "勿删_测试中",
+                "version": "CentOS",
+                "versiondes": "CentOS Linux release 7.5.1804 (Core)  ",
+                "ip": "172.16.0.251",
+                "wwwip": "43.250.238.39",
+                "addr": "XX-XX-内网IP-内网IP-内网IP",
+                "detail": "勿删_测试中",
+                "uptime": "1531394399",
+                "country": "XX",
+                "area": "北京1",
+                "alias": "10.3.123.193",
+                "time_zone": "CST",
+                "id": "207",
+                "mdate": "2018-07-14 17:40:07",
+                "cdate": "2018-07-14 17:40:07",
+                "sync_status": "0",
+                "online": "1",
+                "time_offset": "+0800",
+                "status": "0",
+                "server_group": "test",
+                "protect_switch": "1",
+                "leak": "134",
+                "baseline": "74",
+                "abnlogin": "1",
+                "webshell": "96",
+                "mac_address": "fa:16:3e:13:58:a7",
+                "host": "2",
+                "process": "77",
+                "port": "11",
+                "is_install": "1",
+                "sec_id": "e-qejfarqbjiql"
+            }
+        ],
+        "param": {"server_name": "1"},
+        "mapParam": {
+            "server_name": "1",
+            "offset": "0",
+            "limit": "10",
+            "start": "0"
+        }
+    }
+}

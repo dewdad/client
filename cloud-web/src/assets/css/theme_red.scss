@@ -1,0 +1,13 @@
+@import 'theme/red';
+.theme-red {
+    @import 'login';
+    @import 'button';
+    .btn-primary {
+        &:hover {
+            background: $--color-primary-light-2 !important;
+            border-color: $--color-primary-light-2 !important;
+        }
+    }
+    @import 'header';
+    @import 'sideBar';
+}
