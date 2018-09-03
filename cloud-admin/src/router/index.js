@@ -52,7 +52,7 @@ export default new Router({
                             meta: {
                                 title: '角色管理'
                             },
-                            component: () => import('@/views/usermgr/rolemgr')
+                            component: () => import('@/views/usermgr/rolemgr/rolemgr')
                         },
                         {
                             path: 'rolemgrUser/:id',
@@ -60,7 +60,7 @@ export default new Router({
                             meta: {
                                 title: '关联用户'
                             },
-                            component: () => import('@/views/usermgr/rolemgrUser')
+                            component: () => import('@/views/usermgr/rolemgr/rolemgrUser')
                         },
                         {
                             path: 'account',
@@ -116,10 +116,13 @@ export default new Router({
                             meta: {
                                 title: '平台类型'
                             },
-                            component: () => import('@/views/usermgr/platform/roletype')
+                            component: () => import('@/views/usermgr/platform/roletype'),
+                            children:[
+
+                            ]
                         } ,
                         {
-                            path: 'bindPlatAuth/:id',
+                            path: 'bindplatauth/:val',
                             name: 'app.platform.bindPlatAuth',
                             meta: {
                                 title: '绑定平台权限'

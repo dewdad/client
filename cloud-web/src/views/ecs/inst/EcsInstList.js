@@ -11,7 +11,8 @@ import {
     getEcsInstList,
     ecsInstAction,
     deleteEcsInstList,
-    editInstInfo
+    editInstInfo,
+    getVncUrl
     //modifyVncPwd,
     //reloadSystem
 } from '@/service/ecs/list.js';
@@ -26,7 +27,6 @@ import DeleteDialog from './ecsDialog/deleteDialog';
 import CustomImageDialog from './ecsDialog/CustomImageDialog';
 import ModifyRemotePwd from './ecsDialog/ModifyRemotePwd';
 import ResetPassword from './ecsDialog/resetPassword';
-import TelnetDialog from './ecsDialog/telnetDialog';
 import TelnetGuideDialog from './ecsDialog/longDialog';
 import EditLabelDialog from './ecsDialog/editLabelDialog';
 import StopInstDialog from './ecsDialog/stopCaseDialog';
@@ -254,7 +254,6 @@ export default {
         PageHeader,
         LabelDropdown,
         ModifyInfoDialog,
-        TelnetDialog,
         TelnetGuideDialog,
         EditLabelDialog,
         StopInstDialog,
@@ -381,7 +380,7 @@ export default {
                 pageIndex: this.pageIndex,
                 limit: this.limit
             };
-            let params = Object.assign({}, paging, this.options, {status: this.status});
+            let params = Object.assign({}, paging, this.options, {status: this.status ? this.status.toLowerCase() : ''});
             if (show !== false) {
                 this.loading = true;
                 this.tableDataList = [];
@@ -515,26 +514,24 @@ export default {
          * 远程登录
          */
         getVncBefore: function(rowItem) {
-            console.log('getVncBefore:', rowItem);
-            this.$refs.telnetDialog
-                .show(rowItem)
-                .then(ret => {
-                    console.log($t('common.successOpt'), ret);
-                    //this.$message.success($t('common.successOpt'));
+            getVncUrl({instanceId: rowItem.id})
+                .then(res => {
+                    if (res && res.code == this.CODE.SUCCESS_CODE) {
+                        let vnc_url = res.data.url;
+                        console.log('url===', vnc_url);
+                        //window.open(vnc_url);
+                        window.open(vnc_url);
+                    }
                 })
                 .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log($t('common.cancel'));
-                    }
+                    $log('getVncUrl err:', err);
                 });
         },
 
         //开关机操作统一处理 （停止、强制停止、启动、重启、强制重启）
-        ecsInstAction: async function(instanceId, type) {
+        ecsInstAction: async function(instanceId, actionReq, type) {
             //向后台提交表单请求
-            return ecsInstAction(instanceId, type).then(res => {
+            return ecsInstAction(instanceId, actionReq, type).then(res => {
                 console.log('ecsInstAction:::', res);
                 // this.getEcsInstList();
             });
@@ -552,7 +549,7 @@ export default {
                         console.log('restartInst ret:::', ret);
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             ret.loading = true;
-                            this.ecsInstAction(rowItem.id, 1)
+                            this.ecsInstAction(rowItem.id, 'start', 2)
                                 .then(() => {
                                     ret.loading = false;
                                     ret.hide();
@@ -588,7 +585,7 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
-                            this.ecsInstAction(rowItem.id, ret.radio)
+                            this.ecsInstAction(rowItem.id, 'stop', 3)
                                 .then(() => {
                                     ret.loading = false;
                                     ret.hide();
@@ -624,7 +621,7 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
-                            this.ecsInstAction(rowItem.id, ret.radio)
+                            this.ecsInstAction(rowItem.id, 'reboot', 1)
                                 .then(() => {
                                     ret.loading = false;
                                     ret.hide();
@@ -741,18 +738,18 @@ export default {
         // /**
         //  * 创建自定义镜像
         //  */
-        // createImage: function(rowItem) {
-        //     console.log('createImage:', rowItem);
-        //     this.$refs.CustomImageDialog.show(rowItem)
-        //         .then(ret => {})
-        //         .catch(err => {
-        //             if (err) {
-        //                 console.log('Error', err);
-        //             } else {
-        //                 console.log($t('common.cancel'));
-        //             }
-        //         });
-        // },
+        createImage: function(rowItem) {
+            console.log('createImage:', rowItem);
+            this.$refs.CustomImageDialog.show(rowItem)
+                .then(ret => {})
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log($t('common.cancel'));
+                    }
+                });
+        },
 
         /**
          * 绑定公网IP
@@ -850,10 +847,12 @@ export default {
                             console.log('delECS data:::', data);
                             deleteEcsInstList(data).then(
                                 () => {
-                                    ret.loading = false;
-                                    ret.hide();
-                                    this.$message.success($t('common.successOpt'));
-                                    this.getEcsInstList({show: false});
+                                    setTimeout(() => {
+                                        ret.loading = false;
+                                        ret.hide();
+                                        this.$message.success($t('common.successOpt'));
+                                        this.getEcsInstList({show: false});
+                                    }, 500);
                                 },
                                 () => {
                                     ret.loading = false;
@@ -889,17 +888,6 @@ export default {
         resetPassword: function(rowItem) {
             console.log('resetPassword:', rowItem);
             this.$refs.resetPassword.show(rowItem).then(ret => {});
-        },
-
-        /**
-         * 远程登录指导
-         */
-        showGuide: function(rowItem) {
-            console.log('showGuide:', rowItem);
-            this.$refs.telnetGuideDialog
-                .show()
-                .then(ret => {})
-                .catch(err => {});
         },
 
         /**
@@ -946,19 +934,18 @@ export default {
                         instanceId: rowItem.id,
                         name
                     };
-                    editInstInfo(data).then(
-                        res => {
-                            dlg.loading = false;
-                            rowItem.name = name; //局部刷新
-
-                            dlg.hide();
-                            this.$message.success($t('common.successOpt'));
-                        },
-                        err => {
+                    editInstInfo(data)
+                        .then(res => {
+                            if (res.code === this.CODE.SUCCESS_CODE) {
+                                dlg.loading = false;
+                                rowItem.name = name; //局部刷新
+                                this.$message.success($t('common.successOpt'));
+                            }
+                        })
+                        .catch(err => {
                             dlg.loading = false;
                             $log(err);
-                        }
-                    );
+                        });
                 })
                 .catch(err => {});
         },

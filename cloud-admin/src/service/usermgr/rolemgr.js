@@ -1,5 +1,5 @@
 import http from '../../utils/http';
-import { RoleMgr} from '../../constants/apiUrl';
+import {PlatForm, RoleMgr} from '../../constants/apiUrl';
 import { replaceParamVal } from '../../utils/utils';
 
 /**
@@ -24,6 +24,16 @@ export async function getMgrUser(data) {
     let url=RoleMgr.getMgrUser+'/'+data.roleId;
     let response = await http.get(url);
     return response.data;
+}
+/**
+ *创建角色
+ * @param {*}
+ */
+export async function createRole(data) {
+    console.log('data',data);
+    let response = await http.post(RoleMgr.createRole,data);
+    console.log('response',response);
+    return response.data.data.code === '0000'&&response.data;
 }
 
 

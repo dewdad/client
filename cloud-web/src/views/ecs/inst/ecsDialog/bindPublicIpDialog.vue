@@ -9,7 +9,7 @@
             <zt-form-item :label="$t('common.publicNetworkIP')" prop="publicNet.id" class="mb0" :rules="rules">
                 <div>
                     <el-select v-model="ruleForm.publicNet" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" popper-class="el-popper--small">
-                        <el-option v-for="item in (opType === 1?publicNetData:bandedPublicNetData)" :key="item.id" :label="item.ipAdd" :value="item">
+                        <el-option v-for="item in (opType === 1?publicNetData:bandedPublicNetData)" :key="item.id" :label="item.floatingIpAddress" :value="item">
                         </el-option>
                     </el-select>
                     <!-- <el-select v-model="ruleForm.publicNet" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" v-if="opType === 2">
@@ -20,17 +20,7 @@
                 </div>
                 <a v-show="opType === 1" class="mt10 finger-cursor font12">{{$t('dialog.bindPublicip.goCreatePublicIP')}}</a>
             </zt-form-item>
-            <!-- 内网IP -->
-            <zt-form-item :label="$t('common.privateIP')" prop="intranet" v-show="opType === 1" class="mb0">
-                <div class="right">
-                    <span class="font12">{{ ruleForm.intranet.fixIp }}</span>
-                    <!-- <el-select v-model="intranet.id" size="small" placeholder="$t('common.selectButtonTip')">
-                        <el-option v-for="item in intranetData" :key="item.portId" :label="item.fixIp" :value="item.portId">
-                        </el-option>
-                    </el-select> -->
-                    <!-- <i class="font16 ml10 finger-cursor iconfont icon-Refreshshuaxin" style="opacity:0" ></i> -->
-                </div>
-            </zt-form-item>
+            
         </zt-form>
         <span slot="footer" class="dialog-footer">            
             <el-button type="info" class="font12" @click="cancel" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
@@ -93,7 +83,6 @@ export default {
             console.log('this.ecsInst', this.ecsInst);
             this.isShow = true;
 
-            this.getPortByEcsId(this.ecsInst);
             switch (this.opType) {                
                 case 1: {//绑定公网IP                   
                     this.getUnbindPublicIP();
@@ -136,8 +125,9 @@ export default {
             });
         },
         confirm() {
-            this.$refs['ruleForm'].validate(valid => {
-                if (valid) {                    
+            this.$refs['ruleForm'].validate(async valid => {
+                if (valid) {   
+                    await this.getPortByEcsId(this.ecsInst.ecsId, this.ruleForm.publicNet.id);                 
                     let data = {
                         id: this.ruleForm.publicNet.id,
                         type: this.opType === 1 ? 'bind' : 'unbind',
@@ -149,11 +139,13 @@ export default {
                         res => {
                             this.loading = false;
                             console.log('修改信息', res);
-                            this.$message.success($t('common.successOpt'));
+                            if (res.data.code === '0000') {
+                                this.$message.success($t('common.successOpt'));
+                                // this.setting();
+                                this.resolve(this.ecsInst);
+                                this.hide();
+                            }
                             
-                            // this.setting();
-                            this.resolve(this.ecsInst);
-                            this.hide();
                         },
                         err => {
                             this.loading = false;
@@ -166,17 +158,21 @@ export default {
         },
 
         //绑定：根据实例id查询端口（端口和内网IP是一对一的关系，可以理解是内网IP）
-        getPortByEcsId: function(ecsInst) {
-            return getPortByEcsId(ecsInst).then(
-                res => {                 
-                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        let resData = res.result || [];
-                        this.ruleForm.intranet = resData[0] || {}; //内网IP
-                    } else {
+        getPortByEcsId: function(ecsInstId, ipId) {
+            return new Promise((resolve, reject) => {
+                getPortByEcsId(ecsInstId, ipId).then(
+                    res => {                 
+                        if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                            let resData = res.result || [];
+                            this.ruleForm.intranet = resData[0] || {}; //内网IP
+                            return resolve();
+                        } else {
+                            return reject();
+                        }
                     }
-                },
-                err => {}
-            );
+                );
+            });
+            
         },
 
         //解绑：查询本实例已经绑定的公网IP
@@ -198,9 +194,9 @@ export default {
             return getUnbindPublicIP({ status }).then(
                 res => {                   
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        let resData = res.result;
-                        if (resData && resData.records) {
-                            this.publicNetData = resData.records || [];
+                        let resData = res.data;
+                        if (resData && resData.data) {
+                            this.publicNetData = resData.data || [];
                         }
                     } else {
                     }

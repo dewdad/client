@@ -7,7 +7,10 @@ const PLATFORM= '/identity/platform';
 
 // 登录模块
 export const API_LOGIN = {
-    login: USER_CONTROLLER + '/auth/token'
+    login: USER_CONTROLLER + '/auth/token',
+    getDomains:USER_CONTROLLER + '/dept/list',
+    getZoons:USER_CONTROLLER + '/zone/list',
+
 
 };
 // 概览
@@ -20,6 +23,7 @@ export const OVERVIEW = {
 export const RoleMgr = {
     rolelist: USER_RSA + '/role/list',
     getMgrUser: USER_RSA + '/user/getUserListByRId',
+    createRole: USER_RSA + '/role/',
 };
 //平台管理
 export const PlatForm = {
@@ -31,10 +35,10 @@ export const PlatForm = {
     editPlatAuth: PLATFORM + '/role/',//修改平台权限
     delPlatForm: PLATFORM + '/',//删除平台
     editPlatForm: PLATFORM + '/',//修改平台
-
     roleTypeList: USER_RSA + '/roleType',//查询角色类型列表
     searchBindAuth: USER_RSA + '/roleType/bindPlatformRole',//查询用户角色类型绑定的平台权限
     bindAuth: USER_RSA + '/roleType/bindPlatformRole',//用户角色类型绑定平台权限
+    getPlatformList: USER_RSA + '/roleType/getPlatformList',//用户角色类型绑定平台权限
 };
 //获取公钥加密
 export const API_USR_AUTH = {

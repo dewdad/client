@@ -15,7 +15,7 @@ export default {
     render(h) {
         if (Array.isArray(this.status) && this.value) {
             let item = this.status.find(arr => {
-                return arr.value === this.value;
+                return arr.value.toLowerCase() === this.value;
             });
             if (item !== undefined) {
                 if (item.type === 'progress') {

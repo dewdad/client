@@ -1,10 +1,13 @@
 <template>
     <div>
-        <el-row>
+        <page-header>
+            角色管理
+        </page-header>
+        <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createRole">新建</el-button>
+                        <el-button type="primary" @click="createRole">新建角色</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -26,7 +29,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="getRoleList">查询</el-button>
+                        <el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getRoleList"></el-button>
@@ -83,8 +86,15 @@
                         </el-table-column>
                     </template>
                 </el-table>
+                //分页
                 <div class="pagination">
-                    <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+                    <el-pagination background
+                   @handleCurrentChange="handleCurrentChange"
+                   :current-page="searchObj.paging.pageIndex"
+                   :page-sizes="[10, 20, 50, 100]"
+                   :page-size="searchObj.paging.limit"
+                   layout="sizes, prev, pager, next"
+                   :total="searchObj.paging.totalItems">
                     </el-pagination>
                 </div>
             </el-col>
@@ -94,7 +104,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import CreateRole from './dialog/CreateRole';
+import CreateRole from './CreateRole';
 import {getRoleList} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',
@@ -169,14 +179,8 @@ export default {
                     }
                 });
         },
-        handleSizeChange:function (params) {
-            console.log('params:',params);
-        },
         handleCurrentChange:function (params) {
-            console.log('handleCurrentChange:',params);
-        },
-        handleSearch: function(labels) {
-            console.log(labels);
+            this.getRoleList();
         },
         onSubmit() {}
     },
