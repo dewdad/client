@@ -14,10 +14,10 @@
                 <el-menu :default-active="activeIndex" @select="handleSelect">
                     <template v-for="nav in navList">
                         <el-menu-item v-if="nav.hidden !== true" :index="nav.sref" :key="nav.serf">
-                                <div class="el-menu-item__inner">
-                                    <i :class="nav.icon"></i>
-                                    <span>{{nav.text}}</span>
-                                </div>
+                            <div class="el-menu-item__inner">
+                                <i :class="nav.icon"></i>
+                                <span>{{nav.text}}</span>
+                            </div>
                         </el-menu-item>
                     </template>
                     <!-- 这里写一个空的是为了返回控制台首页清空activeIndex的时候菜单选中状态不变化的问题 -->
@@ -109,7 +109,7 @@ export default {
         }
     },
     watch: {
-        '$router': function(newval) {
+        $router: function(newval) {
             let res = getLoginState();
             if (res.code !== '0000') {
                 this.$store.dispatch('LOGOUT');

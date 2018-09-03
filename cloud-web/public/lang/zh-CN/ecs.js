@@ -88,7 +88,7 @@ export default {
             freeTrial: '免费试用',
             manage: '管理',
             remoteLogin: '远程登录',
-            modifyConfig: '更改实例规格',
+            modifyConfig: '升降配',
             clickToView: '点击查看',
             instCreatingTip: '创建实例需要1~6分钟，请耐心等待',
 

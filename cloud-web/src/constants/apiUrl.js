@@ -61,7 +61,7 @@ export const API_ECS = {
         getServerCount: ECS_CTRL + '/overview/server-count'
     },
     inst: {
-        getInstList: ECS_CTRL + '/servers',
+        getInstList: '/compute/server/list',
         createECS: ECS_CTRL + '/servers',
         getInstanceCountInfo: ECS_CTRL + '/servers/{instanceId}/count-info',
         getInstanceDetail: ECS_CTRL + '/servers/{instanceId}/detail',
@@ -86,7 +86,7 @@ export const API_ECS = {
     },
     vnc: {
         vncCheck: ECS_CTRL + '/vnc/{instanceId}/check',
-        vncGetUrl: ECS_CTRL + '/vnc/{instanceId}',
+        vncGetUrl: ECS_CTRL + '/compute/ecs/getVNCConsole/{instanceId}',
         vncModify: ECS_CTRL + '/vnc/modify'
     },
     disk: {

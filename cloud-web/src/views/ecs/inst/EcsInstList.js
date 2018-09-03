@@ -1,7 +1,6 @@
 /**
  * ecs实例列表
  */
-import {mapState, mapGetters} from 'vuex';
 import {CHECK} from '@/constants/const';
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import RealNameVerify from '@/components/dialog/RealNameVerify';
@@ -12,12 +11,12 @@ import {
     getEcsInstList,
     ecsInstAction,
     deleteEcsInstList,
-    editInstInfo,
+    editInstInfo
     //modifyVncPwd,
     //reloadSystem
 } from '@/service/ecs/list.js';
 import ZT_CONFIG from '@/constants/config';
-import {showTextByKey, cloneDeep, /*convertToVchartData*/} from '@/utils/utils.js';
+import {showTextByKey, cloneDeep /*convertToVchartData*/} from '@/utils/utils.js';
 //import {moniterEchartMetricData} from '@/service/ecs/overview';
 import CopyText from '@/components/copy/copyText';
 
@@ -42,9 +41,7 @@ import MobileCodeDialog from '@/components/dialog/MobileCodeDialog';
 import HelpDialog from '@/views/ecs/inst/ecsDialog/HelpDialog.vue';
 import ChartsLine from '@/components/charts/ChartsLine.vue';
 import Retrieval from '@/components/retrieval/retrieval';
-import EcsSocket from '@/utils/ecsSocket.js';
 import {ECS_STATUS, ECS_DROPDOWN, remoteLoginActivedStatus, modifyConfigActivedStatus} from '@/constants/dicts/ecs.js';
-let ecsSocket = null;
 
 export default {
     name: 'EcsInstList',
@@ -81,8 +78,8 @@ export default {
 
         let cols = [
             {column: 'name', text: this.$t('ecs.inst.list.instIdAndName')},
-            {column: 'servers', text: this.$t('common.servers'), width: '100'},
-            {column: 'region', text: this.$t('common.region'), width: '100'},
+            {column: 'os', text: '镜像', width: '8%'},
+            // {column: 'region', text: this.$t('common.region'), width: '100'},
             {column: 'empty', text: '', width: '100'},
             {column: 'region', text: this.$t('ecs.inst.list.region'), width: '8%'},
             {column: 'ipaddr', text: this.$t('common.ipaddr'), width: '10%'},
@@ -99,7 +96,7 @@ export default {
                     {key: 12, text: this.$t('common.state.awaitReboot'), state: false, value: 'WAIT_REBOOT'},
                     // {key: 4, text: this.$t('common.state.deleting'), state: false, value: 'DELETED'},
                     {key: 6, text: this.$t('common.state.restarting'), state: false, value: 'RESTARTING'},
-                    {key: 13, text: this.$t('common.state.stoping'), state: false, value: 'STOPING'},
+                    {key: 13, text: this.$t('common.state.stoping'), state: false, value: 'STOPING'}
                     //{key:7,'text':this.$t('common.state.rebuilding'),'state':false,value:'REBUILD'},
                     //{key:8,'text':this.$t('common.state.suspend'),'state':false,value:'SUSPENDED'},
                     // {key: 9, text: this.$t('common.state.reinstalling'), state: false, value: 'RELOAD'},
@@ -107,10 +104,8 @@ export default {
                     // {key: 11, text: this.$t('common.state.configing'), state: false, value: 'CHANGE'}
                 ]
             },
-            {column: 'os', text: this.$t('common.os'), width: '8%'},
-            {column: 'nettype', text: this.$t('ecs.inst.list.netType'), width: '8%'},
             {column: 'cfginfo', text: this.$t('ecs.inst.list.configInfo'), width: '10%', class: 'text-left'},
-            {column: 'paytype', text: this.$t('ecs.inst.list.payType'), width: '82px'}
+            {column: 'createTime', text: '创建时间', width: '82px'}
         ];
 
         /** 列表操作项：更多：下拉功能菜单：所有按钮禁用：实例状态枚举 */
@@ -250,15 +245,7 @@ export default {
             totalItems: 0
         };
     },
-    computed: {
-        ...mapState({
-            user: state => state.user.userInfo
-        }),
-        ...mapGetters(['navCollapse', 'collapse']),
-        ecsIDList() {
-            return this.tableDataList.map(e => e.id);
-        }
-    },
+    computed: {},
     components: {
         CopyText,
         RegionRadio,
@@ -288,59 +275,8 @@ export default {
         HelpDialog,
         Retrieval
     },
-    destroyed() {
-        ecsSocket.disconnect();
-    },
-    created() {
-        this.initWS();
-        // if (this.stateParams && this.stateParams.fromstate) {
-        //     var fromItem = this.stateParams.item;
-        //     switch (this.stateParams.fromstate){
-        //         case 'app.ecs.image':
-        //             this.searchObjExtra.frominfo = this.$t('common.image') + '：' + fromItem.name;
-        //             break;
-        //         case 'app.vpc.pn-subnet':
-        //             this.searchObjExtra.frominfo = this.$t('common.subnet') + '：' + fromItem.name;
-        //             break;
-        //         case 'app.ecs.overview':
-        //             this.searchObjExtra.frominfo = this.$t('common.status') + '：' + showTextByKey(this.statusArr,this.stateParams.state);
-        //             //列表页面， 列表头下拉框查询条件勾选
-        //             var col = getFieldItem(this.cols,'column','status');
-        //             var dropdowns = col.dropdowns;
-        //             var state = this.stateParams.state;
-        //             dropdowns.forEach(dropdowns,function (it) {
-        //                 if(it.value == state){
-        //                     it.state = true;
-        //                 }else {
-        //                     it.state = false;
-        //                 }
-        //             });
-        //             break;
-        //         case 'app.ecs.netsecurity.safegrp':
-        //             this.searchObjExtra.frominfo = this.$t('common.securityGroup') + '：' + fromItem.name;
-        //             break;
-        //         // case 'app.ecs.lablemgr':
-        //         //     this.searchObjExtra.frominfo = '标签:'+ fromItem.labelKey;
-        //         //     break;
-        //         default:{
-        //             //do something
-        //         }
-        //     }
-        // }
-
-        // function getFieldItem(items,propname,val){
-        //     if(Array.isArray(items)){
-        //         for(let i = 0,ii = items.length;i < ii;i++){
-        //             let item = items[i];
-        //             if(item[propname] == val){
-        //                 return item;
-        //             }
-        //         }
-        //     }
-        //     return val;
-        // }
-        // this.getEcsInstList();
-    },
+    destroyed() {},
+    created() {},
     watch: {
         options: {
             deep: true,
@@ -370,9 +306,6 @@ export default {
         status() {
             this.resetPaging();
             this.getEcsInstList();
-        },
-        ecsIDList() {
-            ecsSocket && ecsSocket.setESC(this.ecsIDList);
         }
     },
     methods: {
@@ -383,17 +316,6 @@ export default {
             // 可以点击的列表
             let arr = ['SHUTOFF', 'ACTIVE', 'HARD_REBOOT', 'HARD_REBOOT', 'REBOOT'];
             return arr.findIndex(e => e === status) < 0;
-        },
-        /**
-         * 当表格固定
-         */
-        onAffixChange(val) {
-            this.paginationAffix = val;
-            // if (val) {
-            //     this.paddingBottom = '55px';
-            // } else {
-            //     this.paddingBottom = '0';
-            // }
         },
         /**
          * 显示搜索帮助
@@ -426,7 +348,7 @@ export default {
         },
         dropdownClickHandler(handleItem, rowItem) {
             if (!handleItem && !rowItem) return;
-            if (this.arraySome(this.allBtnDisableds, rowItem.instanceStatus)) return;
+            if (this.arraySome(this.allBtnDisableds, rowItem.status)) return;
             if (rowItem.toCpu) return;
             //如果是a链接
             if (handleItem.url) return;
@@ -438,7 +360,7 @@ export default {
         // 是否点击
         dropdownActive(status, arr) {
             if (!arr || !arr.length) return;
-            return !arr.find(e => e === status);
+            return !arr.find(e => e.toLowerCase() === status);
         },
         ecsSelect(val) {
             // this.selectOption = Object.assign({}, this.selectOption, val.data);
@@ -446,27 +368,6 @@ export default {
         //查询列表数据
         setOptions(options) {
             this.options = options;
-        },
-        /**
-         * 初始化websocket
-         */
-        initWS() {
-            $log('initWS');
-            ecsSocket = new EcsSocket();
-            ecsSocket.setESC(this.ecsIDList);
-            ecsSocket.onchange(e => {
-                console.log('onchange', e);
-                this.updateECS(e);
-            });
-        },
-        /**
-         * ws更新 实例状态
-         */
-        updateECS(data) {
-            if (!data || !data.id) return;
-            let index = this.tableDataList.findIndex(e => e.id === data.id);
-            // console.warn('更新ecs', data.id, index);
-            this.$set(this.tableDataList, index, data);
         },
         getEcsInstList: function(payload = {}) {
             // let params = {
@@ -492,14 +393,10 @@ export default {
                     if (res && res.data) {
                         let data = res.data;
                         if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let jsonData = data.result;
-                            console.log('jsonData', jsonData);
-                            if (jsonData && jsonData.records) {
-                                let dataList = jsonData.records || [];                                
-                                this.tableDataList = dataList;
-                                // this.tableDataList = [...dataList, ...dataList, ...dataList, ...dataList];
-                                this.totalItems = jsonData.total || 0;
-                            }
+                            let dataList = data.data || [];
+                            this.tableDataList = dataList.data;
+                            $log(this.tableDataList);
+                            this.totalItems = data.total || 0;
                         }
                     }
                     self.loading = false;
@@ -618,7 +515,7 @@ export default {
          * 远程登录
          */
         getVncBefore: function(rowItem) {
-            console.log('getVncBefore:', rowItem);            
+            console.log('getVncBefore:', rowItem);
             this.$refs.telnetDialog
                 .show(rowItem)
                 .then(ret => {
@@ -656,7 +553,7 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 1)
-                                .then( () => {                                    
+                                .then(() => {
                                     ret.loading = false;
                                     ret.hide();
                                     this.$message.success($t('common.successOpt'));
@@ -664,7 +561,7 @@ export default {
                                 })
                                 .catch(err => {
                                     ret.loading = false;
-                                    $log(err);                   
+                                    $log(err);
                                 });
                         }
                     });
@@ -694,14 +591,14 @@ export default {
                             this.ecsInstAction(rowItem.id, ret.radio)
                                 .then(() => {
                                     ret.loading = false;
-                                    ret.hide();                                    
+                                    ret.hide();
                                     this.$message.success($t('common.successOpt'));
                                     this.getEcsInstList();
                                 })
                                 .catch(err => {
                                     ret.loading = false;
-                                    $log(err);                   
-                                });                            
+                                    $log(err);
+                                });
                         }
                     });
                 })
@@ -728,15 +625,15 @@ export default {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, ret.radio)
-                                .then( () => {
+                                .then(() => {
                                     ret.loading = false;
-                                    ret.hide();                                    
+                                    ret.hide();
                                     this.$message.success($t('common.successOpt'));
                                     this.getEcsInstList();
                                 })
                                 .catch(err => {
                                     ret.loading = false;
-                                    $log(err);                   
+                                    $log(err);
                                 });
                         }
                     });
@@ -934,7 +831,8 @@ export default {
 
         /**
          * 删除
-         */       
+         */
+
         delECS: function(rowItem) {
             console.log('delECS:', rowItem);
             this.$refs.deleteInstDialog
@@ -942,10 +840,10 @@ export default {
                 .then(ret => {
                     //身份验证（手机短信验证码）
                     this.$refs.mobileCodeDialog.show().then(async res => {
-                        if (res.code === this.CODE.SUCCESS_CODE) {                          
+                        if (res.code === this.CODE.SUCCESS_CODE) {
                             ret.loading = true;
                             let data = {
-                                instanceId: rowItem.id,
+                                instanceId: rowItem.id
                                 //releaseFloatIp: false,
                                 //releaseDataDisk: false
                             };
@@ -959,9 +857,10 @@ export default {
                                 },
                                 () => {
                                     ret.loading = false;
-                                });                            
+                                }
+                            );
                         }
-                    });                    
+                    });
                 })
                 .catch(err => {
                     if (err) {
@@ -988,7 +887,7 @@ export default {
          * 重置密码
          */
         resetPassword: function(rowItem) {
-            console.log('resetPassword:', rowItem);            
+            console.log('resetPassword:', rowItem);
             this.$refs.resetPassword.show(rowItem).then(ret => {});
         },
 
@@ -999,10 +898,8 @@ export default {
             console.log('showGuide:', rowItem);
             this.$refs.telnetGuideDialog
                 .show()
-                .then(ret => {                    
-                })
-                .catch(err => {                    
-                });
+                .then(ret => {})
+                .catch(err => {});
         },
 
         /**
@@ -1038,34 +935,32 @@ export default {
             let dlgData = {
                 name: rowItem.name, //实例名称
                 title: $t('common.edit') + $t('common.instName'), //对话框title
-                label: $t('common.instName'), //对话框表单的label
+                label: $t('common.instName') //对话框表单的label
             };
             this.$refs.amendNameDialog
                 .show(dlgData)
-                .then( ({name,dlg}) => {
+                .then(({name, dlg}) => {
                     //dlg为对话框对象this的引用
                     dlg.loading = true; //加载等待动画
                     let data = {
                         instanceId: rowItem.id,
-                        name,
+                        name
                     };
-                    editInstInfo(data)
-                        .then(
-                            res => {
-                                dlg.loading = false;  
-                                rowItem.name = name; //局部刷新
+                    editInstInfo(data).then(
+                        res => {
+                            dlg.loading = false;
+                            rowItem.name = name; //局部刷新
 
-                                dlg.hide();
-                                this.$message.success($t('common.successOpt'));
-                            },
-                            err => {
-                                dlg.loading = false;
-                                $log(err);
-                            });
+                            dlg.hide();
+                            this.$message.success($t('common.successOpt'));
+                        },
+                        err => {
+                            dlg.loading = false;
+                            $log(err);
+                        }
+                    );
                 })
-                .catch(err => {
-                   
-                });
+                .catch(err => {});
         },
 
         // //改变当前选择的实例
@@ -1141,7 +1036,7 @@ export default {
 
         //获取列表中的分组操作项
         getChildren(item, rowItem) {
-            let children = item.children;            
+            let children = item.children;
             if (children && Array.isArray(children)) {
                 //网络和安全
                 if (item.flag) {
@@ -1151,24 +1046,25 @@ export default {
                         if (child.show) {
                             outarr.push(child);
                         } else {
-                            let isPublicIP = rowItem.floatIp ? (rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_PUBLIC_IP) != -1) : false;
-                            let isConnIP = rowItem.floatIp ? (rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_CONNECT_IP) != -1) : false;                  
-                            switch(child.handle){
+                            let isPublicIP = rowItem.floatIp ? rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_PUBLIC_IP) != -1 : false;
+                            let isConnIP = rowItem.floatIp ? rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_CONNECT_IP) != -1 : false;
+                            switch (child.handle) {
                                 case 'bindip':
-                                case 'bindconnectip':{
-                                    if(!rowItem.floatIp) outarr.push(child);
+                                case 'bindconnectip': {
+                                    if (!rowItem.floatIp) outarr.push(child);
                                     break;
                                 }
-                                case 'unbindip':{
-                                    if(rowItem.floatIp && isPublicIP) outarr.push(child);
+                                case 'unbindip': {
+                                    if (rowItem.floatIp && isPublicIP) outarr.push(child);
 
                                     break;
                                 }
-                                case 'unbindconnectip':{
-                                    if(rowItem.floatIp && isConnIP) outarr.push(child);
+                                case 'unbindconnectip': {
+                                    if (rowItem.floatIp && isConnIP) outarr.push(child);
                                     break;
                                 }
-                                default:{}
+                                default: {
+                                }
                             }
                         }
                     });

@@ -9,7 +9,7 @@ export default [
         meta: {
             moduleName: '云主机安全'
         },
-        redirect: '/people/vpc/pn',
+        redirect: '/app/vpc/pn',
         component: {
             render(c) {
                 return c('router-view');
@@ -60,8 +60,7 @@ export default [
                     {
                         path: 'list',
                         name: 'app.vpc.peerconn.list',
-                        component: () =>
-                            import('@/views/vpc/peerconn/List.vue'),
+                        component: () => import('@/views/vpc/peerconn/List.vue'),
                         meta: {
                             parentName: 'app.vpc'
                         }
