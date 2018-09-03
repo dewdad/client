@@ -41,7 +41,19 @@ export async function getSubnetByNetId(networkId) {
 export async function queryNetwork({...arg}) {
     $log('GET /networks ->', {...arg});
     let ret = await http.get(API_ECS.network.network, {params: {...arg}});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 浮动IP列表数据查询 GET /networks
+ * @param limit 每页条数
+ * @param pageIndex 每页条数
+ * @param name 根据服务器名称查询
+ */
+export async function queryFlexIP({...arg}) {
+    $log('GET /flexIP ->', {...arg});
+    let ret = await http.get(API_ECS.network.flexIP, {params: {...arg}});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
 /**
@@ -71,10 +83,10 @@ export async function getNetworkCount({vpcId}) {
  * @param remark 区域
  * @param isDefault 区域
  */
-export async function createNetwork({isDefault = '1', ...arg}) {
-    $log('GET /networks ->', {isDefault, ...arg});
-    let ret = await http.post(API_ECS.network.network, {isDefault, ...arg});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
+export async function createNetwork({...arg}) {
+    $log('GET /networks ->', {...arg});
+    let ret = await http.post(API_ECS.network.creatNetwork, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
 /**
@@ -120,7 +132,7 @@ export async function deleteSubnet({id}) {
 export async function updateNetwork({name, vpcId, remark}) {
     $log('GET /networks ->', {name, vpcId, remark});
     let ret = await http.put(replaceParamVal(API_ECS.network.networkID, [vpcId]), {name, vpcId, remark});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
 /**

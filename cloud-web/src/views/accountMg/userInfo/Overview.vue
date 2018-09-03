@@ -162,7 +162,7 @@ export default {
         };
     },
     created() {
-        this.getUserInfoDetail();
+        // this.getUserInfoDetail();
         this.comName = this.userInfo.comName;
     },
     computed: {
@@ -171,14 +171,14 @@ export default {
     methods: {
         // 获取基本资料详情
         getUserInfoDetail() {
-            this.fullscreenLoading = true;
-            getUserInfoDetail({uid: this.userInfo.uid}).then(res => {
+            // this.fullscreenLoading = true;
+            getUserInfoDetail({uid: this.userInfo.userId}).then(res => {
                 this.PeopleUserInfo = res.result || {};
                 // 初始化传递省市区参数
                 this.$set(this.areaInfo, 'province', this.PeopleUserInfo.province);
                 this.$set(this.areaInfo, 'city', this.PeopleUserInfo.city);
                 this.$set(this.areaInfo, 'area', this.PeopleUserInfo.zoom);
-                this.fullscreenLoading = false;
+                // this.fullscreenLoading = false;
                 if (JSON.stringify(this.PeopleUserInfo) === '{}') {
                     this.userInfoType = true;
                 } else {
