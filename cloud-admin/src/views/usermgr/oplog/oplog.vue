@@ -1,26 +1,29 @@
 <template>
-    <div>
+    <div style="padding:20px;">
         <page-header>
             操作日志
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <el-form-item>
-                        <el-select placeholder="请选择" v-model="type">
-                            <el-option label="操作名称" value="serviceDesc"></el-option>
-                            <el-option label="操作结果" value="result"></el-option>
-                            <el-option label="操作人" value="operUserName"></el-option>
-                            <el-option label="地区" value="region"></el-option>
+                    <el-form-item label="">
+                        <el-select clearable v-model="type"  placeholder="请选择" @change="formInline.searchText=''">
+                            <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field.field" :key="field.field"></el-option>
                         </el-select>
                     </el-form-item>
+
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'result'"></el-input>
+                        <el-select clearable v-model="formInline.searchText"  placeholder="请选择" v-if="type === 'result'">
+                            <el-option label="未知" value="0"></el-option>
+                            <el-option label="成功" value="1"></el-option>
+                            <el-option label="失败" value="2"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="选择日期">
                         <el-date-picker
-                                v-model="formInline.date"
-                                type="datetimerange"
+                                v-model="date"
+                                type="daterange"
                                 size="small"
                                 style="width:300px"
                                 start-placeholder="开始日期"
@@ -127,7 +130,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import LogDetail from './LogDetail';
-
+import {dateFormat} from '@/utils/utils';
 import {getLoglist} from '@/service/usermgr/oplog.js';
 export default {
     name: 'app',
@@ -140,6 +143,17 @@ export default {
                 limit: 10,
                 totalItems: 0
             },
+        };
+        let fields = [
+            { field: 'serviceDesc', label: '操作名称',inputval:'', tagType: 'INPUT' },
+            { field: 'result', label: '操作结果',inputval:'', tagType: 'SELECT' },
+            { field: 'operUserName', label: '操作人',inputval:'', tagType: 'INPUT' },
+            { field: 'region', label: '地区',inputval:'', tagType: 'INPUT' },
+        ];
+
+        let searchObjExtra = {
+            fields:fields,
+            selField:fields[0]
         };
         let cols = [
             {
@@ -184,10 +198,13 @@ export default {
             },
         ];
         return {
+            searchObjExtra,
             cols,
             searchObj,
+            date:[],
             formInline: {
-                data:'',
+                startDate: '',
+                endDate: '',
                 searchText:''
             },
             type:'serviceDesc',
@@ -199,30 +216,55 @@ export default {
         PageHeader,
         LogDetail
     },
+    watch:{
+        // 'formInline.date': function(newval) {
+        //     if (!isEmpty(newval)) {
+        //         this.formInline.startDate = dateFormat(newval[0], 'YYYY-MM-DD HH:mm:ss');
+        //         this.formInline.endDate = dateFormat(newval[1], 'YYYY-MM-DD HH:mm:ss');
+        //         console.log('formInline.date1',this.formInline.date);
+        //     } else {
+        //         this.form.startDate = '';
+        //         this.form.endDate = '';
+        //         console.log('formInline.date2',this.formInline.date);
+        //     }
+        //
+        // }
+    },
+    computed:{
+        start_date() {
+            if (!this.date || !this.date.length) return [];
+            return dateFormat(this.date[0].toString(), 'YYYY-MM-DD HH:mm:ss');
+        },
+        end_date() {
+            if (!this.date || !this.date.length) return [];
+            return dateFormat(this.date[1].toString(), 'YYYY-MM-DD HH:mm:ss');
+        }
+    },
     methods: {
         getLoglist(){
-            let params = {
-                paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
-            };
-            $log('params', params);
-            getLoglist(params).then(ret => {
-                $log('data', ret);
-                let resData = ret.data;
-                if(resData && resData.records){
-                    this.tableData = resData.records || [];
-                    console.log('this.tableData',this.tableData);
-                    this.searchObj.paging.totalItems = resData.total || 0;
-                    console.log('getEcsImageList tableData',this.tableData);
-                }
+            try {
+                let params = {
+                    paging:this.searchObj.paging,
+                    [this.type]:this.formInline.searchText,
+                    startDate:this.start_date,
+                    endDate: this.end_date
+                };
+                console.log('formInline.date',this.formInline.date);
+                $log('params', params);
+                getLoglist(params).then(ret => {
+                    $log('data', ret);
+                    let resData = ret.data;
+                    if(resData && resData.records){
+                        this.tableData = resData.records || [];
+                        this.searchObj.paging.totalItems = resData.total || 0;
+                    }
+                });
 
-            });
-        },
-        relateAuth(){
-
+            } catch (error) {
+                console.error('fetchData', error.message);
+            }
         },
         showDetail(item){
-            console.log('detail',item);
             this.$refs.LogDetail.show(item);
 
         },
@@ -235,7 +277,7 @@ export default {
             this.searchObj.paging.limit = val;
             this.getLoglist();
         },
-        onSubmit() {}
+
     },
     mounted(){
         this.getLoglist();

@@ -97,6 +97,15 @@ export async function roleTypeList(data) {
     return response.data;
 }
 /**
+ *查询角色类型列表
+ * @param {*}
+ */
+export async function getPlatformList(data) {
+    let url = PlatForm.getPlatformList+'/'+data;
+    let response = await http.get(url);
+    return response.data;
+}
+/**
  *查询用户角色类型绑定的平台权限
  * @param {*}
  */

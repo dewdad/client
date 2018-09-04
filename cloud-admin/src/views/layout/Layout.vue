@@ -48,9 +48,15 @@ export default {
     created() {},
 
     methods: {
-
+        setHeight () {
+            let screenH = document.documentElement.clientHeight - 60;
+            let el = document.getElementById('setHeightAuto');
+            el.style.maxHeight = screenH + 'px';
+            el.style.overflow = 'auto';
+        }
     },
     mounted(){
+        this.setHeight();
         const that = this;
         window.onresize = () => {
             return (() => {
@@ -78,7 +84,9 @@ export default {
     background-color: #001529;
     text-align: center;
 }
-
+#setHeightAuto{
+  padding:20px;
+}
 .el-main {
     background-color:#fff; // #e9eef3;
     color: #333;

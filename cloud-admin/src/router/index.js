@@ -122,12 +122,12 @@ export default new Router({
                             path: 'role',
                             name: 'app.platform.role',
                             meta: {
-                                title: '平台类型'
+                                title: '平台角色'
                             },
                             component: () => import('@/views/usermgr/platform/roletype')
                         } ,
                         {
-                            path: 'bindPlatAuth/:id',
+                            path: 'bindPlatAuth/:val',
                             name: 'app.platform.bindPlatAuth',
                             meta: {
                                 title: '绑定平台权限'
@@ -141,7 +141,23 @@ export default new Router({
                                 title: '操作日志'
                             },
                             component: () => import('@/views/usermgr/oplog/oplog')
-                        }
+                        },
+                        {
+                            path: 'sysconfig',
+                            name: 'app.usrmgr.sysconfig',
+                            meta: {
+                                title: '系统配置'
+                            },
+                            component: () => import('@/views/usermgr/sysconfig/sysconfig'),
+                        },
+                        {
+                            path: 'editConfig/:opType',
+                            name: 'app.usrmgr.editConfig',
+                            meta: {
+                                title: '修改配置'
+                            },
+                            component: () => import('@/views/usermgr/sysconfig/editConfig')
+                        },
                     ]
                 }
             ]

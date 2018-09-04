@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <el-row>
+    <div class="page-main">
+        <page-header>
+            平台管理
+        </page-header>
+        <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>

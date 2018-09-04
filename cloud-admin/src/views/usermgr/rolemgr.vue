@@ -1,10 +1,13 @@
 <template>
-    <div>
-        <el-row>
+    <div class="page-main">
+        <page-header>
+            角色管理
+        </page-header>
+        <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createRole">新建</el-button>
+                        <el-button type="primary" @click="createRole({},1)">新建角色</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -13,17 +16,6 @@
                     </el-form-item>
                     <el-form-item label="关键字">
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选择日期">
-                        <el-date-picker
-                                v-model="formInline.date"
-                                type="datetimerange"
-                                size="small"
-                                style="width:300px"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                :default-time="['12:00:00']">
-                        </el-date-picker>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="getRoleList">查询</el-button>
@@ -75,9 +67,9 @@
                                 <b class="link-division-symbol"></b>
                                 <a  @click="relateAuth(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin' && scope.row.roleType != 4"></b>
-                                <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">编辑</a>
+                                <a  @click="createRole(scope.row,2)" class="btn-linker" v-if="scope.row.name != 'admin'">编辑</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin'"></b>
-                                <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">删除</a>
+                                <a  @click="delRole(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">删除</a>
 
                             </template>
                         </el-table-column>
@@ -103,7 +95,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateRole from './dialog/CreateRole';
-import {getRoleList} from '@/service/usermgr/rolemgr.js';
+import {getRoleList,delRole} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',
 
@@ -121,14 +113,7 @@ export default {
             { column: 'roleType', text:'角色类型' , width: '15%'},
             { column: 'name', text: '角色名', width: '20%' }
         ];
-        // let fields = [
-        //     { field: 'name', label: '角色名称',inputval:'', tagType: 'INPUT' },
-        // ];
-        //
-        // let searchObjExtra = {
-        //     fields:fields,
-        //     selField:fields[0]
-        // };
+
         return {
             cols,
             searchObj,
@@ -158,7 +143,6 @@ export default {
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
-                    console.log('getEcsImageList tableData',this.tableData);
                 }
 
             });
@@ -166,8 +150,8 @@ export default {
         relateAuth(){
 
         },
-        createRole(){
-            this.$refs.CreateRole.show({name:'fff'},1)
+        createRole(item,optype){
+            this.$refs.CreateRole.show(item,optype)
                 .then(ret => {
                     this.getRoleList();
                     return this.$confirm('操作成功');
@@ -188,8 +172,30 @@ export default {
             this.searchObj.paging.limit = val;
             this.getRoleList();
         },
-        onSubmit() {}
+        delrole(item){
+            delRole(item).then(ret=>{
+                this.getRoleList();
+            });
+        },
+        /**
+         * 删除角色
+         */
+        delRole(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.delrole(item);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
     },
+
     mounted(){
         this.getRoleList();
     }
