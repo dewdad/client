@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import {searchBindAuth,getPlatformList,bindAuth} from '@/service/usermgr/platform.js';
+import {searchBindAuth,getPlatformList,bindAuth} from '@/service/platform.js';
 export default {
     name: 'app',
 
