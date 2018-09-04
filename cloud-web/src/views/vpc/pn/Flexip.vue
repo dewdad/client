@@ -1,6 +1,5 @@
 <template>
 <div class="page-main">
-    <!-- 搜素栏 -->
     <page-header class="mb10">
         <div slot="content"  class="pull-right">
             <el-button type="primary" size="small" class="mr10">

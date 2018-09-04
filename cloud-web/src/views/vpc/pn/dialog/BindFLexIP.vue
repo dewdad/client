@@ -5,7 +5,7 @@
         width="45%"
         class="BindFLexIPDialog">
         <zt-form inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small"  ref="ruleForm" :show-message="false">
-            <zt-form-item label="IP地址">
+            <zt-form-item label="IP地址" prop="felxIp">
                 <el-input size="small" disabled v-model="ruleForm.felxIp"></el-input>
             </zt-form-item>
             <zt-form-item label="ECS实例" prop="ecsCase">
@@ -46,7 +46,12 @@ export default {
             }
         }; 
     },
-    computed: {
+    watch: {
+        isShow(val) {
+            if(!val){
+                this.ruleForm.ecsCase = '';
+            }
+        }
     },
     methods: {
         show(params, rowItem) {
@@ -75,13 +80,11 @@ export default {
             });
         },
         confirm() {
-            let ruleForm = this.$refs.ruleForm;
-            if (!this.$refs.ruleForm) return false;
+            if (!this.$refs['ruleForm']) return false;
 
             // 表单验证
-            ruleForm.validate(valid => {
+            this.$refs['ruleForm'].validate(valid => {
                 if (valid) {
-                    alert(valid);
                     this.bindFloatIPFn();
                 } else {
                     console.log('error submit!!');

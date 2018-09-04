@@ -65,6 +65,16 @@ export async function bindFloatIP(instIP, floatIP) {
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
+/**
+ * 路由管理列表数据查询 GET /networks
+ * @param limit 每页条数
+ * @param pageIndex 每页条数
+ */
+export async function getRouterList({...arg}) {
+    $log('GET /routerList ->', {...arg});
+    let ret = await http.get(API_ECS.network.routerList, {params: {...arg}});
+    return ret;
+}
 
 /**
  * 网络列表数据查询 GET /networks/vpcId
