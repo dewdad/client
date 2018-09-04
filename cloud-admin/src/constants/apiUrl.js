@@ -4,15 +4,18 @@ const USER_CONTROLLER = '/identity';
 const USER_RSA = '/identity';
 const PLATFORM= '/identity/platform';
 const MENU= '/menu';
-
+const OP_LOG = '/mq';
 
 // 登录模块
 export const API_LOGIN = {
     login: USER_CONTROLLER + '/auth/token',
     getDomains:USER_CONTROLLER + '/dept/list',
     getZoons:USER_CONTROLLER + '/zone/list',
-
-
+    logOut:USER_CONTROLLER + '/auth/logout',
+};
+//操作日志
+export const OPLOG = {
+    getLoglist: OP_LOG + '/opLogQry/list',
 };
 // 概览
 export const OVERVIEW = {

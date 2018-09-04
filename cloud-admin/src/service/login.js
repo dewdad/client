@@ -45,5 +45,13 @@ export async function getDomains(data) {
     });
     return response;
 }
-
+/**
+ *
+ * 退出登录
+ * @export
+ */
+export async function logout() {
+    let response = await http.post(API_LOGIN.logOut,{});
+    return response;
+}
 
