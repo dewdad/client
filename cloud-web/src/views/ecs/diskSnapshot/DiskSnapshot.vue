@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="mb20 font16">快照列表</div>
-        <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box>
+        <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
         <!-- 列表 -->
         <div id="table">
             <el-table class="data-list" @cell-mouse-enter="showEditName" :data="tableData" header-row-class-name="data-list" style="width: 100%">

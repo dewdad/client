@@ -11,7 +11,7 @@
         <!-- 主体 -->
         <div class="page-body">
             <!-- 搜索栏 -->
-            <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box>
+            <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
             <!-- 列表 -->
             <div>
                 <el-table class="data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">

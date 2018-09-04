@@ -1,36 +1,86 @@
 <template>
     <div class="zt-table">
-        <el-table  :data="dataList" v-loading="loading" stripe border class="data-list">
-            <el-table-column v-for="column in tableColums" :width="column.width ? column.width : 'auto'" :prop="column.prop" :label="column.label"  :key="column.label">
-            </el-table-column>
+        <!-- 筛选操作 -->
+        <search-box v-if="search" :fields="searchCondition" @select="handleSearch"></search-box>
+        <el-table class="data-list" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
+            <slot name="default"></slot>
         </el-table>
+        <div class="pagination">
+            <el-pagination background :current-page="paging.pageIndex" @current-change="handleCurrentChange" :page-size="paging.limit" layout="total, prev, pager, next" :total="paging.totalItems">
+            </el-pagination>
+        </div>
     </div>
 </template>
 <script>
-export default{
+import searchBox from '@/components/search/SearchBox';
+export default {
     name: 'ZtTable',
     data() {
         return {
-            h: null
+            inlineForm: {
+                field: '',
+                value: ''
+            },
+            currentPage: 1
         };
+    },
+    components: {
+        searchBox
     },
     props: {
         loading: {
             type: Boolean,
             default: false
         },
-        tableColums: {
+        search: {
+            type: Boolean,
+            default: false
+        },
+        data: {
             type: Array
         },
-        dataList: {
+        searchCondition: {
             type: Array
+        },
+        paging: {
+            type: Object,
+            default: () => {
+                return {
+                    pageIndex: 1,
+                    limit: 10,
+                    totalItems: 0
+                };
+            }
+        }
+    },
+    computed: {
+        dataList: function() {
+            return this.data;
         }
     },
     created() {
-        // this.$options.render = h => this.a = h;
-        // console.log(this.$createElement);
+
     },
     methods: {
+        handleCurrentChange(page) {
+            this.currentPage = page;
+            this.doSearch();
+        },
+        handleSearch(params) {
+            this.inlineForm.field = params.selValue.field;
+            this.inlineForm.value = params.selInputValue;
+            this.doSearch();
+        },
+        doSearch() {
+            let data = {
+                pageIndex: this.currentPage,
+                limit: this.paging.limit,
+                fileds: {
+                    [this.inlineForm.field]: this.inlineForm.value
+                }
+            };
+            this.$emit('search', data);
+        }
     }
 };
 </script>

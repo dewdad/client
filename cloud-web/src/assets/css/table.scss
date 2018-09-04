@@ -117,18 +117,16 @@
         }
     }
 
-    &.el-loading-parent--relative {
-        .el-loading-mask {
-            top: 35px;
-            background: rgba(255, 255, 255, 0);
-            .el-loading-spinner .circular {
-                height: 30px;
-                width: 30px;
-            }
+    .el-loading-mask {
+        top: 35px;
+        background: rgba(255, 255, 255, 0);
+        .el-loading-spinner .circular {
+            height: 30px;
+            width: 30px;
         }
-        .el-table__empty-text {
-            display: none;
-        }
+    }
+    .el-table__empty-text {
+        display: none;
     }
 
     .el-table__empty-text {

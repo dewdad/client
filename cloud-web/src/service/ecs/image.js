@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 10:39:44
+ * @Last Modified time: 2018-09-04 19:00:02
  * ecs模块 镜像接口
  */
 
@@ -20,7 +20,7 @@ import {replaceParamVal} from '@/utils/utils';
  * }
  */
 export async function getImages(data) {
-    data['paging']['offset'] = (data.paging.pageIndex - 1) * data.paging.limit;
+    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     let res = await http.get(API_ECS.images.getImages, {
         params: data
     });

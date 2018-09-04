@@ -15,49 +15,29 @@
         <!-- 列表 -->
         <div class="mt20">
             <el-table class="font12 data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">
-                <template v-for="col in cols">
                     <!-- 磁盘名称 -->
-                    <template v-if="col.column=='name'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-
+                        <el-table-column prop="name" label="磁盘名称">
                         </el-table-column>
-                    </template>
                     <!-- 磁盘类型 -->
-                    <template v-if="col.column=='isSupport'">
-                        <el-table-column width="100px" :prop="col.column" :label="col.text" :key="col.column">
+                        <el-table-column width="100px" prop="type" label="磁盘类型" >
                             <template slot-scope="scope">
                                 <span>{{rowItem.type}}云盘</span>
                             </template>
                         </el-table-column>
-                    </template>
                     <!-- 支持卸载 -->
-                    <template v-if="col.column=='diskType'">
-                        <el-table-column width="100px" :prop="col.column" :label="col.text" :key="col.column">
+                        <el-table-column min-width="100px" prop="isSupportn" label="支持卸载" >
                             <template slot-scope="scope">
                                 <span>支持</span>
-                            </template>                             
-                        </el-table-column>
-                    </template>
-                    <!-- 付费方式 -->
-                    <template v-if="col.column=='paytype'">
-                        <el-table-column width="100px" :prop="col.column" :label="col.text" :key="col.column">
-                            <template slot-scope="scope">
-                                <span>按量付费</span>
-                            </template>                            
-                        </el-table-column>
-                    </template>
-                    <!-- 当前容量 -->
-                    <template v-if="col.column=='orignSize'">
-                        <el-table-column width="100px" :prop="col.column" :label="col.text" :key="col.column">
-                            <template slot-scope="scope">
-                                <span>{{rowItem.diskSize}}GB云盘</span>
                             </template>
-
                         </el-table-column>
-                    </template>
+                    <!-- 当前容量 -->
+                        <el-table-column min-width="100px" prop="size" label="当前容量" >
+                            <template slot-scope="scope">
+                                <span>{{rowItem.size}}GB</span>
+                            </template>
+                        </el-table-column>
                     <!-- 扩容后容量 最大2048G-->
-                    <template v-if="col.column=='size'">
-                        <el-table-column width="300" :prop="col.column" :label="col.text" :key="col.column">
+                        <el-table-column min-width="300"  label="扩容后容量" >
                             <template slot-scope="scope">
                                 <el-input-number v-model="discsize" size="small" :min="minsize" :max="2048" controls-position="right">
                                 </el-input-number>
@@ -65,17 +45,6 @@
                                 <span class="color999">容量范围：{{minsize}}-2048</span>
                             </template>
                         </el-table-column>
-                    </template>
-                    <!-- 费用 -->
-                    <template v-if="col.column=='con'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                            <template slot-scope="scope">
-                                <span v-show="isComputing">正在计算价格...</span>
-                                <span v-show="!isComputing" class="color-warning">￥0.31/时</span>
-                            </template>
-                        </el-table-column>
-                    </template>
-                </template>
             </el-table>
         </div>
         <!-- 确定扩容 -->
@@ -85,38 +54,29 @@
             'cost3': (!navCollapse && collapse),
             }">
             <div class="pull-left">
-                <span ng-if="!isComputing" style="color:#FF6600;font-size:24px" class="ng-binding ng-scope">¥&nbsp;8,700.00</span>
+                <!-- <span ng-if="!isComputing" style="color:#FF6600;font-size:24px" class="ng-binding ng-scope">¥&nbsp;8,700.00</span> -->
             </div>
             <div class="pull-right">
-                <button type="button" class="mr20 zt-next font12" @click="resizeDisk">确定扩容</button>
-                <button class="btn ng-cancle font12" @click="goBack">{{ $t('common.cancel') }}</button>
+                <button type="button" class="mr20 zt-next font12" @click="resizeDisk" :loading="loading">确定扩容</button>
+                <button class="btn ng-cancle font12" @click="goBack" :disabled="loading">{{ $t('common.cancel') }}</button>
             </div>
         </div>
     </div>
 </template>
 <script>
 import {mapGetters} from 'vuex';
-import { getDiskList,resizeDisk } from '@/service/ecs/disk/disk.js';
+import {getDiskList, resizeDisk} from '@/service/ecs/disk/disk.js';
 
 export default {
-    data() {  
-        let cols = [
-            {column: 'name', text: '磁盘名称', width: '20%'},
-            {column: 'diskType', text: '磁盘类型', width: '4%'},
-            {column: 'isSupport', text: '支持卸载', width: '4%'},
-            {column: 'paytype', text: '付费方式', width: '4%'},
-            {column: 'orignSize', text: '当前容量', width: '4%'},
-            {column: 'size', text: '扩容后容量', width: '4%'},
-            {column: 'con', text: '费用', width: '10%'}
-        ];      
+    data() {
         return {
-            stateParams:{},           
-            cols,
-            tableData:[],
-            rowItem:{},
-            isComputing:false,
+            stateParams: {},
+            tableData: [],
+            rowItem: {},
+            loading: false,
+            isComputing: false,
             discsize: 0,
-            minsize:1,
+            minsize: 1
         };
     },
     computed: {
@@ -125,13 +85,13 @@ export default {
     created() {
         let stateParams = this.$route.params || {};
         if (stateParams && stateParams.item) {
-            this.rowItem = stateParams.item;  
-            this.tableData = [this.rowItem];         
+            this.rowItem = stateParams.item;
+            this.tableData = [this.rowItem];
         } else {
             //刷新页面，路由参数item会丢失，则通过id查询磁盘信息
-            this.getDiskInfoById();            
+            this.getDiskInfoById();
         }
-        this.discsize = parseInt(this.rowItem.diskSize) + 10;
+        this.discsize = parseInt(this.rowItem.size) + 10;
         this.minsize = this.discsize - 9;
     },
     methods: {
@@ -147,45 +107,42 @@ export default {
             getDiskList(params).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                     let resData = res.result;
-                    if (resData && resData.records) {
-                        this.rowItem = resData.records[0] || {};
-                        this.tableData = resData.records || []; 
-                        this.discsize = parseInt(this.rowItem.diskSize) + 10;
+                    if (resData && resData.data) {
+                        this.rowItem = resData.data[0] || {};
+                        this.tableData = resData.data[0] || {};
+                        this.discsize = parseInt(this.rowItem.size) + 10;
                         this.minsize = this.discsize - 9;
                     }
                 }
             });
         },
         //确定提交
-        resizeDisk(){
+        resizeDisk() {
             let data = {
-                disk_id:this.rowItem.id,
-                size:this.discsize
+                disk_id: this.rowItem.id,
+                size: this.discsize
             };
+            this.loading = true;
             //提交后台
             resizeDisk(data)
-                .then( res => {
-                    if ( res && res.code === this.CODE.SUCCESS_CODE) { 
+                .then(res => {
+                    if (res && res.code === this.CODE.SUCCESS_CODE) {
                         this.$message.success('操作成功');
-                        this.$router.push({name:'app.ecs.clouddisc-list'});                                                                    
-                    }else {
-
-                    }                                 
-                })
-                .catch(
-                    err => {
-                        this.$alert(err, '提示', {
-                            type: 'error'
-                        });
+                        this.$router.push({name: 'app.ecs.clouddisc-list'});
+                    } else {
                     }
-                );
+                })
+                .catch(err => {
+                    $log(err);
+                }).finally(() => {
+                    this.loading = false;
+                });
         },
 
         //返回
-        goBack(){
-            this.$router.push({name:'app.ecs.clouddisc-list'});
+        goBack() {
+            this.$router.push({name: 'app.ecs.clouddisc-list'});
         }
-
     }
 };
 </script>
@@ -198,7 +155,7 @@ export default {
     position: fixed;
     width: auto;
     bottom: 0;
-    left: 300px;
+    left: 50px;
     right: 0;
     padding: 20px 40px;
     box-shadow: 0 -3px 3px #ebecec;

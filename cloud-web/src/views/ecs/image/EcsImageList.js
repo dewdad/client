@@ -19,7 +19,7 @@ export default {
             //分页
             paging: {
                 pageIndex: 1,
-                limit: 10,
+                limit: 5,
                 totalItems: 0
             },
             type: 'private' //镜像类型： false 公共镜像； true:自定义镜像
@@ -66,22 +66,6 @@ export default {
 
         let fields = [{field: 'name', label: this.$t('ecs.image.list.imageName'), tagType: 'INPUT'}, {field: 'status', label: this.$t('common.status'), options: statusArr, tagType: 'SELECT'}];
 
-        let searchObjExtra = {
-            fields: fields,
-            selField: fields[0]
-        };
-        // let tableData = [
-        //     {
-        //         name: 'd-yjtbeyhgsymp',
-        //         id: 'd-yjtbeyhgsymp',
-        //         empty: '',
-        //         imageType: '公共镜像',
-        //         platform: 'CentOS',
-        //         os: 'CentOS 7.5 64位',
-        //         createTime:'2018-05-23 15:27:24',
-        //         status: '可用'
-        //     }
-        // ];
         let cols = [
             {column: 'name', text: '镜像ID/名称'},
             {column: 'disk_format', text: '镜像格式', width: '100'},
@@ -97,15 +81,10 @@ export default {
             loading: false,
             cols,
             searchObj,
-            searchObjExtra,
-            inlineForm: {
-                field: '',
-                value: ''
-            },
+            fields,
             imageTypeArr,
             statusArr,
             dialogVisible: false,
-            region: '',
             stateParams: this.$route.params,
             tableData: []
         };
@@ -127,23 +106,10 @@ export default {
         this.getEcsImageList();
     },
     methods: {
-        search(params) {
-            $log(params);
-            this.inlineForm.field = params.selValue.field;
-            this.inlineForm.value = params.selInputValue;
-            this.this.searchObj.paging.pageIndex = 1;
-            this.getEcsImageList();
-        },
-
         //查询列表数据
-        getEcsImageList: function() {
-            let params = {
-                paging: this.searchObj.paging,
-                type: this.searchObj.type,
-                fileds: {
-                    [this.inlineForm.field]: this.inlineForm.value
-                }
-            };
+        getEcsImageList: function(params) {
+            params = params || this.searchObj.paging;
+            params['type'] = this.searchObj.type;
             this.loading = true;
             this.tableData = [];
             getImages(params)

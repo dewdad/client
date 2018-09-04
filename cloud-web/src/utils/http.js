@@ -28,7 +28,7 @@ function params(data, urlParams = {}) {
             if (typeof data[key] === 'object') {
                 let json = params(data[key], newParams);
                 newParams = Object.assign(newParams, json);
-            } else {
+            } else if (key !== '') {
                 newParams[key] = data[key];
             }
         }
