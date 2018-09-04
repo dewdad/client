@@ -4,7 +4,7 @@
         <el-alert  title="" type="warning" :closable="false">
             <span class="font12">为了保证快照创建成功，正在创建快照时，您不能修改ECS实例状态，比如停止或重启ECS实例，请耐心等待。</span>
         </el-alert>
-        <zt-form inline-message class="demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
+        <zt-form inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
             <!-- 磁盘ID -->
             <zt-form-item label="磁盘ID">
                 <span>{{rowItem.id}}</span>
