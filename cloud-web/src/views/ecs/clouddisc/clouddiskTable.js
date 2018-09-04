@@ -116,7 +116,7 @@ export default {
             $log(params);
             this.inlineForm.field = params.selValue.field;
             this.inlineForm.value = params.selInputValue;
-            this.this.searchObj.paging.pageIndex = 1;
+            this.searchObj.paging.pageIndex = 1;
             this.getDiskList();
         },
         //获取云盘列表数据

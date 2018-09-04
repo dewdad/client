@@ -48,7 +48,7 @@ export default {
                         trigger: ['submit', 'blur']
                     }
                 ],
-                description: [{required: true, message: '请输入磁盘描述', trigger: ['submit', 'change']}]
+                description: [{required: true, message: '请输入磁盘描述', trigger: ['submit']}]
             }
         };
     },
@@ -56,6 +56,7 @@ export default {
         isShow(val) {
             if (!val) {
                 this.$refs['rowItem'].resetFields();
+                this.$refs['rowItem'].clearValidate();
             }
         }
     },
@@ -93,7 +94,8 @@ export default {
                         })
                         .catch(err => {
                             $log(err);
-                        }).finally(() => {
+                        })
+                        .finally(() => {
                             this.loading = false;
                         });
                 }

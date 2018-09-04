@@ -96,7 +96,7 @@
                                 <el-dropdown-item command>
                                     <router-link tag="div" :to="{name:'app.ecs.expandsize',params:{id:scope.row.id,item:scope.row}}">磁盘扩容</router-link>
                                 </el-dropdown-item>
-                                <el-dropdown-item command class="color999 font12" v-if="scope.row.status!=='in-use' && scope.row.status !=='available' && scope.row.isBoot !== '1'">磁盘扩容</el-dropdown-item>
+                                <el-dropdown-item command class="color999 font12" v-if="scope.row.status!=='in-use' && scope.row.status !=='available' && scope.row.bootable === false">磁盘扩容</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </template>

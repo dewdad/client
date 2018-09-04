@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 15:35:12
+ * @Last Modified time: 2018-09-04 16:11:19
  * ecs模块-云盘
  */
 
@@ -61,8 +61,8 @@ export async function diskRollback({disk_id, snapshot_id}) {
  * @param {*} size 磁盘扩容大小
  */
 export async function resizeDisk({disk_id, size}) {
-    let url = replaceParamVal(API_ECS.disk.resizeDisk, [disk_id]);
-    let res = await http.put(url, {size});
+    let url = replaceParamVal(API_ECS.disk.resizeDisk, [disk_id, size]);
+    let res = await http.put(url);
     return res && res.data;
 }
 

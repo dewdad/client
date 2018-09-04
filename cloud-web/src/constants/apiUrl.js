@@ -98,7 +98,7 @@ export const API_ECS = {
         mountDisk: '/compute/disk/mountVolume', //挂载云盘
         unmoutDisk: '/compute/disk/uninstallVolume', //卸载云盘
         releaseDisk: '/compute/disk/{disk_id}', //释放、删除云盘
-        resizeDisk: ECS_CTRL + '/disk/{disk_id}/resize' //云盘扩容
+        resizeDisk: '/compute/disk/resize/{disk_id}/{size}' //云盘扩容
     },
     snapshot: {
         createSnapshot: '/compute/disk/createSnapshots',
