@@ -13,7 +13,7 @@
     </el-dialog>
 </template>
 <script>
-import {addPlatForm,editPlatForm} from '@/service/usermgr/platform.js';
+import {addPlatForm,editPlatForm} from '@/service/platform.js';
 export default {
     data() {
         return{

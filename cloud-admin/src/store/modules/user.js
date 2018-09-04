@@ -22,23 +22,6 @@ const user = {
         SET_USERINFO(state, userInfo) {
             state.userInfo = userInfo
         },
-        /**
-         * 记录zoons
-         * @param {*} state
-         * @param {*} zoons
-         */
-        SET_ZOONS(state, zoons) {
-            state.zoons = zoons
-        },
-        /**
-         * 记录dept
-         * @param {*} state
-         * @param {*} dept
-         */
-        SET_DEPTS(state, dept) {
-            state.depts = dept
-        },
-
 
     },
     actions: {

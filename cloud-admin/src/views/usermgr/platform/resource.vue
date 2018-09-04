@@ -1,15 +1,33 @@
 <template>
     <div>
-        <page-header>
-            平台管理
-        </page-header>
-        <el-row class="mt20">
+        <el-row>
             <el-col :span="24">
-                <el-form :inline="true"  size="small">
+                <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createPlatForm({},1)">新建平台</el-button>
+                        <el-button type="primary" @click="createPlatForm({},1)">新建</el-button>
                     </el-form-item>
-
+                    <!--<el-form-item>-->
+                        <!--<el-select placeholder="请选择" v-model="type">-->
+                            <!--<el-option label="角色名称" value="name"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="关键字">-->
+                        <!--<el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="选择日期">-->
+                        <!--<el-date-picker-->
+                                <!--v-model="formInline.date"-->
+                                <!--type="datetimerange"-->
+                                <!--size="small"-->
+                                <!--style="width:300px"-->
+                                <!--start-placeholder="开始日期"-->
+                                <!--end-placeholder="结束日期"-->
+                                <!--:default-time="['12:00:00']">-->
+                        <!--</el-date-picker>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item>-->
+                        <!--<el-button type="primary" @click="getplatformList">查询</el-button>-->
+                    <!--</el-form-item>-->
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getplatformList"></el-button>
                     </el-form-item>
@@ -78,7 +96,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateResource from './CreateResource';
 
-import {getplatformList,delPlatForm} from '@/service/usermgr/platform.js';
+import {getplatformList,delPlatForm} from '@/service/platform.js';
 export default {
     name: 'app',
 
@@ -107,6 +125,10 @@ export default {
         return {
             cols,
             searchObj,
+            formInline: {
+                data:'',
+                searchText:''
+            },
             type:'name',
             tableData: []
 

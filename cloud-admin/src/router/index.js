@@ -52,7 +52,7 @@ export default new Router({
                             meta: {
                                 title: '角色管理'
                             },
-                            component: () => import('@/views/usermgr/rolemgr/rolemgr')
+                            component: () => import('@/views/usermgr/rolemgr')
                         },
                         {
                             path: 'rolemgrUser/:id',
@@ -60,7 +60,7 @@ export default new Router({
                             meta: {
                                 title: '关联用户'
                             },
-                            component: () => import('@/views/usermgr/rolemgr/rolemgrUser')
+                            component: () => import('@/views/usermgr/rolemgrUser')
                         },
                         {
                             path: 'account',
@@ -95,6 +95,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/Menu')
                         },
                         {
+                            path: 'edit/:opType/:code',
+                            name: 'app.usrmgr.menumgr.edit',
+                            meta: {
+                                title: '菜单编辑'
+                            },
+                            component: () => import('@/views/usermgr/menumgr/editMenu')
+                        },
+                        {
                             path: 'platform',
                             name: 'app.platform.resource',
                             meta: {
@@ -116,13 +124,10 @@ export default new Router({
                             meta: {
                                 title: '平台类型'
                             },
-                            component: () => import('@/views/usermgr/platform/roletype'),
-                            children:[
-
-                            ]
+                            component: () => import('@/views/usermgr/platform/roletype')
                         } ,
                         {
-                            path: 'bindplatauth/:val',
+                            path: 'bindPlatAuth/:id',
                             name: 'app.platform.bindPlatAuth',
                             meta: {
                                 title: '绑定平台权限'
