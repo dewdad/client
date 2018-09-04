@@ -1,130 +1,100 @@
 <template>
-    <div >
+    <div>
         <!-- 筛选操作 -->
-        <div class="search-box mb10" v-if="!!isShowSearch">
-            <zt-form :inline="true" size="small" class="search-form-inline">
-                <zt-form-item label="">
-                    <el-select value-key="field" v-model="fieldValue" placeholder="请选择">
-                        <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field" :key="field.field"></el-option>
-                    </el-select>
-                </zt-form-item>
-                <zt-form-item label="">
-                    <el-input placeholder="关键字"></el-input>
-                </zt-form-item>
-                <zt-form-item>
-                    <el-button type="primary" @click="getDiskList" icon="el-icon-search">{{ $t('common.searchButtonText') }}</el-button>
-                    <label-dropdown :selectLabelData="selectLabelList" :labelList="allLabelData" @select="getSelLabelList"></label-dropdown>
-                </zt-form-item>
-            </zt-form>
-        </div>
+        <search-box v-if="!!isShowSearch" :searchObjExtra="searchObjExtra" @select="search"></search-box>
+
         <retrieval @select="getRetrieval" :retrievalData="retrievalData"></retrieval>
         <!-- 列表 -->
         <div>
-            <el-table @cell-mouse-enter="showEditName" class="font12 data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">
+            <el-table v-loading="loading" @cell-mouse-enter="showEditName" @filter-change="filterHandler" class="font12 data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">
                 <template v-for="col in cols">
                     <!-- 实例名称 -->
                     <template v-if="col.column=='name'">
-                        <el-table-column width="140" :prop="col.column" :label="col.text" :key="col.column">
+                        <el-table-column min-width="140" :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
                                 <ul>
                                     <li>
                                         <router-link :to="{name:'app.ecs.clouddisc.detail',params:{id:scope.row.id,item:scope.row}}">{{ scope.row.id }}</router-link>
-                                        <reveal-popover :scopeRow="scope.row"></reveal-popover>
+                                        <!-- <el-popover transition="scale-in" placement="top" trigger="hover">
+                                            <div class="nameTip">
+                                                <div>设备名 :
+                                                    <span class="font12">{{scope.row.mount||"-"}}</span>
+                                                </div>
+                                                <div>实例名称/ID :
+                                                    <router-link v-if="!!scope.row.instanceId" class="font12 color-primary" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.instanceId}}">{{scope.row.instanceId}}
+                                                    </router-link>
+                                                    <span>/</span>
+                                                    <span class="color-primary">{{scope.row.name||'-'}}</span>
+                                                </div>
+                                                <div>实例状态 :
+                                                    <span class="font12 color-success">
+                                                        <i class="iconfont icon-running_people mr5"></i>{{scope.row.instanceStatus}}</span>
+                                                </div>
+                                                <div>创建时间 :
+                                                    <span class="font12">{{scope.row.created_at|date}}</span>
+                                                </div>
+                                            </div>
+                                            <i slot="reference" class="iconfont icon-notice_people font12"></i>
+                                        </el-popover> -->
                                     </li>
                                     <li>
                                         <span class="font12 mr10">{{scope.row.name}}</span>
-                                        <AmendName :scope="scope" v-if="scope.row.id === showId"></AmendName>
+                                        <i v-if="scope.row.id === showId" class="amendInfo finger-cursor iconfont icon-edit_people" @click="editinstname(scope.row)"></i>
                                     </li>
                                 </ul>
                             </template>
                         </el-table-column>
                     </template>
-                    <!-- 标签 -->
-                    <template width="50" v-if="col.column=='lable'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
+                    <!-- 磁盘容量 -->
+                    <template v-if="col.column=='size'">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-multiple="false">
                             <template slot-scope="scope">
-                                <el-popover transition="scale-in" placement="top" trigger="hover">
-                                    <div>
-                                        <div v-if="!!scope.row.labels.length">
-                                            <el-row>
-                                                <li v-for="(label,index) in scope.row.labels" :key="index">
-                                                    <span>{{ label.labelKey }}:{{ label.labelValue }}</span>
-                                                </li>
-                                            </el-row>
-                                        </div>
-                                        <div class="labelTip">
-                                            <span class="mr10">{{ $t('common.noData') }}</span>
-                                            <a class="font12" @click="editLabel">{{ $t('ecs.inst.list.dropdownBtns.editLable') }}</a>
-                                        </div>
-                                    </div>
-                                    <i slot="reference" class="iconfont icon-biaoqianmen-tianchong font16"></i>
-                                </el-popover>
-                            </template>
-                        </el-table-column>
-                    </template>
-                    <!-- 磁盘种类 -->
-                    <template v-if="col.column=='diskType'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
-                            <template slot-scope="scope">
-                                <span v-html="scope.row.type">{{scope.row.type}}</span>
+                                {{scope.row.size}}G
                             </template>
                         </el-table-column>
                     </template>
                     <!-- 磁盘状态 -->
                     <template v-if="col.column=='diskStatus'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filtered-value="[status]" :filter-multiple="false">
                             <template slot-scope="scope">
-                                <span class="color090">
-                                    <i class="iconfont icon-chenggong mr5"></i>{{scope.row.diskStatus}}</span>
+                                <zt-status :status="statusArr" :value="scope.row.status" class="text-nowrap status-column"></zt-status>
                             </template>
                         </el-table-column>
                     </template>
-                    <!-- 付费方式 -->
-                    <template v-if="col.column=='volume_type'">
+                    <!-- 挂载到 -->
+                    <template v-if="col.column=='mounted'">
                         <el-table-column :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
-                                {{ $t('ecs.inst.list.freeTrial')}}
+
                             </template>
                         </el-table-column>
                     </template>
-                    <!-- 可用区 -->
-                    <template v-if="col.column=='bootable'">
+                    <!-- 描述 -->
+                    <template v-if="col.column=='desc'">
                         <el-table-column :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
-                                <span>{{scope.row.zone}}</span>
-                                <br>
-                                <span>{{scope.row.zone}}</span>
+                                <span>{{scope.row.description}}</span>
                             </template>
                         </el-table-column>
                     </template>
-                    <!-- 磁盘属性 -->
-                    <template v-if="col.column=='isBoot'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                    <!-- 创建时间 -->
+                    <template v-if="col.column=='createTime'">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column" >
                             <template slot-scope="scope">
-                                {{scope.row.isBoot === '1' ? '系统盘' : '数据盘' }}
-                            </template>
-                        </el-table-column>
-                    </template>
-                    <!-- 快照数量 -->
-                    <template v-if="col.column=='countSnapshot'">
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                            <template slot-scope="scope">
-                                <el-tag>
-                                    {{scope.row.countSnapshot}}
-                                </el-tag>
+                                {{scope.row.created_at|date}}
                             </template>
                         </el-table-column>
                     </template>
                 </template>
                 <!-- 操作 -->
                 <template>
-                    <el-table-column label="操作" key="op" width="280">
+                    <el-table-column label="操作" key="op" class-name="option-column" width="280">
                         <template slot-scope="scope">
                             <!-- 创建快照 -->
                             <span @click="createSnap(scope.row)" class="btn-linker">创建快照</span>
                             <b class="link-division-symbol"></b>
-                            <!-- 设置自动快照策略 -->
-                            <a @click="setAutoSnap(scope.row)" class="btn-linker">设置自动快照策略</a>
+                            <!-- 创建备份 -->
+                            <a @click="setAutoSnap(scope.row)" class="btn-linker">创建备份</a>
                             <b class="link-division-symbol"></b>
                             <!-- 更多 -->
                             <el-dropdown @command="handleCommand" class="font12" trigger="click" placement="bottom-start">
@@ -174,12 +144,11 @@
             </el-table>
         </div>
         <div class="pagination">
-            <el-pagination background :current-page="searchObj.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+            <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.paging.pageIndex" @current-change="handleCurrentChange" :page-size="searchObj.paging.limit" layout="total, prev, pager, next" :total="searchObj.paging.totalItems">
             </el-pagination>
         </div>
-
-        <!-- 对话框 编辑标签 -->
-        <edit-label-dialog ref="editLabelDialog" />
+        <!-- 编辑磁盘名称 -->
+        <edit-name ref="EditName" />
         <!-- 对话框 创建快照 -->
         <create-snap-dialog ref="CreateSnapDialog" />
         <!-- 对话框 设置自动快照策略 -->

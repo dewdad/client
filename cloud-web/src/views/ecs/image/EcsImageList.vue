@@ -88,7 +88,7 @@
                 </el-table>
             </div>
             <div class="pagination">
-                <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+                <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.paging.pageIndex" @current-change="handleCurrentChange" :page-size="searchObj.limit" layout="total, prev, pager, next" :total="searchObj.paging.totalItems">
                 </el-pagination>
             </div>
         </div>

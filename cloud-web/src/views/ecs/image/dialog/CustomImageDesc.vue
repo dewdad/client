@@ -6,7 +6,7 @@
                 <zt-form-item label="自定义镜像名称" prop="name">
                     <div>
                     <el-input size="small" v-model="ruleForm.name"></el-input>
-                    <span class="input-help">长度为2-128个字符，不能以特殊字符及数字开头，只可包含特殊字符中的"."，"_"或"-"。</span>
+                    <span class="input-help">长度为2-64个字符，不能以特殊字符及数字开头，只可包含特殊字符中的"."，"_"或"-"。</span>
                     </div>
                 </zt-form-item>
                 <!-- 镜像描述 -->
@@ -36,7 +36,8 @@ export default {
             ruleForm: {
                 id: '',
                 name: '',
-                protected: false
+                protected: false,
+                public: ''
             },
             rules: {
                 name: [
@@ -57,8 +58,7 @@ export default {
                         trigger: ['submit', 'blur']
                     }
                 ]
-            },
-            options: [{value: '选项1', label: '黄金糕'}, {value: '2', label: '黄金'}]
+            }
         };
     },
     props: {},
@@ -80,6 +80,7 @@ export default {
             this.ruleForm.id = rowItem.id;
             this.ruleForm.name = rowItem.name;
             this.ruleForm.protected = rowItem.protected;
+            this.ruleForm.public = rowItem.visibility;
             this.isShow = true;
 
             return new Promise((resolve, reject) => {
@@ -104,8 +105,9 @@ export default {
             //imageId,type,name,description
             let data = {
                 imageId: this.rowItem.id,
-                type: 'desc',
-                description: this.ruleForm.description
+                is_protected: this.ruleForm.protected,
+                is_public: false,
+                name: this.ruleForm.name
             };
             this.$refs.ruleForm.validate(valid => {
                 if (valid) {

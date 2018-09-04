@@ -14,7 +14,7 @@
                 <span class="font12 color-success"><i class="iconfont icon-running_people mr5"></i>{{scopeRow.instanceStatus}}</span>
             </div>
             <div>创建时间 :
-                <span class="font12">{{scopeRow.createDate}}</span>
+                <span class="font12">{{scopeRow.created_at|date}}</span>
             </div>
         </div>
         <i slot="reference" class="iconfont icon-notice_people font12"></i>
