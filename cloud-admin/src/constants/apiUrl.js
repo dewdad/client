@@ -19,7 +19,7 @@ export const SYSCONFIG = {
     getConfigList: SYS + '/systemConfig/list',
     addConfig: SYS + '/systemConfig/add',
     editConfig: SYS + '/systemConfig/update',
-
+    delConfig: SYS + '/systemConfig/delete/',
 };
 // 概览
 export const OVERVIEW = {
