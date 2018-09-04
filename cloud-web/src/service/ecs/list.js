@@ -90,14 +90,11 @@ export async function saveInstFlavor({instanceId, flavorId}) {
 
 /**
  * 实例列表：开关机操作:开机、软关机、硬关机、软重启、硬重启
- * type:2开机start、3关机stop、1重启reboot、
+ * type:1开机os-start、2软关机os-stop-soft、3硬关机os-stop-hard、4软重启os-reboot-soft、5硬重启os-reboot-hard
  */
-export async function ecsInstAction(instanceId, actionReq, type) {
-    let url = replaceParamVal(API_ECS.inst.actionInst, [instanceId]);
-    let res = await http.post(url, {
-        actionReq,
-        type
-    });
+export async function ecsInstAction(instanceId, type) {
+    let url = replaceParamVal(API_ECS.inst.actionInst, [instanceId, type]);
+    let res = await http.post(url, {});
     return res && res.data;
 }
 
@@ -106,7 +103,7 @@ export async function ecsInstAction(instanceId, actionReq, type) {
  */
 export async function editInstInfo({instanceId, name, remark}) {
     let url = replaceParamVal(API_ECS.inst.editInstInfo, [instanceId]);
-    let res = await http.post(url, {name, remark});
+    let res = await http.put(url, {name, remark});
     return res && res.data;
 }
 
@@ -124,7 +121,7 @@ export async function deleteEcsInstList({instanceId /*, releaseFloatIp = false, 
  */
 export async function createCustomImage({ecsId, imageName, imageDesc}) {
     let url = API_ECS.images.createImage;
-    let res = await http.post(replaceParamVal(url, [ecsId]), {name: imageName});
+    let res = await http.post(url, {ecsId, imageName, imageDesc});
     return res && res.data;
 }
 

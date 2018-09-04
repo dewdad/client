@@ -18,7 +18,7 @@
     </el-dialog>
 </template>
 <script>
-import {addPlatAuth,editPlatAuth} from '@/service/usermgr/platform.js';
+import {addPlatAuth,editPlatAuth} from '@/service/platform.js';
 export default {
     data() {
         return{

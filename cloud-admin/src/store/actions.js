@@ -10,7 +10,5 @@ export default {
             status: false
         });
         commit('user/SET_USERINFO', {});
-        commit('user/SET_ZOONS', {});
-        commit('user/SET_DEPTS', {});
     }
 };
