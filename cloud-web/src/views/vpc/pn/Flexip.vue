@@ -56,7 +56,7 @@
         </el-table-column>
         <el-table-column prop="name" label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <a @click="bindFlexFn()">绑定</a> | 
+                <a @click="bindFlexFn(scope.row)">绑定</a> | 
                 <a>解绑</a> | 
                 <a>释放</a>
             </template>
@@ -87,6 +87,7 @@ import searchBox from '@/components/search/SearchBox';
 import Create from './Create';
 import BindFLexIP from './dialog/BindFLexIP';
 import {queryFlexIP} from '@/service/ecs/network.js';
+import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
     { field: 'id', label: '浮动IP地址',inputval:'', tagType: 'ID' }
@@ -108,7 +109,8 @@ export default {
             total: 0,
             listData: {},
             fields,
-            searchObjExtra
+            searchObjExtra,
+            exampleList: []
         };
     },
     computed: {
@@ -116,8 +118,9 @@ export default {
             return this.listData ? this.listData.data || [] : [];
         }
     },
-    created() {
-        this.fetchData();
+    async created() {
+        await this.fetchData();
+        await this.getInstList();
     },
     methods: {
         sizeChange(val) {
@@ -161,17 +164,39 @@ export default {
             $log(params);
         },
         // 绑定浮动Ip
-        bindFlexFn(){
+        bindFlexFn(params){
             let BindFLexIP = this.$refs.BindFLexIP;
             if (BindFLexIP) {
-                BindFLexIP.show({
-                    type: 'create'
-                }).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
-                });
+                BindFLexIP.show(params, this.exampleList)
+                    .then(ret => {
+                        if (ret) {
+                            this.fetchData();
+                        }
+                    });
             }
+        },
+        // 获取实例列表
+        getInstList() {
+            let params = {
+                pageIndex: 1,
+                limit: 10,
+                offset: 1
+            };
+            getEcsInstList(params)
+                .then(res => {
+                    if (res && res.data) {
+                        let data = res.data;
+                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
+                            let dataList = data.data || [];
+                            this.exampleList = dataList.data;
+                            $log(this.exampleList);
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                    self.loading = false;
+                });
         }
     },
     components: {

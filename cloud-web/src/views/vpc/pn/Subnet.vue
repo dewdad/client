@@ -35,45 +35,38 @@
             </zt-form>
         </div>
         <!-- 表格 -->
-        <el-table :data="tableData" style="width: 100%" row-class-name="data-list" stripe header-row-class-name="data-list" border class="data-list">
+        <!-- <el-table v-if="listData" :data="listData" style="width: 100%" row-class-name="data-list" stripe header-row-class-name="data-list" border class="data-list">
             <el-table-column label="子网ID/名称" :min-width="110" show-overflow-tooltip>
                 <template slot-scope="scope">
                     <div class="text-nowrap">{{scope.row.id}}</div>
                     <div class="text-nowrap">{{scope.row.name}}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="实例数" :min-width="50">
+            <el-table-column prop="cidr" label="网段" :min-width="90">
+            </el-table-column>
+            <el-table-column label="DHCP" :min-width="50">
                 <template slot-scope="scope">
-                    <router-link to="#">
-                        <el-tag>{{scope.row.countInstance}}</el-tag>
-                    </router-link>
+                    {{scope.row.enable_dhcp ? '已激活' : '未激活'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="subnet" label="网段" :min-width="90">
-            </el-table-column>
-            <el-table-column label="状态" :min-width="50">
+            <el-table-column label="IP版本" :min-width="50">
                 <template slot-scope="scope">
-                    {{scope.row.networkStatus}}
+                    IPV{{scope.row.ip_version}}
                 </template>
             </el-table-column>
-            <el-table-column label="所在区域" :min-width="50">
-                <template slot-scope="scope">
-                    {{scope.row.zone | zone}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ipNum" label="可用私有IP数" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="createDate" label="创建时间" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="remark" label="描述" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="firewallName" label="防火墙" :min-width="60">
+            <el-table-column prop="gateway_ip" label="网关IP" :min-width="70">
             </el-table-column>
             <el-table-column prop="name" label="操作" :min-width="70">
                 <template slot-scope="scope">
                     <a @click="editSubnet(scope.row)">编辑</a> | 
                     <a @click="deleteSubnet(scope.row)">删除</a>
                 </template>
+            </el-table-column>
+        </el-table> -->
+        <el-table v-if="tableData" :data="tableData" style="width: 100%" row-class-name="data-list" stripe header-row-class-name="data-list" border class="data-list">
+            <el-table-column
+                prop="name"
+                label="日期">
             </el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -121,14 +114,26 @@ export default {
             pageIndex: 1,
             limit: 10,
             total: 0,
-            listData: {}
-            // listData: mockData.assetsList
+            listData: {},
+            tableData: [
+                {
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, 
+                {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                }
+            ]
+
         };
     },
     computed: {
-        tableData() {
-            return this.listData ? this.listData.records || [] : [];
-        }
+        // tableData() {
+        //     return this.listData;
+        // }
     },
     methods: {
         editSubnet(row) {
@@ -194,18 +199,21 @@ export default {
                 // 发送请求
                 let params = {
                     pageIndex: this.pageIndex,
-                    limit: this.limit
+                    limit: this.limit,
+                    pnetId: 'vpc-28ijaat7y',
+                    offset: 0,
+                    vpcId: this.vpcId
                 };
 
                 if (this.selestSearchOptionType) {
                     params[this.selestSearchOptionType] = this.inputval;
                 }
 
-                let ret = await getSubnetByNetId(this.vpcId);
+                let ret = await getSubnetByNetId(params);
                 $log('获取子网列表 <-', ret);
-                if (ret && ret.result) {
-                    this.listData = ret.result;
-                    this.total = ret.result.total;
+                if (ret) {
+                    this.listData = ret.data;
+                    this.total = ret.total;
                 } else {
                     throw new Error('无数据。');
                 }
@@ -220,7 +228,7 @@ export default {
         if (vpcId) {
             this.vpcId = vpcId;
         }
-        this.queryNetworkByID();
+        // this.queryNetworkByID();
         this.fetchData();
     }
 };

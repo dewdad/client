@@ -4,17 +4,17 @@
         :visible.sync="isShow"
         width="45%"
         class="BindFLexIPDialog">
-        <zt-form inline-message :model="flexData" label-width="100px" style="width:392px;" size="small"  ref="flexData" :show-message="false">
+        <zt-form inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small"  ref="ruleForm" :show-message="false">
             <zt-form-item label="IP地址">
-                <el-input size="small" v-model="flexData.felxIp"></el-input>
+                <el-input size="small" disabled v-model="ruleForm.felxIp"></el-input>
             </zt-form-item>
-            <zt-form-item label="ECS实例" prop="flexData.ecsCase">
-                <el-select v-model="flexData.ecsCase" placeholder="请选择">
+            <zt-form-item label="ECS实例" prop="ecsCase">
+                <el-select v-model="ruleForm.ecsCase" placeholder="请选择">
                     <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    v-for="item in instOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
                     </el-option>
                 </el-select>
             </zt-form-item>
@@ -26,33 +26,33 @@
     </el-dialog>
 </template>
 <script>
+import {bindFloatIP} from '@/service/ecs/network.js';
 export default {
     data() {
         return {
             isShow: false,
             resolve: null,
             reject: null,
-            flexData:{
+            floatId: '',
+            ruleForm:{
                 felxIp:'',
                 ecsCase: ''
             },
+            instOptions: [],
             rules: {
                 ecsCase: [
-                    { required: true, message: '请选择ECS实例', trigger: 'change' }
+                    { required: true, message: '请选择ECS实例', trigger: 'submit' }
                 ],
-            },
-            options: [
-                {
-                    value: '选项1',
-                    label: '黄金糕'
-                }
-            ],
+            }
         }; 
     },
+    computed: {
+    },
     methods: {
-        show(rowItem) {
-            this.flexData.ecsId = rowItem.id;
-
+        show(params, rowItem) {
+            this.ruleForm.felxIp = params.floatingIpAddress;
+            this.floatId = params.id;
+            this.instOptions = rowItem;
             this.isShow = true;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -75,6 +75,37 @@ export default {
             });
         },
         confirm() {
+            let ruleForm = this.$refs.ruleForm;
+            if (!this.$refs.ruleForm) return false;
+
+            // 表单验证
+            ruleForm.validate(valid => {
+                if (valid) {
+                    alert(valid);
+                    this.bindFloatIPFn();
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        // 确定绑定浮动IP
+        bindFloatIPFn() {
+
+            bindFloatIP(this.ruleForm.ecsCase, this.floatId)
+                .then(res => {
+                    if (res && res.data) {
+                        let data = res.data;
+                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
+                            let dataList = data.data || [];
+                            $log(dataList);
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error('bindFloatIPFn', e);
+                    self.loading = false;
+                });
         }
     }
 };
