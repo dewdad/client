@@ -90,9 +90,9 @@ export const API_ECS = {
         vncModify: ECS_CTRL + '/vnc/modify'
     },
     disk: {
-        getDiskList: ECS_CTRL + '/disk/list',
+        getDiskList: '/compute/disk/list',
         setDiskSnapshotPolicy: ECS_CTRL + '/disk/snapshot-policy',
-        updateDisk: ECS_CTRL + '/disk/{disk_id}',
+        updateDisk: '/compute/disk/{disk_id}',
         diskRollback: ECS_CTRL + '/disk/{disk_id}/rollback/{snapshot_id}', //回滚磁盘
         mountDisk: ECS_CTRL + '/disk/{disk_id}/mount', //挂载云盘
         unmoutDisk: ECS_CTRL + '/disk/{disk_id}/unmount', //卸载云盘
@@ -114,7 +114,7 @@ export const API_ECS = {
         createImage: '/compute/ecs/createImage/{instanceId}',
         getImages: 'compute/image/list',
         imageGroups: ECS_CTRL + '/images/groups',
-        updateImages: '/compute/images/{imageId}',
+        updateImages: '/compute/image/{imageId}',
         deleteImages: '/compute/image/{imageId}'
     },
     floatIp: {

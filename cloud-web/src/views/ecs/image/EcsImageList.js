@@ -39,16 +39,28 @@ export default {
                 type: 'progress'
             },
             {
-                value: 'error',
-                text: '错误',
+                value: 'saving',
+                text: '保存中',
+                className: 'color-success',
+                type: 'progress'
+            },
+            {
+                value: 'killed',
+                text: '破坏的',
                 className: 'color-danger',
                 icon: 'zticon-overdue_people'
             },
             {
-                value: 'deactivated',
-                text: '无效',
+                value: 'deleted',
+                text: '已删除',
                 className: 'color-danger',
-                icon: 'zticon-overdue_people'
+                type: 'zticon-overdue_people'
+            },
+            {
+                value: 'pending_delete',
+                text: '删除中',
+                className: 'color-danger',
+                icon: 'progress'
             }
         ];
 
@@ -119,6 +131,7 @@ export default {
             $log(params);
             this.inlineForm.field = params.selValue.field;
             this.inlineForm.value = params.selInputValue;
+            this.this.searchObj.paging.pageIndex = 1;
             this.getEcsImageList();
         },
 
@@ -132,6 +145,7 @@ export default {
                 }
             };
             this.loading = true;
+            this.tableData = [];
             getImages(params)
                 .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
@@ -139,7 +153,7 @@ export default {
                         let resData = res.data;
                         if (resData && resData.data) {
                             this.tableData = resData.data || [];
-                            this.searchObj.totalItems = resData.total || 0;
+                            this.searchObj.paging.totalItems = resData.total || 0;
                             console.log('getEcsImageList tableData', this.tableData);
                         }
                     }
@@ -193,7 +207,7 @@ export default {
             console.log('importImage:', rowItem);
             this.$refs.CustomImageDesc.show(rowItem)
                 .then(ret => {
-                    rowItem.description = ret;
+                    this.getEcsImageList();
                 })
                 .catch(err => {
                     if (err) {

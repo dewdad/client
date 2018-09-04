@@ -1,17 +1,30 @@
 import LabelDropdown from '@/components/label/LabelDropdown';
 import Retrieval from '@/components/retrieval/retrieval';
-import AmendName from '@/components/amend/AmendName';
-import EditLabelDialog from './../inst/ecsDialog/editLabelDialog';
+import searchBox from '@/components/search/SearchBox';
 import CreateSnapDialog from './../inst/ecsDialog/CreateSnapDialog';
 import SetAutoSnapDialog from './../inst/ecsDialog/SetAutoSnapDialog';
 import ModifyDiskDescripDialog from './../inst/ecsDialog/ModifyDiskDescripDialog';
 import ModifyDiskPropDialog from './../inst/ecsDialog/ModifyDiskPropDialog';
 import MountDataDisk from './dialog/MountDataDisk';
+import EditName from './dialog/EditName';
+import {getDiskList, resizeDisk, unmoutDisk, releaseDisk} from '@/service/ecs/disk/disk.js';
 
-import {getDiskList,resizeDisk,unmoutDisk,releaseDisk} from '@/service/ecs/disk/disk.js';
-
-import RevealPopover from '@/components/popover/RevealPopover';
-
+let statusArr = [
+    {text: '全部', state: true, value: ''},
+    {
+        text: '使用中',
+        state: false,
+        value: 'in-use',
+        className: 'color-success',
+        icon: 'zticon-running_people'
+    },
+    {
+        text: '待挂载',
+        value: 'available',
+        className: 'color-success',
+        icon: 'zticon-running_people'
+    }
+];
 export default {
     name: 'ClouddiskTable',
     components: {
@@ -19,18 +32,17 @@ export default {
         // RegionRadio,
         LabelDropdown,
         Retrieval,
-        EditLabelDialog,
         CreateSnapDialog,
         SetAutoSnapDialog,
         ModifyDiskDescripDialog,
         ModifyDiskPropDialog,
-        AmendName,
         MountDataDisk,
-        RevealPopover
+        searchBox,
+        EditName
     },
-    props:['isShowSearch'],
+    props: ['isShowSearch'],
     data() {
-        let fields = [{field: 'diskName', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
+        let fields = [{field: 'name', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
         let searchObjExtra = {
             frominfo: '',
             fields: fields,
@@ -39,28 +51,24 @@ export default {
 
         let cols = [
             {column: 'name', text: '磁盘ID/磁盘名称', width: '20%'},
-            {column: 'lable', text: '标签', width: '4%'},
             {
-                column: 'diskType',
-                text: '磁盘种类',
-                width: '4%',
-                dropdowns: [{key: 0, text: '全部', state: true, value: ''}, {key: 1, text: 'SSD云盘', state: false, value: 'SSD'}, {key: 2, text: '高效云盘', state: false, value: 'SATA'}]
+                column: 'size',
+                text: '磁盘容量',
+                width: '4%'
             },
             {
                 column: 'diskStatus',
                 text: '磁盘状态',
                 width: '4%',
-                dropdowns: [{key: 0, text: '全部', state: true, value: ''}, {key: 1, text: '使用中', state: false, value: 'in-use'}, {key: 2, text: '待挂载', state: false, value: 'available'}]
+                dropdowns: statusArr
             },
-            {column: 'volume_type', text: '付费方式', width: '4%'},
-            {column: 'bootable', text: '可用区', width: '4%'},
+            {column: 'mounted', text: '挂载到', width: '4%'},
+            {column: 'desc', text: '磁盘描述', width: '4%'},
             {
-                column: 'isBoot',
-                text: '磁盘属性',
-                width: '4%',
-                dropdowns: [{key: 0, text: '全部', state: true, value: ''}, {key: 1, text: '系统盘', state: false, value: '1'}, {key: 2, text: '数据盘', state: false, value: '0'}]
-            },
-            {column: 'countSnapshot', text: '快照数量', width: '10%'}
+                column: 'createTime',
+                text: '创建时间',
+                width: '4%'
+            }
         ];
         let searchObj = {
             //分页
@@ -88,46 +96,88 @@ export default {
             {labelKey: '2d3d', labelvalue: 'f3ff'}
         ];
         return {
-            region: '',
+            loading: false,
             searchObjExtra,
+            statusArr,
             cols,
             tableData: [],
             searchObj,
+            inlineForm: {
+                field: '',
+                value: ''
+            },
             labelQueryData: [],
             allLabelData,
             fieldValue: '',
             retrievalData: [],
             selectLabelList: [],
-            showId: ''
+            showId: '',
+            status: ''
         };
-    },    
+    },
     created() {
         this.getDiskList();
     },
     methods: {
-        filterHandler(value, row, column) {
-            const property = column['property'];
-            return row[property] === value;
+        filterHandler(filters) {
+            let values = Object.values(filters);
+            let value = values[0][0];
+            if (value) {
+                this.status = value;
+            } else {
+                this.status = '';
+            }
+            this.getDiskList();
         },
-
+        search(params) {
+            $log(params);
+            this.inlineForm.field = params.selValue.field;
+            this.inlineForm.value = params.selInputValue;
+            this.this.searchObj.paging.pageIndex = 1;
+            this.getDiskList();
+        },
         //获取云盘列表数据
         getDiskList() {
             let params = {
                 paging: this.searchObj.paging,
                 fileds: {
-                    [this.searchObjExtra.selField.field]: this.searchObjExtra.selField.inputval
-                }
+                    [this.inlineForm.field]: this.inlineForm.value
+                },
+                status: this.status
             };
-            getDiskList(params).then(res => {
-                if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    console.log('getDiskList', res);
-                    let resData = res.result;
-                    if (resData && resData.records) {
-                        this.tableData = resData.records || [];
-                        this.searchObj.totalItems = resData.total || 0;
-                        console.log('getInstanceDetail tableData', this.tableData);
+            this.loading = true;
+            this.tableData = [];
+            getDiskList(params)
+                .then(res => {
+                    if (res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.log('getDiskList', res);
+                        let resData = res.data;
+                        if (resData && resData.data) {
+                            this.tableData = resData.data || [];
+                            this.searchObj.paging.totalItems = resData.total || 0;
+                            console.log('getInstanceDetail tableData', this.tableData);
+                        }
                     }
-                }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        handleSizeChange: function(params) {
+            console.log('params:', params);
+        },
+
+        handleCurrentChange: function(params) {
+            this.searchObj.paging.pageIndex = params;
+            this.getDiskList();
+        },
+        /**
+         * 编辑磁盘名称
+         * @param {*} rowItem
+         */
+        editinstname(rowItem) {
+            this.$refs.EditName.show(rowItem).then(res => {
+                this.getDiskList();
             });
         },
 
@@ -151,7 +201,8 @@ export default {
                     `;
                     break;
                 }
-                default: {}
+                default: {
+                }
             }
             const h = this.$createElement;
             let message = h('div', null, [
@@ -160,7 +211,7 @@ export default {
                     h('p', {
                         attr: {slot: 'description'},
                         domProps: {
-                            innerHTML:msg.alertInfo
+                            innerHTML: msg.alertInfo
                         }
                     })
                 ])
@@ -168,9 +219,7 @@ export default {
             //卸载磁盘
             this.$confirm(message, '卸载磁盘').then(() => {
                 //提交后台,卸载磁盘
-                unmoutDisk({disk_id:rowItem.id})
-                    .then();
-               
+                unmoutDisk({disk_id: rowItem.id}).then();
             });
         },
 
@@ -194,15 +243,13 @@ export default {
             ]);
             //释放磁盘
             this.$confirm(message, '释放磁盘').then(() => {
-                //提交后台,释放磁盘 
-                releaseDisk({disk_id:rowItem.id})
-                    .then();               
+                //提交后台,释放磁盘
+                releaseDisk({disk_id: rowItem.id}).then();
             });
         },
 
         //云盘扩容
-        resizeDisk(){
-
+        resizeDisk() {
             //提交后台
             resizeDisk();
         },
@@ -310,10 +357,9 @@ export default {
         /**
          * 挂载数据盘
          */
-        mountDataDiskFn (rowItem) {
-            console.log('MountDataDisk:',rowItem); 
-            this.$refs.MountDataDisk
-                .show(rowItem)
+        mountDataDiskFn(rowItem) {
+            console.log('MountDataDisk:', rowItem);
+            this.$refs.MountDataDisk.show(rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.$message.success('操作成功');
@@ -325,13 +371,13 @@ export default {
                     } else {
                         console.log('取消');
                     }
-                }); 
+                });
         },
         /**
          * 更多菜单指令事件
          */
         handleCommand({handle, rowItem}) {
-            if(!handle && !rowItem) return;
+            if (!handle && !rowItem) return;
             if (handle && this[handle]) {
                 this[handle](rowItem);
             }

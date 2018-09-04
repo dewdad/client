@@ -241,16 +241,3 @@
 .el-table.data-list th .cell .el-table__column-filter-trigger {
     margin-left: 4px;
 }
-
-.el-table-filter {
-    border: none;
-    box-shadow: none;
-    background: none;
-    .el-table-filter__list{
-        position: relative;
-        left: 5px;
-        border: 1px solid #c3c5c6;
-        background: #fff;
-        box-shadow: 0px 2px 7px 0px rgba(0, 0, 0, 0.25);
-    }
-}

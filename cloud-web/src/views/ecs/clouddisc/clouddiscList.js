@@ -1,32 +1,33 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
-import RegionRadio from '@/components/regionRadio/RegionRadio';
+import searchBox from '@/components/search/SearchBox';
 import ClouddiskTable from './clouddiskTable.vue';
 
+let fields = [{field: 'name', label: '磁盘名称', tagType: 'INPUT'}];
 
+let searchObjExtra = {
+    fields: fields,
+    selField: fields[0]
+};
 export default {
     components: {
         PageHeader,
-        RegionRadio,
-        ClouddiskTable       
+        searchBox,
+        ClouddiskTable
     },
     data() {
-       
         return {
-            region: '',  
+            region: '',
             tableData: [],
-          
+            searchObjExtra,
             labelQueryData: [],
-          
             fieldValue: '',
             retrievalData: [],
             selectLabelList: [],
             showId: ''
         };
-    },    
+    },
     created() {
         //this.getDiskList();
     },
-    methods: {        
-        
-    }
+    methods: {}
 };

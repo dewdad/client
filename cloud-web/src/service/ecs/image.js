@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-03 20:53:23
+ * @Last Modified time: 2018-09-04 10:39:44
  * ecs模块 镜像接口
  */
 
@@ -20,6 +20,7 @@ import {replaceParamVal} from '@/utils/utils';
  * }
  */
 export async function getImages(data) {
+    data['paging']['offset'] = (data.paging.pageIndex - 1) * data.paging.limit;
     let res = await http.get(API_ECS.images.getImages, {
         params: data
     });
@@ -31,14 +32,13 @@ export async function getImages(data) {
  * @param {*} data
  * data:{
  * imageId:imageId
- * type:类型，如只修改名称 则该值为name,修改备注为desc
- * name: rue表示查询自定义镜像， false表示查询公共镜像
- * description：
+ * is_protected
+ * is_public
  * }
  */
-export async function updateImage({imageId, type, name, description}) {
+export async function updateImage({imageId, is_protected, name, is_public}) {
     let url = replaceParamVal(API_ECS.images.updateImages, [imageId]);
-    let res = await http.put(url, {type, name, description});
+    let res = await http.put(url, {is_protected, name, is_public});
     return res && res.data;
 }
 
