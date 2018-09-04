@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 10:37:59
+ * @Last Modified time: 2018-09-04 15:35:12
  * ecs模块-云盘
  */
 
@@ -39,10 +39,11 @@ export async function setDiskSnapshotPolicy({disk_ids, policy_id, source_page}) 
 }
 
 //更新磁盘，修改磁盘描述
-export async function updateDisk(id, name) {
+export async function updateDisk(id, name, remark = '') {
     let url = replaceParamVal(API_ECS.disk.updateDisk, [id]);
     let res = await http.put(url, {
-        name: name
+        name: name,
+        remark
     });
     return res && res.data;
 }
@@ -67,27 +68,33 @@ export async function resizeDisk({disk_id, size}) {
 
 /**
  * 挂载云盘
- * @param {*} disk_id 云盘id
+ * @param {*} volumeId 云盘id
  * @param {*} instanceId 实例ID
- * @param {*} imageRef 镜像ID
- * @param {*} autoDelSnapshot 是否随磁盘删除快照
  */
-export async function mountDisk({disk_id, instanceId, imageRef, autoDelSnapshot}) {
-    let url = replaceParamVal(API_ECS.disk.mountDisk, [disk_id]);
-    let res = await http.post(url, {instanceId, imageRef, autoDelSnapshot});
+export async function mountDisk({volumeId, instanceId}) {
+    let url = replaceParamVal(API_ECS.disk.mountDisk, [volumeId]);
+    let res = await http.put(url, {instanceId, volumeId});
     return res && res.data;
 }
 
 //卸载云盘
-export async function unmoutDisk({disk_id}) {
-    let url = replaceParamVal(API_ECS.disk.unmoutDisk, [disk_id]);
-    let res = await http.delete(url);
+export async function unmoutDisk({volumeId, instanceId}) {
+    let res = await http.put(API_ECS.disk.unmoutDisk, {volumeId, instanceId});
     return res && res.data;
 }
 
 //释放、删除云盘
-export async function releaseDisk({disk_id}) {
-    let url = replaceParamVal(API_ECS.disk.releaseDisk, [disk_id]);
+export async function releaseDisk({volumeId}) {
+    let url = replaceParamVal(API_ECS.disk.releaseDisk, [volumeId]);
     let res = await http.delete(url);
+    return res && res.data;
+}
+
+/**
+ * 创建备份
+ * @param {*} param0
+ */
+export async function createBackup({volumeId, name, description = ''} = {}) {
+    let res = await http.post(API_ECS.disk.createBackup, {volumeId, name, description});
     return res && res.data;
 }
