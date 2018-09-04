@@ -34,19 +34,22 @@
 
                                         </td>
                                     </tr>
+                                    <!-- 状态 -->
                                     <tr>
                                         <td>{{ $t('common.status') }}：</td>
                                         <td>
                                             <zt-status :status="ECS_STATUS" :value="ecsInst.status" ></zt-status>
                                         </td>
                                     </tr>
+                                    <!-- 描述 -->
                                     <tr>
                                         <td>{{ $t('common.description') }}：</td>
                                         <td class="text-ellipsis" v-tooltip="{content: ecsInst.remark, fold: true}">{{ ecsInst.remark || '-'}}</td>
                                     </tr>
+                                    <!-- 实例规格 -->
                                     <tr>
                                         <td>{{ $t('ecs.inst.details.instSpecification') }}：</td>
-                                        <td>{{ ecsInst.flavor.name }}</td>
+                                        <td>{{ ecsInst.flavor && ecsInst.flavor.name }}</td>
                                     </tr>
                                     <!-- 登录凭证 -->
                                     <tr>
@@ -77,12 +80,12 @@
                                     <!-- vCPU -->
                                     <tr>
                                         <td>{{ $t('abbr.vcpu') }}：</td>
-                                        <td>{{ecsInst.flavor.vcpus || '-'}}{{$t('common.cpuAlias')}}</td>
+                                        <td>{{ecsInst.flavor && ecsInst.flavor.vcpus || '-'}}{{$t('common.cpuAlias')}}</td>
                                     </tr>
                                     <!-- 内存 -->
                                     <tr>
                                         <td>{{ $t('common.memory') }}：</td>
-                                        <td>{{ecsInst.flavor.ram?(ecsInst.flavor.ram/1024 +'GiB'): '-' }}</td>
+                                        <td>{{ecsInst.flavor && ecsInst.flavor.ram?(ecsInst.flavor.ram/1024 +'GiB'): '-' }}</td>
                                     </tr>
                                     <!-- 磁盘数量 -->
                                     <tr>
