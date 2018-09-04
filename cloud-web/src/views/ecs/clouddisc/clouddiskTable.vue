@@ -47,7 +47,7 @@
                     <template v-if="col.column=='size'">
                         <el-table-column :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-multiple="false">
                             <template slot-scope="scope">
-                                {{scope.row.size}}G
+                                {{scope.row.size}}GB
                             </template>
                         </el-table-column>
                     </template>

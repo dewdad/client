@@ -21,8 +21,15 @@ let statusArr = [
     {
         text: '待挂载',
         value: 'available',
-        className: 'color-success',
-        icon: 'zticon-running_people'
+        className: 'color-primary',
+        icon: 'zticon-recentcreation_peop'
+    },
+    {
+        text: '恢复失败',
+        value: 'error-restoring',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
     }
 ];
 export default {
