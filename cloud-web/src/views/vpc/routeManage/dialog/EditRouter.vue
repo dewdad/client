@@ -9,7 +9,7 @@
             type="warning"
             :closable="false">
         </el-alert>
-        <zt-form class="mt20" inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small"  ref="ruleForm">
+        <zt-form class="mt20" inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small" :rules="rules" ref="ruleForm">
             <!-- 路由名称 -->
             <zt-form-item label="路由名称"  prop="routerName">
                 <el-input v-model="ruleForm.routerName"></el-input>
