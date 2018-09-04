@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 10:37:59
+ * @Last Modified time: 2018-09-04 11:31:41
  * ecs模块-云盘
  */
 
@@ -89,5 +89,14 @@ export async function unmoutDisk({disk_id}) {
 export async function releaseDisk({disk_id}) {
     let url = replaceParamVal(API_ECS.disk.releaseDisk, [disk_id]);
     let res = await http.delete(url);
+    return res && res.data;
+}
+
+/**
+ * 创建备份
+ * @param {*} param0
+ */
+export async function createBackup({volumeId, name, description = ''} = {}) {
+    let res = await http.post(API_ECS.disk.createBackup, {volumeId, name, description});
     return res && res.data;
 }

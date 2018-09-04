@@ -2,7 +2,7 @@ import LabelDropdown from '@/components/label/LabelDropdown';
 import Retrieval from '@/components/retrieval/retrieval';
 import searchBox from '@/components/search/SearchBox';
 import CreateSnapDialog from './../inst/ecsDialog/CreateSnapDialog';
-import SetAutoSnapDialog from './../inst/ecsDialog/SetAutoSnapDialog';
+import CreateBackDialog from './dialog/CreateBackDialog';
 import ModifyDiskDescripDialog from './../inst/ecsDialog/ModifyDiskDescripDialog';
 import ModifyDiskPropDialog from './../inst/ecsDialog/ModifyDiskPropDialog';
 import MountDataDisk from './dialog/MountDataDisk';
@@ -33,7 +33,7 @@ export default {
         LabelDropdown,
         Retrieval,
         CreateSnapDialog,
-        SetAutoSnapDialog,
+        CreateBackDialog,
         ModifyDiskDescripDialog,
         ModifyDiskPropDialog,
         MountDataDisk,
@@ -289,9 +289,7 @@ export default {
         createSnap: function(rowItem) {
             console.log('editLabel:', rowItem);
             this.$refs.CreateSnapDialog.show(rowItem)
-                .then(ret => {
-                    this.$message.success('操作成功');
-                })
+                .then(ret => {})
                 .catch(err => {
                     if (err) {
                         console.log('Error', err);
@@ -301,15 +299,11 @@ export default {
                 });
         },
         /**
-         * 设置自动快照策略
+         * 创建备份
          */
-        setAutoSnap: function(rowItem) {
-            console.log('editLabel:', rowItem);
-            this.$refs.SetAutoSnapDialog.show(rowItem)
-                .then(ret => {
-                    console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
-                })
+        createBack: function(rowItem) {
+            this.$refs.CreateBackDialog.show(rowItem)
+                .then(ret => {})
                 .catch(err => {
                     if (err) {
                         console.log('Error', err);

@@ -94,7 +94,7 @@
                             <span @click="createSnap(scope.row)" class="btn-linker">创建快照</span>
                             <b class="link-division-symbol"></b>
                             <!-- 创建备份 -->
-                            <a @click="setAutoSnap(scope.row)" class="btn-linker">创建备份</a>
+                            <a @click="createBack(scope.row)" class="btn-linker">创建备份</a>
                             <b class="link-division-symbol"></b>
                             <!-- 更多 -->
                             <el-dropdown @command="handleCommand" class="font12" trigger="click" placement="bottom-start">
@@ -152,7 +152,7 @@
         <!-- 对话框 创建快照 -->
         <create-snap-dialog ref="CreateSnapDialog" />
         <!-- 对话框 设置自动快照策略 -->
-        <set-auto-snap-dialog ref="SetAutoSnapDialog" />
+        <create-back-dialog ref="CreateBackDialog" />
         <!-- 对话框 修改磁盘描述 -->
         <modify-disk-descrip-dialog ref="ModifyDiskDescripDialog" />
         <!-- 对话框 修改属性 -->
