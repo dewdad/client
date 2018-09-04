@@ -1,32 +1,33 @@
 <template>
-    <el-dialog title="创建快照" :visible.sync="isShow" width="600px" class="CreateSnapDialog" @close="cancel">
+    <el-dialog title="创建快照" :visible.sync="isShow" width="45%" class="CreateSnapDialog">
         <!-- tip提示 -->
         <el-alert  title="" type="warning" :closable="false">
             <span class="font12">为了保证快照创建成功，正在创建快照时，您不能修改ECS实例状态，比如停止或重启ECS实例，请耐心等待。</span>
         </el-alert>
-        <zt-form inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
+        <zt-form inline-message class="demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
             <!-- 磁盘ID -->
             <zt-form-item label="磁盘ID">
                 <span>{{rowItem.id}}</span>
             </zt-form-item>
             <!-- 实例ID/名称 -->
             <zt-form-item label="实例ID/名称">
+                <span>{{rowItem.instanceId || '-'}}</span>
+                <span>/</span>
                 <span>{{rowItem.name || '-'}}</span>
+            </zt-form-item>
+            <!-- 磁盘属性 -->
+            <zt-form-item label="磁盘属性">
+                <span>{{rowItem.isBoot === '1' ? '系统盘' : '数据盘' }}</span>
             </zt-form-item>
             <!-- 快照名称 -->
             <zt-form-item label="快照名称" prop="snapshotName">
                 <el-input size="small" v-model="ruleForm.snapshotName"></el-input>
-                <span class="input-help">快照名称为2-128个字符，快照名不能以auto开头。</span>
-            </zt-form-item>
-            <!-- 备份描述 -->
-            <zt-form-item label="备份描述" >
-                <el-input size="small" v-model="ruleForm.description"></el-input>
             </zt-form-item>
         </zt-form>
         
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
-            <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
+            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -35,28 +36,17 @@ import {createSnapshot} from '@/service/ecs/snapshot.js';
 
 export default {
     data() {
-        const checkName = (rule, value, callback) => {
-            if (value && value.indexOf('auto') === 0) {
-                callback(new Error('不能以auto开头'));
-                return;
-            }
-            callback();
-        };
         return {
-            loading: false,
             isShow: false,
             resolve: null,
             reject: null,
             rowItem: {},
             ruleForm:{
-                snapshotName: '',
-                description: ''
+                snapshotName: ''
             },
             rules: {
                 snapshotName: [
-                    { required: true, message: '必填项', trigger: ['submit'] },
-                    { min: 2, max: 64, message: '2-128个字符', trigger: ['submit', 'blur'] },
-                    { validator: checkName, message: '不能以auto开头', trigger: ['submit', 'blur'] }
+                    { required: true, message: '必填项', trigger: 'blur' }
                 ]
             }
         };
@@ -64,9 +54,7 @@ export default {
     watch: {
         isShow(val) {
             if(!val){
-                this.ruleForm.snapshotName = '';
-                this.ruleForm.description = '';
-                this.$refs['ruleForm'].clearValidate();
+                this.$refs['ruleForm'].resetFields();
             }
         }
     },
@@ -74,6 +62,7 @@ export default {
         show(rowItem) {
             this.rowItem = rowItem;
             this.isShow = true;
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -83,6 +72,7 @@ export default {
             this.isShow = false;
         },
         cancel() {
+            this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
         setting() {
@@ -96,25 +86,27 @@ export default {
             this.$refs['ruleForm'].validate((valid) => {
                 if (valid) {
                     let data = {
-                        volumeId: this.rowItem.id,
-                        name: this.ruleForm.snapshotName,
-                        description: this.ruleForm.description
+                        diskId: this.rowItem.id,
+                        name: this.ruleForm.snapshotName
                     };
-                    this.loading = true;
                     //提交后台
-                    createSnapshot({...data}).then(
+                    createSnapshot(data).then(
                         res => {
-                            if (res.code === '0000') {
-                                this.hide();
-                                this.$message.success('操作成功');
-                                this.resolve();
-                            }
+                            
+
+                            this.hide();
+                            // this.setting();
+                            this.resolve(data);
+                        },
+                        err => {
+                            this.$alert(err, '提示', {
+                                type: 'error'
+                            });
                         }
-                    ).catch(err => {
-                        $log(err);
-                    }).finally(() => {
-                        this.loading = false;
-                    });
+                    );
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
             });
         }

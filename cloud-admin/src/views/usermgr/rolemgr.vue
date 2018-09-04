@@ -1,13 +1,10 @@
 <template>
     <div>
-        <page-header>
-            角色管理
-        </page-header>
-        <el-row class="mt20">
+        <el-row>
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createRole">新建角色</el-button>
+                        <el-button type="primary" @click="createRole">新建</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -29,7 +26,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>
+                        <el-button type="primary" @click="getRoleList">查询</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getRoleList"></el-button>
@@ -105,7 +102,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import CreateRole from './CreateRole';
+import CreateRole from './dialog/CreateRole';
 import {getRoleList} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',

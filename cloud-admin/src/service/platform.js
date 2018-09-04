@@ -1,6 +1,6 @@
-import http from '../../utils/http';
-import { PlatForm} from '../../constants/apiUrl';
-import { replaceParamVal } from '../../utils/utils';
+import http from '../utils/http';
+import { PlatForm} from '../constants/apiUrl';
+//import { replaceParamVal } from '../utils/utils';
 
 /**
  *查询平台列表
@@ -48,7 +48,7 @@ export async function searchPlatAuth(data) {
  */
 export async function delPlatAuth(data) {
     console.log('data',data);
-    var utl=PlatForm.delPlatAuth+'/'+data.id;
+    var utl = PlatForm.delPlatAuth + '/' + data.id;
     let response = await http.delete(utl);
     return response.data;
 }
@@ -58,7 +58,7 @@ export async function delPlatAuth(data) {
  */
 export async function editPlatAuth(data) {
     console.log('data',data);
-    var utl=PlatForm.editPlatAuth+data.id;
+    var utl = PlatForm.editPlatAuth + data.id;
     let response = await http.put(utl,data.form);
     return response.data;
 }
@@ -68,7 +68,7 @@ export async function editPlatAuth(data) {
  */
 export async function delPlatForm(data) {
     console.log('data',data);
-    var utl=PlatForm.delPlatForm+'/'+data.id;
+    var utl = PlatForm.delPlatForm + '/' + data.id;
     let response = await http.delete(utl);
     return response.data;
 }
@@ -78,10 +78,10 @@ export async function delPlatForm(data) {
  */
 export async function editPlatForm(data) {
     console.log('data',data);
-    let param={
+    let param = {
         resource:data.resource
     };
-    var utl=PlatForm.editPlatForm+data.id;
+    var utl = PlatForm.editPlatForm + data.id;
     let response = await http.put(utl,param);
     return response.data;
 }
@@ -102,17 +102,7 @@ export async function roleTypeList(data) {
  */
 export async function searchBindAuth(data) {
     console.log('data',data);
-    let url=PlatForm.searchBindAuth+'/'+data;
-    let response = await http.get(url);
-    return response.data;
-}
-/**
- *获取平台列表下的角色
- * @param {*}
- */
-export async function getPlatformList(data) {
-    console.log('data',data);
-    let url=PlatForm.getPlatformList+'/'+data;
+    let url = PlatForm.searchBindAuth + '/' + data;
     let response = await http.get(url);
     return response.data;
 }
@@ -122,7 +112,7 @@ export async function getPlatformList(data) {
  */
 export async function bindAuth(data) {
     console.log('data',data);
-    var utl=PlatForm.bindAuth+'/'+data.roleType;
+    var utl = PlatForm.bindAuth + '/' + data.roleType;
     let response = await http.put(utl,data.ids);
     return response.data;
 }

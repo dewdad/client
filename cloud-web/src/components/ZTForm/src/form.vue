@@ -31,10 +31,7 @@ export default {
             default: ''
         },
         inline: Boolean,
-        inlineMessage: {
-            type: Boolean,
-            default: true
-        },
+        inlineMessage: Boolean,
         statusIcon: Boolean,
         showMessage: {
             type: Boolean,

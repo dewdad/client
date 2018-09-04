@@ -39,11 +39,10 @@ export async function setDiskSnapshotPolicy({disk_ids, policy_id, source_page}) 
 }
 
 //更新磁盘，修改磁盘描述
-export async function updateDisk(id, name, remark = '') {
+export async function updateDisk(id, name) {
     let url = replaceParamVal(API_ECS.disk.updateDisk, [id]);
     let res = await http.put(url, {
-        name: name,
-        remark
+        name: name
     });
     return res && res.data;
 }
@@ -68,24 +67,27 @@ export async function resizeDisk({disk_id, size}) {
 
 /**
  * 挂载云盘
- * @param {*} volumeId 云盘id
+ * @param {*} disk_id 云盘id
  * @param {*} instanceId 实例ID
+ * @param {*} imageRef 镜像ID
+ * @param {*} autoDelSnapshot 是否随磁盘删除快照
  */
-export async function mountDisk({volumeId, instanceId}) {
-    let url = replaceParamVal(API_ECS.disk.mountDisk, [volumeId]);
-    let res = await http.put(url, {instanceId, volumeId});
+export async function mountDisk({disk_id, instanceId, imageRef, autoDelSnapshot}) {
+    let url = replaceParamVal(API_ECS.disk.mountDisk, [disk_id]);
+    let res = await http.post(url, {instanceId, imageRef, autoDelSnapshot});
     return res && res.data;
 }
 
 //卸载云盘
-export async function unmoutDisk({volumeId, instanceId}) {
-    let res = await http.put(API_ECS.disk.unmoutDisk, {volumeId, instanceId});
+export async function unmoutDisk({disk_id}) {
+    let url = replaceParamVal(API_ECS.disk.unmoutDisk, [disk_id]);
+    let res = await http.delete(url);
     return res && res.data;
 }
 
 //释放、删除云盘
-export async function releaseDisk({volumeId}) {
-    let url = replaceParamVal(API_ECS.disk.releaseDisk, [volumeId]);
+export async function releaseDisk({disk_id}) {
+    let url = replaceParamVal(API_ECS.disk.releaseDisk, [disk_id]);
     let res = await http.delete(url);
     return res && res.data;
 }

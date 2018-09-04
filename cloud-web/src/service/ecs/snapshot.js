@@ -1,8 +1,13 @@
 /*
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
+<<<<<<< HEAD
  * @Last Modified by: wenfang
  * @Last Modified time: 2018-09-04 19:17:21
+=======
+ * @Last Modified by: wenfang
+ * @Last Modified time: 2018-09-04 19:33:28
+>>>>>>> 0fe36529d3c3d3f44c0d73bf711b7ed2daa198a3
  * ecs模块 快照接口
  */
 
@@ -12,16 +17,10 @@ import {replaceParamVal} from '@/utils/utils';
 
 /**
  * 创建快照
- * @param {*} volumeId
- * @param {*} name
- * @param {*} description
+ * @param {*} data
  */
-export async function createSnapshot({volumeId, name = '', description = ''} = {}) {
-    let res = await http.post(API_ECS.snapshot.createSnapshot, {
-        volumeId,
-        name,
-        description
-    });
+export async function createSnapshot(data) {
+    let res = await http.post(API_ECS.snapshot.createSnapshot, data);
     return res && res.data;
 }
 

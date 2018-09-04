@@ -7,7 +7,7 @@
  */
 
 import http from '../utils/http';
-import {API_LOGIN, PlatForm} from '../constants/apiUrl';
+import { API_LOGIN} from '../constants/apiUrl';
 import {get} from '@/utils/utils';
 import RSA from '@/utils/RSA';
 /**
@@ -22,26 +22,6 @@ export async function userLogin({userName, passWord} = {}) {
     let response = await http.post(API_LOGIN.login, {
         userName,
         passWord :  RSA_PWD ,
-    });
-    return response;
-}
-/**
- *
- * 获取可用域
- * @export
- */
-export async function getZoons(data) {
-    let response = await http.get(API_LOGIN.getZoons);
-    return response;
-}
-/**
- *
- * 获取部门列表
- * @export
- */
-export async function getDomains(data) {
-    let response = await http.get(API_LOGIN.getDomains, {
-        params: data
     });
     return response;
 }

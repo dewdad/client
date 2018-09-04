@@ -6,6 +6,7 @@
                     <el-form-item>
                         <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
                     </el-form-item>
+
                 </el-form>
             </el-col>
         </el-row>
@@ -24,10 +25,11 @@
                 <el-button type="primary" class="font12 ml20" @click="bindAuth">提  交</el-button>
             </el-col>
         </el-row>
+
     </div>
 </template>
 <script>
-import {searchBindAuth,getPlatformList,bindAuth} from '@/service/usermgr/platform.js';
+import {searchBindAuth,getPlatformList,bindAuth} from '@/service/platform.js';
 export default {
     name: 'app',
 
@@ -44,7 +46,7 @@ export default {
         return {
             stateParams,
             searchObj,
-            platAuthForm:{
+            platForm:{
 
             },
             platformRoleIds:[],
@@ -65,8 +67,9 @@ export default {
                 $log('searchBindAuth', ret);
                 let resData = ret.data;
                 if(resData && resData.data){
-
+                    this.roles = resData.data || [];
                 }
+
             });
         },
         getPlatformList(){
@@ -82,7 +85,7 @@ export default {
             });
         },
         goBack(){
-            window.history.back();
+            //window.history.back();
         },
         bindAuth(){
             for(let key in this.platAuthForm){
@@ -103,14 +106,11 @@ export default {
                 //
                 // }
             });
-        }
-
+        },  
     },
     mounted(){
         this.searchBindAuth();
-        this.getPlatformList();
-
-
+        this.getplatformList();
     }
 };
 </script>

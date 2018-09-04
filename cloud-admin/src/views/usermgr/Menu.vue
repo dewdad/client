@@ -5,17 +5,17 @@
         </page-header>
         <div class="page-body">
             <!-- <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box> -->
-            <el-row :gutter="20" class="mt10 mb20">
-                <el-col :span="8" ><el-button type="primary" size="small" @click="search" icon="el-icon-search">新建一级菜单</el-button></el-col>
+            <el-row :gutter="20" class="mb10">
+                <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})" icon="el-icon-search">新建一级菜单</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">
-                        <el-select class="ml10" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">
+                        <el-select class="width152" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">
                             <el-option v-for="menutype in searchObjExtra.menutypes" :label="menutype.label" :value="menutype.value" :key="menutype.value"></el-option>
                         </el-select>
-                        <el-select class="ml10" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">
+                        <el-select class="ml10 width152" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">
                             <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field.field" :key="field.field"></el-option>
                         </el-select>
-                        <el-input class="ml10"  size="small" placeholder="" style="width:260px;" v-model="searchObj.searchText"></el-input>
+                        <el-input class="ml10"  size="small" placeholder="" style="width:208px;" v-model="searchObj.searchText"></el-input>
                         <el-button class="ml10" size="small" type="primary" @click="search" icon="el-icon-search">搜索</el-button>  
                         <el-button type="primary" size="small" class="ml10 search-refresh-btn icon-new-刷新" @click="search"></el-button>                      
                     </div>                    
@@ -32,7 +32,7 @@
                                 <template v-if="col.prop==='menucode'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.code}}</span>                                            
+                                            <span>{{scope.row.menuCode}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -41,7 +41,7 @@
                                 <template v-if="col.prop==='menuname'">
                                     <el-table-column  :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.text}}</span>                                            
+                                            <span>{{scope.row.menuName}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -50,7 +50,7 @@
                                 <template v-if="col.prop==='menuicon'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.icon}}</span>                                             
+                                            <span>{{scope.row.menuIcon}}</span>                                             
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -59,7 +59,7 @@
                                 <template v-if="col.prop==='sref'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.sref}}</span>                                            
+                                            <span>{{scope.row.routeHref}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -68,16 +68,7 @@
                                 <template v-if="col.prop==='pmenucode'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.prCode}}</span>                                             
-                                        </template>                                    
-                                    </el-table-column>
-                                </template>
-
-                                <!-- 菜单类型 -->
-                                <template v-if="col.prop==='menutype'">
-                                    <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
-                                        <template slot-scope="scope">
-                                            <span>{{scope.row.menuType === 1 ? '用户' : '管理员'}}</span>                                            
+                                            <span>{{scope.row.parentMenuCode}}</span>                                             
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -94,7 +85,7 @@
                                         <a @click="editMenu(scope.row)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>    
                                         <!-- 关联操作 -->
-                                        <a @click="setMenuInfo(scope.row)" class="btn-linker">关联操作</a>
+                                        <a @click="setMenuHander(scope.row)" class="btn-linker">关联操作</a>
                                         <!-- <b class="link-division-symbol"></b>                                      -->
                                     </template>
                                 </el-table-column>
@@ -105,8 +96,9 @@
                     <!-- 分页 -->
                     <div class="pagination">
                         <el-pagination background
-                        @handleCurrentChange="handleCurrentChange"
-                        :current-page="searchObj.paging.pageIndex" 
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="searchObj.paging.pageIndex" 
                         :page-sizes="[10, 20, 50, 100]" 
                         :page-size="searchObj.paging.limit" 
                         layout="sizes, prev, pager, next" 
@@ -120,8 +112,8 @@
 </template>
 <script src="./menumgr.js"></script>
 <style  lang="scss" scoped>
-.operateDisk{
-    float: right;
+.width152{
+    width: 152px;
 }
 
 </style>
