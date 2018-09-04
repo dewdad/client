@@ -39,6 +39,7 @@ export default {
     watch:{
         screenHeight (val) {
             this.screenHeight = val;
+            console.log(this.screenHeight);
             let el = document.getElementById('setHeightAuto');
             el.style.maxHeight = this.screenHeight + 'px';
             el.style.overflow = 'auto';
@@ -48,13 +49,17 @@ export default {
     created() {},
 
     methods: {
-
+        setHeightAuto(){
+            let el = document.getElementById('setHeightAuto');
+            el.style.maxHeight = this.screenHeight + 'px';
+        }
     },
     mounted(){
         const that = this;
         window.onresize = () => {
             return (() => {
                 this.screenHeight = document.documentElement.clientHeight - 60;
+                // console.log(this.screenHeight);
                 that.screenWidth = this.screenHeight;
             })();
         };

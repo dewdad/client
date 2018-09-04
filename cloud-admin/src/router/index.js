@@ -55,7 +55,7 @@ export default new Router({
                             component: () => import('@/views/usermgr/rolemgr')
                         },
                         {
-                            path: 'rolemgrUser/:roleId',
+                            path: 'rolemgrUser/:id',
                             name: 'app.usrmgr.rolemgrUser',
                             meta: {
                                 title: '关联用户'
@@ -103,6 +103,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/menumgr/editMenu')
                         },
                         {
+                            path: 'handler/:code',
+                            name: 'app.usrmgr.menumgr.handler',
+                            meta: {
+                                title: '关联操作'
+                            },
+                            component: () => import('@/views/usermgr/menumgr/menuHandle')
+                        },
+                        {
                             path: 'platform',
                             name: 'app.platform.resource',
                             meta: {
@@ -133,14 +141,6 @@ export default new Router({
                                 title: '绑定平台权限'
                             },
                             component: () => import('@/views/usermgr/platform/bindplatauth')
-                        },
-                        {
-                            path: 'oplog',
-                            name: 'app.usrmgr.oplog',
-                            meta: {
-                                title: '操作日志'
-                            },
-                            component: () => import('@/views/usermgr/oplog/oplog')
                         }
                     ]
                 }
