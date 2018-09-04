@@ -33,6 +33,8 @@ export default {
                         </span>
                     );
                 }
+            } else {
+                return (<span>{this.value}</span>);
             }
         }
         return '';

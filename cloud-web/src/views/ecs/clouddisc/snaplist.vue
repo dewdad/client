@@ -3,14 +3,14 @@
         <page-header>
             云盘快照
             <div slot="right">
-                <el-button type="info" size="small" @click="getEcsImageList">
+                <el-button type="info" size="small" @click="getSnapshotList">
                     <i class="iconfont icon-refresh_people"></i>
                 </el-button>
             </div>
         </page-header>
         <div class="page-body mt10">
             <!-- 列表 -->
-            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getEcsImageList" :paging="searchObj.paging">
+            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
                 <!-- 实例名称 -->
                 <el-table-column min-width="180" prop="name" label="名称">
                 </el-table-column>
