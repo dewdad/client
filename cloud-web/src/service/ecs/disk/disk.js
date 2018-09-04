@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 19:03:07
+ * @Last Modified time: 2018-09-04 20:22:50
  * ecs模块-云盘
  */
 
@@ -96,5 +96,60 @@ export async function releaseDisk({volumeId}) {
  */
 export async function createBackup({volumeId, name, description = ''} = {}) {
     let res = await http.post(API_ECS.disk.createBackup, {volumeId, name, description});
+    return res && res.data;
+}
+
+/**
+ *
+ * 获取云盘备份列表
+ * @export
+ * @param {*} data
+ * @returns
+ */
+export async function getBackupList(data) {
+    let url = API_ECS.disk.getBackupList;
+    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
+    let res = await http.get(url, {params: data});
+    return res && res.data;
+}
+
+/**
+ *
+ * 删除云盘备份
+ * @export
+ * @param {*} id
+ * @returns
+ */
+export async function deleteBackup(id) {
+    let url = replaceParamVal(API_ECS.disk.deleteBackup, [id]);
+    let res = await http.delete(url);
+    return res && res.data;
+}
+
+/**
+ *
+ * 获取获取云盘
+ * @export
+ * @param {*} data
+ * @returns
+ */
+export async function getAllDisk(data) {
+    let url = API_ECS.disk.getAllDisk;
+    let res = await http.get(url);
+    return res && res.data;
+}
+
+/**
+ *
+ * 恢复云盘备份
+ * @export
+ * @param {*} backupId
+ * @returns
+ */
+export async function restoreBackup({backupId, volumeId}) {
+    let res = await http.post(API_ECS.disk.restoreBackup, {
+        backupId,
+        volumeId
+    });
     return res && res.data;
 }

@@ -12,7 +12,7 @@ const Expandsize = () => import('@/views/ecs/clouddisc/Expandsize.vue');
 const CloudDiscDetail = () => import('@/views/ecs/clouddisc/detail/detail.vue');
 const Monitorinfo = () => import('@/views/ecs/clouddisc/detail/monitorinfo.vue');
 const CreateDisc = () => import('@/views/ecs/clouddisc/createDisc.vue');
-const Autosnapstrategy = () => import('@/views/ecs/clouddisc/autosnapstrategy.vue');
+const BackupList = () => import('@/views/ecs/clouddisc/BackupList.vue');
 const EcsInstDetail = () => import('@/views/ecs/inst/details/Detail.vue');
 const EcsInstDiskList = () => import('@/views/ecs/inst/details/disk/EcsInstDiskList.vue');
 const EcsInstSecuritygrpList = () => import('@/views/ecs/inst/details/securitygrp/EcsInstSecuritygrpList.vue');
@@ -77,9 +77,9 @@ export default [
                 }
             },
             {
-                path: 'autosnapstrategy',
-                name: 'app.ecs.autosnapstrategy',
-                component: Autosnapstrategy
+                path: 'backuplist',
+                name: 'app.ecs.backuplist',
+                component: BackupList
             },
             {
                 path: 'clouddisc/createDisc',

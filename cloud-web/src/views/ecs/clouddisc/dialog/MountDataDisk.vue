@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="挂载云盘" :visible.sync="isShow" width="600px" class="CustomImageDesc" @close="cancel">
-        <el-alert type="warning" :closable="false" class="font12">
+        <el-alert type="warning" :closable="false" title="" class="font12">
             重要提示：“磁盘挂载”执行成功后，您还需要登录本实例对挂载的磁盘进行“分区格式化和挂载新分区”的操作。 分区格式化/挂载数据盘操作指南: <a class="font12">Window</a>>,<a class="font12">Linux</a>>
         </el-alert>
         <div style="padding-left:20px;">
