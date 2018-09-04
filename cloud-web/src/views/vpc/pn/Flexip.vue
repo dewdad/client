@@ -2,7 +2,7 @@
 <div class="page-main">
     <page-header class="mb10">
         <div slot="content"  class="pull-right">
-            <el-button type="primary" size="small" class="mr10">
+            <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
                 申请浮动IP
             </el-button>
             <el-button type="info" size="small" @click="fetchData">
@@ -75,17 +75,18 @@
         >
         </el-pagination>
     </div>
-    <create ref="create"></create>
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
+    <!-- 申请浮动IP -->
+    <ApplyFloatIP ref="ApplyFloatIP"></ApplyFloatIP>    
 </div>
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import searchBox from '@/components/search/SearchBox';
-import Create from './Create';
+import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
-import {queryFlexIP} from '@/service/ecs/network.js';
+import {queryFlexIP, queryNetwork} from '@/service/ecs/network.js';
 import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
@@ -109,7 +110,8 @@ export default {
             listData: {},
             fields,
             searchObjExtra,
-            exampleList: []
+            exampleList: [],
+            outerNetData: [] // 外网网络数据
         };
     },
     computed: {
@@ -120,6 +122,7 @@ export default {
     async created() {
         await this.fetchData();
         await this.getInstList();
+        await this.getOuterNet();
     },
     methods: {
         sizeChange(val) {
@@ -158,7 +161,7 @@ export default {
                 console.error('fetchData', error.message);
             }
         },
-        // 
+        // 获得搜索条件
         getScreenVal(params) {
             $log(params);
         },
@@ -167,6 +170,18 @@ export default {
             let BindFLexIP = this.$refs.BindFLexIP;
             if (BindFLexIP) {
                 BindFLexIP.show(params, this.exampleList)
+                    .then(ret => {
+                        if (ret) {
+                            this.fetchData();
+                        }
+                    });
+            }
+        },
+        // 申请浮动IP
+        applyFloatIPFn() {
+            let ApplyFloatIP = this.$refs.ApplyFloatIP;
+            if (ApplyFloatIP) {
+                ApplyFloatIP.show(this.outerNetData)
                     .then(ret => {
                         if (ret) {
                             this.fetchData();
@@ -196,13 +211,29 @@ export default {
                     console.error('getEcsInstList', e);
                     self.loading = false;
                 });
+        },
+        // 获得外网网络
+        async getOuterNet() {
+            try {
+                // 清空数据
+                let params = {
+                    router_external: true
+                };
+                let ret = await queryNetwork(params);
+                console.warn('fetchData', ret);
+
+                this.outerNetData = ret.data;
+
+            } catch (error) {
+                console.error('fetchData', error.message);
+            }
         }
     },
     components: {
         RegionRadio,
-        Create,
         searchBox,
-        BindFLexIP
+        BindFLexIP,
+        ApplyFloatIP
     }
 };
 </script>

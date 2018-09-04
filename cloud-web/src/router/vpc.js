@@ -29,7 +29,7 @@ export default [
                 component: pnDetail
             },
             {
-                path: 'pn/subnet/:id',
+                path: 'pn/subnet/:id/:name',
                 name: 'app.vpc.pn-subnet', // 子网
                 component: pnSubnet
             },

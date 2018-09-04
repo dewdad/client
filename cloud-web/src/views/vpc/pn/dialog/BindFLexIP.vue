@@ -4,7 +4,7 @@
         :visible.sync="isShow"
         width="45%"
         class="BindFLexIPDialog">
-        <zt-form inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small"  ref="ruleForm" :show-message="false">
+        <zt-form inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small"  ref="ruleForm">
             <zt-form-item label="IP地址" prop="felxIp">
                 <el-input size="small" disabled v-model="ruleForm.felxIp"></el-input>
             </zt-form-item>
