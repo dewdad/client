@@ -63,8 +63,8 @@ export const API_ECS = {
     inst: {
         getInstList: '/compute/server/list',
         createECS: ECS_CTRL + '/servers',
-        getInstanceCountInfo: ECS_CTRL + '/servers/{instanceId}/count-info',
-        getInstanceDetail: ECS_CTRL + '/servers/{instanceId}/detail',
+        getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
+        getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
         modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
@@ -78,7 +78,7 @@ export const API_ECS = {
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
     },
     monitor: {
-        moniterEchartMetricData: ECS_CTRL + '/moniter/echart-metric-data'
+        moniterEchartMetricData: '/compute/overview/getEchartMetricData'
     },
     flavors: {
         getFlavors: ECS_CTRL + '/flavors',
@@ -111,11 +111,11 @@ export const API_ECS = {
         deletePolicy: ECS_CTRL + '/policy/{policy_id}'
     },
     images: {
-        createImage: ECS_CTRL + '/images',
-        getImages: ECS_CTRL + '/images',
+        createImage: '/compute/ecs/createImage/{instanceId}',
+        getImages: 'compute/image/list',
         imageGroups: ECS_CTRL + '/images/groups',
-        updateImages: ECS_CTRL + '/images/{imageId}',
-        deleteImages: ECS_CTRL + '/images/{imageId}'
+        updateImages: '/compute/images/{imageId}',
+        deleteImages: '/compute/image/{imageId}'
     },
     floatIp: {
         create: ECS_CTRL + '/floating/create',
@@ -141,8 +141,10 @@ export const API_ECS = {
         labelsCount: ECS_CTRL + '/labels/count'
     },
     network: {
-        network: ECS_CTRL + '/networks',
-        networkID: ECS_CTRL + '/networks/{vpcId}',
+        network: '/compute/network/list',
+        creatNetwork: '/compute/network',
+        networkID: '/compute/network/{vpcId}',
+        flexIP: '/compute/floatip/list', // 查询浮动IP列表
         networkCount: ECS_CTRL + '/networks/count/{vpcId}',
         getNetwork: ECS_CTRL + '/networks',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',

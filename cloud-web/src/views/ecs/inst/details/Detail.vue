@@ -15,19 +15,15 @@
                                 <tbody class="">
                                     <tr>
                                         <td>{{ $t('abbr.id') }}：</td>
-                                        <td>{{ ecsInst.id }}
+                                        <td class="text-ellipsis">{{ ecsInst.id }}
                                             <span v-show="ecsInst.id">
                                                 <copy-text :bindText="ecsInst.id"></copy-text>
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>{{ $t('common.region') }}：</td>
-                                        <td>{{ ecsInst.zone | zone}}</td>
-                                    </tr>
-                                    <tr>
                                         <td>{{ $t('common.name') }}：</td>
-                                        <td class="td-flex">
+                                        <td class="td-flex" style="text-align: left;">
                                             <div class="over-Ellipsis mr5" v-tooltip="ecsInst.name && ecsInst.name.length > 20 ? ecsInst.name : ''">
                                                 {{ ecsInst.name }}
                                                 <span v-show="ecsInst.name && ecsInst.name.length<20"><copy-text :bindText="ecsInst.name "></copy-text></span>
@@ -41,16 +37,7 @@
                                     <tr>
                                         <td>{{ $t('common.status') }}：</td>
                                         <td>
-                                            <!-- <span v-if="ecsInst.instanceStatus === 'ACTIVE'">
-                                                <i class="iconfont color-success icon-running_people mr5 "></i>
-                                                <span>运行中</span>
-                                            </span>
-                                            <span v-else-if="ecsInst.instanceStatus === 'SHUTOFF'">
-                                                <i class="iconfont color-success icon-running_people mr5 "></i>
-                                                <span>关机中</span>
-                                            </span>
-                                            <span v-else> -</span> -->
-                                            <zt-status :status="ECS_STATUS" :value="ecsInst.instanceStatus" ></zt-status>
+                                            <zt-status :status="ECS_STATUS" :value="ecsInst.status" ></zt-status>
                                         </td>
                                     </tr>
                                     <tr>
@@ -59,12 +46,13 @@
                                     </tr>
                                     <tr>
                                         <td>{{ $t('ecs.inst.details.instSpecification') }}：</td>
-                                        <td>{{ flavor.name }}</td>
+                                        <td>{{ ecsInst.flavor.name }}</td>
                                     </tr>
+                                    <!-- 登录凭证 -->
                                     <tr>
                                         <td>{{ $t('common.logonCredentials') }}：</td>
                                         <td>
-                                            <span v-if="ecsInst.keyName!== null">
+                                            <span v-if="ecsInst.key_name">
                                                 <span>{{ $t('common.KeyPair') }}</span>
                                             </span>
                                             <span v-else>
@@ -89,12 +77,12 @@
                                     <!-- vCPU -->
                                     <tr>
                                         <td>{{ $t('abbr.vcpu') }}：</td>
-                                        <td>{{flavor.vCpu || '-'}}{{$t('common.cpuAlias')}}</td>
+                                        <td>{{ecsInst.flavor.vcpus || '-'}}{{$t('common.cpuAlias')}}</td>
                                     </tr>
                                     <!-- 内存 -->
                                     <tr>
                                         <td>{{ $t('common.memory') }}：</td>
-                                        <td>{{flavor.ram?(flavor.ram+'GiB'): '-' }}</td>
+                                        <td>{{ecsInst.flavor.ram?(ecsInst.flavor.ram/1024 +'GiB'): '-' }}</td>
                                     </tr>
                                     <!-- 磁盘数量 -->
                                     <tr>
@@ -108,7 +96,7 @@
                                     </tr>
                                     <!-- 公网IP -->
                                     <tr v-show="!ecsInst.floatIp || ecsInst.floatIp.indexOf('10.3') === -1">
-                                        <td>{{ $t('common.publicNetworkIP') }}：</td>
+                                        <td>浮动IP：</td>
                                         <td>{{ecsInst.floatIp ||'-'}}
                                             <span v-show="ecsInst.floatIp">
                                                 <copy-text :bindText="ecsInst.floatIp"></copy-text>
@@ -149,16 +137,6 @@
                                         <td>{{vpcName || '-'}}
                                             <span v-show="vpcName">
                                                 <copy-text :bindText="vpcName"></copy-text>
-                                            </span>
-
-                                        </td>
-                                    </tr>
-                                    <!-- 子网 -->
-                                    <tr>
-                                        <td>{{ $t('common.subnet') }}：</td>
-                                        <td>{{subnetName || '-'}}
-                                            <span v-show="subnetName">
-                                                <copy-text :bindText="subnetName"></copy-text>
                                             </span>
 
                                         </td>

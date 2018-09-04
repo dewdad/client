@@ -75,8 +75,16 @@
                         </el-table-column>
                     </template>
                 </el-table>
+                <!--分页-->
                 <div class="pagination">
-                    <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+                    <el-pagination background
+                                   @current-change="currentChange"
+                                   @size-change="handleSizeChange"
+                                   :current-page="searchObj.paging.pageIndex"
+                                   :page-sizes="[10, 20, 50, 100]"
+                                   :page-size="searchObj.paging.limit"
+                                   layout="sizes, prev, pager, next"
+                                   :total="searchObj.paging.totalItems">
                     </el-pagination>
                 </div>
             </el-col>
@@ -143,7 +151,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.totalItems = resData.total || 0;
+                    this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
             });
@@ -189,14 +197,13 @@ export default {
                 this.getplatformList();
             });
         },
-        handleSizeChange:function (params) {
-            console.log('params:',params);
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.getplatformList();
         },
-        handleCurrentChange:function (params) {
-            console.log('handleCurrentChange:',params);
-        },
-        handleSearch: function(labels) {
-            console.log(labels);
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
+            this.getplatformList();
         },
         onSubmit() {}
     },

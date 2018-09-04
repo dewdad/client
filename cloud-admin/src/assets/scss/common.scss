@@ -63,7 +63,9 @@ a:hover:not([disabled]) {
         color: #0d7ef2;
     }
 }
-
+.el-table td{
+    padding: 6px 0;
+}
 label {
     display: inline-block;
     max-width: 100%;

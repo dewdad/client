@@ -28,14 +28,8 @@
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
                                     <div class="pop-box__popover__popMain lh-normal font14">
-                                        <p @click.stop="$router.push({'name': 'accountMg.SecutitySet'})">
-                                            <i class="iconfont icon-user_setting_people color-white font14 mr5"></i>{{$t('header.avatarMenu.securitySet')}}
-                                        </p>
                                         <p @click.stop="$router.push({'name': 'accountMg.info'})">
-                                            <i class="iconfont icon-user_profile_people color-white font14 mr5"></i>{{$t('header.avatarMenu.basicInfo')}}
-                                        </p>
-                                        <p @click.stop="$router.push({'name': 'accountMg.manager'})">
-                                            <i class="iconfont icon-icon-p_lianxirenguanli color-white font14 mr5"></i>{{$t('header.avatarMenu.contactManager')}}
+                                            {{$t('header.avatarMenu.basicInfo')}}
                                         </p>
                                     </div>
                                     <!-- 退出控制台 -->
@@ -80,7 +74,7 @@ export default {
 .pop-box {
     &__popover {
         background-color: #222a3f;
-        height: 270px;
+        // height: 270px;
         width: 188px;
         position: absolute;
         right: 0;
@@ -107,11 +101,10 @@ export default {
         }
         &__popMain {
             padding: 10px 0;
-            border-top: 1px solid rgba(238, 238, 238, 0.2);
-            border-bottom: 1px solid rgba(238, 238, 238, 0.2);
+            border-bottom: 1px solid rgba(238,238,238,.2);
             color: #fff;
-            p {
-                padding-left: 30px;
+            p{
+                text-align: center;
                 line-height: 32px;
                 height: 32px;
                 margin: 0;
@@ -137,7 +130,6 @@ export default {
 }
 .headImg:hover .pop-box__popover {
     display: block;
-    // opacity: 1;
 }
 .color-phone {
     color: #abd037 !important;

@@ -10,40 +10,26 @@
                 </el-form>
             </el-col>
         </el-row>
-        <el-row>
-            <div>
-                <div v-for="item in platFormList" :key="item.id" class="mb20">
-                    <span>平台：{{item.resource}}</span>
-                    <el-select v-model="item.id" key="id" :placeholder="请选择角色" :popper-append-to-body="false" value-key="name" size="small" class="mr10">
-                        <el-option v-for="role in item.roleArr" :key="role.name" :label="role.name" :value="name">
-                        </el-option>
-                    </el-select>
-                </div>
-            </div>
-            <!--<el-form ref="subNetForm" :inline="true" :show-message="false" inline-message size="small" :model="form" :rules="rules" label-width="0">-->
-               <!--<div v-for="item in platFormList" :key="item.id">-->
-                   <!--<el-form-item  class="mb10 hide-star" prop="netWork" >-->
-                       <!--<span>平台：{{item.resource}}</span>-->
-                       <!--<el-select v-model="form.netWork" key="newWork" :placeholder="$t('form.input.network')" :popper-append-to-body="false" value-key="name" size="small" class="mr10" @change="netWorkHandleChange">-->
-                           <!--<el-option v-for="net in netWorkList" tooltip="fsa" :key="net.name" :label="net.name" :value="net">-->
-                           <!--</el-option>-->
-                       <!--</el-select>-->
-                   <!--</el-form-item>-->
-                   <!--<el-form-item label="" class="mb10 hide-star" prop="netWork">-->
-                       <!--&lt;!&ndash;<el-select v-model="form.netWork" key="newWork" :placeholder="$t('form.input.network')" :popper-append-to-body="false" value-key="name" size="small" class="mr10" @change="netWorkHandleChange">&ndash;&gt;-->
-                           <!--&lt;!&ndash;<el-option v-for="net in netWorkList" tooltip="fsa" :key="net.name" :label="net.name" :value="net">&ndash;&gt;-->
-                           <!--&lt;!&ndash;</el-option>&ndash;&gt;-->
-                       <!--&lt;!&ndash;</el-select>&ndash;&gt;-->
-
-                   <!--</el-form-item>-->
-               <!--</div>-->
-             <!--</el-form>-->
+        <el-row >
+            <el-col :span="10" style="max-height:450px;overflow: auto">
+                <el-form ref="platAuthForm" :inline="false" :show-message="false" inline-message size="small" :model="platAuthForm"  label-width="120px">
+                    <el-form-item  class="mb10 hide-star"  v-for="(item,index) in platFormList" :key="item['id'+index]" :label="item.resource">
+                        <el-select v-model="platAuthForm[index]" @change="changeVal(index)" placeholder="请选择平台角色"  value-key="id" size="small" class="mr10">
+                            <el-option v-for="(role,idx) in item.platformRoleVoList" :key="idx" :label="role.name" :value="role.platformResourceId">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="14">
+                <el-button type="primary" class="font12 ml20" @click="bindAuth">提  交</el-button>
+            </el-col>
         </el-row>
 
     </div>
 </template>
 <script>
-import {searchBindAuth,getplatformList,searchPlatAuth} from '@/service/platform.js';
+import {searchBindAuth,getPlatformList,bindAuth} from '@/service/usermgr/platform.js';
 export default {
     name: 'app',
 
@@ -63,10 +49,8 @@ export default {
             platForm:{
 
             },
-            roleIds: [],
+            platformRoleIds:[],
             platFormList: [],
-            roles:[]
-
         };
     },
     components: {
@@ -74,13 +58,13 @@ export default {
 
     },
     methods: {
-        searchPlatAuth(){
-            let params = {
-                paging:this.searchObj.paging
-            };
-            $log('params', params);
-            searchPlatAuth(params).then(ret => {
-                $log('data', ret);
+        changeVal(i){
+            console.log('this.platAuthForm',i);
+        },
+
+        searchBindAuth(){
+            searchBindAuth(this.stateParams.val).then(ret => {
+                $log('searchBindAuth', ret);
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.roles = resData.data || [];
@@ -88,51 +72,41 @@ export default {
 
             });
         },
-        getplatformList(){
-            let params = {
-                paging:this.searchObj.paging
-
-            };
-            $log('params', params);
-            this.searchPlatAuth();
-            getplatformList(params).then(ret => {
-                $log('data', ret);
-                let resData = ret.data.data;
-                let roles = this.roles;
-                if(resData){
-                    for ( let i = 0 ; i < resData.length ; i++){
-                        let curId = resData[i].id;
-                        let obj = {
-                            id:'',
-                            roleArr:[]
-                        };
-                        for(let m = 0 ; m < roles.length ; m++){
-                            if(curId === roles[m].platformResourceId){
-                                obj.roleId = roles[m].id;
-                                obj.roleArr.push(roles[m]);
-                            }
-                        }
-                        this.platFormList.push(obj);
-                    }
-                    console.log('dssdsda',this.platFormList);
-                }
-
-            });
-        },
-        searchBindAuth(){
-            searchBindAuth(this.stateParams.val).then(ret => {
-                $log('data', ret);
+        getPlatformList(){
+            getPlatformList(this.stateParams.val).then(ret => {
+                $log('getPlatformList', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
+                if(resData ){
+                    this.platFormList = resData;
+                    for ( let i = 0 ; i < resData.length ; i++){
+                        this.platAuthForm['id' + i ] = '';
+                    }
                 }
-
             });
         },
         goBack(){
-            window.history.back();
+            //window.history.back();
         },
-
+        bindAuth(){
+            for(let key in this.platAuthForm){
+                if(this.platAuthForm[key]){
+                    this.platformRoleIds.push(this.platAuthForm[key]);
+                }
+            }
+            let param = {
+                roleType:this.stateParams.val,
+                ids:{
+                    platformRoleIds:this.platformRoleIds
+                }
+            };
+            bindAuth(param).then(ret => {
+                $log('searchBindAuth', ret);
+                // let resData = ret.data;
+                // if(resData && resData.data){
+                //
+                // }
+            });
+        },  
     },
     mounted(){
         this.searchBindAuth();

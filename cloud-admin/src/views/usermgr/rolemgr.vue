@@ -73,7 +73,7 @@
                             <template slot-scope="scope">
                                 <router-link :to="{name:'app.usrmgr.rolemgrUser',params:{roleId:scope.row.id,item:scope.row,fromstate:'app.usrmgr.rolemgr'}}" class="btn-linker">关联用户</router-link>
                                 <b class="link-division-symbol"></b>
-                                <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
+                                <a  @click="relateAuth(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin' && scope.row.roleType != 4"></b>
                                 <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">编辑</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin'"></b>
@@ -83,8 +83,16 @@
                         </el-table-column>
                     </template>
                 </el-table>
+                <!--分页-->
                 <div class="pagination">
-                    <el-pagination background @size-change="handleSizeChange" :current-page="searchObj.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
+                    <el-pagination background
+                   @current-change="currentChange"
+                   @size-change="handleSizeChange"
+                   :current-page="searchObj.paging.pageIndex"
+                   :page-sizes="[10, 20, 50, 100]"
+                   :page-size="searchObj.paging.limit"
+                   layout="sizes, prev, pager, next"
+                   :total="searchObj.paging.totalItems">
                     </el-pagination>
                 </div>
             </el-col>
@@ -149,16 +157,19 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.totalItems = resData.total || 0;
+                    this.searchObj.paging.totalItems = resData.total || 0;
                     console.log('getEcsImageList tableData',this.tableData);
                 }
 
             });
         },
+        relateAuth(){
+
+        },
         createRole(){
             this.$refs.CreateRole.show({name:'fff'},1)
                 .then(ret => {
-                    console.log('操作成功', ret);
+                    this.getRoleList();
                     return this.$confirm('操作成功');
                 })
                 .catch(err => {
@@ -169,14 +180,13 @@ export default {
                     }
                 });
         },
-        handleSizeChange:function (params) {
-            console.log('params:',params);
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.getRoleList();
         },
-        handleCurrentChange:function (params) {
-            console.log('handleCurrentChange:',params);
-        },
-        handleSearch: function(labels) {
-            console.log(labels);
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
+            this.getRoleList();
         },
         onSubmit() {}
     },

@@ -1,6 +1,7 @@
 const pn = () => import('@/views/vpc/pn/pn.vue');
 const pnDetail = () => import('@/views/vpc/pn/Detail.vue');
 const pnSubnet = () => import('@/views/vpc/pn/Subnet.vue');
+const Flexip = () => import('@/views/vpc/pn/Flexip.vue');
 const vfirewall = () => import('@/views/vpc/vfirewall/Index.vue');
 export default [
     {
@@ -30,6 +31,11 @@ export default [
                 path: 'pn/subnet/:id',
                 name: 'app.vpc.pn-subnet',
                 component: pnSubnet
+            },
+            {
+                path: 'pn/flexip',
+                name: 'app.vpc.pn-flexip',
+                component: Flexip
             },
             {
                 path: 'vfirewall',
