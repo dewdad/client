@@ -14,6 +14,7 @@ import ZtStatus from '@/components/status/ZtStatus.vue';
 import ZtScroller from '@/components/scroller/index.vue';
 import ZTAffix from '@/components/ZTAffix';
 import ZTTable from '@/components/ZTTable';
+import ZtTable from '@/components/table/ZtTable';
 // import ZTTableColumn from '@/components/ZTTable/src/table-column';
 export default {
     'label-dropdown': LabelDropdown,
@@ -30,6 +31,7 @@ export default {
     'zt-scroller': ZtScroller,
     'zt-affix': ZTAffix,
     'el-table': ZTTable,
+    'zt-table': ZtTable,
     // 'zt-table-column': ZTTableColumn,
     'zt-status': ZtStatus
 };
