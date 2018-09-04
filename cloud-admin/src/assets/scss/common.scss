@@ -955,3 +955,16 @@ h5.title {
         margin-bottom: 0;
     }
 }
+
+.el-form-item__error.el-form-item__error--inline {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 200px;
+    top: 0;
+    padding-top: 0;
+    vertical-align: middle;    
+    line-height: 32px;
+    height:32px;
+    left: 100%;
+}

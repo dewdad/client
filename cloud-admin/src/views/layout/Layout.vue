@@ -80,8 +80,9 @@ export default {
 }
 
 .el-main {
-    background-color: #e9eef3;
+    background-color:#fff; // #e9eef3;
     color: #333;
+    min-width: 1166px;
 }
 
 body > .el-container {
