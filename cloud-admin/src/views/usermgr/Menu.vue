@@ -32,7 +32,7 @@
                                 <template v-if="col.prop==='menucode'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.code}}</span>                                            
+                                            <span>{{scope.row.menuCode}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -41,7 +41,7 @@
                                 <template v-if="col.prop==='menuname'">
                                     <el-table-column  :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.text}}</span>                                            
+                                            <span>{{scope.row.menuName}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -50,7 +50,7 @@
                                 <template v-if="col.prop==='menuicon'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.icon}}</span>                                             
+                                            <span>{{scope.row.menuIcon}}</span>                                             
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -59,7 +59,7 @@
                                 <template v-if="col.prop==='sref'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.sref}}</span>                                            
+                                            <span>{{scope.row.routeHref}}</span>                                            
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -68,16 +68,7 @@
                                 <template v-if="col.prop==='pmenucode'">
                                     <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.prCode}}</span>                                             
-                                        </template>                                    
-                                    </el-table-column>
-                                </template>
-
-                                <!-- 菜单类型 -->
-                                <template v-if="col.prop==='menutype'">
-                                    <el-table-column :prop="col.prop" :label="col.label" :key="col.prop">
-                                        <template slot-scope="scope">
-                                            <span>{{scope.row.menuType === 1 ? '用户' : '管理员'}}</span>                                            
+                                            <span>{{scope.row.parentMenuCode}}</span>                                             
                                         </template>                                    
                                     </el-table-column>
                                 </template>
@@ -105,8 +96,9 @@
                     <!-- 分页 -->
                     <div class="pagination">
                         <el-pagination background
-                        @handleCurrentChange="handleCurrentChange"
-                        :current-page="searchObj.paging.pageIndex" 
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="searchObj.paging.pageIndex" 
                         :page-sizes="[10, 20, 50, 100]" 
                         :page-size="searchObj.paging.limit" 
                         layout="sizes, prev, pager, next" 

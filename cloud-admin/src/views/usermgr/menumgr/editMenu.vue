@@ -13,37 +13,37 @@
                 <!-- 基本信息 -->               
                                        
                 <!-- 菜单名称 -->
-                <el-form-item label="菜单名称" prop="text">
-                    <el-input clearable :maxlength="32" v-model="menu.text"></el-input>
+                <el-form-item label="菜单名称" prop="menuName">
+                    <el-input clearable :maxlength="32" v-model="menu.menuName"></el-input>
                 </el-form-item>
 
                 <!-- 菜单图标 -->
                 <el-form-item label="菜单图标" >
-                    <el-input clearable :maxlength="100" v-model="menu.icon"></el-input>
+                    <el-input clearable :maxlength="100" v-model="menu.menuIcon"></el-input>
                 </el-form-item>
 
                 <!-- 菜单路由地址 -->
-                <el-form-item label="菜单路由地址" prop="sref">
-                    <el-input clearable :maxlength="200" v-model="menu.sref"></el-input>
+                <el-form-item label="菜单路由地址" prop="routeHref">
+                    <el-input clearable :maxlength="200" v-model="menu.routeHref"></el-input>
                 </el-form-item>
 
                 <!-- 菜单视图地址 -->
-                <el-form-item label="菜单视图地址" prop="url">
-                    <el-input clearable :maxlength="200" v-model="menu.url"></el-input>
+                <el-form-item label="菜单视图地址" prop="routeUrl">
+                    <el-input clearable :maxlength="200" v-model="menu.routeUrl"></el-input>
                 </el-form-item>
 
                 <!-- 菜单排序 -->
                 <el-form-item label="菜单排序" prop="orderBy">
-                    <el-input type="number" clearable max="100" v-model="menu.orderBy"></el-input>
+                    <el-input-number class="width-full" controls-position="right" :min="0" :max="100" v-model="menu.orderBy"></el-input-number>
                 </el-form-item>
 
                 <!-- 菜单类型 -->
-                <el-form-item label="菜单类型" prop="menuType">
+                <!-- <el-form-item label="菜单类型" prop="menuType">
                     <el-radio-group v-model="menu.menuType">
                         <el-radio :label="1">用户</el-radio>
                         <el-radio :label="2">管理员</el-radio>
                     </el-radio-group>
-                </el-form-item>
+                </el-form-item> -->
 
                 <!-- 菜单状态 -->
                 <el-form-item label="菜单状态" prop="status">
@@ -54,9 +54,9 @@
                 </el-form-item>
 
                 <!-- 是否展现 -->
-                <el-form-item label="是否展现" prop="alert">
-                    <el-radio-group v-model="menu.alert">
-                        <el-radio label="1">是</el-radio>
+                <el-form-item label="是否展现" prop="isNew">
+                    <el-radio-group v-model="menu.isNew">
+                        <el-radio label="new">是</el-radio>
                         <el-radio label="2">否</el-radio>
                     </el-radio-group>
                 </el-form-item>  
@@ -81,14 +81,14 @@ export default {
     },
     data() {
         let menu = {
-            text: '',
-            icon: '',
-            sref: '',
-            url: '',
-            orderBy: '',
+            menuName: '',
+            menuIcon: '',
+            routeHref: '',
+            routeUrl: '',
+            orderBy: 1,
             menuType: 1,
             status: 1,
-            alert : '1',
+            isNew : 'new',
         };
         
         return {           
@@ -96,7 +96,7 @@ export default {
             menu,
             fullscreenLoading: false,
             rules: {
-                text:[
+                menuName:[
                     {
                         required: true,
                         message: '必填项',
@@ -109,7 +109,7 @@ export default {
                         trigger: ['submit','blur']
                     },
                 ],
-                sref:[
+                routeHref:[
                     {
                         required: true,
                         message: '必填项',
@@ -122,7 +122,7 @@ export default {
                         trigger: ['submit','blur']
                     },
                 ],
-                url:[
+                routeUrl:[
                     {
                         required: true,
                         message: '必填项',
@@ -140,13 +140,7 @@ export default {
                         required: true,
                         message: '必填项',
                         trigger: ['submit','blur']
-                    },
-                    {    
-                        min:0,                    
-                        max:100,
-                        message: '最大值100',
-                        trigger: ['submit','blur']
-                    },
+                    },                    
                 ]
             } 
         };
@@ -163,12 +157,12 @@ export default {
                     saveInfoFn(this.menu)
                         .then( result => {
                             this.fullscreenLoading = false;
-                            if (result && result.code === this.CODE.SUCCESS_CODE) {
-                                console.log(JSON.stringify(result));
+                            if (result && result.code === this.CODE.SUCCESS_CODE) {                                
                                 this.$message({
                                     message: '保存成功',
                                     type: 'success'
-                                });                               
+                                });   
+                                this.goBack();                            
                             } else {
                                 this.$message.error(result.msg);
                             }
@@ -185,6 +179,7 @@ export default {
             });
         },
 
+        //返回到列表页面
         goBack(){
             this.$router.push({name:'app.usrmgr.menumgr'});
         }
