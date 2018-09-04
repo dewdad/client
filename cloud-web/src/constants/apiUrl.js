@@ -100,7 +100,7 @@ export const API_ECS = {
         resizeDisk: ECS_CTRL + '/disk/{disk_id}/resize' //云盘扩容
     },
     snapshot: {
-        createSnapshot: ECS_CTRL + '/snapshots',
+        createSnapshot: '/compute/disk/createSnapshots',
         getSnapshotList: ECS_CTRL + '/snapshots/list',
         deleteSnap: ECS_CTRL + '/snapshots/{snapshot_ids}'
     },
