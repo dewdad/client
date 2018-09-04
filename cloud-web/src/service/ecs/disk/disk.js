@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 16:11:19
+ * @Last Modified time: 2018-09-04 19:03:07
  * ecs模块-云盘
  */
 
@@ -27,7 +27,7 @@ import {replaceParamVal} from '@/utils/utils';
  */
 export async function getDiskList(data) {
     let url = API_ECS.disk.getDiskList;
-    data['paging']['offset'] = (data.paging.pageIndex - 1) * data.paging.limit;
+    data['paging']['offset'] = (data.paging.pageIndex - 1) * data.paging.limit + 1;
     let res = await http.get(url, {params: data});
     return res && res.data;
 }

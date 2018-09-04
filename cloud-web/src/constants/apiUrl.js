@@ -102,8 +102,9 @@ export const API_ECS = {
     },
     snapshot: {
         createSnapshot: '/compute/disk/createSnapshots',
-        getSnapshotList: ECS_CTRL + '/snapshots/list',
-        deleteSnap: ECS_CTRL + '/snapshots/{snapshot_ids}'
+        getSnapshotList: '/compute/disk/getSnapshotsList',
+        deleteSnap: '/compute/disk/snapshot/{snapshot_ids}',
+        createDisk: '/compute/disk'
     },
     policy: {
         getPolicy: ECS_CTRL + '/policy/list',

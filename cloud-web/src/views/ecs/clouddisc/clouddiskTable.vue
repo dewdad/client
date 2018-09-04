@@ -1,8 +1,7 @@
 <template>
     <div>
         <!-- 筛选操作 -->
-        <search-box v-if="!!isShowSearch" :searchObjExtra="searchObjExtra" @select="search"></search-box>
-
+        <search-box v-if="!!isShowSearch" :fields="searchObjExtra.fields" @select="search"></search-box>
         <!-- 列表 -->
         <div>
             <el-table v-loading="loading" @cell-mouse-enter="showEditName" @filter-change="filterHandler" class="font12 data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">

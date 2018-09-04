@@ -54,7 +54,16 @@ export default {
         searchBox,
         EditName
     },
-    props: ['isShowSearch'],
+    props: {
+        isShowSearch: {
+            type: Boolean,
+            default: false
+        },
+        instanceId: {
+            type: String,
+            default: ''
+        }
+    },
     data() {
         let fields = [{field: 'name', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
         let searchObjExtra = {
