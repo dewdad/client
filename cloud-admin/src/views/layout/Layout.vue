@@ -7,7 +7,7 @@
       <el-header style="background-color:#001529">
         <nav-bar></nav-bar>
       </el-header>
-      <el-main>
+      <el-main id="setHeightAuto" >
         <app-main></app-main>
       </el-main>
     </el-container>
@@ -20,7 +20,9 @@ import AppMain from './AppMain';
 import SideBar from './SideBar';
 export default {
     data() {
-        return {};
+        return {
+            screenHeight: 0
+        };
     },
 
     props: {},
@@ -31,11 +33,33 @@ export default {
         SideBar
     },
 
-    computed: {},
+    computed: {
 
+    },
+    watch:{
+        screenHeight (val) {
+            this.screenHeight = val;
+            let el = document.getElementById('setHeightAuto');
+            el.style.maxHeight = this.screenHeight + 'px';
+            el.style.overflow = 'auto';
+        }
+
+    },
     created() {},
 
-    methods: {}
+    methods: {
+
+    },
+    mounted(){
+        const that = this;
+        window.onresize = () => {
+            return (() => {
+                this.screenHeight = document.documentElement.clientHeight - 60;
+                that.screenWidth = this.screenHeight;
+            })();
+        };
+
+    }
 };
 </script>
 <style lang='scss' scoped>
@@ -56,8 +80,9 @@ export default {
 }
 
 .el-main {
-    background-color: #e9eef3;
+    background-color:#fff; // #e9eef3;
     color: #333;
+    min-width: 1166px;
 }
 
 body > .el-container {

@@ -1,13 +1,10 @@
 <template>
     <div>
-        <page-header>
-            角色管理
-        </page-header>
-        <el-row class="mt20">
+        <el-row>
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createRole">新建角色</el-button>
+                        <el-button type="primary" @click="createRole">新建</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -29,7 +26,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>
+                        <el-button type="primary" @click="getRoleList">查询</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getRoleList"></el-button>
@@ -65,7 +62,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -76,7 +73,7 @@
                             <template slot-scope="scope">
                                 <router-link :to="{name:'app.usrmgr.rolemgrUser',params:{roleId:scope.row.id,item:scope.row,fromstate:'app.usrmgr.rolemgr'}}" class="btn-linker">关联用户</router-link>
                                 <b class="link-division-symbol"></b>
-                                <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
+                                <a  @click="relateAuth(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin' && scope.row.roleType != 4"></b>
                                 <a  @click="editImageDesc(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">编辑</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin'"></b>
@@ -86,10 +83,11 @@
                         </el-table-column>
                     </template>
                 </el-table>
-                //分页
+                <!--分页-->
                 <div class="pagination">
                     <el-pagination background
-                   @handleCurrentChange="handleCurrentChange"
+                   @current-change="currentChange"
+                   @size-change="handleSizeChange"
                    :current-page="searchObj.paging.pageIndex"
                    :page-sizes="[10, 20, 50, 100]"
                    :page-size="searchObj.paging.limit"
@@ -104,7 +102,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import CreateRole from './CreateRole';
+import CreateRole from './dialog/CreateRole';
 import {getRoleList} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',
@@ -159,16 +157,19 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.totalItems = resData.total || 0;
+                    this.searchObj.paging.totalItems = resData.total || 0;
                     console.log('getEcsImageList tableData',this.tableData);
                 }
 
             });
         },
+        relateAuth(){
+
+        },
         createRole(){
             this.$refs.CreateRole.show({name:'fff'},1)
                 .then(ret => {
-                    console.log('操作成功', ret);
+                    this.getRoleList();
                     return this.$confirm('操作成功');
                 })
                 .catch(err => {
@@ -179,7 +180,12 @@ export default {
                     }
                 });
         },
-        handleCurrentChange:function (params) {
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.getRoleList();
+        },
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
             this.getRoleList();
         },
         onSubmit() {}

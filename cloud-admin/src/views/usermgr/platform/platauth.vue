@@ -2,13 +2,24 @@
     <div>
         <el-row>
             <el-col :span="24">
-                <el-form :inline="true" size="small">
+                <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
                         <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="addPlatAuth({},1)">添加平台权限</el-button>
                     </el-form-item>
+                    <!--<el-form-item>-->
+                        <!--<el-select placeholder="请选择" v-model="type">-->
+                            <!--<el-option label="角色名称" value="name"></el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item label="关键字">-->
+                        <!--<el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>-->
+                    <!--</el-form-item>-->
+                    <!--<el-form-item>-->
+                        <!--<el-button type="primary" @click="searchPlatAuth">查询</el-button>-->
+                    <!--</el-form-item>-->
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="searchPlatAuth"></el-button>
                     </el-form-item>
@@ -37,7 +48,7 @@
                         <template v-if="col.column=='description'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.description }}</span>
+                                    <span class="font12 mr10">{{scope.row.description | date }}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -61,10 +72,11 @@
                         </el-table-column>
                     </template>
                 </el-table>
-                //分页
+                <!--分页-->
                 <div class="pagination">
                     <el-pagination background
-                                   @handleCurrentChange="handleCurrentChange"
+                                   @current-change="currentChange"
+                                   @size-change="handleSizeChange"
                                    :current-page="searchObj.paging.pageIndex"
                                    :page-sizes="[10, 20, 50, 100]"
                                    :page-size="searchObj.paging.limit"
@@ -81,7 +93,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 import AddPlatAuth from './AddPlatAuth';
 
-import {searchPlatAuth,delPlatAuth} from '@/service/usermgr/platform.js';
+import {searchPlatAuth,delPlatAuth} from '@/service/platform.js';
 export default {
     name: 'app',
 
@@ -134,7 +146,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.totalItems = resData.total || 0;
+                    this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
             });
@@ -178,7 +190,12 @@ export default {
                 this.searchPlatAuth();
             });
         },
-        handleCurrentChange:function (params) {
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.searchPlatAuth();
+        },
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
             this.searchPlatAuth();
         },
         goBack(){

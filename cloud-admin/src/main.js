@@ -32,6 +32,9 @@ import './directive/dialogdrag';
 // 注册v-tip全局指令
 import {VTooltip} from './directive/tooltip';
 
+import code from './constants/code';
+Vue.prototype.CODE = code;
+
 Vue.directive('tooltip', VTooltip);
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';

@@ -63,7 +63,9 @@ a:hover:not([disabled]) {
         color: #0d7ef2;
     }
 }
-
+.el-table td{
+    padding: 6px 0;
+}
 label {
     display: inline-block;
     max-width: 100%;
@@ -952,4 +954,17 @@ h5.title {
         padding-bottom: 55px;
         margin-bottom: 0;
     }
+}
+
+.el-form-item__error.el-form-item__error--inline {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 200px;
+    top: 0;
+    padding-top: 0;
+    vertical-align: middle;    
+    line-height: 32px;
+    height:32px;
+    left: 100%;
 }

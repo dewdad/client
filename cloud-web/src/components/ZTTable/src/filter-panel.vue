@@ -68,7 +68,7 @@ export default {
     props: {
         placement: {
             type: String,
-            default: 'bottom'
+            default: 'bottom-end'
         }
     },
 
