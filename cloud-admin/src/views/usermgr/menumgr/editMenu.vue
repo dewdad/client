@@ -9,8 +9,14 @@
                 <i class="fa fa-angle-left"></i>
                 <span>基本信息</span>
             </div>
-            <el-form class="base-info" ref="createMenu" label-position="left" v-loading.lock="fullscreenLoading" size="small" :model="menu" label-width="115px" style="width:433px;" :rules="rules" inline-message>
-                <!-- 基本信息 -->               
+            <el-form class="base-info" ref="createMenu" label-position="right" v-loading.lock="fullscreenLoading" size="small" :model="menu" label-width="115px" style="width:433px;" :rules="rules" inline-message>
+                <!-- 基本信息 -->   
+
+                <!-- 上级菜单Code -->
+                <el-form-item label="上级菜单Code" prop="parentMenuCode" v-if="(opType === 1) && $route.params.code">
+                    <span>{{ $route.params.code}}</span>
+                    <!-- <el-input clearable :maxlength="32" v-model="menu.menuName"></el-input> -->
+                </el-form-item>            
                                        
                 <!-- 菜单名称 -->
                 <el-form-item label="菜单名称" prop="menuName">
@@ -81,6 +87,7 @@ export default {
     },
     data() {
         let menu = {
+            parentMenuCode: '',
             menuName: '',
             menuIcon: '',
             routeHref: '',
@@ -187,10 +194,13 @@ export default {
 
     created() {
         let stateParams = this.$route.params;
-        this.opType = stateParams.opType;
-        if(stateParams.opType === 2) {
+        this.opType = parseInt(stateParams.opType);        
+        if(this.opType === 1){
+            this.menu.parentMenuCode = stateParams.code;
+        } else if(this.opType === 2) {
             this.menu = stateParams.rowItem;            
         }
+        
     },
 };
 </script>
