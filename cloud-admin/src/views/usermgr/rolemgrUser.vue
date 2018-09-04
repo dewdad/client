@@ -14,7 +14,7 @@
                         <template v-if="col.column=='userCode'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.id}}</span>
+                                    <span class="font12 mr10">{{scope.row.userId}}</span>
                                 </template>
                             </el-table-column>
                         </template>

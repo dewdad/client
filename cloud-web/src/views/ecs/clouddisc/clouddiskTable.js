@@ -40,7 +40,16 @@ export default {
         searchBox,
         EditName
     },
-    props: ['isShowSearch'],
+    props: {
+        isShowSearch: {
+            type: Boolean,
+            default: false
+        },
+        instanceId: {
+            type: String,
+            default: ''
+        }
+    },
     data() {
         let fields = [{field: 'name', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
         let searchObjExtra = {
@@ -133,7 +142,7 @@ export default {
             $log(params);
             this.inlineForm.field = params.selValue.field;
             this.inlineForm.value = params.selInputValue;
-            this.this.searchObj.paging.pageIndex = 1;
+            this.searchObj.paging.pageIndex = 1;
             this.getDiskList();
         },
         //获取云盘列表数据

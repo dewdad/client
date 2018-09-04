@@ -1,9 +1,7 @@
 <template>
     <div>
         <!-- 筛选操作 -->
-        <search-box v-if="!!isShowSearch" :searchObjExtra="searchObjExtra" @select="search"></search-box>
-
-        <retrieval @select="getRetrieval" :retrievalData="retrievalData"></retrieval>
+        <search-box v-if="!!isShowSearch" :fields="searchObjExtra.fields" @select="search"></search-box>
         <!-- 列表 -->
         <div>
             <el-table v-loading="loading" @cell-mouse-enter="showEditName" @filter-change="filterHandler" class="font12 data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">
@@ -87,60 +85,33 @@
                     </template>
                 </template>
                 <!-- 操作 -->
-                <template>
-                    <el-table-column label="操作" key="op" class-name="option-column" width="280">
-                        <template slot-scope="scope">
-                            <!-- 创建快照 -->
-                            <span @click="createSnap(scope.row)" class="btn-linker">创建快照</span>
-                            <b class="link-division-symbol"></b>
-                            <!-- 创建备份 -->
-                            <a @click="setAutoSnap(scope.row)" class="btn-linker">创建备份</a>
-                            <b class="link-division-symbol"></b>
-                            <!-- 更多 -->
-                            <el-dropdown @command="handleCommand" class="font12" trigger="click" placement="bottom-start">
-                                <span class="btn-linker">
-                                    更多
-                                    <i class="el-icon-arrow-down el-icon--right"></i>
-                                </span>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item class="font12" v-if="scope.row.diskStatus==='available'" :command="{handle:'mountDataDiskFn',rowItem:scope.row}">挂载</el-dropdown-item>
-                                    <el-tooltip content="待挂载状态的磁盘才可挂载" placement="left" v-else>
-                                        <el-dropdown-item class="color999 font12" command>挂载</el-dropdown-item>
-                                    </el-tooltip>
-
-                                    <el-tooltip content="请先关机再卸载" placement="left" v-if="scope.row.instanceStatus==='ACTIVE'">
-                                        <el-dropdown-item class="color999 font12" command>卸载</el-dropdown-item>
-                                    </el-tooltip>
-                                    <el-dropdown-item class="font12" v-if="scope.row.diskStatus==='in-use' && scope.row.instanceStatus==='SHUTOFF' " :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
-                                    <el-dropdown-item class="color999 font12" v-else command>卸载</el-dropdown-item>
-
-                                    <el-dropdown-item class="font12" v-if="scope.row.diskStatus!=='in-use'" :command="{handle:'releaseDisk',rowItem:scope.row}">释放</el-dropdown-item>
-                                    <el-tooltip content="请先卸载后再释放" placement="left" v-else>
-                                        <el-dropdown-item class="color999 font12" command>释放</el-dropdown-item>
-                                    </el-tooltip>
-                                    <el-dropdown-item class="font12" :command="{handle:'modifyDiskDescrip',rowItem:scope.row}"> 修改磁盘描述</el-dropdown-item>
-                                    <el-dropdown-item class="font12" :command="{handle:'modifyDiskProp',rowItem:scope.row}"> 修改属性</el-dropdown-item>
-                                    <el-dropdown-item class="font12" :command="{handle:'editLabel',rowItem:scope.row}"> 编辑标签</el-dropdown-item>
-
-                                    <el-dropdown-item command class="font12" v-if="scope.row.diskStatus == 'in-use' && scope.row.isBoot !== '1'">
-                                        <router-link :to="{name:'app.ecs.expandsize',params:{id:scope.row.id,item:scope.row}}">磁盘扩容</router-link>
-                                    </el-dropdown-item>
-                                    <el-tooltip content="请先卸载磁盘" placement="left" v-if="scope.row.diskStatus=='available' && scope.row.isBoot !== '1'">
-                                        <el-dropdown-item class="color999 font12" command>磁盘扩容</el-dropdown-item>
-                                    </el-tooltip>
-                                    <el-tooltip content="通过更换系统盘来扩容" placement="left" v-if="scope.row.isBoot === '1'">
-                                        <el-dropdown-item class="color999 font12" command>磁盘扩容</el-dropdown-item>
-                                    </el-tooltip>
-                                    <el-dropdown-item command class="color999 font12" v-if="scope.row.diskStatus!=='in-use' && scope.row.diskStatus !=='available' && scope.row.isBoot !== '1'">磁盘扩容</el-dropdown-item>
-
-                                    <el-dropdown-item class="font12" command>
-                                        <router-link :to="{name:'app.ticketSystem.submitticket'}" target="_blank">提交工单</router-link>
-                                    </el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </template>
-                    </el-table-column>
-                </template>
+                <el-table-column label="操作" key="op" class-name="option-column" width="280">
+                    <template slot-scope="scope">
+                        <!-- 创建快照 -->
+                        <span @click="createSnap(scope.row)" class="btn-linker">创建快照</span>
+                        <b class="link-division-symbol"></b>
+                        <!-- 创建备份 -->
+                        <a @click="createBack(scope.row)" class="btn-linker">创建备份</a>
+                        <b class="link-division-symbol"></b>
+                        <!-- 更多 -->
+                        <el-dropdown @command="handleCommand" size="small" class="font12" trigger="click" placement="bottom-start">
+                            <span class="btn-linker">
+                                更多
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item :disabled="scope.row.status!=='available'" :command="{handle:'mountDataDiskFn',rowItem:scope.row}">挂载</el-dropdown-item>
+                                <el-dropdown-item :disabled="scope.row.status!=='in-use'" :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
+                                <el-dropdown-item :disabled="scope.row.status==='in-use'" :command="{handle:'releaseDisk',rowItem:scope.row}">释放</el-dropdown-item>
+                                <el-dropdown-item :command="{handle:'modifyDiskDescrip',rowItem:scope.row}"> 修改磁盘描述</el-dropdown-item>
+                                <el-dropdown-item command>
+                                    <router-link tag="div" :to="{name:'app.ecs.expandsize',params:{id:scope.row.id,item:scope.row}}">磁盘扩容</router-link>
+                                </el-dropdown-item>
+                                <el-dropdown-item command class="color999 font12" v-if="scope.row.status!=='in-use' && scope.row.status !=='available' && scope.row.bootable === false">磁盘扩容</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
         <div class="pagination">

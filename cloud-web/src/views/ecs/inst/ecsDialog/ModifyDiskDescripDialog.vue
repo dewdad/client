@@ -35,9 +35,7 @@ export default {
                 name: [
                     { required: true, message: '必填项', trigger: 'blur' }
                 ],
-                remark: [
-                    { required: true, message: '必填项', trigger: 'blur' }
-                ]
+                description: [{required: true, message: '请输入磁盘描述', trigger: ['submit']}]
             }
         };
     },
@@ -45,6 +43,7 @@ export default {
         isShow(val) {
             if(!val){
                 this.$refs['rowItem'].resetFields();
+                this.$refs['rowItem'].clearValidate();
             }
         }
     },
@@ -87,15 +86,12 @@ export default {
                             //this.setting();                     
                             this.$message.success('操作成功');                   
                         })
-                        .catch(
-                            err => {
-                                this.$alert(err, '提示', {
-                                    type: 'error'
-                                });
-                            }
-                        ); 
-                } else {
-                    return false;
+                        .catch(err => {
+                            $log(err);
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
                 }
             });          
         }

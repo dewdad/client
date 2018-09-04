@@ -81,18 +81,18 @@ export default {
         },
 
         //创建子菜单
-        createSubmenu(){
-
+        createSubmenu(rowItem){
+            return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:rowItem.menuCode}});
         },
 
         //编辑
         editMenu(rowItem){            
-            return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:2,code:rowItem.code,rowItem}});
+            return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:2,code:rowItem.menuCode,rowItem}});
         },
 
         //关联操作
-        setMenuInfo(){
-
+        setMenuHander(rowItem){
+            return this.$router.push({name:'app.usrmgr.menumgr.handler',params:{code:rowItem.menuCode}});
         },
 
         //分页查询事件

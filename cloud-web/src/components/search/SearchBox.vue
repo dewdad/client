@@ -3,7 +3,7 @@
         <zt-form :inline="true" size="small" class="search-form-inline">
             <zt-form-item label="">
                 <el-select clearable v-model="allSearchVal.selValue" value-key="field" @change="allSearchVal.selInputValue='';" placeholder="请选择">
-                    <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field" :key="field.field"></el-option>
+                    <el-option v-for="field in fields" :label="field.label" :value="field" :key="field.field"></el-option>
                 </el-select>
             </zt-form-item>
             <zt-form-item v-if="allSearchVal.selValue.tagType !== 'SELECT'" label="">
@@ -33,14 +33,14 @@ export default {
         };
     },
     props: {
-        searchObjExtra: {
-            type: Object
+        fields: {
+            type: Array
         }
     },
     created() {
         // 默认选中第一个
-        if (isArray(this.searchObjExtra.fields)) {
-            this.allSearchVal.selValue = this.searchObjExtra.fields[0];
+        if (isArray(this.fields) && this.fields.length) {
+            this.allSearchVal.selValue = this.fields[0];
         }
     },
     methods: {

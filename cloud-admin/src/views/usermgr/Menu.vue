@@ -85,7 +85,7 @@
                                         <a @click="editMenu(scope.row)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>    
                                         <!-- 关联操作 -->
-                                        <a @click="setMenuInfo(scope.row)" class="btn-linker">关联操作</a>
+                                        <a @click="setMenuHander(scope.row)" class="btn-linker">关联操作</a>
                                         <!-- <b class="link-division-symbol"></b>                                      -->
                                     </template>
                                 </el-table-column>
