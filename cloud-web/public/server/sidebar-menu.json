@@ -345,23 +345,6 @@
                 "psref": "app.vpc"
             },
             {
-                "text": "虚拟防火墙",
-                "sref": "app.vpc.vfirewall",
-                "psref": "app.vpc"
-            },
-            {
-                "text": "快捷连接",
-                "sref": "#",
-                "psref": "app.vpc",
-                "submenu": [
-                    {
-                        "text": "对等连接",
-                        "sref": "app.vpc.peerconn.list",
-                        "psref": "app.vpc"
-                    }
-                ]
-            },
-            {
                 "text": "专有网络-详情",
                 "sref": "app.vpc.pn",
                 "hidden": true,
