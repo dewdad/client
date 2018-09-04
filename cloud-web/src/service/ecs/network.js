@@ -97,6 +97,32 @@ export async function getRouterList({...arg}) {
 }
 
 /**
+ * 添加路由
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function editRouter({...arg}) {
+    $log('post /editRouter ->', {...arg});
+    let ret = await http.post(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 修改路由
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function amendRouter({...arg}) {
+    $log('put /editRouter ->', {...arg});
+    let ret = await http.put(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+
+
+/**
  * 网络列表数据查询 GET /networks/vpcId
  * @param vpcId 网络ID
  */

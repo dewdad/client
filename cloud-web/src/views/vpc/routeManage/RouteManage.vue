@@ -3,7 +3,7 @@
         <!-- 顶部 -->
         <page-header class="mb10">
             <div slot="content"  class="pull-right">
-                <el-button type="primary" size="small" class="mr10">
+                <el-button type="primary" size="small" @click="openRouterDialog('create')" class="mr10">
                     添加路由
                 </el-button>
                 <el-button type="info" size="small">
@@ -34,19 +34,20 @@
                         <zt-status :status="ECS_STATUS" :value="scope.row.status" ></zt-status>
                     </template>
                 </el-table-column>
-                <el-table-column label="外部网络" :min-width="50">
+                <el-table-column label="外部网络" :min-width="80">
                     <template slot-scope="scope">
                         <span>{{scope.row.networkName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="管理状态" :min-width="50">
                     <template slot-scope="scope">
-                        <span>{{scope.row.adminStateUp}}</span>
+                        <span class="color-success" v-if="scope.row.adminStateUp">UP</span>
+                        <span class="color-danger" v-else>DOWN</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="name" label="操作" :min-width="90">
                     <template slot-scope="scope" >
-                        <a>编辑路由</a>
+                        <a @click="openRouterDialog('update', scope.row)">编辑路由</a>
                         <b class="link-division-symbol"></b>
                         <a>静态路由表</a>
                         <b class="link-division-symbol"></b>
@@ -63,12 +64,16 @@
                 </el-table-column>
             </el-table>
         </div>
+
+        <!-- 编辑路由弹窗 -->
+        <edit-router ref="EditRouter"></edit-router>
     </div>
 </template>
 <script>
 import searchBox from '@/components/search/SearchBox';
-import {getRouterList} from '@/service/ecs/network.js';
+import {getRouterList, queryNetwork} from '@/service/ecs/network.js';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
+import EditRouter from './dialog/EditRouter';
 
 let fields = [
     { field: 'name', label: '路由名称',inputval:'1', tagType: 'ID' },
@@ -87,16 +92,19 @@ export default {
             fields,
             searchObjExtra,
             ECS_STATUS,
-            routerList: []
+            routerList: [],
+            outerNetData: [] // 外网网络数据
         };
     },
     components: {
-        searchBox
+        searchBox,
+        EditRouter
     },
     methods: {
         getScreenVal(params) {
             $log(params);
         },
+        // 获得路由列表
         getRouterListFn() {
             let params = {
                 pageIndex: 1,
@@ -118,11 +126,42 @@ export default {
                     console.error('getEcsInstList', e);
                     self.loading = false;
                 });
-        }
-        
+        },
+        // 打开编辑路由弹窗
+        openRouterDialog(type, row) {
+            let EditRouter = this.$refs.EditRouter;
+            if (EditRouter) {
+                EditRouter.show({
+                    type: type,
+                    outerNetData: this.outerNetData,
+                    row: row
+                }).then(ret => {
+                    if (ret) {
+                        this.getRouterListFn();
+                    }
+                });
+            }
+        },
+        // 获得外网网络
+        async getOuterNet() {
+            try {
+                // 清空数据
+                let params = {
+                    router_external: true
+                };
+                let ret = await queryNetwork(params);
+                console.warn('getOuterNet', ret);
+
+                this.outerNetData = ret.data;
+
+            } catch (error) {
+                console.error('getOuterNet', error.message);
+            }
+        },
     },
     created() {
         this.getRouterListFn();
+        this.getOuterNet();
     }
 };
 </script>
