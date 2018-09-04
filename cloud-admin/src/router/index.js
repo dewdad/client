@@ -103,6 +103,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/menumgr/editMenu')
                         },
                         {
+                            path: 'handler/:code',
+                            name: 'app.usrmgr.menumgr.handler',
+                            meta: {
+                                title: '关联操作'
+                            },
+                            component: () => import('@/views/usermgr/menumgr/menuHandle')
+                        },
+                        {
                             path: 'platform',
                             name: 'app.platform.resource',
                             meta: {

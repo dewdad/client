@@ -78,6 +78,10 @@ export const API_MENU_MGR = {
     addMenu: USER_RSA + '/menu/add', //post 新增菜单 menu
     updateMenu: USER_RSA + '/menu/update', //put 更新菜单menu
     listMenu: USER_RSA + '/menu/list', //get 查询菜单列表
+    opList: USER_RSA + '/menu/opList', //get 查询菜单列表
+    addMenuOp: USER_RSA + '/menu/addOp', //post 新增菜单操作
+    updateMenuOp: USER_RSA + '/menu/updateOp', //put 更新菜单操作
+    deleteMenuOp: USER_RSA + '/menu/{opId}', //DELETE 删除菜单操作
 };
 
 
