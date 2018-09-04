@@ -76,6 +76,16 @@ export async function confirmApplyFloatIP({...arg}) {
 }
 
 /**
+ * 释放浮动IP
+ * @param name 根据服务器名称查询
+ */
+export async function deleteFloatIP({floatIP}) {
+    $log('delete /deleteFloatIP ->', {floatIP});
+    let ret = await http.delete(replaceParamVal(API_ECS.network.delFloatIP, [floatIP]));
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
  * 路由管理列表数据查询 GET /networks
  * @param limit 每页条数
  * @param pageIndex 每页条数

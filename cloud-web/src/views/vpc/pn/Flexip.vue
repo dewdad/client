@@ -55,9 +55,12 @@
         </el-table-column>
         <el-table-column prop="name" label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <a @click="bindFlexFn(scope.row)">绑定</a> | 
-                <a>解绑</a> | 
-                <a>释放</a>
+                <a @click="bindFlexFn(scope.row)">绑定</a>
+                <b class="link-division-symbol"></b>
+                <span class="color-secondary" v-if="scope.row.state === 'DOWN'">解绑</span>
+                <a v-else>解绑</a>
+                <b class="link-division-symbol"></b>
+                <a @click="deleteFloatIP(scope.row)">释放</a>
             </template>
         </el-table-column>
     </el-table>
@@ -86,7 +89,7 @@ import RegionRadio from '@/components/regionRadio/RegionRadio';
 import searchBox from '@/components/search/SearchBox';
 import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
-import {queryFlexIP, queryNetwork} from '@/service/ecs/network.js';
+import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.js';
 import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
@@ -184,6 +187,10 @@ export default {
                 ApplyFloatIP.show(this.outerNetData)
                     .then(ret => {
                         if (ret) {
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            });
                             this.fetchData();
                         }
                     });
@@ -227,7 +234,37 @@ export default {
             } catch (error) {
                 console.error('fetchData', error.message);
             }
-        }
+        },
+        // 释放浮动IP
+        deleteFloatIP(row) {
+            $log('删除数据', row);
+            this.$confirm(`浮动IP释放后无法恢复，你确定要释放弹性公网IP${row.floatingIpAddress} 吗？`, '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'danger'
+            })
+                .then(() => {
+                    return deleteFloatIP({
+                        floatIP: row.id
+                    });
+                    
+                })
+                .then(ret => {
+                    $log('deleteNetwork ret <-', ret);
+                    if (ret) {
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.fetchData();
+                    }
+                })
+                .catch((error) => {
+                    // 取消
+                    $log('deleteNetwork', error.message);
+                });
+            
+        },
     },
     components: {
         RegionRadio,

@@ -150,6 +150,7 @@ export const API_ECS = {
         bindFloatIP: '/compute/floatip/associateToPort/{floatIP}/{instIP}', // 绑定浮动IP
         routerList: '/compute/router/list', // 路由列表
         applyFloatIP: 'compute/floatip', // 确认申请浮动IP
+        delFloatIP: 'compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: ECS_CTRL + '/networks/count/{vpcId}',
         getNetwork: ECS_CTRL + '/networks',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',
