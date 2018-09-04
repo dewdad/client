@@ -1,68 +1,56 @@
 <template>
-    <el-dialog title="修改磁盘描述" :visible.sync="isShow" width="600px" class="ModifyDiskDescripDialog" @close="cancel">
+    <el-dialog
+        title="修改磁盘描述"
+        :visible.sync="isShow"
+        width="45%"
+        class="ModifyDiskDescripDialog">
         <zt-form :model="rowItem" :rules="rules" ref="rowItem" inline-message class="demo-ruleForm" label-width="100px" size="small">
             <!-- 磁盘名称 -->
             <zt-form-item label="磁盘名称" prop="name">
-                <el-input minlength="2" maxlength="128" v-model="rowItem.name"></el-input>
-                <div class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
+                <el-input minlength="2" maxlength="128" size="small" v-model="rowItem.name"></el-input>
+                <div class="input-help">长度限制为2-128个字符。</div>
             </zt-form-item>
             <!-- 磁盘描述 -->
-            <zt-form-item label="磁盘描述" prop="description">
-                <el-input maxlength="128" v-model="rowItem.description"></el-input>
+            <zt-form-item label="磁盘描述" prop="remark">
+                <el-input maxlength="128" size="small" v-model="rowItem.remark"></el-input>
                 <div class="input-help">您最多可以输入128个字符。</div>
             </zt-form-item>
         </zt-form>
-        <span slot="footer" class="dialog-footer">
-            <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
-            <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
+        <span slot="footer" class="dialog-footer">            
+            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
 <script>
 import {updateDisk} from '@/service/ecs/disk/disk.js';
-import {INST_NAME} from '@/constants/regexp';
 export default {
     data() {
         return {
             isShow: false,
             resolve: null,
-            reject: null,
-            rowItem: {},
-            loading: false,
+            reject: null,            
+            rowItem:{},
             rules: {
                 name: [
-                    {
-                        required: true,
-                        message: '请输入磁盘名称',
-                        trigger: ['submit']
-                    },
-                    {
-                        min: 2,
-                        max: 64,
-                        message: '名称输入有误',
-                        trigger: ['submit', 'blur']
-                    },
-                    {
-                        pattern: INST_NAME,
-                        message: '名称输入有误',
-                        trigger: ['submit', 'blur']
-                    }
+                    { required: true, message: '必填项', trigger: 'blur' }
                 ],
-                description: [{required: true, message: '请输入磁盘描述', trigger: ['submit', 'change']}]
+                description: [{required: true, message: '请输入磁盘描述', trigger: ['submit']}]
             }
         };
     },
     watch: {
         isShow(val) {
-            if (!val) {
+            if(!val){
                 this.$refs['rowItem'].resetFields();
+                this.$refs['rowItem'].clearValidate();
             }
         }
     },
     methods: {
         show(rowItem) {
-            let {id, name, description} = rowItem;
-            this.rowItem = {id, name, description};
+            let { id,name,remark} = rowItem;
+            this.rowItem = { id,name,remark};
             this.isShow = true;
 
             return new Promise((resolve, reject) => {
@@ -75,36 +63,44 @@ export default {
             this.rowItem = {};
         },
         cancel() {
+            this.hide();
             typeof this.reject() === 'function' && this.reject();
+        },
+        setting() {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    typeof this.resolve(this.form) === 'function' &&
+                        this.resolve(this.form);
+                }, 1000);
+            });
         },
         confirm() {
             //表单校验
-            this.$refs['rowItem'].validate(valid => {
+            this.$refs['rowItem'].validate((valid) => {
                 if (valid) {
                     //提交后台
-                    this.loading = true;
-                    updateDisk(this.rowItem.id, this.rowItem.name, this.rowItem.description)
-                        .then(res => {
-                            if (res.code === '0000') {
-                                this.resolve(this.rowItem);
-                                this.hide();
-                                this.$message.success('操作成功');
-                            }
+                    updateDisk(this.rowItem)
+                        .then( res => {   
+                            this.resolve(this.rowItem);                 
+                            this.hide();
+                            //this.setting();                     
+                            this.$message.success('操作成功');                   
                         })
                         .catch(err => {
                             $log(err);
-                        }).finally(() => {
+                        })
+                        .finally(() => {
                             this.loading = false;
                         });
                 }
-            });
+            });          
         }
     }
 };
 </script>
 <style lang="scss">
-.ModifyDiskDescripDialog {
-    .demo-ruleForm {
+.ModifyDiskDescripDialog{
+    .demo-ruleForm{
         width: 70%;
         margin-left: 20px;
     }

@@ -91,8 +91,8 @@ export default {
         },
 
         //关联操作
-        setMenuInfo(){
-
+        setMenuHander(rowItem){
+            return this.$router.push({name:'app.usrmgr.menumgr.handler',params:{code:rowItem.menuCode}});
         },
 
         //分页查询事件

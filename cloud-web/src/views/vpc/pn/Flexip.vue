@@ -11,7 +11,7 @@
         </div>
     </page-header>
     <!-- 搜索栏 -->
-    <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box>
+    <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
     <!-- 表格 -->
     <el-table
         v-loading="isLoading"

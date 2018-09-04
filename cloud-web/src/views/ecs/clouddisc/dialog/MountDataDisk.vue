@@ -1,10 +1,10 @@
 <template>
     <el-dialog title="挂载云盘" :visible.sync="isShow" width="600px" class="CustomImageDesc" @close="cancel">
-        <el-alert type="warning" :closable="false" class="font12">
+        <el-alert type="warning" :closable="false" title="" class="font12">
             重要提示：“磁盘挂载”执行成功后，您还需要登录本实例对挂载的磁盘进行“分区格式化和挂载新分区”的操作。 分区格式化/挂载数据盘操作指南: <a class="font12">Window</a>>,<a class="font12">Linux</a>>
         </el-alert>
         <div style="padding-left:20px;">
-            <zt-form inline-message class="mt20 demo-ruleForm" label-width="140px" size="small" ref="ruleForm">
+            <zt-form inline-message class="demo-ruleForm" label-width="120px" size="small" ref="ruleForm">
                 <!-- 镜像名称 -->
                 <zt-form-item label="磁盘ID">
                     <span>{{rowItem.id}}</span>
@@ -21,12 +21,16 @@
                     <span class="mr10">自动分配</span>
                     <i class="iconfont icon-notice_people"></i>
                 </zt-form-item>
+                <!-- 释放行为 -->
+                <zt-form-item label="释放行为">
+                    <el-checkbox v-model="formData.autoDelSnapshot">快照随磁盘释放</el-checkbox>
+                </zt-form-item>
             </zt-form>
         </div>
 
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
-             <el-button type="primary" size="small" :loading="loading" :disabled="formData.instanceId === ''" @click="confirm">执行挂载</el-button>
+            <el-button type="primary" class="font12" @click="confirm">执行挂载</el-button>
+            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
         </span>
     </el-dialog>
 </template>
@@ -40,8 +44,9 @@ export default {
             isShow: false,
             resolve: null,
             reject: null,
-            loading: false,
+
             rowItem: {},
+            title: '',
             ecsInsts: [],
             formData:{
                 autoDelSnapshot:false,
@@ -50,18 +55,13 @@ export default {
             
         };
     },
-    watch: {
-        isShow(val) {
-            if(!val){
-                this.formData.instanceId = '';
-                this.$refs['ruleForm'].clearValidate();
-            }
-        }
-    },
+    props: {},
     methods: {
         show(rowItem) {
             this.rowItem = rowItem;
+            this.title = rowItem.isBoot === '1' ? '挂载系统盘' : '挂载数据盘';
             this.isShow = true;
+
             this.getEcsInstAll();
 
             return new Promise((resolve, reject) => {
@@ -71,8 +71,16 @@ export default {
         },
         hide() {
             this.isShow = false;
+            this.rowItem = {};
+            this.title = '';
+            this.ecsInsts = [];
+            this.formData = {
+                autoDelSnapshot:false,
+                instanceId:''
+            };
         },
         cancel() {
+            this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
         setting() {
@@ -84,39 +92,41 @@ export default {
         },
         confirm() {
             let data = {
-                volumeId: this.rowItem.id,
-                instanceId: this.formData.instanceId
+                disk_id: this.rowItem.id,
+                instanceId: this.formData.instanceId,                
+                autoDelSnapshot: this.formData.autoDelSnapshot,
                 //imageRef: '',
             };
-            this.loading = true;
             mountDisk(data)
                 .then( res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) { 
                         this.resolve(res);
                         this.hide();
                         //this.setting();                                            
-                    }                              
+                    }else {
+
+                    }                                 
                 })
                 .catch(
                     err => {
-                        $log(err);
+                        this.$alert(err, '提示', {
+                            type: 'error'
+                        });
                     }
-                ).finally(() => {
-                    this.loading = false;
-                });
+                );
         },
 
         //查询目标实例(可以挂载的ecs实例)
         getEcsInstAll() {
-            getEcsInstList({status: 'active'}).then(
+            getEcsInstList({status: 'ACTIVE'}).then(
                 res => {
                     if (res && res.data) {
                         let data = res.data;
                         if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let jsonData = data.data;
+                            let jsonData = data.result;
                             console.log('jsonData', jsonData);
-                            if (jsonData && jsonData.data) {
-                                let ecsInsts = jsonData.data || [];
+                            if (jsonData && jsonData.records) {
+                                let ecsInsts = jsonData.records || [];
                                 this.ecsInsts = ecsInsts;
                             }
                         }

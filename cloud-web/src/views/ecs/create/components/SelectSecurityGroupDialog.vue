@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-if="isShow" width="878px" title="选择安全组" :visible="true" :close-on-click-modal="false" @close="cancel">
         <div>
-            <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box>
+            <search-box :fields="searchObjExtra.fields" @select="search"></search-box>
             <el-table :loading="loading" max-height="240" class="data-list" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;" @row-dblclick="confirm">
                 <el-table-column prop="id" label="" width="50" class-name=" ">
                     <template slot-scope="scope">

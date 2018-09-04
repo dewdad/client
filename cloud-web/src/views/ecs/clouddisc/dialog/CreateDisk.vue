@@ -1,29 +1,15 @@
 <template>
-    <el-dialog title="创建备份" :visible.sync="isShow" width="600px" class="CreateSnapDialog" @close="cancel">
-        <!-- tip提示 -->
-        <el-alert title="" type="warning" :closable="false">
-            <span class="font12">为了保证备份创建成功，正在创建备份时，您不能修改ECS实例状态，比如停止或重启ECS实例，请耐心等待。</span>
-        </el-alert>
+    <el-dialog title="创建磁盘" :visible.sync="isShow" width="600px" class="CreateSnapDialog" @close="cancel">
         <zt-form inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
-            <!-- 磁盘ID -->
-            <zt-form-item label="磁盘ID">
-                <span>{{rowItem.id}}</span>
+            <!-- 快照ID -->
+            <zt-form-item label="快照ID">
+                <span>{{ruleForm.id}}</span>
             </zt-form-item>
-            <!-- 实例ID/名称 -->
-            <zt-form-item label="实例ID/名称">
-                <span>{{rowItem.name || '-'}}</span>
-            </zt-form-item>
-            <!-- 备份名称 -->
-            <zt-form-item label="备份名称" prop="snapshotName">
-                <el-input size="small" v-model="ruleForm.snapshotName"></el-input>
-                <span class="input-help">备份名称为2-128个字符，备份名不能以auto开头。</span>
-            </zt-form-item>
-            <!-- 备份描述 -->
-            <zt-form-item label="备份描述" >
-                <el-input size="small" v-model="ruleForm.description"></el-input>
+            <!-- 磁盘大小 -->
+            <zt-form-item label="磁盘大小" prop="size">
+               <el-input-number size="small" style="width: 100%" :min="50" :step="1" precision="0" controls-position="right" v-model="ruleForm.size"></el-input-number>
             </zt-form-item>
         </zt-form>
-
         <span slot="footer" class="dialog-footer">
             <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
             <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
@@ -31,17 +17,10 @@
     </el-dialog>
 </template>
 <script>
-import {createBackup} from '@/service/ecs/disk/disk.js';
+import {createDisk} from '@/service/ecs/snapshot.js';
 
 export default {
     data() {
-        const checkName = (rule, value, callback) => {
-            if (value && value.indexOf('auto') === 0) {
-                callback(new Error('不能以auto开头'));
-                return;
-            }
-            callback();
-        };
         return {
             loading: false,
             isShow: false,
@@ -49,14 +28,11 @@ export default {
             reject: null,
             rowItem: {},
             ruleForm: {
-                snapshotName: '',
-                description: '',
+                size: '',
             },
             rules: {
-                snapshotName: [
-                    {required: true, message: '请输入备份名称', trigger: ['submit']},
-                    {min: 2, max: 64, message: '2-128个字符', trigger: ['submit', 'blur']},
-                    {validator: checkName, message: '不能以auto开头', trigger: ['submit', 'blur']}
+                size: [
+                    {required: true, message: '请填写磁盘大小', trigger: ['submit']},
                 ]
             }
         };
@@ -64,15 +40,16 @@ export default {
     watch: {
         isShow(val) {
             if (!val) {
-                this.ruleForm.snapshotName = '';
-                this.ruleForm.description = '';
+                this.ruleForm.id = '';
+                this.ruleForm.size = '';
                 this.$refs['ruleForm'].clearValidate();
             }
         }
     },
     methods: {
-        show(rowItem) {
-            this.rowItem = rowItem;
+        show(row) {
+            this.ruleForm.id = row.id;
+            this.rowItem = row;
             this.isShow = true;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -96,13 +73,12 @@ export default {
             this.$refs['ruleForm'].validate(valid => {
                 if (valid) {
                     let data = {
-                        volumeId: this.rowItem.id,
-                        name: this.ruleForm.snapshotName,
-                        description: this.ruleForm.description
+                        snapshotId: this.rowItem.id,
+                        size: this.ruleForm.size
                     };
                     this.loading = true;
                     //提交后台
-                    createBackup({...data})
+                    createDisk({...data})
                         .then(res => {
                             if (res.code === '0000') {
                                 this.hide();

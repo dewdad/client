@@ -91,19 +91,23 @@ export const API_ECS = {
     },
     disk: {
         getDiskList: '/compute/disk/list',
+        getAllDisk: '/compute/disk/listAll',
         setDiskSnapshotPolicy: ECS_CTRL + '/disk/snapshot-policy',
-        createBackup: '/compute/disk/createBackup',
         updateDisk: '/compute/disk/{disk_id}',
         diskRollback: ECS_CTRL + '/disk/{disk_id}/rollback/{snapshot_id}', //回滚磁盘
         mountDisk: '/compute/disk/mountVolume', //挂载云盘
         unmoutDisk: '/compute/disk/uninstallVolume', //卸载云盘
         releaseDisk: '/compute/disk/{disk_id}', //释放、删除云盘
-        resizeDisk: ECS_CTRL + '/disk/{disk_id}/resize' //云盘扩容
+        resizeDisk: '/compute/disk/resize/{disk_id}/{size}', //云盘扩容
+        getBackupList: '/compute/disk/getBackupList', // 云盘备份列表，
+        deleteBackup: '/compute/disk/backup/{id}', // 删除云盘备份
+        restoreBackup: '/compute/disk/restoreBackup' // 恢复云盘备份
     },
     snapshot: {
         createSnapshot: '/compute/disk/createSnapshots',
-        getSnapshotList: ECS_CTRL + '/snapshots/list',
-        deleteSnap: ECS_CTRL + '/snapshots/{snapshot_ids}'
+        getSnapshotList: '/compute/disk/getSnapshotsList',
+        deleteSnap: '/compute/disk/snapshot/{snapshot_ids}',
+        createDisk: '/compute/disk'
     },
     policy: {
         getPolicy: ECS_CTRL + '/policy/list',

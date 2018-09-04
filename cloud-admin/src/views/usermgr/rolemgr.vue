@@ -62,7 +62,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row.name}}</span>
                                 </template>
                             </el-table-column>
                         </template>

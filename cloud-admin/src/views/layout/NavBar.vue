@@ -20,7 +20,6 @@
 <script>
 import ChangePwdDialog from '@/components/dialog/ChangePwdDialog';
 import { mapState } from 'vuex';
-import {logout} from '@/service/login.js';
 export default {
     name: 'app',
     data() {
@@ -60,18 +59,8 @@ export default {
         },
 
         logOut() {
-            logout().then(ret => {
-                this.$store.dispatch('LOGOUT');
-                this.$router.push({name: 'login'});
-            }
-            ).catch(err => {
-                if (err) {
-                    console.log('Error', err);
-                } else {
-                    console.log('取消');
-                }
-            });
-
+            this.$store.dispatch('LOGOUT');
+            this.$router.push({name: 'login'});
         },
     }
 };
