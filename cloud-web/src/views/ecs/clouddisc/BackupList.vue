@@ -1,16 +1,16 @@
 <template>
     <div class="page-main">
         <page-header>
-            云盘快照
+            云盘备份
             <div slot="right">
-                <el-button type="info" size="small" @click="getEcsImageList">
+                <el-button type="info" size="small" @click="getBackupList">
                     <i class="iconfont icon-refresh_people"></i>
                 </el-button>
             </div>
         </page-header>
         <div class="page-body mt10">
             <!-- 列表 -->
-            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getEcsImageList" :paging="searchObj.paging">
+            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getBackupList" :paging="searchObj.paging">
                 <!-- 实例名称 -->
                 <el-table-column min-width="180" prop="name" label="名称">
                 </el-table-column>
@@ -38,19 +38,19 @@
                 <!-- 操作 -->
                 <el-table-column label="操作" key="op" width="250" class-name="option-column">
                     <template slot-scope="scope">
-                        <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
+                        <span @click="recovery(scope.row)" class="btn-linker">恢复备份</span>
                         <b class="link-division-symbol"></b>
-                        <a @click="deleteSnap(scope.row)" class="btn-linker">删除</a>
+                        <a @click="deleteBackup(scope.row)" class="btn-linker">删除</a>
                     </template>
                 </el-table-column>
             </zt-table>
         </div>
-        <create-disk ref="CreateDisk"/>
+        <recovery ref="Recovery"/>
     </div>
 </template>
 <script>
-import {getSnapshotList, deleteSnapshots} from '@/service/ecs/snapshot.js';
-import CreateDisk from './dialog/CreateDisk';
+import {getBackupList, deleteBackup} from '@/service/ecs/disk/disk.js';
+import Recovery from './dialog/Recovery';
 let statusArr = [
     {text: '全部', state: true, value: ''},
     {
@@ -89,16 +89,16 @@ export default {
         };
     },
     components: {
-        CreateDisk
+        Recovery
     },
     mounted() {
-        this.getSnapshotList();
+        this.getBackupList();
     },
     methods: {
-        getSnapshotList(params) {
+        getBackupList(params) {
             params = params || this.searchObj.paging;
             this.loading = true;
-            getSnapshotList(params)
+            getBackupList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
@@ -115,24 +115,29 @@ export default {
                     this.loading = false;
                 });
         },
-        editSnap(row) {
-            this.$refs.CreateDisk.show(row).then(() => {
+        recovery(row) {
+            this.$refs.Recovery.show(row).then(() => {
+                this.$message.success('操作成功');
+            }).catch(err => {
+                $log(err);
             });
         },
-        deleteSnap(row) {
+        deleteBackup(row) {
             this.$messageBox
-                .confirm('确定要对该快照进行删除操作吗？', '删除', {
+                .confirm('确定要对该云盘备份进行删除操作吗？', '删除', {
                     type: 'warning',
                     alertMessage: '删除操作无法恢复，请谨慎操作',
                     subMessage: row.name
                 })
                 .then(() => {
-                    deleteSnapshots(row.id).then(res => {
+                    deleteBackup(row.id).then(res => {
                         if (res.code === '0000') {
                             this.$message.success('操作成功');
-                            this.getSnapshotList();
+                            this.getBackupList();
                         }
                     });
+                }).catch(err => {
+                    $log(err);
                 });
         }
     }

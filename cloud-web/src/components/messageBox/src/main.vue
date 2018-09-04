@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div v-if="alertMessage">
-                        <el-alert :description="alertMessage" type="warning" :show-icon="false" :closable="false">
+                        <el-alert :description="alertMessage" title="" type="warning" :show-icon="false" :closable="false">
                         </el-alert>
                     </div>
                 </div>
@@ -96,6 +96,10 @@ export default {
         roundButton: {
             default: false,
             type: Boolean
+        },
+        alertMessage: {
+            default: '',
+            type: String
         }
     },
 

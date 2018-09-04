@@ -91,13 +91,17 @@ export const API_ECS = {
     },
     disk: {
         getDiskList: '/compute/disk/list',
+        getAllDisk: '/compute/disk/listAll',
         setDiskSnapshotPolicy: ECS_CTRL + '/disk/snapshot-policy',
         updateDisk: '/compute/disk/{disk_id}',
         diskRollback: ECS_CTRL + '/disk/{disk_id}/rollback/{snapshot_id}', //回滚磁盘
         mountDisk: '/compute/disk/mountVolume', //挂载云盘
         unmoutDisk: '/compute/disk/uninstallVolume', //卸载云盘
         releaseDisk: '/compute/disk/{disk_id}', //释放、删除云盘
-        resizeDisk: '/compute/disk/resize/{disk_id}/{size}' //云盘扩容
+        resizeDisk: '/compute/disk/resize/{disk_id}/{size}', //云盘扩容
+        getBackupList: '/compute/disk/getBackupList', // 云盘备份列表，
+        deleteBackup: '/compute/disk/backup/{id}', // 删除云盘备份
+        restoreBackup: '/compute/disk/restoreBackup' // 恢复云盘备份
     },
     snapshot: {
         createSnapshot: '/compute/disk/createSnapshots',
