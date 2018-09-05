@@ -2,7 +2,7 @@
     <div class="zt-table">
         <!-- 筛选操作 -->
         <search-box v-if="search" :fields="searchCondition" @select="handleSearch"></search-box>
-        <el-table class="data-list" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
+        <el-table class="data-list" @filter-change="filterHandler" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
             <slot name="default"></slot>
         </el-table>
         <div class="pagination">
@@ -80,6 +80,12 @@ export default {
                 }
             };
             this.$emit('search', data);
+        },
+        // 状态筛选
+        filterHandler(filters) {
+            let values = Object.values(filters);
+            let value = values[0][0];
+            this.$emit('filterVal', value);
         }
     }
 };

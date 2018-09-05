@@ -6,7 +6,7 @@
                 <el-button type="primary" size="small" @click="openRouterDialog('create')" class="mr10">
                     添加路由
                 </el-button>
-                <el-button type="info" size="small">
+                <el-button type="info" size="small" @click="getRouterListFn">
                     <i class="iconfont icon-refresh_people"></i>
                 </el-button>
             </div>
@@ -74,12 +74,27 @@ import {getRouterList, queryNetwork, deleteRouter} from '@/service/ecs/network.j
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import EditRouter from './dialog/EditRouter';
 
-let fields = [
-    { field: 'name', label: '路由名称', tagType: 'INPUT' },
-    { field: 'status', label: '状态', tagType: 'SELECT' },
-    { field: 'adminStateUp', label: '管理状态', tagType: 'SELECT' }
+let statusArr = [
+    {
+        value: 'ACTIVE',
+        text: '运行中'
+    },
+    {
+        value: 'DOWN',
+        text: '已关闭'
+    }
 ];
 
+let adminStateUpArr = [
+    {
+        value: true,
+        text: 'UP' 
+    },
+    {
+        value: false,
+        text: 'DOWN' 
+    }
+];
 let searchObj = {
     //分页
     paging: {
@@ -89,6 +104,12 @@ let searchObj = {
     }
 };
 
+let fields = [
+    { field: 'name', label: '路由名称', tagType: 'INPUT' },
+    { field: 'status', label: '状态', options: statusArr, tagType: 'SELECT' },
+    { field: 'admin_state_up', label: '管理状态', options: adminStateUpArr, tagType: 'SELECT' }
+];
+
 export default {
     data() {
         return {
@@ -97,6 +118,8 @@ export default {
             searchObj,
             routerList: [],
             loading: false, 
+            adminStateUpArr,
+            statusArr,
             outerNetData: [] // 外网网络数据
         };
     },
@@ -106,13 +129,16 @@ export default {
     },
     methods: {
         getScreenVal(params) {
-            $log(params);
+            $log(params.fileds);
+            this.getRouterListFn(params.fileds);
         },
         // 获得路由列表
-        getRouterListFn() {
+        getRouterListFn(fileds) {
             let params = {
-                ...this.searchObj.paging
+                ...this.searchObj.paging,
+                ...fileds
             };
+
             this.loading = true;
             getRouterList(params)
                 .then(res => {

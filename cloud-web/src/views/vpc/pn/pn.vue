@@ -56,8 +56,8 @@
         </el-table-column>
         <el-table-column label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
-                <b class="link-division-symbol"></b>
+                <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
+                <b class="link-division-symbol"></b> -->
                 <a @click="updateNetwork(scope.row)">编辑</a>
                 <b class="link-division-symbol"></b>
                 <a @click="deleteNetwork(scope.row)">删除</a>
@@ -146,6 +146,10 @@ export default {
                     $log('deleteNetwork ret <-', ret);
                     if (ret) {
                         this.fetchData();
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
                     }
                 })
                 .catch((error) => {

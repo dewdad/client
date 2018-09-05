@@ -12,6 +12,7 @@
     </page-header>
     <!-- 表格 -->
     <zt-table
+        @filterVal="filterHandler"
         :loading="isLoading"
         :data="tableData" 
         :search="true" 
@@ -37,7 +38,7 @@
                 {{scope.row.fixedIpAddress}}
             </template>
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="状态" prop="state" :filter-multiple="false"  :filtered-value="[state]" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'UP'},{text: '未绑定', value: 'DOWN'} ]">
             <template slot-scope="scope">
                 <span :class="{'color-danger': scope.row.state === 'DOWN'}">
                     {{scope.row.state === 'DOWN' ? '未绑定' : '已绑定'}}
@@ -98,6 +99,8 @@ export default {
             searchObj,
             listData: {},
             fields,
+            state: '',
+            floatingIpAddressVal: '',
             exampleList: [],
             outerNetData: [] // 外网网络数据
         };
@@ -130,14 +133,15 @@ export default {
                     ...this.searchObj.paging,
                     offset: 1,
                     statusroptionValue: 'all',
-                    status: ''
+                    status: this.state
                 };
-
+                if (this.floatingIpAddressVal) {
+                    params.floatingIpAddress = this.floatingIpAddressVal;
+                }
                 let ret = await queryFlexIP(params);
                 console.warn('fetchData', ret);
 
                 this.listData = ret;
-                this.date = new Date().getTime();
 
                 this.pageIndex = parseInt(ret.pages);
                 this.searchObj.paging.totalItems = ret.total;
@@ -150,7 +154,9 @@ export default {
         },
         // 获得搜索条件
         getScreenVal(params) {
-            $log(params);
+            $log('searchVal',params);
+            this.floatingIpAddressVal = params.fileds.name;
+            this.fetchData();
         },
         // 绑定浮动Ip
         bindFlexFn(params){
@@ -249,6 +255,16 @@ export default {
                 });
             
         },
+        // 状态筛选
+        filterHandler(value) {
+            if (value) {
+                this.state = value;
+            } else {
+                this.state = '';
+            }
+            console.warn(value);
+            this.fetchData();
+        }
     },
     components: {
         RegionRadio,
