@@ -2,122 +2,71 @@
     <div class="page-main">
         <!-- 头部 -->
         <page-header>
-            {{$t('ecs.image.list.title')}}
-            <region-radio slot="content" v-model="region"></region-radio>
+            安全组列表
             <div slot="right">
-                <el-button @click="modifySafeGrp('')" type="primary" size="small">创建安全组</el-button>                
-                <el-button type="info" size="small">
+                <el-button @click="modifySafeGrp({id: '', name: '', description: ''})" type="primary" size="small">创建安全组</el-button>
+                <el-button type="info" size="small" @click="getGroupListFn">
                     <i class="iconfont icon-refresh_people"></i>
                 </el-button>
             </div>
         </page-header>
         <!-- 主体 -->
         <div class="page-body">
-            <!-- 搜索栏 -->
-            <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
             <!-- 列表 -->
-            <div>
-                <el-table class="data-list" @cell-mouse-enter="showEditName" :data="tableData" header-row-class-name="data-list" style="width: 100%">
-                    <template v-for="col in cols">
-                        <!-- 实例名称 -->
-                        <template v-if="col.column=='name'">
-                            <el-table-column min-width="180" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <ul>
-                                        <li>
-                                            <span class="font12 mr10">{{scope.row.id}}</span>
-                                        </li>
-                                        <li>
-                                            <span class="font12 mr10">{{scope.row.name}}</span>
-                                            <AmendName :scope="scope" v-show="scope.row.id === showId"></AmendName>                                            
-                                        </li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                        </template>
-                        <!-- 相关实例 -->
-                        <template v-if="col.column=='countInstance'">
-                            <el-table-column width="150" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <el-tag>{{scope.row.countInstance || 0}}</el-tag>
-                                </template>
-                            </el-table-column>
-                        </template>
-                        <!-- 创建时间 -->
-                        <template v-if="col.column=='createDate'">
-                            <el-table-column width="150" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <span>{{scope.row.createDate}}</span>
-                                </template>
-                            </el-table-column>
-                        </template>
-                        <!-- 描述 -->
-                        <template v-if="col.column=='remark'">
-                            <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                            </el-table-column>
-                        </template>
+            <zt-table :loading="loading" :cell-mouse-enter="showEditName" :data="tableData" :search="true" :search-condition="fields" @search="getGroupListFn" :paging="searchObj.paging">
+                <!-- 实例名称 -->
+                <el-table-column min-width="180" prop="name" label="安全组ID/名称">
+                    <template slot-scope="scope">
+                        <ul>
+                            <li>
+                                <span class="font12 mr10">{{scope.row.id}}</span>
+                            </li>
+                            <li>
+                                <span class="font12 mr10">{{scope.row.name}}</span>
+                                <i class="amendInfo finger-cursor iconfont icon-edit_people" v-if="scope.row.id === showId" @click="editname(scope.row)"></i>
+                            </li>
+                        </ul>
                     </template>
-                    <!-- 操作 -->
-                    <template>
-                        <el-table-column label="操作" key="op" width="250" class-name="option-snaplist">
-                            <template slot-scope="scope">
-                                <!-- 修改 -->
-                                <span @click="modifySafeGrp(scope.row)" class="btn-linker">修改</span>
-                                <b class="link-division-symbol"></b>
-                                <!-- 管理实例 -->
-                                <!-- <span class="color-primary finger-cursor">管理实例</span> -->
-                                <router-link class="btn-linker" :to="{name:'app.ecs.groupRule.safegrpList', params:{ruleId:scope.row.id}}">管理实例</router-link>
-                                <b class="link-division-symbol"></b>
-                                <!-- 配置规则 -->
-                                <router-link class="btn-linker" :to="{name:'app.ecs.groupRule.safegrpRule', params: {ruleId:scope.row.id}}">配置规则</router-link>
-                                <!-- <span class="color-primary finger-cursor">配置规则</span> -->
-                                <b class="link-division-symbol"></b>
-                                <!-- 删除 -->
-                                <span v-if="!scope.row.countInstance" @click="deleteExample(scope.row.id)" class="btn-linker" >删除</span>
-                                <el-tooltip v-if="scope.row.countInstance" content="已关联到实例" transition="scale-in" placement="bottom" effect="light">
-                                    <span class="btn-linker"><a disabled >删除</a></span>
-                                </el-tooltip> 
-                            </template>
-                        </el-table-column>
-                    </template>
-                </el-table>
-            </div>
-        </div>
+                </el-table-column>
+                <!-- 描述 -->
+                <el-table-column prop="description" label="描述">
+                </el-table-column>
+                <!-- 操作 -->
+                <el-table-column label="操作" key="op" width="250" class-name="option-column">
+                    <template slot-scope="scope">
+                        <!-- 修改 -->
+                        <span @click="modifySafeGrp(scope.row)" class="btn-linker">修改</span>
+                        <b class="link-division-symbol"></b>
+                        <!-- 配置规则 -->
+                        <router-link class="btn-linker" :to="{name:'app.ecs.groupRule.safegrpRule', params: {ruleId:scope.row.id}}">配置规则</router-link>
+                        <!-- <span class="color-primary finger-cursor">配置规则</span> -->
+                        <b class="link-division-symbol"></b>
+                        <!-- 删除 -->
+                        <a @click="deleteSafeGrp(scope.row)" class="btn-linker">删除</a>
 
-        <div class="pagination">
-            <el-pagination background :current-page="searchObj.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
-            </el-pagination>
+                    </template>
+                </el-table-column>
+            </zt-table>
         </div>
+        <edit-name ref="EditName" />
         <!-- 对话框 修改 -->
-        <modify-safe-group ref="ModifySafeGroup"/>
+        <modify-safe-group ref="ModifySafeGroup" />
     </div>
 </template>
 <script>
-import RegionRadio from '@/components/regionRadio/RegionRadio';
-import PageHeader from '@/components/pageHeader/PageHeader';
-import searchBox from '@/components/search/SearchBox';
-import AmendName from '@/components/amend/AmendName';
 import ModifySafeGroup from './dialog/ModifySafeGroup';
+import EditName from './dialog/EditName';
+import {getSecurityGroupList, deleteGroup} from '@/service/ecs/security.js';
 
-import { getSecurityGroupList, deleteGroup } from '@/service/ecs/security.js';
+let fields = [{field: 'id', label: '安全组ID', inputval: '', tagType: 'ID'}, {field: 'name', label: '安全组名称', inputval: '', tagType: 'Name'}];
 
-let fields = [
-    { field: 'id', label: '安全组ID',inputval:'', tagType: 'ID' },
-    { field: 'name', label:'安全组名称',inputval:'', tagType: 'Name' }
-];
-        
-let searchObjExtra = {
-    frominfo: '',
-    fields:fields,
-    selField:fields[0]
-};
 let cols = [
-    { column: 'name', text: '安全组ID/名称', width: '20%' },
-    { column: 'countInstance',text: '相关实例',width: '4%'},
-    { column: 'createDate', text: '创建时间', width: '10%' },
-    { column: 'remark', text: '描述', width: '10%' }
+    {column: 'name', text: '安全组ID/名称', width: '20%'},
+    {column: 'countInstance', text: '相关实例', width: '4%'},
+    {column: 'createDate', text: '创建时间', width: '10%'},
+    {column: 'remark', text: '描述', width: '10%'}
 ];
-let searchObj = {    
+let searchObj = {
     //分页
     paging: {
         pageIndex: 1,
@@ -128,8 +77,8 @@ let searchObj = {
 export default {
     data() {
         return {
+            loading: false,
             fields,
-            searchObjExtra,
             tableData: [],
             cols,
             showId: '',
@@ -140,11 +89,8 @@ export default {
         };
     },
     components: {
-        RegionRadio,    
-        PageHeader,
-        searchBox,
-        AmendName,
-        ModifySafeGroup
+        ModifySafeGroup,
+        EditName
     },
     methods: {
         getScreenVal(params) {
@@ -152,7 +98,7 @@ export default {
             if (params.selValue.tagType === 'ID') {
                 this.searchId = params.selInputValue;
                 this.searchVal = '';
-            } else if(params.selValue.tagType === 'Name') {
+            } else if (params.selValue.tagType === 'Name') {
                 this.searchVal = params.selInputValue;
                 this.searchId = '';
             }
@@ -161,48 +107,55 @@ export default {
         /**
          * 进入单元格
          */
-        showEditName(row, column, cell, event){
+        showEditName(row, column, cell, event) {
             this.showId = row.id;
         },
         /**
-         * 删除安全组弹窗确认
-         */ 
-        deleteExample(params) {
-            this.$confirm(`您确定要删除ID为:${params}的安全组吗?`, '删除', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.delGroupFn(params);
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
+         * 编辑安全组名称
+         */
+        editname(row) {
+            this.$refs.EditName.show(row).then(res => {
+                this.getGroupListFn();
             });
         },
+        /**
+         * 删除安全组弹窗确认
+         */
+
+        deleteSafeGrp(row) {
+            this.$messageBox
+                .confirm('确定要对该安全组进行删除操作吗？', '删除', {
+                    type: 'warning',
+                    alertMessage: '删除操作无法恢复，请谨慎操作',
+                    subMessage: '安全组：' + row.name
+                })
+                .then(() => {
+                    this.delGroupFn(row.id);
+                })
+                .catch(() => {});
+        },
         // 删除安全组
-        delGroupFn(params) {
-            deleteGroup(params)
-                .then((ret) =>{
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.getGroupListFn();
-                }).catch((err) => {
-                    this.$alert(err, '提示', {
-                        type: 'error'
-                    });   
+        delGroupFn(id) {
+            deleteGroup(id)
+                .then(ret => {
+                    if (ret.code === '0000') {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getGroupListFn();
+                    }
+                })
+                .catch(err => {
+                    $log(err);
                 });
         },
         // 修改安全组
         modifySafeGrp(rowItem) {
-            console.log('modifySafeGrp:',rowItem);
-            this.$refs.ModifySafeGroup
-                .show(rowItem)
-                .then( ret => {
-                    this.getGroupListFn();                
+            console.log('modifySafeGrp:', rowItem);
+            this.$refs.ModifySafeGroup.show(rowItem)
+                .then(ret => {
+                    this.getGroupListFn();
                 })
                 .catch(err => {
                     if (err) {
@@ -210,28 +163,31 @@ export default {
                     } else {
                         console.log('取消');
                     }
-                });  
+                });
         },
         // 获得安全组列表
-        getGroupListFn() {
-            let params = {
-                paging:this.searchObj.paging,
-                name: this.searchVal,
-                id: this.searchId
-            };
-            getSecurityGroupList(params).then( (res) => {
-                if(res.code && res.code === this.CODE.SUCCESS_CODE){
-                    console.log('getKeypairList',res);  
-                    let resData = res.result;
-                    if(resData && resData.records){
-                        this.tableData = resData.records || []; 
-                        this.searchObj.totalItems = resData.total || 0;
-                        console.log('getKeypairList tableData',this.tableData); 
-                    }                           
-                }
-
-            });
-        } 
+        getGroupListFn(params) {
+            params = params || this.searchObj.paging;
+            this.loading = true;
+            getSecurityGroupList(params)
+                .then(res => {
+                    if (res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.log('getKeypairList', res);
+                        let resData = res.data;
+                        if (resData && resData.data) {
+                            this.tableData = resData.data || [];
+                            this.searchObj.paging.totalItems = resData.total || 0;
+                            console.log('getKeypairList tableData', this.tableData);
+                        }
+                    }
+                })
+                .catch(err => {
+                    $log(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        }
     },
     mounted() {
         this.getGroupListFn();
@@ -239,5 +195,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 </style>

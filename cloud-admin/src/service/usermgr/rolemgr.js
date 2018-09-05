@@ -33,7 +33,7 @@ export async function createRole(data) {
     console.log('data',data);
     let url = RoleMgr.createRole ;
     let response = await http.post(url,data);
-    return response.data;
+    return response.code === '0000'&&response;
 }
 /**
  *编辑角色
@@ -53,5 +53,27 @@ export async function delRole(data) {
     var url = RoleMgr.delRole + data.id;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
+}
+/**
+ *获取权限列表
+ * @param {*}
+ */
+export async function getMenuListByType(data) {
+    console.log('data',data);
+    console.log('RoleMgr.getMgrUser',RoleMgr.getMenuListByType);
+    let url = RoleMgr.getMenuListByType;
+    let response = await http.get(url,{
+        params: data
+    });
+    return response.data;
+}
+/**
+ *关联权限
+ * @param {*}
+ */
+export async function subAuth(data) {
+    let url = RoleMgr.subAuth;
+    let res = await http.put(url, data);
+    return res.data;
 }
 

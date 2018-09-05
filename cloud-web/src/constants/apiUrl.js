@@ -164,19 +164,19 @@ export const API_ECS = {
         subnetID: ECS_CTRL + '/network/subnet/{subnetId}'
     },
     security: {
-        createGroup: ECS_CTRL + '/security-group', // 创建安全组
-        modifyGroup: ECS_CTRL + '/security-group/{group_id}', // 修改安全组
+        createGroup: '/compute/securityGroup/createSecurityGroup', // 创建安全组
+        modifyGroup: '/compute/securityGroup/updateSecurityGroup', // 修改安全组
         exampleBindGroup: ECS_CTRL + '/security-group/bind-ecs', // 给实例绑定安全组
         exampleUntieGroup: ECS_CTRL + '/security-group/unbind-ecs', // 给实例解绑安全组
         createGroupRule: ECS_CTRL + '/security-group/rule', // 创建安全组规则
         updateGroupRule: ECS_CTRL + '/security-group/rule/{rule_id}', // 更新安全组规则
-        getGroupList: ECS_CTRL + '/security-group/list', // 查询安全组列表
+        getGroupList: '/compute/securityGroup/getTenantSecurityGroups', // 查询安全组列表
         listByInstanceType: ECS_CTRL + '/security-group/listByInstanceType',
         existGroup: ECS_CTRL + '/security-group/not-exist-group', // 查询所有安全组-用于给实例添加安全组-过滤掉已经加入到本实例中的安全组
         existEcs: ECS_CTRL + '/security-group/{group_id}/not-exist-ecs', // 查询所有实例-用于给安全组添加实例-过滤掉已经加入到本安全组的实例
         deleteGroupRule: ECS_CTRL + '/security-group/{rule_id}', // 删除安全组规则
-        deleteGroup: ECS_CTRL + '/security-group/{group_id}', // 删除安全组
-        getGroupRuleList: ECS_CTRL + '/security-group/{group_id}/rules-vo' // 查询安全组规则列表
+        deleteGroup: '/compute/securityGroup/{group_id}', // 删除安全组
+        getGroupRuleList: '/compute/securityGroup/rule/list' // 查询安全组规则列表
     },
     // 对等链接
     peering: {

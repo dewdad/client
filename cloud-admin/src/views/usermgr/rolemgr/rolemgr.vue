@@ -7,7 +7,10 @@
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createRole({},1)">新建角色</el-button>
+                        <el-button type="primary" @click="createRole({},1)">
+                            <span class="icon-zt_plus"></span>
+                            新建角色
+                        </el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -18,7 +21,7 @@
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="getRoleList">查询</el-button>
+                        <el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getRoleList"></el-button>
@@ -89,12 +92,12 @@
                 </div>
             </el-col>
         </el-row>
-         <create-role ref="CreateRole"></create-role>
+        <relate-auth ref="RelateAuth"></relate-auth>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import CreateRole from './dialog/CreateRole';
+import RelateAuth from './RelateAuth';
 import {getRoleList,delRole} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',
@@ -128,7 +131,7 @@ export default {
     },
     components: {
         PageHeader,
-        CreateRole
+        RelateAuth
     },
     methods: {
         getRoleList(){
@@ -148,7 +151,17 @@ export default {
             });
         },
         relateAuth(){
-
+            this.$refs.RelateAuth.show()
+                .then(ret => {
+                    return this.$confirm('操作成功');
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log('取消');
+                    }
+                });
         },
         createRole(item,optype){
             this.$refs.CreateRole.show(item,optype)

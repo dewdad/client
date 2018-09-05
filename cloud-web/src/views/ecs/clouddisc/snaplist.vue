@@ -12,7 +12,7 @@
             <!-- 列表 -->
             <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
                 <!-- 实例名称 -->
-                <el-table-column min-width="180" prop="name" label="名称">
+                <el-table-column min-width="120" prop="name" label="名称">
                 </el-table-column>
                 <!-- 磁盘ID -->
                 <el-table-column min-width="180" prop="id" label="磁盘ID">
@@ -36,7 +36,7 @@
                     </template>
                 </el-table-column>
                 <!-- 操作 -->
-                <el-table-column label="操作" key="op" width="250" class-name="option-column">
+                <el-table-column label="操作" key="op" width="150" class-name="option-column">
                     <template slot-scope="scope">
                         <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
                         <b class="link-division-symbol"></b>

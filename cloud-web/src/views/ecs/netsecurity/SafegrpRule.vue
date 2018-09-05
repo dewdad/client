@@ -2,14 +2,10 @@
     <div class="page-main">
         <!-- 头部 -->
         <page-header>
-            <img src="@/assets/images/ecs/group_icon.svg" width="50" alt="">
+            <img src="@/assets/images/ecs/group_icon.svg" width="50" alt=""> {{get(currentSafeGroup, 'name')}}
             <div slot="right">
-                <a href="JavaScript:void(0)" class="font12 mr10">
-                    添加安全组规则说明
-                    <i class="font12 iconfont icon-ecport_people"></i>
-                </a>
                 <el-button @click="addrule(direction, ruleId)" type="primary" size="small">添加规则</el-button>                
-                <el-button type="info" size="small">
+                <el-button type="info" size="small" @click="getGroupRuleListFn">
                     <i class="iconfont icon-refresh_people"></i>
                 </el-button>
             </div>
@@ -19,54 +15,36 @@
             <el-tab-pane label="入方向" name="ingress"></el-tab-pane>
             <el-tab-pane label="出方向" name="egress"></el-tab-pane>
         </el-tabs>
-        <!-- 注意事项 -->
-        <el-alert type="warning" title="" :closable="false" class="font12 mb20" v-show="direction === 'egress'">
-            <i class="iconfont icon-notice_people mr10"></i>
-            <span>安全组出方向默认允许所有访问，即从安全组内ECS访问外部都是放行的。</span>
-        </el-alert>
         <!-- 列表 -->
-        <div>
-            <el-table class="data-list" :data="tableData" header-row-class-name="data-list" style="width: 100%">
-                <template v-for="col in cols">
-                    <!-- 实例名称 -->
-                    <template>
-                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                            
-                        </el-table-column>
-                    </template>
-                </template>
-                <!-- 操作 -->
-                <template>
-                    <el-table-column label="操作" key="op" class-name="option-snaplist">
+            <zt-table :loading="loading"  :data="tableData" :search="false"  @search="getGroupRuleListFn" :paging="searchObj.paging">
+                    <!-- 协议类型 -->
+                    <el-table-column prop="protocol" label="协议类型"></el-table-column>
+                    <!-- 端口范围 -->
+                    <el-table-column prop="protocol" label="端口范围">
                         <template slot-scope="scope">
-                            <span @click="amendDes" class="btn-linker">修改描述</span>
-                            <b class="link-division-symbol"></b>
-                            <!-- 移出 -->
+                            {{scope.row.port_range_min}} - {{scope.row.port_range_max}}
+                            </template>
+                    </el-table-column>
+                    <!-- 授权类型 -->
+                    <el-table-column prop="ethertype" label="授权类型"></el-table-column>
+                <!-- 操作 -->
+                    <el-table-column label="操作" width="150" key="op" class-name="option-column">
+                        <template slot-scope="scope">
                             <span @click="deleteExample(scope.row.id)" class="btn-linker" >删除</span>
                         </template>
                     </el-table-column>
-                </template>
-            </el-table>
-        </div>
+            </zt-table>
 
-        <div class="pagination">
-            <el-pagination background :current-page="searchObj.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
-            </el-pagination>
-        </div>
-        <!-- 对话框 修改描述 -->
         <amend-describe ref="AmendDescribe"/>
         <!-- 对话框 增加组件 -->
         <add-rules ref="AddRules"/>
     </div>
 </template>
 <script>
-import RegionRadio from '@/components/regionRadio/RegionRadio';
-import PageHeader from '@/components/pageHeader/PageHeader';
-import searchBox from '@/components/search/SearchBox';
 import AmendDescribe from './dialog/AmendDescribe';
 import AddRules from './dialog/AddRules';
 
-import { getGroupRuleList } from '@/service/ecs/security.js';
+import { getGroupRuleList, getSecurityGroupList } from '@/service/ecs/security.js';
 
 
 let searchObj = {    
@@ -77,23 +55,16 @@ let searchObj = {
         totalItems: 0
     }
 };
-let cols = [
-    { column: 'protocolType', text: '协议类型', width: '20%' },
-    { column: 'portRange',text: '端口范围',width: '4%'},
-    { column: 'authType', text: '授权类型', width: '10%' },
-    { column: 'authorityObj', text: '授权对象', width: '10%' },
-    { column: 'describe', text: '描述', width: '10%' },
-    { column: 'createTime', text: '创建时间', width: '10%' }
-];
 export default {
     data() {
         return {
+            loading: false,
             imgType: 1,
             tableData: [],
-            cols,
             direction: 'ingress',
             searchObj,
-            ruleId: this.$route.params.ruleId
+            ruleId: this.$route.params.ruleId,
+            currentSafeGroup: ''
         };
     },
     watch: {
@@ -102,11 +73,12 @@ export default {
         }
     },
     components: {
-        RegionRadio,    
-        PageHeader,
-        searchBox,
         AmendDescribe,
         AddRules
+    },
+    created() {
+        this.getGroupDetial();
+        this.getGroupRuleListFn();
     },
     methods: {
         // 删除
@@ -157,30 +129,55 @@ export default {
                     }
                 }); 
         },
-        // 获得安全组规则列表
-        getGroupRuleListFn() {
+        // 获得安全组详情
+        getGroupDetial() {
             let params = {
-                paging:this.searchObj.paging,
-                direction: this.direction,
-                create_date: ''
+                ...this.searchObj.paging,
+                id: this.ruleId
             };
+            getSecurityGroupList(params)
+                .then(res => {
+                    if (res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.log('getKeypairList', res);
+                        let resData = res.data;
+                        if (resData && resData.data.length) {
+                            this.currentSafeGroup = resData.data[0];
+                        } else {
+                            this.$message.error('安全组不存在');
+                        }
+                    }
+                })
+                .catch(err => {
+                    $log(err);
+                });
+        },
+        // 获得安全组规则列表
+        getGroupRuleListFn(params) {
+            let post = {
+                ...this.searchObj.paging
+            };
+            params = params || post;
             console.warn(params);
-            getGroupRuleList(this.ruleId, params).then( (res) => {
+            params['direction'] = this.direction;
+            params['groupId'] = this.ruleId;
+            this.loading = true;
+            getGroupRuleList({...params}).then( (res) => {
                 if(res.code && res.code === this.CODE.SUCCESS_CODE){
                     console.log('getKeypairList',res);  
-                    let resData = res.result;
-                    if(resData && resData.records){
+                    let resData = res.data;
+                    if(resData && resData.data){
                         this.tableData = resData.data || []; 
-                        this.searchObj.totalItems = resData.total || 0;
+                        this.searchObj.paging.totalItems = resData.total || 0;
                         console.log('getKeypairList tableData',this.tableData); 
                     }                           
                 }
 
+            }).catch(err => {
+                $log(err);
+            }).finally(() => {
+                this.loading = false;
             });
         }
-    },
-    mounted() {
-        this.getGroupRuleListFn();
     }
 };
 </script>
