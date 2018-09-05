@@ -210,7 +210,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .homeoverview {
-    min-height: 710px;
+    height: 100%;
     padding: 20px;
     background: rgb(237, 242, 249);
     display: flex;
