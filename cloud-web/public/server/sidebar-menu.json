@@ -176,11 +176,6 @@
                 "hidden": true,
                 "submenu": [
                     {
-                        "text": "安全组内实例列表",
-                        "sref": "app.ecs.groupRule.safegrpList",
-                        "psref": "ecs.groupRule"
-                    },
-                    {
                         "text": "安全组规则",
                         "sref": "app.ecs.groupRule.safegrpRule",
                         "psref": "ecs.groupRule"
