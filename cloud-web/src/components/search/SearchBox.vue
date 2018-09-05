@@ -7,7 +7,7 @@
                 </el-select>
             </zt-form-item>
             <zt-form-item v-if="allSearchVal.selValue.tagType !== 'SELECT'" label="">
-                <el-input placeholder="" style="width:260px;" v-model="allSearchVal.selInputValue"></el-input>
+                <el-input placeholder="" style="width:260px;" v-model="allSearchVal.selInputValue" :clearable="true"></el-input>
             </zt-form-item>
             <zt-form-item v-if="allSearchVal.selValue.tagType === 'SELECT'" label="">
                 <el-select placeholder="请选择" style="width:260px;" v-model="allSearchVal.selInputValue">
