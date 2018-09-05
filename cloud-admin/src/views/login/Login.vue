@@ -164,7 +164,6 @@ export default {
                         // 记录token
                         this.$store.commit('SET_LOGIN_STATUS', {
                             status: true,
-
                         });
 
                         // 记录用户信息

@@ -2,7 +2,7 @@
     <div class="zt-table">
         <!-- 筛选操作 -->
         <search-box v-if="search" :fields="searchCondition" @select="handleSearch"></search-box>
-        <el-table class="data-list" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
+        <el-table class="data-list" @cell-mouse-enter="cellMouseEnter" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
             <slot name="default"></slot>
         </el-table>
         <div class="pagination">
@@ -51,6 +51,10 @@ export default {
                     totalItems: 0
                 };
             }
+        },
+        cellMouseEnter: {
+            type: Function,
+            default: () => {}
         }
     },
     computed: {

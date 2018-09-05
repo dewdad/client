@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 import NavBar from './NavBar';
 import AppMain from './AppMain';
 import SideBar from './SideBar';
@@ -34,9 +35,47 @@ export default {
     },
 
     computed: {
-
+        ...mapState({
+            // isCollapse: state => state.collapse,
+            // pageLoading: state => state.pageLoading,
+            // pageLoadError: state => state.pageLoadError,
+            isLogined: state => state.isLogined,
+            // navCollapse: state => state.navCollapse,
+            // showVerifyDialog: state => state.showVerifyDialog
+        }),
+        // navList: function() {
+        //     return window.navList;
+        // },
+        // // 判断是不有二级菜单
+        // hasSubMenu: function() {
+        //     return this.subMenuList.length > 0 ? true : false;
+        // },
+        // mainLeft: function() {
+        //     // 此处根据侧边栏是否折叠以及是否有二级菜单且根据展开状态给el-main动态添加class
+        //     // let left = this.isCollapse ? 'left-xs' : 'left-sm';
+        //     return 'left-xs';
+        // },
+        // subMenuList: function() {
+        //     let obj = getSubMenu(this.$route.matched);
+        //     this.setData(obj);
+        //     return obj.subMenu;
+        // },
+        // // 是否显示侧边栏
+        // showSide: function() {
+        //     try {
+        //         let fullpage = this.$route.meta.fullpage;
+        //         return fullpage === true ? false : true;
+        //     } catch (error) {
+        //         return true;
+        //     }
+        // }
     },
     watch:{
+        isLogined: function(newval) {
+            if (newval !== true) {
+                this.$router.push({name: 'login'});
+            }
+        },
         screenHeight (val) {
             this.screenHeight = val;
             let el = document.getElementById('setHeightAuto');

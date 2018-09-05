@@ -1,6 +1,6 @@
-import {getUserInfoDetail} from '@/service/user';
-import {API_UserAccount} from '@/constants/apiUrl';
-import {isArray} from '@/utils/utils';
+// import {getUserInfoDetail} from '@/service/user';
+// import {API_UserAccount} from '@/constants/apiUrl';
+// import {isArray} from '@/utils/utils';
 const user = {
     namespaced: true,
     state: {
@@ -20,7 +20,7 @@ const user = {
          * @param {*} userInfo
          */
         SET_USERINFO(state, userInfo) {
-            state.userInfo = userInfo
+            state.userInfo = userInfo;
         },
 
     },
