@@ -1,6 +1,6 @@
 <template>
     <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
-        <div :id="idString" style="height:248px;"></div>
+        <div :id="idString" :style="{height: height}"></div>
     </div>
 </template>
 <script>
@@ -34,12 +34,7 @@ export default {
                         return res;
                     },
                 },
-                grid: {
-                    bottom: '60',
-                    right: '70',
-                    left: '80',
-                    top: '60'
-                },
+                grid: this.gridVal,
                 legend: {
                     data: this.legendData,
                     y: 'bottom',
@@ -79,6 +74,10 @@ export default {
         };
     },
     props: {
+        height: {
+            type: String,
+            default: '248px'
+        },
         // 文字大小
         textSize: {
             type: Number,
@@ -154,7 +153,24 @@ export default {
         xType: {
             type: Boolean,
             default: true
+        },
+        isMarkPoint: {
+            type: Boolean,
+            default: true
+        },
+        // 留边值
+        gridVal:{
+            type: Object,
+            default: function () {
+                return {
+                    bottom: '60',
+                    right: '70',
+                    left: '80',
+                    top: '60'
+                };
+            }
         }
+
     },
     computed: {
         ...mapGetters(['navCollapse', 'collapse']),
@@ -259,7 +275,7 @@ export default {
                         // symbol: 'rect',
                         symbolSize: this.markPointSymbolSize,
                         symbolOffset: ['0', '-30'],
-                        symbol: this.markPointSymbol,
+                        symbol: this.isMarkPoint ? this.markPointSymbol : 'none',
                         symbolKeepAspect: true,
                         label: {
                             textBorderColor: 'none',

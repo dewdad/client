@@ -3,7 +3,7 @@
     <!-- 搜素栏 -->
     <page-header class="mb10">
         <div slot="content"  class="pull-right">
-            <el-button type="primary" size="small" class="mr10" @click="create">
+            <el-button type="primary" size="small" @click="create">
                 创建专有网络
             </el-button>
             <el-button type="info" size="small" @click="fetchData">
@@ -12,15 +12,11 @@
         </div>
     </page-header>
     <!-- 表格 -->
-    <el-table
-        v-loading="isLoading"
+    <zt-table
+        :loading="isLoading"
         :data="tableData"
-        class="data-list mt20"
-        row-class-name="data-list"
-        header-row-class-name="data-list"
-        size="small"
-        stripe
-        border>
+        @search="getVpcList" 
+        :paging="searchObj.paging">
         <el-table-column prop="title" label="VPCID/名称" :min-width="180">
             <template slot-scope="scope">
                 <div>
@@ -33,7 +29,7 @@
         </el-table-column>
         <el-table-column label="状态">
             <template slot-scope="scope">
-                {{scope.row.status}}
+                <zt-status :status="ECS_STATUS" :value="scope.row.status" ></zt-status>
             </template>
         </el-table-column>
         <el-table-column label="是否共享" width="100">
@@ -58,46 +54,45 @@
                 {{scope.row.admin_state_up ? 'UP' : 'DOWN'}}
             </template>
         </el-table-column>
-        <el-table-column label="操作" :min-width="90">
+        <el-table-column label="操作" :min-width="90" class-name="option-column">
             <template slot-scope="scope" >
-                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
-                <b class="link-division-symbol"></b>
+                <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
+                <b class="link-division-symbol"></b> -->
                 <a @click="updateNetwork(scope.row)">编辑</a>
                 <b class="link-division-symbol"></b>
                 <a @click="deleteNetwork(scope.row)">删除</a>
             </template>
         </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <div class="pagination">
-        <el-pagination
-            v-if="total"
-            @size-change="sizeChange"
-            @current-change="fetchData"
-            :current-page.sync="pageIndex"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="limit"
-            layout="sizes, prev, pager, next"
-            :total="total"
-        >
-        </el-pagination>
-    </div>
+    </zt-table>
+    <!-- 创建专有网络弹窗 -->
     <create ref="create"></create>
 </div>
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import Create from './Create';
+import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import {queryNetwork, deleteNetwork} from '@/service/ecs/network.js';
+
+let searchObj = {
+    //分页
+    paging: {
+        pageIndex: 1,
+        limit: 10,
+        totalItems: 0
+    }
+};
 
 export default {
     data() {
         return {
             region: '',
             isLoading: false,
+            searchObj,
             pageIndex: 1,
             limit: 10,
             total: 0,
+            ECS_STATUS,
             listData: {}
         };
     },
@@ -151,6 +146,10 @@ export default {
                     $log('deleteNetwork ret <-', ret);
                     if (ret) {
                         this.fetchData();
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
                     }
                 })
                 .catch((error) => {
@@ -159,23 +158,12 @@ export default {
                 });
             
         },
-        sizeChange(val) {
-            this.pageIndex = 1;
-            this.limit = val;
-            this.fetchData();
-        },
-        search() {
-            this.pageIndex = 1;
-            this.fetchData();
-        },
         async fetchData() {
             try {
                 // 清空数据
                 this.isLoading = true;
                 let params = {
-                    zone: this.region,
-                    limit: this.limit,
-                    pageIndex: this.pageIndex
+                    ...this.searchObj.paging
                 };
 
                 let ret = await queryNetwork(params);
@@ -185,13 +173,17 @@ export default {
                 this.date = new Date().getTime();
 
                 this.pageIndex = parseInt(ret.pages);
-                this.total = ret.total;
+                this.searchObj.paging.totalItems = ret.total;
 
                 this.isLoading = false;
             } catch (error) {
                 this.isLoading = false;
                 console.error('fetchData', error.message);
             }
+        },
+        // 抛出函数
+        getVpcList(params) {
+            $log(params);
         }
     },
     components: {

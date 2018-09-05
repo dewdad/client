@@ -7,6 +7,26 @@
                 <el-input v-model="data.name"></el-input>
                 <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
+            <zt-form-item label="网段" prop="cindr">
+                <ip-input v-model="data.cindr" v-if="isShow"></ip-input>
+                <span class="input-help">
+                    <span class="color-warning lh20">创建后无法修改。</span><br>
+                    <span class="text-break-all lh20">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
+                    <span class="lh20">例如：192.168.94.0/24</span>
+                </span>
+            </zt-form-item>
+            <zt-form-item label="IP版本">
+                <el-radio-group v-model="data.version">
+                    <el-radio :label="4">IPV4</el-radio>
+                    <el-radio :label="6">IPV6</el-radio>
+                </el-radio-group>
+            </zt-form-item>
+            <zt-form-item label="DHCP">
+                <el-radio-group v-model="data.DHCPVal">
+                    <el-radio :label="true">已激活</el-radio>
+                    <el-radio :label="false">未激活</el-radio>
+                </el-radio-group>
+            </zt-form-item>
         </zt-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -18,28 +38,76 @@
 
 <script>
 import {createNetwork, updateNetwork} from '@/service/ecs/network.js';
+import IpInput from '@/components/form/IPInput.vue';
 
+function judgeSubnetIpValid(ip ,mask) {
+    //子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。
+    var ip_part0 = parseInt(ip[0]);
+    var ip_part1 = parseInt(ip[1]);
+    var ip_part2 = parseInt(ip[2]);
+    var ip_part3 = parseInt(ip[3]);
+    mask = parseInt(mask);
+    if (ip_part2 < 0 || ip_part2 > 255) return false;
+    if (ip_part3 < 0 || ip_part3 > 255) return false;
+
+    //ip_to_binary
+    var num = 0;
+    num += parseInt(ip_part0) << 24;
+    num += parseInt(ip_part1) << 16;
+    num += parseInt(ip_part2) << 8;
+    num += parseInt(ip_part3) << 0;
+    num = num >>> 0;
+
+    var ip_binary = num.toString(2);
+    var host = ip_binary.substring(mask); //主机位
+
+    if (parseInt(host) == 0) {
+        return true; //合法
+    } else {
+        return false;
+    }
+}
 export default {
     data() {
+        // 验证 IP 格式
+        let cindr = function(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('请输入网段'));
+            } else {
+                let [ipstr, port] = value.split('/');
+                let ip = ipstr.split('.');
+                if (port && ip.length === 4 && ip.every(e => e >= 0) && judgeSubnetIpValid(ip, port)) {
+                    callback();
+                } else {
+                    callback(new Error('格式不正确'));
+                }
+            }
+        };
         return {
             isShow: false,
             loading: false,
             type: 'create',
             data: {
-                name: '默认专有网络'
+                name: '默认专有网络',
+                cindr: '',
+                version: 4,
+                DHCPVal: true
             },
             rules: {
                 name: [
-                    {
-                        required: true,
-                        message: '请输入专有网络名称',
-                        trigger: 'blur'
-                    }
+                    { required: true, message: '请输入专有网络名称', trigger: 'blur' }
+                ],
+                cindr: [
+                    { required: true, message: '请输入网段', trigger: 'blur' },
+                    { validator: cindr, trigger: 'submit' }
                 ]
             },
             resolve: () => {},
             reject: () => {}
         };
+    },
+    components: {
+        'ip-input': IpInput
     },
     computed: {
         title() {
