@@ -50,7 +50,7 @@
                 <span>{{scope.row.subnets}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="name" label="操作" :min-width="90">
+        <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
             <template slot-scope="scope" >
                 <a @click="bindFlexFn(scope.row)">绑定</a>
                 <b class="link-division-symbol"></b>

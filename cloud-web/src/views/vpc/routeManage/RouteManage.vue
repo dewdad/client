@@ -44,7 +44,7 @@
                         <span class="color-danger" v-else>DOWN</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="操作" :min-width="90">
+                <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
                     <template slot-scope="scope" >
                         <a @click="openRouterDialog('update', scope.row)">编辑路由</a>
                         <b class="link-division-symbol"></b>
