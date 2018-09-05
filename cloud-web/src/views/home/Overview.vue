@@ -230,6 +230,9 @@ export default {
 .info-box {
     background-color: #fff;
     padding: 20px 30px;
+    &:hover {
+        box-shadow: 0px 0px 15px 0px rgba(66, 103, 178, 0.15);
+    }
 }
 
 .info-box .info-box-head {
