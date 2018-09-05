@@ -21,6 +21,7 @@ import {replaceParamVal} from '@/utils/utils';
  *
  */
 export async function getSecurityGroupList(data) {
+    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     let url = API_ECS.security.getGroupList;
     let res = await http.get(url, {params: data});
     return res && res.data;
@@ -34,9 +35,13 @@ export async function getSecurityGroupList(data) {
  * }
  *
  */
-export async function createGroup(data) {
+export async function createGroup({name = '', description = '', zone = 'az1.dc1'} = {}) {
     let url = API_ECS.security.createGroup;
-    let res = await http.post(url, data);
+    let res = await http.post(url, {
+        name,
+        description,
+        zone
+    });
     return res && res.data;
 }
 
@@ -48,11 +53,12 @@ export async function createGroup(data) {
  * remark: 安全组描述
  */
 
-export async function modifyGroup(group_id, {name = '', remark = ''} = {}) {
+export async function modifyGroup({id, name = '', description = ''} = {}) {
     let url = API_ECS.security.modifyGroup;
-    let res = await http.put(replaceParamVal(url, [group_id]), {
+    let res = await http.put(url, {
+        id,
         name,
-        remark
+        description
     });
     return res && res.data;
 }
@@ -79,9 +85,17 @@ export async function deleteGroup(group_id) {
  * create_date： 创建日期
  */
 
-export async function getGroupRuleList(group_id) {
+export async function getGroupRuleList({groupId, pageIndex, limit = 10, security_group_id, direction = 'ingress'} = {}) {
     let url = API_ECS.security.getGroupRuleList;
-    let res = await http.get(replaceParamVal(url, [group_id]));
+    let res = await http.get(url, {
+        params: {
+            groupId,
+            pageIndex,
+            limit,
+            security_group_id: groupId,
+            direction
+        }
+    });
     return res && res.data;
 }
 
