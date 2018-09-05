@@ -158,10 +158,6 @@ export default {
                 });
             
         },
-        search() {
-            this.pageIndex = 1;
-            this.fetchData();
-        },
         async fetchData() {
             try {
                 // 清空数据

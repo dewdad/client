@@ -116,15 +116,6 @@ export default {
         await this.getOuterNet();
     },
     methods: {
-        sizeChange(val) {
-            this.pageIndex = 1;
-            this.limit = val;
-            this.fetchData();
-        },
-        search() {
-            this.pageIndex = 1;
-            this.fetchData();
-        },
         async fetchData() {
             try {
                 // 清空数据
