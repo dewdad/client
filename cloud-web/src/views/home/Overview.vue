@@ -348,8 +348,7 @@ monitor-data {
 .products-flex {
     display: flex;
     flex-direction: column;
-    min-height: 188px;
-    height: 188px;
+    min-height: 50px;
 }
 
 .products-flex .el-row {
@@ -388,7 +387,7 @@ monitor-data {
 .products .products-inner .products-count {
     margin-top: 5px;
     float: right;
-    width:30px;
+    width: 30px;
     height: 18px;
     text-align: center;
     border-radius: 9px;
