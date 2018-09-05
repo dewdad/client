@@ -16,6 +16,7 @@
         <!-- 表格 -->
         <div>
             <zt-table
+                :loading="loading" 
                 :data="routerList" 
                 :search="true" 
                 :search-condition="fields" 
@@ -95,6 +96,7 @@ export default {
             ECS_STATUS,
             searchObj,
             routerList: [],
+            loading: false, 
             outerNetData: [] // 外网网络数据
         };
     },
@@ -111,6 +113,7 @@ export default {
             let params = {
                 ...this.searchObj.paging
             };
+            this.loading = true;
             getRouterList(params)
                 .then(res => {
                     if (res && res.data) {
@@ -122,10 +125,11 @@ export default {
                             $log('getRouterList ->', dataList);
                         }
                     }
+                    this.loading = false;
                 })
                 .catch(e => {
                     console.error('getEcsInstList', e);
-                    self.loading = false;
+                    this.loading = false;
                 });
         },
         // 打开编辑路由弹窗

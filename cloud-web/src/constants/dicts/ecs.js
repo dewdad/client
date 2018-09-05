@@ -25,6 +25,12 @@ export const ECS_STATUS = [
         icon: 'zticon-running_people'
     },
     {
+        text: '运行中',
+        value: 'ACTIVE',
+        className: 'color-success',
+        icon: 'zticon-running_people'
+    },
+    {
         text: '失败',
         value: 'ERROR',
         className: 'color-danger',

@@ -10,11 +10,9 @@
             </el-button>
         </div>
     </page-header>
-    <!-- 搜索栏 -->
-    <!-- <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box> -->
     <!-- 表格 -->
     <zt-table
-        v-loading="isLoading"
+        :loading="isLoading"
         :data="tableData" 
         :search="true" 
         :search-condition="fields" 
@@ -71,7 +69,6 @@
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
-import searchBox from '@/components/search/SearchBox';
 import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
 import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.js';
@@ -255,7 +252,6 @@ export default {
     },
     components: {
         RegionRadio,
-        searchBox,
         BindFLexIP,
         ApplyFloatIP
     }
