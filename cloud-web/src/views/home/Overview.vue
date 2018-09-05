@@ -210,7 +210,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .homeoverview {
-    min-height: 710px;
+    height: 100%;
     padding: 20px;
     background: rgb(237, 242, 249);
     display: flex;
@@ -230,6 +230,9 @@ export default {
 .info-box {
     background-color: #fff;
     padding: 20px 30px;
+    &:hover {
+        box-shadow: 0px 0px 15px 0px rgba(66, 103, 178, 0.15);
+    }
 }
 
 .info-box .info-box-head {
@@ -348,8 +351,7 @@ monitor-data {
 .products-flex {
     display: flex;
     flex-direction: column;
-    min-height: 188px;
-    height: 188px;
+    min-height: 50px;
 }
 
 .products-flex .el-row {
@@ -388,7 +390,7 @@ monitor-data {
 .products .products-inner .products-count {
     margin-top: 5px;
     float: right;
-    width:30px;
+    width: 30px;
     height: 18px;
     text-align: center;
     border-radius: 9px;
