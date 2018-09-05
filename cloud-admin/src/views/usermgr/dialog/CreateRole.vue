@@ -1,12 +1,15 @@
 <template>
-    <el-dialog title="创建角色" :visible.sync="isShow" width="600px" class="CreateRole" v-dialogDrag>
-        <el-form size="small">
-            <el-form-item label="角色名称 " :label-width="formLabelWidth">
-                <el-input placeholder="输入角色名称" v-model="roleName"></el-input>
+    <el-dialog title="创建角色" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+        <el-form size="small" :model="form" ref="form" :rules="rules">
+            <el-form-item label="角色名称 " prop="roleName" :label-width="formLabelWidth">
+                <el-input placeholder="输入角色名称" v-model="form.roleName"></el-input>
             </el-form-item>
-            <el-form-item label="角色类型" :label-width="formLabelWidth">
-                    <el-radio v-model="radioType" label="1">管理员</el-radio>
-                    <el-radio v-model="radioType" label="2">用户</el-radio>
+            <el-form-item label="角色类型" prop="roleType" :label-width="formLabelWidth">
+                <el-radio v-model="form.roleType" label="1">管理员</el-radio>
+                <el-radio v-model="form.roleType" label="2">用户</el-radio>
+            </el-form-item>
+            <el-form-item label="描述 " prop="description" :label-width="formLabelWidth">
+                <el-input placeholder="输入描述" type="textarea" v-model="form.description"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -16,7 +19,8 @@
     </el-dialog>
 </template>
 <script>
-
+import { mapState } from 'vuex';
+import {createRole,editRole} from '@/service/usermgr/rolemgr.js';
 export default {
     data() {
         return{
@@ -24,16 +28,38 @@ export default {
             isShow: false,
             resolve: null,
             reject: null,
-            radioType: '1',
-            roleName: '',
-            confirmBtn: false
+            confirmBtn: false,
+            optype:1,
+            form:{
+                roleType:'1',
+                roleName:'',
+                description:''
+            },
+            rules:{
+                roleName: [
+                    { required: true, message: '请输入角色名称', trigger: 'blur' }
+                ],
+                roleType: [
+                    { required: true, message: '请输勾选角色类型', trigger: 'submit' }
+                ]
+
+            }
         };
+    },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
     },
     props: {},
     methods: {
         show(item,optype) {
             this.isShow = true;
-
+            this.optype = optype;
+            console.log('item',item);
+            if(optype !== 1) this.form.roleType = item.roleType;
+            this.form.roleName = item.roleName;
+            this.form.description = item.description;
             console.log('optype',optype);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -56,40 +82,52 @@ export default {
                 }, 1000);
             });
         },
-        // confirm() {
-        //     this.confirmBtn = true;
-        //     let data = {
-        //         name: this.keyPairName,
-        //         zone: AREA_CITY.regions[0].value
-        //     };
-        //     console.warn(data);
-        //     createKeypairs(data)
-        //         .then(res => {
-        //             this.resolve(data);
-        //             this.hide();
-        //             this.setting();
-        //             this.confirmBtn = false;
-        //         })
-        //         .catch(err => {
-        //             this.confirmBtn = false;
-        //             this.$alert(err, '提示', {
-        //                 type: 'error'
-        //             });
-        //         });
-        // },
-        // 检查是否名称是否填写正确
-        checkName() {
-            let regResult = this.keyPairName.match(/^[a-zA-Z0-9_]{0,}$/);
-            if (!this.keyPairName) {
-                this.keyPairNameShow = 1;
-            } else if(!regResult) {
-                this.keyPairNameShow = 2;
-            } else {
-                this.keyPairNameShow = 0;
-            }
+        confirm() {
+            this.confirmBtn = true;
+            this.form.deptId = this.user.deptId;
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    if(this.optype === 1){
+                        this.addRole();
+                    }else{
+                        this.editRole();
+                    }
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        addRole(){
+            createRole(this.form)
+                .then(res => {
+                    this.resolve(this.form);
+                    this.hide();
+                    this.setting();
+                    this.confirmBtn = false;
+                })
+                .catch(err => {
+                    this.confirmBtn = false;
+                    this.$alert(err, '提示', {
+                        type: 'error'
+                    });
+                });
+        },
+        editRole(){
+            editRole(this.form)
+                .then(res => {
+                    this.resolve(this.form);
+                    this.hide();
+                    this.setting();
+                    this.confirmBtn = false;
+                })
+                .catch(err => {
+                    this.confirmBtn = false;
+                    this.$alert(err, '提示', {
+                        type: 'error'
+                    });
+                });
         }
-
-
 
     }
 };

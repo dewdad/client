@@ -55,7 +55,7 @@ export default new Router({
                             component: () => import('@/views/usermgr/rolemgr')
                         },
                         {
-                            path: 'rolemgrUser/:id',
+                            path: 'rolemgrUser/:roleId',
                             name: 'app.usrmgr.rolemgrUser',
                             meta: {
                                 title: '关联用户'
@@ -103,14 +103,6 @@ export default new Router({
                             component: () => import('@/views/usermgr/menumgr/editMenu')
                         },
                         {
-                            path: 'handler/:code',
-                            name: 'app.usrmgr.menumgr.handler',
-                            meta: {
-                                title: '关联操作'
-                            },
-                            component: () => import('@/views/usermgr/menumgr/menuHandle')
-                        },
-                        {
                             path: 'platform',
                             name: 'app.platform.resource',
                             meta: {
@@ -130,18 +122,42 @@ export default new Router({
                             path: 'role',
                             name: 'app.platform.role',
                             meta: {
-                                title: '平台类型'
+                                title: '平台角色'
                             },
                             component: () => import('@/views/usermgr/platform/roletype')
                         } ,
                         {
-                            path: 'bindPlatAuth/:id',
+                            path: 'bindPlatAuth/:val',
                             name: 'app.platform.bindPlatAuth',
                             meta: {
                                 title: '绑定平台权限'
                             },
                             component: () => import('@/views/usermgr/platform/bindplatauth')
-                        }
+                        },
+                        {
+                            path: 'oplog',
+                            name: 'app.usrmgr.oplog',
+                            meta: {
+                                title: '操作日志'
+                            },
+                            component: () => import('@/views/usermgr/oplog/oplog')
+                        },
+                        {
+                            path: 'sysconfig',
+                            name: 'app.usrmgr.sysconfig',
+                            meta: {
+                                title: '系统配置'
+                            },
+                            component: () => import('@/views/usermgr/sysconfig/sysconfig'),
+                        },
+                        {
+                            path: 'editConfig/:opType',
+                            name: 'app.usrmgr.editConfig',
+                            meta: {
+                                title: '修改配置'
+                            },
+                            component: () => import('@/views/usermgr/sysconfig/editConfig')
+                        },
                     ]
                 }
             ]
