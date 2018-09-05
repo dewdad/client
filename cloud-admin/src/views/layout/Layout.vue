@@ -39,7 +39,6 @@ export default {
     watch:{
         screenHeight (val) {
             this.screenHeight = val;
-            console.log(this.screenHeight);
             let el = document.getElementById('setHeightAuto');
             el.style.maxHeight = this.screenHeight + 'px';
             el.style.overflow = 'auto';
@@ -49,17 +48,19 @@ export default {
     created() {},
 
     methods: {
-        setHeightAuto(){
+        setHeight () {
+            let screenH = document.documentElement.clientHeight - 60;
             let el = document.getElementById('setHeightAuto');
-            el.style.maxHeight = this.screenHeight + 'px';
+            el.style.maxHeight = screenH + 'px';
+            el.style.overflow = 'auto';
         }
     },
     mounted(){
+        this.setHeight();
         const that = this;
         window.onresize = () => {
             return (() => {
                 this.screenHeight = document.documentElement.clientHeight - 60;
-                // console.log(this.screenHeight);
                 that.screenWidth = this.screenHeight;
             })();
         };
@@ -83,7 +84,9 @@ export default {
     background-color: #001529;
     text-align: center;
 }
-
+#setHeightAuto{
+  padding:20px;
+}
 .el-main {
     background-color:#fff; // #e9eef3;
     color: #333;

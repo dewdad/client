@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page-main">
         <el-row>
             <el-col :span="24">
                 <el-form :inline="true"  size="small">
@@ -11,19 +11,18 @@
             </el-col>
         </el-row>
         <el-row >
-            <el-col :span="10" style="max-height:450px;overflow: auto">
-                <el-form ref="platAuthForm" :inline="false" :show-message="false" inline-message size="small" :model="platAuthForm"  label-width="120px">
-                    <el-form-item  class="mb10 hide-star"  v-for="(item,index) in platFormList" :key="item['id'+index]" :label="item.resource">
-                        <el-select v-model="platAuthForm[index]" @change="changeVal(index)" placeholder="请选择平台角色"  value-key="id" size="small" class="mr10">
-                            <el-option v-for="(role,idx) in item.platformRoleVoList" :key="idx" :label="role.name" :value="role.platformResourceId">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-            <el-col :span="14">
-                <el-button type="primary" class="font12 ml20" @click="bindAuth">提  交</el-button>
-            </el-col>
+            <el-form ref="platAuthForm" :inline="false" :show-message="false" inline-message size="small" :model="platAuthForm"  label-width="120px">
+                <el-form-item  class="mb10 hide-star"  v-for="(item,index) in platFormList" :key="item['id'+index]" :label="item.resource">
+                    <el-select v-model="platAuthForm[index]" @change="changeVal(index)" placeholder="请选择平台角色"  value-key="id" size="small" class="mr10">
+                        <el-option v-for="(role,idx) in item.platformRoleVoList" :key="idx" :label="role.name" :value="role">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" class="font12 ml20" @click="bindAuth">提  交</el-button>
+                    <el-button type="default" class="font12 ml20" @click="cancel">取 消</el-button>
+                </el-form-item>
+            </el-form>
         </el-row>
 
     </div>
@@ -46,7 +45,7 @@ export default {
         return {
             stateParams,
             searchObj,
-            platForm:{
+            platAuthForm:{
 
             },
             platformRoleIds:[],
@@ -84,33 +83,39 @@ export default {
                 }
             });
         },
+        cancel(){
+            this.goBack();
+        },
         goBack(){
-            //window.history.back();
+            window.history.back();
         },
         bindAuth(){
+            this.platformRoleIds = [];
             for(let key in this.platAuthForm){
                 if(this.platAuthForm[key]){
-                    this.platformRoleIds.push(this.platAuthForm[key]);
+                    this.platformRoleIds.push(this.platAuthForm[key].id);
                 }
             }
             let param = {
                 roleType:this.stateParams.val,
-                ids:{
-                    platformRoleIds:this.platformRoleIds
-                }
+                ids:this.platformRoleIds
             };
             bindAuth(param).then(ret => {
-                $log('searchBindAuth', ret);
-                // let resData = ret.data;
-                // if(resData && resData.data){
-                //
-                // }
-            });
+                console.log('操作成功', ret);
+                return this.$confirm('操作成功');
+            })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log('取消');
+                    }
+                });
         },  
     },
     mounted(){
         this.searchBindAuth();
-        this.getplatformList();
+        this.getPlatformList();
     }
 };
 </script>
