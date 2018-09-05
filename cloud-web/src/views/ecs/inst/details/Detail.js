@@ -146,7 +146,7 @@ export default {
                     console.warn('getInstanceDetail',res);                       
                     let ecsInst = res.data;
                     this.ecsInst = ecsInst;
-                    this.addresses = ecsInst.addresses.addresses                               
+                    this.addresses = ecsInst.addresses.addresses;                               
                 } 
             });            
         },
