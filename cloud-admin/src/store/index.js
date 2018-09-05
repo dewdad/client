@@ -32,6 +32,6 @@ export default new Vuex.Store({
     // state持久化
     plugins: [createPersistedState({
         // 指定需要持久化保存的state
-        paths: []
+        paths: ['collapse','isLogined', 'user']
     })]
 });

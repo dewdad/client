@@ -8,7 +8,7 @@
     </page-header>
     <div class="panel panel-default mb20" v-loading="isLoading">
         <div class="panel-heading">
-            <i class="ecs-ecs_essential-information_people"></i>{{ $t('security.basicInfo') }}
+            <i class="ecs-ecs_essential-information_people"></i>专有网络基本信息
         </div>
         <div class="panel-body zt-panel-body-info">
             <table class="table zt-table-info">
@@ -16,50 +16,39 @@
                     <tr>
                         <td>{{ $t('common.name') }}：</td>
                         <td>{{data.name}}</td>
-                        <td>创建时间：</td>
+                        <td>是否共享：</td>
                         <td>{{data.createDate}}</td>
                     </tr>
                     <tr>
                         <td>{{ $t('common.ID') }}：</td>
                         <td>{{data.id}}</td>
-                        <td>默认专有网络：</td>
+                        <td>是否外部网络：</td>
                         <td>{{data.isProper === '0' ? '是' : '否'}}</td>
                     </tr>
                     <tr>
                         <td>状态：</td>
                         <td>可用</td>
-                        <td>备注：</td>
-                        <td>{{data.remark}}</td>
+                        <td>租户ID：</td>
+                        <td></td>
                     </tr>
                     <tr>
-                        <td>区域：</td>
+                        <td>管理状态：</td>
                         <td>
-                            {{data.zone | zone}}
                         </td>
-                        <td></td>
+                        <td>网段：</td>
                         <td></td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <i class="ecs-ecs_essential-information_people"></i>资源部署信息
-        </div>
-        <div class="panel-body zt-panel-body-info">
-            <table class="table zt-table-info">
-                <tbody class="">
                     <tr>
-                        <td>ECS实例：</td>
-                        <td>{{countData.ecsCount}}</td>
-                        <td>防火墙：</td>
-                        <td>{{countData.ecsCount}}</td>
+                        <td>DHCP：</td>
+                        <td>
+                        </td>
+                        <td>IP版本：</td>
+                        <td></td>
                     </tr>
                     <tr>
-                        <td>子网：</td>
-                        <td>{{countData.subnetCount}}</td>
+                        <td>网关IP：</td>
+                        <td>
+                        </td>
                         <td></td>
                         <td></td>
                     </tr>

@@ -27,11 +27,12 @@ export default new Router({
             },
             children: [
                 {
-                    path: 'dashboard',
-                    name: 'app.dashboard',
+                    path: 'overview',
+                    name: 'app.overview',
                     meta: {
                         title: '概览'
                     },
+                    //redirect: '/user/auth',
                     component: () => import('@/views/dashboard/Dashboard')
                 },
                 {
@@ -52,7 +53,7 @@ export default new Router({
                             meta: {
                                 title: '角色管理'
                             },
-                            component: () => import('@/views/usermgr/rolemgr')
+                            component: () => import('@/views/usermgr/rolemgr/rolemgr')
                         },
                         {
                             path: 'rolemgrUser/:roleId',
@@ -60,7 +61,7 @@ export default new Router({
                             meta: {
                                 title: '关联用户'
                             },
-                            component: () => import('@/views/usermgr/rolemgrUser')
+                            component: () => import('@/views/usermgr/rolemgr/rolemgrUser')
                         },
                         {
                             path: 'account',
@@ -69,22 +70,6 @@ export default new Router({
                                 title: '管理员管理'
                             },
                             component: () => import('@/views/usermgr/Account')
-                        },
-                        {
-                            path: 'userGroup',
-                            name: 'app.usrmgr.userGroup',
-                            meta: {
-                                title: '用户组管理管理'
-                            },
-                            component: () => import('@/views/usermgr/UserGroup')
-                        },
-                        {
-                            path: 'realAuth',
-                            name: 'app.usrmgr.realAuth',
-                            meta: {
-                                title: '实名认证管理'
-                            },
-                            component: () => import('@/views/usermgr/RealAuth')
                         },
                         {
                             path: 'menu',
@@ -101,6 +86,14 @@ export default new Router({
                                 title: '菜单编辑'
                             },
                             component: () => import('@/views/usermgr/menumgr/editMenu')
+                        },
+                        {
+                            path: 'handler/:code',
+                            name: 'app.usrmgr.menumgr.handler',
+                            meta: {
+                                title: '关联操作'
+                            },
+                            component: () => import('@/views/usermgr/menumgr/menuHandle')
                         },
                         {
                             path: 'platform',
@@ -154,10 +147,10 @@ export default new Router({
                             path: 'editConfig/:opType',
                             name: 'app.usrmgr.editConfig',
                             meta: {
-                                title: '修改配置'
+                                title: '修改和添加配置'
                             },
                             component: () => import('@/views/usermgr/sysconfig/editConfig')
-                        },
+                        }
                     ]
                 }
             ]
