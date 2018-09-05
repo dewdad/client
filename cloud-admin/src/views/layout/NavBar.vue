@@ -44,7 +44,7 @@ export default {
          */
         editPwd: function() {
             console.log('editLabel:');
-            this.$refs.ChangePwdDialog.show(this.user)
+            this.$refs.ChangePwdDialog.show()
                 .then(ret => {
                     console.log('操作成功', ret);
                     return this.$confirm('操作成功');

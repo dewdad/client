@@ -7,7 +7,7 @@
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createPlatForm({},1)">新建</el-button>
+                        <el-button type="primary" @click="createPlatForm({},1)"><span class="icon-zt_plus"></span>  新建平台</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getplatformList"></el-button>
@@ -51,7 +51,6 @@
                                 <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >编辑</a>
                                 <b class="link-division-symbol"></b>
                                 <a  @click="delPlatForm(scope.row)" class="btn-linker" >删除</a>
-
                             </template>
                         </el-table-column>
                     </template>

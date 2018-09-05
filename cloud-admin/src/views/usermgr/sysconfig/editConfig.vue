@@ -13,18 +13,18 @@
         <el-row >
             <el-col :span="22">
                 <el-form ref="configForm" :inline="false" :rules="rules" :show-message="false" inline-message size="small" :model="configForm"  label-width="80px">
-                    <el-form-item label="编码" prop="code">
+                    <el-form-item label="编码：" prop="code">
                         <el-input v-model="configForm.code" placeholder="输入编码"></el-input>
                     </el-form-item>
-                    <el-form-item label="名称" prop="name">
+                    <el-form-item label="名称：" prop="name">
                         <el-input v-model="configForm.name" placeholder="输入名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="描述" prop="description">
+                    <el-form-item label="描述：" prop="description">
                         <el-input v-model="configForm.description" placeholder="输入描述" type="textarea"></el-input>
                     </el-form-item>
                 </el-form>
                 <el-form ref="valueListForm" :inline="false"  :show-message="false" inline-message size="small" :model="valueListForm"  label-width="80px">
-                    <el-form-item label="值" prop="value">
+                    <el-form-item label="值：" prop="value">
                         <el-button type="primary" class="font12 ml20" @click="addValue">添加值</el-button>
                     </el-form-item>
                     <div v-for="(item,index) in valueListForm.itemlist" :key="index">
@@ -35,11 +35,12 @@
                             <el-input v-model="item.name" placeholder="输入名称" style="width:130px"></el-input>
                         </el-form-item>
                         <el-form-item label="值：" prop="code" style="display: inline-block">
-                            <el-input v-model="item.value" placeholder="输入值" style="width:130px"></el-input>
+                            <el-input v-model="item.value" placeholder="输入值" style="width:220px"></el-input>
                         </el-form-item>
-                        <el-form-item label="排序：" prop="orderSeq" style="display: inline-block;">
+                        <el-form-item label="排序：" prop="orderSeq" style="display: inline-block;width:210px;">
                             <el-input-number class="width-full" controls-position="right" :min="0" :max="100" v-model="item.orderSeq"></el-input-number>
                         </el-form-item>
+                        <el-button type="primary" class="font12 ml20" @click="deleteCurrent(index)" size="small">删 除</el-button>
                     </div>
                     <el-form-item>
                         <el-button type="primary" class="font12 ml20" @click="submitForm">提  交</el-button>
@@ -91,20 +92,7 @@ export default {
                     { required: true, message: '请输入角色', trigger: 'blur' }
                 ]
             },
-            // rules2:{
-            //     code: [
-            //         { required: true, message: '请输入编码', trigger: 'blur,submit' }
-            //     ],
-            //     name: [
-            //         { required: true, message: '请输入名称', trigger: 'blur,submit' }
-            //     ],
-            //     value: [
-            //         { required: true, message: '请输入值', trigger: 'blur,submit' }
-            //     ],
-            //     orderSeq: [
-            //         { required: true, message: '请输入排序值', trigger: 'blur,submit' }
-            //     ]
-            // },
+
             someEmpty:false,
             valueEmpty:false,
             form1Valid:false,
@@ -150,6 +138,9 @@ export default {
             }else{
                 this.valueEmpty = false;
             }
+        },
+        deleteCurrent(i){
+            this.valueListForm.itemlist.splice(i,1);
         },
         submitForm(){
             this.$refs.configForm.validate((valid) => {

@@ -7,7 +7,8 @@
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createSysconfig({},1)">新增配置</el-button>
+                        <el-button type="primary" @click="createSysconfig({},1)"><span class="icon-zt_plus"></span>新增配置</el-button>
+                        <el-button type="primary" @click="reloadCache()">刷新缓存</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -102,7 +103,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import {getConfigList,delConfig} from '@/service/usermgr/sysconfig.js';
+import {getConfigList,delConfig,reloadCache} from '@/service/usermgr/sysconfig.js';
 export default {
     name: 'app',
 
@@ -159,7 +160,21 @@ export default {
         createSysconfig(rowItem,optype){
             return this.$router.push({name:'app.usrmgr.editConfig',params:{opType:optype,item:rowItem}});
         },
+        reloadCache(){
+            reloadCache().then(ret => {
+                $log('data', ret);
+                if(ret.data.code == '0000'){
+                    console.log('操作成功', ret);
+                    return this.$confirm('操作成功');
 
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                }
+
+            });
+        },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
             this.getConfigList();
