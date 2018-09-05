@@ -6,7 +6,7 @@
         <div class="page-body">
             <!-- <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box> -->
             <el-row :gutter="20" class="mb10">
-                <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})" icon="el-icon-search">新建一级菜单</el-button></el-col>
+                <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})"><span class="icon-zt_plus"></span>  新建一级菜单</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">
                         <el-select class="width152" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">

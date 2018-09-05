@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page-main">
         <!-- 头部 -->
         <span class="mr10">概览：</span>
         <el-select v-model="value" size="small" key="id" value-key="name" placeholder="请选择" @change="changeDeptlist(value)">

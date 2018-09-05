@@ -42,4 +42,12 @@ export async function delConfig(data) {
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
 }
+/**
+ *刷新缓存
+ * @param {*}
+ */
+export async function reloadCache() {
+    let response = await http.get(SYSCONFIG.reloadCache);
+    return response;
+}
 

@@ -124,12 +124,12 @@
                 </div>
             </el-col>
         </el-row>
-         <log-detail ref="LogDetail"></log-detail>
+         <oplog-detail ref="LogDetail"></oplog-detail>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import LogDetail from './OplogDetail';
+import OplogDetail from './OplogDetail';
 import {dateFormat} from '@/utils/utils';
 import {getLoglist} from '@/service/usermgr/oplog.js';
 export default {
@@ -214,21 +214,10 @@ export default {
     },
     components: {
         PageHeader,
-        LogDetail
+        OplogDetail
     },
     watch:{
-        // 'formInline.date': function(newval) {
-        //     if (!isEmpty(newval)) {
-        //         this.formInline.startDate = dateFormat(newval[0], 'YYYY-MM-DD HH:mm:ss');
-        //         this.formInline.endDate = dateFormat(newval[1], 'YYYY-MM-DD HH:mm:ss');
-        //         console.log('formInline.date1',this.formInline.date);
-        //     } else {
-        //         this.form.startDate = '';
-        //         this.form.endDate = '';
-        //         console.log('formInline.date2',this.formInline.date);
-        //     }
-        //
-        // }
+
     },
     computed:{
         start_date() {
