@@ -107,7 +107,11 @@ export async function getGroupRuleList({groupId, pageIndex, limit = 10, security
 
 export async function deleteGroupRuleList(rule_id) {
     let url = API_ECS.security.deleteGroupRule;
-    let res = await http.delete(url, rule_id);
+    let res = await http.delete(url, {
+        params: {
+            req_param: rule_id
+        }
+    });
     return res && res.data;
 }
 
@@ -164,7 +168,7 @@ export async function getInstByGroup(data) {
  * data: {
  *  createdate: 创建时间
  *  direction: 出入方向
- *  protocoltype: 访问类型
+ *  Protocol_type: 访问类型
  *  groupid: 安全组ID
  *  port: 端口
  *  orderlevel: 优先级

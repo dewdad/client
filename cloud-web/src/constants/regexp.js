@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 10:48:38 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-08-31 16:57:39
+ * @Last Modified time: 2018-09-05 13:24:00
  * 常量正则表达式配置文件
  */
 
@@ -76,3 +76,10 @@ export const ZY_START = new RegExp(/^[\u4e00-\u9fa5_a-zA-Z]+.*$/);
  */
 
 export const CUSTOM_PORT = new RegExp(/^\d+(,{1}\d+)*$/);
+
+/**
+ * ipaddr 匹配格式10.0.0/32,10.0.0.1/32
+ */
+export const IPAddr_REGEXP = new RegExp(
+    /^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\/\d{1,2})?(,(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\/\d{1,2})*$/
+);

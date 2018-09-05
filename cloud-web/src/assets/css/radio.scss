@@ -31,7 +31,7 @@
     }
     .el-radio.is-bordered {
         border-radius: 0;
-        min-width: 80px;
+        // min-width: 80px;
         text-align: center;
         .is-checked {
             border-color: $--color-primary;
@@ -46,7 +46,7 @@
     .el-radio-button {
         margin-right: 10px;
         .el-radio-button__inner {
-            min-width: 80px;
+            // min-width: 80px;
             border-left: 1px solid #dcdfe6;
             border-radius: 0px !important;
         }
@@ -70,11 +70,9 @@
 .header-radio-group {
     .el-radio {
         min-width: 60px;
-        padding: 5px 10px;
+        padding: 6px 10px;
         height: auto;
         background: $--color-white;
-        color: $--color-primary;
-        border-color: $--color-primary;
 
         .el-radio__label {
             color: inherit;
