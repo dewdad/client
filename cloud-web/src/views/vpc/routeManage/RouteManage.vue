@@ -12,18 +12,16 @@
             </div>
         </page-header>
         <!-- 搜索栏 -->
-        <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box>
+        <!-- <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box> -->
         <!-- 表格 -->
         <div>
-            <el-table
-                :data="routerList"
-                class="data-list"
-                row-class-name="data-list"
-                header-row-class-name="data-list"
-                size="small"
-                stripe
-                border
-            >
+            <zt-table
+                :data="routerList" 
+                :search="true" 
+                :search-condition="fields" 
+                @search="getScreenVal" 
+                :paging="searchObj.paging"
+                size="small">
                 <el-table-column label="路由名称" :min-width="180">
                     <template slot-scope="scope">
                         <div>{{scope.row.name}}</div>
@@ -56,13 +54,13 @@
                                 更多<i class="el-icon-caret-bottom el-icon--right"></i>
                             </span>
                             <zt-dropdown-menu slot="dropdown">
-                                <zt-dropdown-item>删除</zt-dropdown-item>
+                                <zt-dropdown-item @click="deleteRouter(scope.row)">删除</zt-dropdown-item>
                                 <zt-dropdown-item>清除网关</zt-dropdown-item>
                             </zt-dropdown-menu>
                         </zt-dropdown>
                     </template>
                 </el-table-column>
-            </el-table>
+            </zt-table>
         </div>
 
         <!-- 编辑路由弹窗 -->
@@ -71,27 +69,31 @@
 </template>
 <script>
 import searchBox from '@/components/search/SearchBox';
-import {getRouterList, queryNetwork} from '@/service/ecs/network.js';
+import {getRouterList, queryNetwork, deleteRouter} from '@/service/ecs/network.js';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import EditRouter from './dialog/EditRouter';
 
 let fields = [
-    { field: 'name', label: '路由名称',inputval:'1', tagType: 'ID' },
-    { field: 'status', label: '状态',inputval:'2', tagType: 'ID' },
-    { field: 'adminStateUp', label: '管理状态',inputval:'3', tagType: 'ID' }
+    { field: 'name', label: '路由名称', tagType: 'INPUT' },
+    { field: 'status', label: '状态', tagType: 'SELECT' },
+    { field: 'adminStateUp', label: '管理状态', tagType: 'SELECT' }
 ];
-        
-let searchObjExtra = {
-    frominfo: '',
-    fields:fields,
-    selField:fields[0]
+
+let searchObj = {
+    //分页
+    paging: {
+        pageIndex: 1,
+        limit: 10,
+        totalItems: 0
+    }
 };
+
 export default {
     data() {
         return {
             fields,
-            searchObjExtra,
             ECS_STATUS,
+            searchObj,
             routerList: [],
             outerNetData: [] // 外网网络数据
         };
@@ -107,9 +109,7 @@ export default {
         // 获得路由列表
         getRouterListFn() {
             let params = {
-                pageIndex: 1,
-                limit: 10,
-                offset: 1
+                ...this.searchObj.paging
             };
             getRouterList(params)
                 .then(res => {
@@ -118,6 +118,7 @@ export default {
                         if (data.code && data.code === this.CODE.SUCCESS_CODE) {
                             let dataList = data.data || [];
                             this.routerList = dataList.data;
+                            this.searchObj.paging.totalItems = dataList.total;
                             $log('getRouterList ->', dataList);
                         }
                     }
@@ -157,6 +158,36 @@ export default {
             } catch (error) {
                 console.error('getOuterNet', error.message);
             }
+        },
+        // 删除路由
+        deleteRouter(row) {
+            $log('删除数据', row);
+            this.$confirm(`您确定要删除路由：${row.name} 吗？`, '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'danger'
+            })
+                .then(() => {
+                    return deleteRouter({
+                        id: row.id
+                    });
+                    
+                })
+                .then(ret => {
+                    $log('deleteRouter ret <-', ret);
+                    if (ret) {
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.getRouterListFn();
+                    }
+                })
+                .catch((error) => {
+                    // 取消
+                    $log('deleteRouter', error.message);
+                });
+            
         },
     },
     created() {

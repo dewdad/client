@@ -11,18 +11,16 @@
         </div>
     </page-header>
     <!-- 搜索栏 -->
-    <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
+    <!-- <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box> -->
     <!-- 表格 -->
-    <el-table
+    <zt-table
         v-loading="isLoading"
-        :data="tableData"
-        class="data-list"
-        row-class-name="data-list"
-        header-row-class-name="data-list"
-        size="small"
-        stripe
-        border
-    >
+        :data="tableData" 
+        :search="true" 
+        :search-condition="fields" 
+        @search="getScreenVal" 
+        :paging="searchObj.paging"
+        size="small">
         <el-table-column prop="title" label="VPCID/名称" :min-width="180">
             <template slot-scope="scope">
                 <div>
@@ -63,21 +61,8 @@
                 <a @click="deleteFloatIP(scope.row)">释放</a>
             </template>
         </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <div class="pagination">
-        <el-pagination
-            v-if="total"
-            @size-change="sizeChange"
-            @current-change="fetchData"
-            :current-page.sync="pageIndex"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="limit"
-            layout="sizes, prev, pager, next"
-            :total="total"
-        >
-        </el-pagination>
-    </div>
+    </zt-table>
+
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
     <!-- 申请浮动IP -->
@@ -93,15 +78,18 @@ import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.j
 import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
-    { field: 'id', label: '浮动IP地址',inputval:'', tagType: 'ID' }
+    {field: 'name', label: '浮动IP地址', tagType: 'INPUT'}
 ];
-        
-let searchObjExtra = {
-    frominfo: '',
-    fields:fields,
-    selField:fields[0]
-};
 
+let searchObj = {
+    //分页
+    paging: {
+        pageIndex: 1,
+        limit: 10,
+        totalItems: 0
+    },
+    type: 'private' //镜像类型： false 公共镜像； true:自定义镜像
+};
 export default {
     data() {
         return {
@@ -110,9 +98,9 @@ export default {
             pageIndex: 1,
             limit: 10,
             total: 0,
+            searchObj,
             listData: {},
             fields,
-            searchObjExtra,
             exampleList: [],
             outerNetData: [] // 外网网络数据
         };
@@ -142,10 +130,9 @@ export default {
                 // 清空数据
                 this.isLoading = true;
                 let params = {
+                    ...this.searchObj.paging,
                     offset: 1,
-                    limit: this.limit,
                     statusroptionValue: 'all',
-                    pageIndex: this.pageIndex,
                     status: ''
                 };
 
@@ -156,7 +143,7 @@ export default {
                 this.date = new Date().getTime();
 
                 this.pageIndex = parseInt(ret.pages);
-                this.total = ret.total;
+                this.searchObj.paging.totalItems = ret.total;
 
                 this.isLoading = false;
             } catch (error) {
