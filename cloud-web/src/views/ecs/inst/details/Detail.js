@@ -232,7 +232,13 @@ export default {
         },
         // 默认安全组
         securityGroupName() {
-            return this.instanceNet && this.instanceNet.securityGroupName && this.instanceNet.securityGroupName.map(e => this.getSecurityGroupName(e)).join(',');
+            let security_groups = this.ecsInst.security_groups;
+            let str = [];
+            for(let k in security_groups) {
+                str.push(security_groups[k].name);
+            }
+            return str.map(e => this.getSecurityGroupName(e)).join(',');
+            // return [];
         },
         // 私有网络
         vpcName() {
@@ -244,11 +250,23 @@ export default {
         },
         // 浮动IP
         floatIP() {
-            return this.instanceNet && this.instanceNet.subnetName && this.instanceNet.subnetName.join(',');
+            let floatIPStr = [];
+            for(let k in this.addresses) {
+                if (this.addresses[k][0]['OS-EXT-IPS:type'] === 'float') {
+                    floatIPStr.push(this.addresses[k][0]['addr']);
+                }
+            }
+            return floatIPStr.join(',');
         },
         // 私有IP
         privateIP() {
-            return this.instanceNet && this.instanceNet.subnetName && this.instanceNet.subnetName.join(',');
+            let privateIPStr = [];
+            for(let k in this.addresses) {
+                if (this.addresses[k][0]['OS-EXT-IPS:type'] === 'fixed') {
+                    privateIPStr.push(this.addresses[k][0]['addr']);
+                }
+            }
+            return privateIPStr.join(',');
         }
     }
 

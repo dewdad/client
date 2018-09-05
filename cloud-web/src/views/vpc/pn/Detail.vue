@@ -6,7 +6,7 @@
             <div class="font16">{{data.name}}</div>
         </div>
     </page-header>
-    <div class="panel panel-default mb20">
+    <div class="panel panel-default mb20" v-loading="isLoading">
         <div class="panel-heading">
             <i class="ecs-ecs_essential-information_people"></i>{{ $t('security.basicInfo') }}
         </div>
@@ -71,17 +71,27 @@
 </template>
 
 <script>
-import {queryNetworkByID, getNetworkCount} from '@/service/ecs/network.js';
+import {queryNetworkByID, getNetworkCount, queryNetwork} from '@/service/ecs/network.js';
 
 export default {
     data() {
         return {
             data: {},
-            countData: {}
+            countData: {},
+            isLoading: false,
+            listData: []
         };
     },
     created() {
-        this.init();
+        // this.init();
+        this.fetchData();
+    },
+    computed: {
+        netIntro () {
+            return this.listData.filter(
+                item => item.id === this.$route.params.id
+            );
+        }
     },
     methods: {
         init() {
@@ -97,6 +107,25 @@ export default {
                 });
             } else {
                 // TODO 没有ID 跳转列表页
+            }
+        },
+        async fetchData() {
+            try {
+                // 清空数据
+                this.isLoading = true;
+                let params = {
+                    pageIndex: 1
+                };
+
+                let ret = await queryNetwork(params);
+                console.warn('fetchData', ret);
+
+                this.listData = ret.data;
+
+                this.isLoading = false;
+            } catch (error) {
+                this.isLoading = false;
+                console.error('fetchData', error.message);
             }
         }
     }

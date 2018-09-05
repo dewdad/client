@@ -26,9 +26,9 @@ export async function getNetwork(data) {
  * 通过网络id获取子网
  * @param {*} networkId
  */
-export async function getSubnetByNetId(networkId) {
-    let res = await http.get(replaceParamVal(API_ECS.network.getSubnetByNetId, [networkId]));
-    return res && res.data;
+export async function getSubnetByNetId({...arg}) {
+    let res = await http.get(API_ECS.network.subnetList, {params: {...arg}});
+    return res && res.data && res.data.code === ERRCODE.SUCCESS_CODE && res.data.data;
 }
 
 /**
@@ -55,6 +55,72 @@ export async function queryFlexIP({...arg}) {
     let ret = await http.get(API_ECS.network.flexIP, {params: {...arg}});
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
+
+/**
+ * 绑定浮动IP
+ */
+export async function bindFloatIP(instIP, floatIP) {
+    $log('put /bindFloatIP ->', floatIP);
+    let ret = await http.put(replaceParamVal(API_ECS.network.bindFloatIP, [instIP, floatIP]));
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 确认申请浮动IP
+ * @param networkId 外网ID
+ */
+export async function confirmApplyFloatIP({...arg}) {
+    $log('GET /applyFloatIP ->', {...arg});
+    let ret = await http.post(API_ECS.network.applyFloatIP, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 释放浮动IP
+ * @param name 根据服务器名称查询
+ */
+export async function deleteFloatIP({floatIP}) {
+    $log('delete /deleteFloatIP ->', {floatIP});
+    let ret = await http.delete(replaceParamVal(API_ECS.network.delFloatIP, [floatIP]));
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 路由管理列表数据查询 GET /networks
+ * @param limit 每页条数
+ * @param pageIndex 每页条数
+ */
+export async function getRouterList({...arg}) {
+    $log('GET /routerList ->', {...arg});
+    let ret = await http.get(API_ECS.network.routerList, {params: {...arg}});
+    return ret;
+}
+
+/**
+ * 添加路由
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function editRouter({...arg}) {
+    $log('post /editRouter ->', {...arg});
+    let ret = await http.post(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
+ * 修改路由
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function amendRouter({...arg}) {
+    $log('put /editRouter ->', {...arg});
+    let ret = await http.put(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+
 
 /**
  * 网络列表数据查询 GET /networks/vpcId

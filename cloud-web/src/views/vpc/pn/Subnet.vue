@@ -1,9 +1,11 @@
 <template>
 <div class="page-main">
     <page-header>
-        <img src="@/assets/images/control/cloud_disk_icon.svg" height="50" alt="">
-        <div slot="content">
-            <div class="font16" v-if="data">{{data.name}}</div>
+        <div class="font16"><img src="@/assets/images/control/vpc_icon.svg" height="36" alt=""><span class="ml10">{{vpcName}}</span></div>
+        <div slot="content" class="pull-right">
+            <el-button type="info" size="small">
+                <i class="iconfont icon-refresh_people"></i>
+            </el-button>
         </div>
     </page-header>
     <!-- 提示框 -->
@@ -28,46 +30,33 @@
                     </el-button>
                 </zt-form-item>
                 <zt-form-item  class="pull-right">
-                    <el-button type="primary" @click="create">
+                    <el-button type="primary" @click="editSubnet">
                         新建子网
                     </el-button>
                 </zt-form-item>
             </zt-form>
         </div>
         <!-- 表格 -->
-        <el-table :data="tableData" style="width: 100%" row-class-name="data-list" stripe header-row-class-name="data-list" border class="data-list">
+        <el-table :data="listData" style="width: 100%" row-class-name="data-list" stripe header-row-class-name="data-list" border class="data-list">
             <el-table-column label="子网ID/名称" :min-width="110" show-overflow-tooltip>
                 <template slot-scope="scope">
                     <div class="text-nowrap">{{scope.row.id}}</div>
                     <div class="text-nowrap">{{scope.row.name}}</div>
                 </template>
             </el-table-column>
-            <el-table-column label="实例数" :min-width="50">
+            <el-table-column prop="cidr" label="网段" :min-width="90">
+            </el-table-column>
+            <el-table-column label="DHCP" :min-width="50">
                 <template slot-scope="scope">
-                    <router-link to="#">
-                        <el-tag>{{scope.row.countInstance}}</el-tag>
-                    </router-link>
+                    {{scope.row.enable_dhcp ? '已激活' : '未激活'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="subnet" label="网段" :min-width="90">
-            </el-table-column>
-            <el-table-column label="状态" :min-width="50">
+            <el-table-column label="IP版本" :min-width="50">
                 <template slot-scope="scope">
-                    {{scope.row.networkStatus}}
+                    IPV{{scope.row.ip_version}}
                 </template>
             </el-table-column>
-            <el-table-column label="所在区域" :min-width="50">
-                <template slot-scope="scope">
-                    {{scope.row.zone | zone}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ipNum" label="可用私有IP数" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="createDate" label="创建时间" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="remark" label="描述" :min-width="70">
-            </el-table-column>
-            <el-table-column prop="firewallName" label="防火墙" :min-width="60">
+            <el-table-column prop="gateway_ip" label="网关IP" :min-width="70">
             </el-table-column>
             <el-table-column prop="name" label="操作" :min-width="70">
                 <template slot-scope="scope">
@@ -95,7 +84,7 @@
 </div>
 </template>
 <script>
-import {getSubnetByNetId, queryNetworkByID, deleteSubnet} from '@/service/ecs/network.js';
+import {getSubnetByNetId, deleteSubnet} from '@/service/ecs/network.js';
 import Create from './CreateSubnet';
 import EditSubnet from './EditSubnet';
 
@@ -115,23 +104,28 @@ export default {
     data() {
         return {
             inputval: '',
-            data: {},
+            vpcName: this.$route.params.name,
             selestSearchOptionType: '',
             searchOptionType,
             pageIndex: 1,
             limit: 10,
             total: 0,
-            listData: {}
-            // listData: mockData.assetsList
+            listData: []
         };
-    },
-    computed: {
-        tableData() {
-            return this.listData ? this.listData.records || [] : [];
-        }
     },
     methods: {
         editSubnet(row) {
+            let create = this.$refs.create;
+            if (create) {
+                create.show(row).then(ret => {
+                    if (ret) {
+                        this.fetchData();
+                    }
+                });
+            }
+        },
+        // 新建子网
+        createSubnet(row) {
             let editSubnet = this.$refs.editSubnet;
             if (editSubnet) {
                 editSubnet.show(row).then(ret => {
@@ -164,54 +158,44 @@ export default {
                     $log('deleteSubnet', error.message);
                 });
         },
-        create() {
-            let create = this.$refs.create;
-            if (create) {
-                create.show(this.data).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
-                });
-            }
-        },
-        queryNetworkByID() {
-            queryNetworkByID({vpcId: this.vpcId}).then(ret => {
-                $log('queryNetworkByID', ret);
-                this.data = ret;
-            });
-        },
         search() {
             this.fetchData();
         },
+        // 分页
         handleSizeChange(val) {
             this.limit = val;
             this.fetchData();
         },
+        // 获取子网列表
         async fetchData() {
             try {
                 this.total = 0;
-                this.listData = {};
+                this.listData = [];
                 // 发送请求
                 let params = {
                     pageIndex: this.pageIndex,
-                    limit: this.limit
+                    limit: this.limit,
+                    pnetId: 'vpc-28ijaat7y',
+                    offset: 0,
+                    vpcId: this.vpcId
                 };
-
+                // 搜索选项
                 if (this.selestSearchOptionType) {
                     params[this.selestSearchOptionType] = this.inputval;
                 }
 
-                let ret = await getSubnetByNetId(this.vpcId);
-                $log('获取子网列表 <-', ret);
-                if (ret && ret.result) {
-                    this.listData = ret.result;
-                    this.total = ret.result.total;
+                let ret = await getSubnetByNetId(params);
+                if (ret) {
+                    $log('获取子网列表 <-', ret);
+                    let dataList = ret.data;
+                    this.listData = dataList;
+                    this.total = ret.total;
                 } else {
                     throw new Error('无数据。');
                 }
             } catch (error) {
                 console.error('fetechInfo 失败', error.message);
-                this.listData = {};
+                this.listData = [];
             }
         }
     },
@@ -220,7 +204,6 @@ export default {
         if (vpcId) {
             this.vpcId = vpcId;
         }
-        this.queryNetworkByID();
         this.fetchData();
     }
 };

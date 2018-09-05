@@ -20,8 +20,7 @@
         header-row-class-name="data-list"
         size="small"
         stripe
-        border
-    >
+        border>
         <el-table-column prop="title" label="VPCID/名称" :min-width="180">
             <template slot-scope="scope">
                 <div>
@@ -37,32 +36,34 @@
                 {{scope.row.status}}
             </template>
         </el-table-column>
-        <el-table-column label="是否共享">
+        <el-table-column label="是否共享" width="100">
             <template slot-scope="scope">
                 {{scope.row.shared ? '是' : '否' }}
             </template>
         </el-table-column>
-        <el-table-column label="外部网络">
+        <el-table-column label="外部网络" width="100">
             <template slot-scope="scope">
                 {{scope.row['router:external'] ? '是' : '否'}}
             </template>
         </el-table-column>
-        <el-table-column label="子网数量" :min-width="50">
+        <el-table-column label="子网数量" width="100">
             <template slot-scope="scope">
                 <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}"> -->
                     <el-tag>{{scope.row.subnets.length}}</el-tag>
                 <!-- </router-link> -->
             </template>
         </el-table-column>
-        <el-table-column label="管理状态"  :min-width="50">
+        <el-table-column label="管理状态"  width="100">
             <template slot-scope="scope">
-                {{scope.row.admin_state_up ? 'UP' : ''}}
+                {{scope.row.admin_state_up ? 'UP' : 'DOWN'}}
             </template>
         </el-table-column>
-        <el-table-column prop="name" label="操作" :min-width="90">
+        <el-table-column label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}">管理子网</router-link> | 
-                <a @click="updateNetwork(scope.row)">编辑</a> | 
+                <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
+                <b class="link-division-symbol"></b>
+                <a @click="updateNetwork(scope.row)">编辑</a>
+                <b class="link-division-symbol"></b>
                 <a @click="deleteNetwork(scope.row)">删除</a>
             </template>
         </el-table-column>
