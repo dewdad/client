@@ -129,7 +129,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import LogDetail from './LogDetail';
+import LogDetail from './OplogDetail';
 import {dateFormat} from '@/utils/utils';
 import {getLoglist} from '@/service/usermgr/oplog.js';
 export default {

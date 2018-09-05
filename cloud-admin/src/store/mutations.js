@@ -5,7 +5,7 @@ export default {
      * @param {*} payload
      */
     SET_LOGIN_STATUS(state, payload) {
-        state.isLogined = payload.status
+        state.isLogined = payload.status;
     },
     /**
      * 设置页面LOADING效果

@@ -165,6 +165,12 @@ http.interceptors.response.use(
             }
         }
 
+        // token过期或错误 退出重新登录
+        if (response.data && response.data.code === ERRCODE.INVALID_TOKEN) {
+            // throttled_message(response.data.msg);
+            store.dispatch('LOGOUT');
+            return;
+        }
 
         // 在这里统一处理状态码
         if (response.data && response.data.code && response.data.code !== ERRCODE.SUCCESS_CODE && !checkWhiteList(response.config.url)) {
@@ -185,6 +191,7 @@ http.interceptors.response.use(
         } else if (error.response) {
             switch (error.response.status) {
                 case 401:
+                case 408:
                     store.dispatch('LOGOUT');
                     Router.push({name: 'login'});
                     break;
