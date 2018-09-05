@@ -44,7 +44,7 @@
 import AmendDescribe from './dialog/AmendDescribe';
 import AddRules from './dialog/AddRules';
 
-import { getGroupRuleList, getSecurityGroupList } from '@/service/ecs/security.js';
+import { getGroupRuleList, getSecurityGroupList, deleteGroupRuleList } from '@/service/ecs/security.js';
 
 
 let searchObj = {    
@@ -83,43 +83,29 @@ export default {
     methods: {
         // 删除
         deleteExample(id) {
-            this.$confirm(`您确定要删除该规则吗?`, '删除', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            this.$messageBox.confirm(`您确定要删除该规则吗?`, '删除', {
+                alertMessage: '删除操作无法恢复，请谨慎操作',
+                subMessage: id,
                 type: 'warning'
             }).then(() => {
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
+                deleteGroupRuleList(id).then(res => {
+                    if (res.code === '0000') {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getGroupRuleListFn(); 
+                    }
                 });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
+            }).catch(() => {     
             });
         },
-        // 修改描述
-        amendDes(rowItem) {
-            console.log('modifySafeGrp:',rowItem);
-            this.$refs.AmendDescribe
-                .show(rowItem)
-                .then( ret => {                    
-                })
-                .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log('取消');
-                    }
-                });  
-        },
         // 增加规则
-        addrule(rowItem, groupId) {
-            console.log('AddRules:',rowItem);
+        addrule(direction, groupId) {
             this.$refs.AddRules
-                .show(rowItem, groupId)
-                .then( ret => {                    
+                .show(direction, groupId)
+                .then( ret => {   
+                    this.getGroupRuleListFn();        
                 })
                 .catch(err => {
                     if (err) {
