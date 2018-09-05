@@ -27,11 +27,12 @@ export default new Router({
             },
             children: [
                 {
-                    path: 'dashboard',
-                    name: 'app.dashboard',
+                    path: 'overview',
+                    name: 'app.overview',
                     meta: {
                         title: '概览'
                     },
+                    //redirect: '/user/auth',
                     component: () => import('@/views/dashboard/Dashboard')
                 },
                 {
