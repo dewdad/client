@@ -1,6 +1,6 @@
 <template>
-    <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
-        <div :id="idString" style="height:248px;"></div>
+    <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000;">
+        <div :id="idString" :style="{height:height}"></div>
     </div>
 </template>
 <script>
@@ -79,6 +79,10 @@ export default {
         };
     },
     props: {
+        height: {
+            type: String,
+            default: '200px'
+        },
         // 文字大小
         textSize: {
             type: Number,

@@ -21,7 +21,7 @@ Vue.use(Router);
  * 白名单列表
  *@description 未登录时可访问的路由, 由多个路由名称组成的数组 注意大小写问题
  */
-export const whiteList = ['login', 'register.reg', 'user.forgetPwd', 'BindMailBox.Success' , 'accountMg.BindManagerMail'];
+export const whiteList = ['login', 'register.reg', 'user.forgetPwd', 'BindMailBox.Success', 'accountMg.BindManagerMail'];
 
 export default new Router({
     mode: 'hash', // 默认值: "hash" (浏览器环境) 可选值: "hash" | "history" | "abstract"
@@ -72,12 +72,11 @@ export default new Router({
         {
             path: '/app',
             name: 'app',
-            redirect: '/app/ecs/overview',
+            redirect: '/app/overview',
             component: Layout,
             children: [
                 {
                     path: 'overview',
-                    redirect: '/app/ecs/overview',
                     name: 'app.home',
                     component: Overview
                 },
