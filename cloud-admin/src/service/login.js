@@ -1,6 +1,6 @@
 /*
- * @Author: wenfang 
- * @Date: 2018-07-06 15:39:05 
+ * @Author: wenfang
+ * @Date: 2018-07-06 15:39:05
  * @Last Modified by: wenfang
  * @Last Modified time: 2018-07-09 10:56:54
  * 登录服务
@@ -25,5 +25,12 @@ export async function userLogin({userName, passWord} = {}) {
     });
     return response;
 }
-
-
+/**
+ *
+ * 退出登录
+ * @export
+ */
+export async function logout({userName, passWord} = {}) {
+    let response = await http.post(API_LOGIN.logOut);
+    return response;
+}

@@ -1,9 +1,8 @@
 <template>
 <div class="page-main">
-    <!-- 搜素栏 -->
     <page-header class="mb10">
         <div slot="content"  class="pull-right">
-            <el-button type="primary" size="small" class="mr10">
+            <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
                 申请浮动IP
             </el-button>
             <el-button type="info" size="small" @click="fetchData">
@@ -56,9 +55,12 @@
         </el-table-column>
         <el-table-column prop="name" label="操作" :min-width="90">
             <template slot-scope="scope" >
-                <a @click="bindFlexFn()">绑定</a> | 
-                <a>解绑</a> | 
-                <a>释放</a>
+                <a @click="bindFlexFn(scope.row)">绑定</a>
+                <b class="link-division-symbol"></b>
+                <span class="color-secondary" v-if="scope.row.state === 'DOWN'">解绑</span>
+                <a v-else>解绑</a>
+                <b class="link-division-symbol"></b>
+                <a @click="deleteFloatIP(scope.row)">释放</a>
             </template>
         </el-table-column>
     </el-table>
@@ -76,17 +78,19 @@
         >
         </el-pagination>
     </div>
-    <create ref="create"></create>
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
+    <!-- 申请浮动IP -->
+    <ApplyFloatIP ref="ApplyFloatIP"></ApplyFloatIP>    
 </div>
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import searchBox from '@/components/search/SearchBox';
-import Create from './Create';
+import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
-import {queryFlexIP} from '@/service/ecs/network.js';
+import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.js';
+import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
     { field: 'id', label: '浮动IP地址',inputval:'', tagType: 'ID' }
@@ -108,7 +112,9 @@ export default {
             total: 0,
             listData: {},
             fields,
-            searchObjExtra
+            searchObjExtra,
+            exampleList: [],
+            outerNetData: [] // 外网网络数据
         };
     },
     computed: {
@@ -116,8 +122,10 @@ export default {
             return this.listData ? this.listData.data || [] : [];
         }
     },
-    created() {
-        this.fetchData();
+    async created() {
+        await this.fetchData();
+        await this.getInstList();
+        await this.getOuterNet();
     },
     methods: {
         sizeChange(val) {
@@ -156,29 +164,113 @@ export default {
                 console.error('fetchData', error.message);
             }
         },
-        // 
+        // 获得搜索条件
         getScreenVal(params) {
             $log(params);
         },
         // 绑定浮动Ip
-        bindFlexFn(){
+        bindFlexFn(params){
             let BindFLexIP = this.$refs.BindFLexIP;
             if (BindFLexIP) {
-                BindFLexIP.show({
-                    type: 'create'
-                }).then(ret => {
+                BindFLexIP.show(params, this.exampleList)
+                    .then(ret => {
+                        if (ret) {
+                            this.fetchData();
+                        }
+                    });
+            }
+        },
+        // 申请浮动IP
+        applyFloatIPFn() {
+            let ApplyFloatIP = this.$refs.ApplyFloatIP;
+            if (ApplyFloatIP) {
+                ApplyFloatIP.show(this.outerNetData)
+                    .then(ret => {
+                        if (ret) {
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            });
+                            this.fetchData();
+                        }
+                    });
+            }
+        },
+        // 获取实例列表
+        getInstList() {
+            let params = {
+                pageIndex: 1,
+                limit: 10,
+                offset: 1
+            };
+            getEcsInstList(params)
+                .then(res => {
+                    if (res && res.data) {
+                        let data = res.data;
+                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
+                            let dataList = data.data || [];
+                            this.exampleList = dataList.data;
+                            $log(this.exampleList);
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                    self.loading = false;
+                });
+        },
+        // 获得外网网络
+        async getOuterNet() {
+            try {
+                // 清空数据
+                let params = {
+                    router_external: true
+                };
+                let ret = await queryNetwork(params);
+                console.warn('fetchData', ret);
+
+                this.outerNetData = ret.data;
+
+            } catch (error) {
+                console.error('fetchData', error.message);
+            }
+        },
+        // 释放浮动IP
+        deleteFloatIP(row) {
+            $log('删除数据', row);
+            this.$confirm(`浮动IP释放后无法恢复，你确定要释放弹性公网IP${row.floatingIpAddress} 吗？`, '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'danger'
+            })
+                .then(() => {
+                    return deleteFloatIP({
+                        floatIP: row.id
+                    });
+                    
+                })
+                .then(ret => {
+                    $log('deleteNetwork ret <-', ret);
                     if (ret) {
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
                         this.fetchData();
                     }
+                })
+                .catch((error) => {
+                    // 取消
+                    $log('deleteNetwork', error.message);
                 });
-            }
-        }
+            
+        },
     },
     components: {
         RegionRadio,
-        Create,
         searchBox,
-        BindFLexIP
+        BindFLexIP,
+        ApplyFloatIP
     }
 };
 </script>

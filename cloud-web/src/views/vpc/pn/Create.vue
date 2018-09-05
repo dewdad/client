@@ -26,9 +26,7 @@ export default {
             loading: false,
             type: 'create',
             data: {
-                name: '默认专有网络',
-                zone: 'az1.dc1',
-                subnet: ''
+                name: '默认专有网络'
             },
             rules: {
                 name: [
@@ -51,14 +49,12 @@ export default {
     methods: {
         clear() {
             this.data.name = '默认专有网络';
-            // this.data.remark = '';
             this.$nextTick(() => {
                 this.$refs.form.resetFields();
             });
         },
         hide() {
             this.isShow = false;
-            this.reject('calcel');
         },
         show({type = 'create', ...data} = {}) {
             this.isShow = true;
@@ -66,7 +62,6 @@ export default {
             this.row = data;
             if (type === 'update') {
                 this.data.name = data.name;
-                // this.data.remark = data.remark;
             } else {
                 this.clear();
             }
@@ -75,6 +70,7 @@ export default {
                 this.reject = reject;
             });
         },
+        // 创建专有网络
         createNetwork() {
             this.loading = true;
             createNetwork(this.data)
@@ -91,6 +87,7 @@ export default {
                     this.loading = false;
                 });
         },
+        // 修改专有网络
         updateNetwork() {
             let params = Object.assign({}, this.data);
             params.vpcId = this.row.id;
