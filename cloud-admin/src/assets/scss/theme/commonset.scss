@@ -13,9 +13,16 @@ $--basic-font-family: 'PingFangSC', 'helvetica neue', 'hiragino sans gb', 'arial
 
 $--basic-header-height: 50px;
 // 侧边菜单
-$--basic-sidebar-width: 150px;
-$--basic-sidebar-width-min: 50px;
-$--basic-submenu-width: 150px;
+// $--basic-sidebar-width: 150px;
+// $--basic-sidebar-width-min: 50px;
+// $--basic-submenu-width: 150px;
+
+
+$--basic-sidebar-menu-width: 150px; //侧边栏一级菜单
+$--basic-sidebar-menu-width-collapse: 50px; //侧边栏一级菜单折叠宽度
+$--basic-sidebar-submenu-width: 164px; //侧边栏子菜单
+$--basic-sidebar-submenu-width-collapse: 0; //侧边栏子菜单折叠
+
 // 表单输入框
 $--basic-input-height: 40px;
 $--basic-input-height--medium: 38px;

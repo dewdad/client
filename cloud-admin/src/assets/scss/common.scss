@@ -551,10 +551,12 @@ li {
     padding: 0px !important;
     transition: all 0.3s;
     &.left-xs {
-        margin-left: $--basic-sidebar-width-min;
+        //margin-left: $--basic-sidebar-width-min;
+        margin-left: $--basic-sidebar-menu-width-collapse;
     }
     &.left-sm {
-        margin-left: $--basic-sidebar-width;
+        //margin-left: $--basic-sidebar-width;
+        margin-left: $--basic-sidebar-menu-width;
     }
     .el-main-wrap {
         transition: all 0.3s linear;

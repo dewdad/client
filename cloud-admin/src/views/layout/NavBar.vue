@@ -1,12 +1,18 @@
 <template>
-    <div class="source">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <!-- <el-breadcrumb-item>您的当前位置：</el-breadcrumb-item> -->
+    <div>
+        
+        <div class="logo-con pull-left">
+            <img src="@/assets/images/logo_open.svg" width="85px" alt="">
+        </div>
+        
+        <!--  <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item>您的当前位置：</el-breadcrumb-item> 
             <el-breadcrumb-item class="crumb" v-for="item in breadcrumb" :key="item.name" >{{item.meta.title||'-'}}</el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-dropdown style="float:right;line-height: 1;margin-top:-15px;" :hide-on-click="false">
+        </el-breadcrumb>-->
+        <el-dropdown style="float:right;" :hide-on-click="false">
             <span class="el-dropdown-link">
-                {{user.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+                <!-- {{user.name}} -->
+                <i class="el-icon-arrow-down el-icon--right el-icon-setting"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="editPwd">修改密码</el-dropdown-item>
@@ -21,7 +27,7 @@
 import ChangePwdDialog from '@/components/dialog/ChangePwdDialog';
 import { mapState } from 'vuex';
 export default {
-    name: 'app',
+    name: 'navbar',
     data() {
         return {};
     },
@@ -30,7 +36,7 @@ export default {
     },
     computed: {
         ...mapState({
-            user: state => state.user.userInfo,
+            user: state => state.user.userInfo,            
         }),
         breadcrumb: function() {
             let matched = this.$route.matched;
@@ -61,7 +67,7 @@ export default {
         logOut() {
             this.$store.dispatch('LOGOUT');
             this.$router.push({name: 'login'});
-        },
+        },       
     }
 };
 </script>
@@ -78,5 +84,15 @@ export default {
 .source {
     padding: 21px 20px;
     background-color:#001529;
+    .logo-con {
+        display: inline-block;
+        width:150px;
+        height: 59px;
+        line-height: 59px;
+        border-bottom: 1px solid #000c17;
+        img {
+            vertical-align: middle;
+        }
+    }  
 }
 </style>
