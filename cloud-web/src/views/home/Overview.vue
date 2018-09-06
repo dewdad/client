@@ -110,7 +110,7 @@
                             </div>
                             <div class="info-box-content">
                                 <div sytle="height:236px">
-                                    <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" height="236px" :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart'"></echarts-line>
+                                    <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" height="236px" :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar :isMarkPoint="false" :gridVal="gridVal2"  height="190px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2"  height="190px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
