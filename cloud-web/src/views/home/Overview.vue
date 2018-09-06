@@ -110,7 +110,7 @@
                             </div>
                             <div class="info-box-content">
                                 <div sytle="height:236px">
-                                    <echarts-line :legendData="legendData" height="236px" :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart'"></echarts-line>
+                                    <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" height="236px" :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart'"></echarts-line>
                                 </div>
                             </div>
                         </div>
@@ -120,8 +120,11 @@
                             <div class="info-box-head">监控警告
                                 <a class="pull-right font14 ">查看更多</a>
                             </div>
-                            <div class="info-box-content">
+                            <div style="height: 60px;">
 
+                            </div>
+                            <div class="info-box-content">
+                                <echarts-bar :isMarkPoint="false" :gridVal="gridVal2"  height="180px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
@@ -180,6 +183,7 @@
 </template>
 <script>
 import EchartsLine from '@/components/charts/EchartsLine.vue';
+import EchartsBar from '@/components/charts/EchartsBar.vue';
 
 import Product from '@/components/product/Index.vue';
 export default {
@@ -196,13 +200,31 @@ export default {
                     seriesData: [220, 182, 191, 234, 290, 330, 310]
                 }
             ],
+            gridVal: {
+                bottom: '60',
+                right: '20',
+                left: '60',
+                top: '10'
+            },
+            gridVal2: {
+                bottom: '30',
+                right: '20',
+                left: '20',
+                top: '10'
+            },
+            seriesData2: [
+                {
+                    seriesData: [120, 132, 101, 134, 90, 230, 210]
+                }
+            ],
             rightHeight: 100 // 右侧产品动态高度
         };
     },
     computed: {},
     components: {
         Product,
-        EchartsLine
+        EchartsLine,
+        EchartsBar
     },
     methods: {},
     mounted() {}
