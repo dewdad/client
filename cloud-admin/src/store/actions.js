@@ -10,5 +10,6 @@ export default {
             status: false
         });
         commit('user/SET_USERINFO', {});
+        commit('user/DEPT', {});
     }
 };
