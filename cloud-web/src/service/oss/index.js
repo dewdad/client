@@ -2,11 +2,11 @@
  * @Author: wenfang 
  * @Date: 2018-07-13 10:44:50 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-07-17 15:22:11
+ * @Last Modified time: 2018-09-06 18:03:41
  * oss对象存储API服务
  */
 import http from '@/utils/http';
-import { API_OSS } from '@/constants/apiUrl';
+import {API_OSS} from '@/constants/apiUrl';
 import {replaceParamVal} from '@/utils/utils';
 
 /**
@@ -49,7 +49,7 @@ export async function getBucketDomainList(bucketId) {
 
 /**
  * 查询桶的统计数据接口
- * @param {*} bucketId 
+ * @param {*} bucketId
  * @param dataItem 日期范围类型 0 今天 1 昨天 2 近七天 4 动态范围
  */
 export async function getBucketData(bucketId, {startTime = '', endTime = '', dataItem = ''} = {}) {
@@ -65,7 +65,7 @@ export async function getBucketData(bucketId, {startTime = '', endTime = '', dat
 
 /**
  * 查询桶的单个统计数据接口
- * @param {*} bucketId 
+ * @param {*} bucketId
  * @param dataItem 数据类型 object 文件数量 capacity 存储容量 get/put 请求数 transfer 流量 单位byte bandwidth带宽，单位为bps
  */
 export async function getBucketDataByItem(bucketId, {startTime = '', endTime = '', dataItem = ''} = {}) {
@@ -81,7 +81,7 @@ export async function getBucketDataByItem(bucketId, {startTime = '', endTime = '
 
 /**
  * 查询bucket的流量和请求数的统计数据接口
- * @param {*} bucketId 
+ * @param {*} bucketId
  * @param {*} base_info 是否包含统计信
  */
 export async function getBucket(bucketId, base_info = false) {
@@ -95,7 +95,7 @@ export async function getBucket(bucketId, base_info = false) {
 
 /**
  * 查询基础设置信息
- * @param {*} bucketId 
+ * @param {*} bucketId
  */
 export async function getBucketBasic(bucketId, base_info = false) {
     let res = await http.get(replaceParamVal(API_OSS.getBucketBasic, [bucketId]));
@@ -104,14 +104,10 @@ export async function getBucketBasic(bucketId, base_info = false) {
 
 /**
  * 删除bucket
- * @param {*} bucketId 
+ * @param {*} bucketId
  */
 export async function deleteBucket(bucketId) {
-    let res = await http.delete(API_OSS.createBucket, {
-        data: {
-            bucketId
-        }
-    });
+    let res = await http.delete(replaceParamVal(API_OSS.getBucket, [bucketId]));
     return res && res.data;
 }
 
@@ -140,3 +136,16 @@ export async function bindDomain(bucketId, domain, type = 'bind') {
     });
     return res && res.data;
 }
+
+/**
+ * 权限设置
+ * @param {*} bucketId 桶id
+ * @param {*} privacy 读写权限
+ */
+export const setBucketPrivacy = async (bucketId, privacy) => {
+    let res = await http.put(replaceParamVal(API_OSS.setBucketPrivacy, [bucketId]), {
+        bucketId,
+        privacy
+    });
+    return res && res.data;
+};

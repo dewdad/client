@@ -293,6 +293,12 @@ input:disabled {
     line-height: $--basic-input-height--small;
 }
 
+.el-input--mini {
+    .el-input__prefix {
+        top: 7px;
+    }
+}
+
 .el-input-group__append,
 .el-input-group__prepend {
     border-radius: 0;
@@ -494,7 +500,7 @@ input:disabled {
 }
 
 // 列表页
-.list-page{
+.list-page {
     .el-table.data-list td {
         padding: 7px 0;
     }

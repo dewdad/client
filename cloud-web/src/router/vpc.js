@@ -3,6 +3,7 @@ const pnDetail = () => import('@/views/vpc/pn/Detail.vue');
 const pnSubnet = () => import('@/views/vpc/pn/Subnet.vue');
 const Flexip = () => import('@/views/vpc/pn/Flexip.vue');
 const RouteManage = () => import('@/views/vpc/routeManage/RouteManage.vue');
+const StaticRouter = () => import('@/views/vpc/routeManage/StaticRouter.vue');
 // const vfirewall = () => import('@/views/vpc/vfirewall/Index.vue');
 export default [
     {
@@ -42,6 +43,11 @@ export default [
                 path: 'pn/routeManage',
                 name: 'app.vpc.pn-routeManage', // 路由管理
                 component: RouteManage
+            },
+            {
+                path: 'pn/staticRouter/:id',
+                name: 'app.vpc.pn-staticRouter', // 添加静态路由
+                component: StaticRouter
             }
         ]
     }

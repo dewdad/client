@@ -19,11 +19,10 @@
                         </el-menu-item>
                     </template>
                 </template>
-                <oss-side-bar v-if="$route.path.startsWith('/people/oss') === true"></oss-side-bar>
+                <oss-side-bar v-if="$route.path.startsWith('/app/oss') === true"></oss-side-bar>
             </el-menu>
             <nav-collapse></nav-collapse>
         </nav>
-
     </div>
 </template>
 <script>

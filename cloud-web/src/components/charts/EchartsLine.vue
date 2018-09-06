@@ -1,17 +1,18 @@
 <template>
-    <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
-        <div :id="idString" :style="{height: height}"></div>
+    <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000; height: 100%;">
+        <div :id="idString" style="height:100%;"></div>
     </div>
 </template>
 <script>
-import background from '@/assets/images/ecs/echarts-bg.png'; 
+import background from '@/assets/images/ecs/echarts-bg.png';
 import {mapGetters} from 'vuex';
 import echarts from 'echarts';
+import {on, off} from '@/utils/utils';
 export default {
     data() {
-        return{
+        return {
             background,
-            option:{
+            option: {
                 tooltip: {
                     trigger: 'axis',
                     backgroundColor: '#FFF',
@@ -20,19 +21,21 @@ export default {
                         color: '#333',
                         fontSize: 12
                     },
-                    formatter: (params) => {
+                    formatter: params => {
                         let res = '';
-                        for(let i = 0; i < params.length; i++){
-                            if ( i === 0){
+                        for (let i = 0; i < params.length; i++) {
+                            if (i === 0) {
                                 res += `<p style="margin: 10px 0 5px 0;">
                                 <span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${this.yUnit}</p>`;
                                 continue;
                             }
-                            res += `<p  style="margin-bottom: 5px;"><span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${this.yUnit}</p>`;
+                            res += `<p  style="margin-bottom: 5px;"><span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${
+                                this.yUnit
+                            }</p>`;
                         }
                         res += '<p>' + params[0].name + '</p>';
                         return res;
-                    },
+                    }
                 },
                 grid: this.gridVal,
                 legend: {
@@ -42,11 +45,11 @@ export default {
                     pageIconColor: 'yellow',
                     selectedMode: 'multiple'
                 },
-                xAxis:  {
+                xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    axisLine: {show:false},
-                    axisTick: {show:false},
+                    axisLine: {show: false},
+                    axisTick: {show: false},
                     data: this.xAxisData,
                     minInterval: 1,
                     axisLabel: {
@@ -58,8 +61,8 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    axisLine: {show:false},
-                    axisTick: {show:false},
+                    axisLine: {show: false},
+                    axisTick: {show: false},
                     splitNumber: 4, // 坐标轴的分割段数
                     axisLabel: {
                         formatter: '{value}' + this.yUnit // y轴坐标轴单位
@@ -70,35 +73,31 @@ export default {
             },
             chartsWidth: '',
             seriesArray: [],
-            markPointSymbol: `image:// ${background}`
+            markPointSymbol: `image:// ${background}`,
+            idString: ''
         };
     },
     props: {
         height: {
             type: String,
-            default: '248px'
+            default: '100%'
         },
         // 文字大小
         textSize: {
             type: Number,
             default: 21
         },
-        // 图表ID
-        idString: {
-            type: String,
-            default: 'myCharts'
-        },
         // x轴数据
-        xAxisData:{
+        xAxisData: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
             }
         },
-        // 
+        //
         seriesData: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
             }
         },
@@ -110,46 +109,46 @@ export default {
         // 折线颜色
         lineStyle: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
-            } 
+            }
         },
         // 区域填充颜色
         areaStyle: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
             }
         },
         // 图例名称
         legendData: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
             }
         },
         // 峰值背景宽度
         markPointSymbolSize: {
             type: Array,
-            default: function () {
-                return ['138','55'];
+            default: function() {
+                return ['138', '55'];
             }
         },
         // 模板颜色
         mouldColor: {
             type: Array,
-            default: function () {
-                return ['#0d7ef2','#3ac76c', '#61a0a8', '#c4ccd3'];
+            default: function() {
+                return ['#0d7ef2', '#3ac76c', '#61a0a8', '#c4ccd3'];
             }
         },
         // 小圆点样式
         dotStyle: {
             type: Array,
-            default: function () {
+            default: function() {
                 return [];
             }
         },
-        // 
+        //
         xType: {
             type: Boolean,
             default: true
@@ -159,9 +158,9 @@ export default {
             default: true
         },
         // 留边值
-        gridVal:{
+        gridVal: {
             type: Object,
-            default: function () {
+            default: function() {
                 return {
                     bottom: '60',
                     right: '70',
@@ -170,7 +169,6 @@ export default {
                 };
             }
         }
-
     },
     computed: {
         ...mapGetters(['navCollapse', 'collapse']),
@@ -179,10 +177,10 @@ export default {
             return charts[0].offsetWidth;
         },
         nowTime() {
-            let filters = this.$options.filters; 
+            let filters = this.$options.filters;
             let now = new Date();
-            let nowtime = filters['date'](now ,'YYYY-MM-DD') + ' ';
-            let nowtimeYear = filters['date'](now ,'YYYY') + '-';
+            let nowtime = filters['date'](now, 'YYYY-MM-DD') + ' ';
+            let nowtimeYear = filters['date'](now, 'YYYY') + '-';
             return this.xType ? nowtime : nowtimeYear;
         },
         xState() {
@@ -194,15 +192,14 @@ export default {
         }
     },
     watch: {
-        navCollapse () {
-            setTimeout(() =>{
+        navCollapse() {
+            setTimeout(() => {
                 this.myChartContainer();
                 this.againCanvas();
             }, 500);
-            
         },
         collapse() {
-            setTimeout(() =>{
+            setTimeout(() => {
                 this.myChartContainer();
                 this.againCanvas();
             }, 500);
@@ -210,14 +207,14 @@ export default {
         seriesData() {
             this.arrangeSeries();
             this.option.xAxis['data'] = this.xAxisData;
-            setTimeout(() =>{
+            setTimeout(() => {
                 let myChart = echarts.init(document.getElementById(this.idString));
                 myChart.setOption(this.option);
             }, 200);
         }
     },
     methods: {
-        myChartContainer () {
+        myChartContainer() {
             let myChartDom = document.getElementById(this.idString);
             let charts = document.getElementsByClassName('charts');
             console.warn(charts[0].offsetWidth);
@@ -226,12 +223,14 @@ export default {
         // 重新画图resize(宽度变化)
         againCanvas() {
             let myChart = echarts.init(document.getElementById(this.idString));
+            $log(myChart);
+            this.myChartContainer();
             myChart.resize();
         },
         // 重新setOption
         async againSetOption() {
             await this.arrangeSeries();
-            setTimeout(() =>{
+            setTimeout(() => {
                 let myChart = echarts.init(document.getElementById(this.idString));
                 myChart.setOption(this.option);
             }, 200);
@@ -242,7 +241,7 @@ export default {
             for (let o in this.seriesData) {
                 let obj = {
                     name: this.legendData[o],
-                    type:'line',
+                    type: 'line',
                     showSymbol: false,
                     symbol: 'circle',
                     smooth: true,
@@ -251,7 +250,7 @@ export default {
                         normal: {
                             color: this.lineStyle[o],
                             borderColor: this.dotStyle[o],
-                            borderWidth: 3,
+                            borderWidth: 3
                         }
                     },
                     lineStyle: {
@@ -260,11 +259,11 @@ export default {
                     areaStyle: {
                         opacity: 0.2
                     },
-                    data:this.seriesData[o].seriesData,
+                    data: this.seriesData[o].seriesData,
                     markPoint: {
                         data: [
                             // {
-                            //     type: 'max', 
+                            //     type: 'max',
                             //     name: '最大值',
                             // }
                             {
@@ -280,7 +279,7 @@ export default {
                         label: {
                             textBorderColor: 'none',
                             offset: [0, -5],
-                            formatter: (params) => {
+                            formatter: params => {
                                 let a = params.seriesName + '峰值: ' + params.data.coord[1] + this.yUnit;
                                 let b = params.data.coord[0];
                                 // console.log(params);
@@ -290,14 +289,14 @@ export default {
                             rich: {
                                 a: {
                                     color: '#fff',
-                                    lineHeight: 20,
+                                    lineHeight: 20
                                     // minWidth: 100,
                                     // align: 'center',
                                     // backgroundColor: '#00ffff',
                                     // padding: [5, 10]
                                 },
                                 b: {
-                                    color: '#fff',
+                                    color: '#fff'
                                 }
                             }
                         }
@@ -319,8 +318,8 @@ export default {
         // 处理X轴数据
         HandleXData(params) {
             let val = this.xState ? params.substring(params.lastIndexOf(' ')) : params.substring(5, params.lastIndexOf(' '));
-            if(val === ' 00:00') {
-                val = params.substring(5, params.lastIndexOf(' ')); 
+            if (val === ' 00:00') {
+                val = params.substring(5, params.lastIndexOf(' '));
             }
             return val;
         },
@@ -328,8 +327,8 @@ export default {
         getMaxData(arr) {
             let max = 0;
             let index = 0;
-            for(let i in arr) {
-                if(parseFloat(arr[i]) >= parseFloat(max)) {
+            for (let i in arr) {
+                if (parseFloat(arr[i]) >= parseFloat(max)) {
                     max = arr[i];
                     index = i;
                 }
@@ -338,17 +337,26 @@ export default {
             return index;
         }
     },
-    async mounted () {
+    destoryed() {
+        off(window, 'resize', this.againCanvas);
+    },
+    created() {
+        this.idString = 'echarts_' + Math.random()
+            .toString(36)
+            .substr(2);
+    },
+    async mounted() {
         await this.arrangeSeries();
         this.myChartContainer();
         let myChart = echarts.init(document.getElementById(this.idString));
         myChart.setOption(this.option);
+        on(window, 'resize', this.againCanvas);
     }
 };
 </script>
 <style lang="scss">
-.tooltip-icon{
-    width: 12px; 
+.tooltip-icon {
+    width: 12px;
     height: 12px;
     display: inline-block;
     border: solid 1px #c3c5c6;

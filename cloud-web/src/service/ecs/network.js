@@ -146,9 +146,10 @@ export async function queryNetworkByID({vpcId}) {
  */
 export async function getNetworkCount({vpcId}) {
     $log('GET /networks ->', {vpcId});
-    let ret = await http.get(replaceParamVal(API_ECS.network.networkCount, [vpcId]), {params: {vpcId}});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
+    let ret = await http.get(replaceParamVal(API_ECS.network.networkCount, [vpcId]));
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
+
 
 /**
  * 创建网络 POST /networks

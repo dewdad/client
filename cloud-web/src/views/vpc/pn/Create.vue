@@ -141,7 +141,17 @@ export default {
         // 创建专有网络
         createNetwork() {
             this.loading = true;
-            createNetwork(this.data)
+            let params = {
+                name: this.data.name,
+                subnet: {
+                    cidr: this.data.cindr,
+                    dHCPEnabled: this.data.DHCPVal,
+                    ipVersion: this.data.version,
+                }
+            };
+            alert(params);
+            debugger;
+            createNetwork(params)
                 .then(ret => {
                     if (ret) {
                         this.resolve(ret);

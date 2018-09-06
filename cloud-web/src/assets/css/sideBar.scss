@@ -184,7 +184,6 @@
             height: 40px;
             line-height: 40px;
             font-size: 13px;
-            padding-left: 12px !important;
             font-weight: bold;
             &:hover {
                 background: $--color-submenu-hover;
@@ -195,8 +194,7 @@
         }
         .el-submenu {
             &.is-opened {
-                .el-submenu__title,
-                .iconfont {
+                .el-submenu__title {
                     color: $--color-submenu-link-acitve;
                 }
                 .el-icon-caret-bottom {
@@ -205,6 +203,7 @@
             }
             .el-menu-item {
                 padding-left: 40px !important;
+                min-width: 150px !important;
             }
         }
     }

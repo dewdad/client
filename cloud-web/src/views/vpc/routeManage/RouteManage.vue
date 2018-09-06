@@ -48,7 +48,7 @@
                     <template slot-scope="scope" >
                         <a @click="openRouterDialog('update', scope.row)">编辑路由</a>
                         <b class="link-division-symbol"></b>
-                        <a>静态路由表</a>
+                        <router-link :to="{name: 'app.vpc.pn-staticRouter', params: {id: scope.row.id } }">静态路由表</router-link>
                         <b class="link-division-symbol"></b>
                         <zt-dropdown>
                             <span class="el-dropdown-link font12">

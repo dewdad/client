@@ -78,11 +78,12 @@ export default {
     computed: {
         ...mapGetters(['userInfo', 'lastMoibleVerifyTime']),
         isVerify: function() {
-            if (this.lastMoibleVerifyTime !== '' && (new Date().getTime() - this.lastMoibleVerifyTime) <= 30 * 60 * 1000) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
+            // if (this.lastMoibleVerifyTime !== '' && (new Date().getTime() - this.lastMoibleVerifyTime) <= 30 * 60 * 1000) {
+            //     return true;
+            // } else {
+            //     return false;
+            // }
         }
     },    
     methods: {
