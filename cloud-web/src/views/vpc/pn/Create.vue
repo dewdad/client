@@ -114,6 +114,13 @@ export default {
             return this.type === 'create' ? '新建专有网络' : '编辑专有网络';
         }
     },
+    watch: {
+        isShow(val) {
+            if(!val) {
+                this.$refs.form.resetFields();
+            }
+        }
+    },
     methods: {
         clear() {
             this.data.name = '默认专有网络';
@@ -129,7 +136,9 @@ export default {
             this.type = type;
             this.row = data;
             if (type === 'update') {
+                console.warn(data);
                 this.data.name = data.name;
+                this.data.cindr = data.neutronSubnets && data.neutronSubnets[0].cidr;
             } else {
                 this.clear();
             }
@@ -167,7 +176,16 @@ export default {
         },
         // 修改专有网络
         updateNetwork() {
-            let params = Object.assign({}, this.data);
+            // let params = Object.assign({}, this.data);
+            let params = {
+                id: this.row.id,
+                name: this.data.name,
+                subnet: {
+                    cidr: this.data.cindr,
+                    dHCPEnabled: this.data.DHCPVal,
+                    ipVersion: this.data.version,
+                }
+            };
             params.vpcId = this.row.id;
             this.loading = true;
             updateNetwork(params)
