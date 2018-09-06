@@ -62,8 +62,21 @@
                                     <span>CPU</span>
                                     <span class="pull-right"><i class="dot color-warning"></i> 总配额：3696个</span>
                                 </div>
+                                <!-- CPU 饼图 -->
                                 <div class="item__data">
-                                    <echarts-pie></echarts-pie>
+                                    <div style="width:154px;float:left;background: #fff;">
+                                        <echarts-pie></echarts-pie>
+                                    </div>
+                                    <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
+                                        <span class="color-warning font30">3600</span><i></i>
+                                        <br>
+                                        <span class="color-secondary font14">已使用</span>
+                                    </div>
+                                    <div class="text-r">
+                                        <span class="font30">96</span><i></i>
+                                        <br>
+                                        <span class="color-secondary font14">可用</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mem item back-white">
@@ -71,10 +84,29 @@
                                     <span>内存</span>
                                     <span class="pull-right"><i class="dot"></i> 总配额：3696GB</span>
                                 </div>
+                                <!-- 内存 饼图 -->
+                                <div class="item__data">
+                                    <div style="width:154px;float:left;background: #fff;">
+                                        <echarts-pie idString="echartmem"></echarts-pie>
+                                    </div>
+                                    <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
+                                        <span class="color-warning font30">3600</span><i></i>
+                                        <br>
+                                        <span class="color-secondary font14">已使用</span>
+                                    </div>
+                                    <div class="text-r">
+                                        <span class="font30">96</span><i></i>
+                                        <br>
+                                        <span class="color-secondary font14">可用</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="mt20 back-white" style="min-height: 214px;">
-
+                        <!-- 磁盘 -->
+                        <div class="mt20 back-white disk" style="min-height: 214px;">
+                            <div class="disk__title">
+                                <span class="font16">磁盘</span>
+                            </div>
                         </div>
                     </el-col>
                 </el-row>
@@ -82,46 +114,22 @@
                 <el-row class="mt20">
                     <el-col :span="24">
                         <div class="info-box">
-                            <div class="info-box-head">已申请资源</div>
-                            <div class="info-box-content products-flex">
-                                <el-row :gutter="10">
-                                    <el-col :span="6">
-                                        <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-wangluo-gailan"></i>
-                                                <span class="font14 products-name">网络</span>
-                                                <div class="products-count pull-right">0</div>
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-anquanzu-gailan"></i>
-                                                <span class="font12 products-name">安全组</span>
-                                                <div class="products-count pull-right">0</div>
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-luyouqi-gailan"></i>
-                                                <span class="font12 products-name">路由器</span>
-                                                <div class="products-count">0</div>
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <div class="products">
-                                            <div class="products-inner img-text-center" style="border-right: 0;">
-                                                <i class="iconfont icon-fudongIP-gailan"></i>
-                                                <span class="font12 products-name">浮动IP</span>
-                                                <div class="products-count">0</div>
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                </el-row>
+                            <div class="info-box__item">
+                                <i></i>
+                                <span>网络</span>
+                                <span class="pull-right"><span>1</span>/100</span>
+                            </div>
+                            <div class="info-box__item">
+                                <i></i>
+                                <span>安全组</span>
+                            </div>
+                            <div class="info-box__item">
+                                <i></i>
+                                <span>路由器 </span>
+                            </div>
+                            <div class="info-box__item">
+                                <i></i>
+                                <span>浮动IP</span>
                             </div>
                         </div>
                     </el-col>
@@ -200,6 +208,22 @@ export default {
             padding: 20px 30px;
             border-bottom: 1px solid #ebf3f7;
         }
+        &__data{
+            padding: 40px 54px;
+            &::after{
+                content: '';
+                display: block;
+                clear: both;
+            }
+        }
+    }
+}
+// 磁盘
+.disk{
+    border-radius: 4px;
+    &__title{
+        border-bottom: 1px solid #ebf3f7;
+        padding: 20px 30px;
     }
 }
 .back-white{
@@ -220,120 +244,14 @@ export default {
 
 .info-box {
     background-color: #fff;
-    padding: 20px 30px;
-    &:hover {
-        box-shadow: 0px 0px 15px 0px rgba(66, 103, 178, 0.15);
-    }
-}
-.info-box .info-box-head {
-    height: 40px;
-    font-size: 16px;
-}
-
-.info-box-content {
-    height: 100%;
-}
-
-.info-box-content-info {
-    height: 100%;
-    padding: 15px 10px;
-    font-size: 12px;
-    color: #999;
-    position: relative;
-}
-
-.number {
-    position: relative;
-    font-size: 30px;
-    line-height: 1;
-    &.color-warning {
-        color: #ff4400 !important;
-    }
-    .iconfont {
-        position: absolute;
-        top: -5px;
-        margin-left: 5px;
-    }
-}
-
-.info-box-content-info .number1 {
-    font-size: 26px;
-}
-
-.todo-task {
-    background: #f6f8fb;
-    line-height: 36px;
-    height: 36px;
-    font-size: 14px;
-    padding: 0 22px;
-}
-
-.monitor-warning,
-monitor-data {
-    height: 316px;
-}
-
-.recharge {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    background: #fa970c;
-    color: #fff;
-}
-
-.products-flex {
+    padding: 39px 60px;
     display: flex;
-    flex-direction: column;
-    min-height: 50px;
-}
-
-.products-flex .el-row {
-    flex: 1;
-}
-
-.products-flex .el-row .el-col {
-    height: 100%;
-}
-
-.products {
-    padding: 14.5px 20px;
-    height: 100%;
-    line-height: 100%;
-    position: relative;
-}
-
-.products .products-inner {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    top: 50%;
-    line-height: 22px;
-    margin-top: -11px;
-    .iconfont {
-        font-size: 22px;
-        color: #8da3c6;
+    &__item{
+        flex: 1;
+        padding: 0 30px;
+        border-right: 1px solid #ebf3f7;
     }
-    border-right: 1px solid #f6f6f6;
 }
 
-.products .products-inner .products-name {
-    flex: 1;
-}
 
-.products .products-inner .products-count {
-    margin-top: 5px;
-    float: right;
-    width: 30px;
-    height: 18px;
-    text-align: center;
-    border-radius: 9px;
-    line-height: 18px;
-    background: #e3e6ef;
-    color: #656565;
-    transition: all 0.1s linear;
-    margin-right: 30px;
-}
 </style>

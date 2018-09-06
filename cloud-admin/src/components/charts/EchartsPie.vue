@@ -1,6 +1,6 @@
 <template>
     <div class="charts" style="color: #000">
-        <div :id="idString" style="height:100%;"></div>
+        <div :id="idString" style="width:154px; height:154px;"></div>
     </div>
 </template>
 <script>
@@ -22,7 +22,7 @@ export default {
                     {
                         name:'访问来源',
                         type:'pie',
-                        radius: ['50%', '70%'],
+                        radius: ['80%', '100%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -45,7 +45,8 @@ export default {
                         data:[
                             {value:1548, name:'搜索引擎'},
                             {value:535, name:'直接访问'}
-                        ]
+                        ],
+                        animation: false
                     }
                 ]
             },
@@ -136,10 +137,10 @@ export default {
     },
     methods: {
         myChartContainer () {
-            let myChartDom = document.getElementById(this.idString);
-            let charts = document.getElementsByClassName('charts');
-            console.warn(charts[0].offsetWidth);
-            myChartDom.style.width = charts[0].offsetWidth + 'px';
+            // let myChartDom = document.getElementById(this.idString);
+            // let charts = document.getElementsByClassName('charts');
+            // console.warn(charts[0].offsetWidth);
+            // myChartDom.style.width = charts[0].offsetWidth + 'px';
         },
         // 重新画图
         againCanvas() {
