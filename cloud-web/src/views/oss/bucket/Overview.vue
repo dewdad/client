@@ -87,7 +87,7 @@
 </template>
 <script>
 import BaseData from '../BaseData.vue';
-import {getBucketDomainList, getBucketBasic} from '@/service/oss/index';
+import {getBucketDomainList} from '@/service/oss/index';
 export default {
     name: 'Overview',
     data() {
@@ -101,11 +101,11 @@ export default {
                     source: ''
                 },
                 pageIndex: false
-            },
-            headerInfo: {}
+            }
         };
     },
     props: {
+        headerInfo: Object
     },
     components: {
         BaseData
@@ -123,9 +123,6 @@ export default {
     methods: {
         // 加载数据
         init() {
-            let bucketId = this.$route.params.bucketId;
-            // this.getBucketDomainList(bucketId);
-            this.getBucketBasic(bucketId);
         },
         renderHeader(h, {column, $index}) {
             /* eslint-disable */
@@ -144,14 +141,6 @@ export default {
             getBucketDomainList(bucketId).then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
                     this.domainList = res.result;
-                }
-            });
-        },
-        // 查询基础设置信息
-        getBucketBasic(bucketId) {
-            getBucketBasic(bucketId).then(res => {
-                if (res.code === this.CODE.SUCCESS_CODE) {
-                    this.headerInfo = res.data;
                 }
             });
         }

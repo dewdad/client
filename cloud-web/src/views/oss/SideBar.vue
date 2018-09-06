@@ -151,8 +151,6 @@ export default {
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.bucketList = res.data;
-                        this.$nextTick();
-                        this.$forceUpdate();
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }
