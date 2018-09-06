@@ -9,8 +9,8 @@
                     <el-col :span="8">
                         <div class="cloud-host" style="min-height: 528px;">
                             <div class="cloud-host__title">
-                                <div class="pull-left">
-                                    <i></i>
+                                <div class="pull-left cloud-host__title__icon">
+                                    <i class="iconfont icon-yunzhuji-gailan"></i>
                                 </div>
                                 <div>
                                     <div class="font16">弹性云主机</div>
@@ -107,6 +107,20 @@
                             <div class="disk__title">
                                 <span class="font16">磁盘</span>
                             </div>
+                            <div class="disk__data">
+                                <div class="disk__data__item">
+                                    <div class="pull-left cloud-host__title__icon">
+                                        <i class="iconfont icon-cipan-gailan"></i>
+                                    </div>
+                                    <div class="font16 color-secondary"><i class="dot"></i>SATA</div>
+                                    <div>
+                                        <span class="is-bold font25">232936 </span>GB
+                                    </div>
+                                </div>
+                                <div class="disk__data__item disk__data__pie">
+                                    
+                                </div>
+                            </div>
                         </div>
                     </el-col>
                 </el-row>
@@ -115,21 +129,21 @@
                     <el-col :span="24">
                         <div class="info-box">
                             <div class="info-box__item">
-                                <i></i>
-                                <span>网络</span>
+                                <i class="iconfont icon-wangluo-gailan font20 color-secondary"></i>
+                                <span class="ml10">网络</span>
                                 <span class="pull-right"><span>1</span>/100</span>
                             </div>
                             <div class="info-box__item">
-                                <i></i>
-                                <span>安全组</span>
+                                <i class="iconfont icon-anquanzu-gailan font20 color-secondary"></i>
+                                <span class="ml10">安全组</span>
                             </div>
                             <div class="info-box__item">
-                                <i></i>
-                                <span>路由器 </span>
+                                <i class="iconfont icon-luyouqi-gailan font20 color-secondary"></i>
+                                <span class="ml10">路由器 </span>
                             </div>
                             <div class="info-box__item">
-                                <i></i>
-                                <span>浮动IP</span>
+                                <i class="iconfont icon-fudongIP-gailan font20 color-secondary"></i>
+                                <span class="ml10">浮动IP</span>
                             </div>
                         </div>
                     </el-col>
@@ -189,8 +203,21 @@ export default {
         padding-left: 10px;
     }
     &__title{
-        padding: 10px 20px;
+        padding: 20px;
         border-bottom: 1px solid #ebf3f7;
+        &__icon{
+            width: 48px; 
+            height: 48px;
+            background-color: #0d7ef2;
+            border-radius: 4px;
+            line-height: 55px;
+            margin-right: 15px;
+            text-align: center;
+            i{
+                color: #fff;
+                font-size: 24px;
+            }
+        }
         &::after{
             content: '';
             display: block;
@@ -225,6 +252,18 @@ export default {
         border-bottom: 1px solid #ebf3f7;
         padding: 20px 30px;
     }
+    &__data{
+        display: flex;
+        padding: 28px 0;
+        &__item{
+            flex: 1;
+            padding-left: 89px;
+        }
+        &__pie{
+            flex: 1;
+            border-left: 1px solid #ebf3f7;
+        }
+    }
 }
 .back-white{
     background-color: #fff;
@@ -237,6 +276,8 @@ export default {
     background-color: #36ab46;
     margin-right: 5px;
     vertical-align: middle;
+    position: relative;
+    top: -1px;
     &.color-warning {
         background-color: #ff4400;
     }
@@ -250,6 +291,9 @@ export default {
         flex: 1;
         padding: 0 30px;
         border-right: 1px solid #ebf3f7;
+        i{
+            vertical-align: middle;
+        }
     }
 }
 
