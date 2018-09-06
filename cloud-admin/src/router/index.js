@@ -59,7 +59,8 @@ export default new Router({
                             path: 'rolemgrUser/:roleId',
                             name: 'app.usrmgr.rolemgrUser',
                             meta: {
-                                title: '关联用户'
+                                title: '关联用户',
+                                parentName:'app.usrmgr.rolemgr'
                             },
                             component: () => import('@/views/usermgr/rolemgr/rolemgrUser')
                         },
@@ -83,7 +84,8 @@ export default new Router({
                             path: 'edit/:opType/:code',
                             name: 'app.usrmgr.menumgr.edit',
                             meta: {
-                                title: '菜单编辑'
+                                title: '菜单编辑',
+                                parentName:'app.usrmgr.menumgr'
                             },
                             component: () => import('@/views/usermgr/menumgr/editMenu')
                         },
@@ -91,7 +93,8 @@ export default new Router({
                             path: 'handler/:code',
                             name: 'app.usrmgr.menumgr.handler',
                             meta: {
-                                title: '关联操作'
+                                title: '关联操作',
+                                parentName:'app.usrmgr.menumgr'
                             },
                             component: () => import('@/views/usermgr/menumgr/menuHandle')
                         },
@@ -147,7 +150,8 @@ export default new Router({
                             path: 'editConfig/:opType',
                             name: 'app.usrmgr.editConfig',
                             meta: {
-                                title: '修改和添加配置'
+                                title: '修改和添加配置',
+                                parentName:'app.usrmgr.sysconfig'
                             },
                             component: () => import('@/views/usermgr/sysconfig/editConfig')
                         }

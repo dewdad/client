@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <page-header>
-            <i class="fa fa-angle-left" @click="goBack"></i>
+            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span>关联操作</span>             
         </page-header>
         <div class="page-body">
