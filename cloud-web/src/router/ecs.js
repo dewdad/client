@@ -30,7 +30,7 @@ export default [
     {
         path: 'ecs',
         name: 'app.ecs',
-        redirect: '/app/ecs/overview',
+        redirect: '/app/ecs/list',
         component: {
             render(c) {
                 return c('router-view');
