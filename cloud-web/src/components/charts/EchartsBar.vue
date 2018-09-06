@@ -14,6 +14,9 @@ export default {
             option:{
                 tooltip: {
                     trigger: 'axis',
+                    axisPointer: {
+                        type: 'none'
+                    },
                     backgroundColor: '#FFF',
                     borderWidth: 1,
                     textStyle: {
@@ -37,6 +40,7 @@ export default {
                 grid: this.gridVal,
                 legend: {
                     data: this.legendData,
+                    show: '',
                     y: 'bottom',
                     icon: 'circle',
                     pageIconColor: 'yellow',
