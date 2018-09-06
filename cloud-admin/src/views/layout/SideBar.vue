@@ -31,7 +31,7 @@ export default {
     data() {
         return {          
             navList: [],
-            activeRouteHref: this.$route.name || '',
+            activeRouteHref: '',
             isCollapse: true,
             activeMenuCode: '0000', //menuCode
         };
@@ -56,8 +56,8 @@ export default {
     },
     watch: {
         '$route': function(newVal) {            
-            if(newVal) {
-                this.activeRouteHref = this.$route.name;                
+            if(newVal) {                
+                this.activeRouteHref = this.parseRouterName();                
             }
         }
     },
@@ -82,12 +82,14 @@ export default {
                     //匹配激活的一级菜单 （只有两级菜单的情况）
                     this.navList.forEach( (menu) => {                    
                         if(menu.submenus && menu.submenus.length){
+                            let routerName = this.parseRouterName();
                             let submenu = menu.submenus.find( (submenu) => {
                                 if(submenu.routeHref && submenu.routeHref !== '#'){
-                                    return submenu.routeHref === this.$route.name;
+                                    return submenu.routeHref === routerName;
                                 }                           
                             });                        
-                            if(submenu) {                            
+                            if(submenu) { 
+                                this.activeRouteHref = routerName;                        
                                 if(submenu.parentMenuCode && submenu.parentMenuCode){
                                     this.activeMenuCode = submenu.parentMenuCode;
                                 }
@@ -95,6 +97,15 @@ export default {
                         }
                     });
                 });
+        },
+        parseRouterName(){
+            let routerName = '';
+            if (this.$route.meta && this.$route.meta.parentName) {
+                routerName = this.$route.meta.parentName;
+            }else {
+                routerName = this.$route.name;
+            }
+            return routerName;
         },
         handleSelect(active) {
             this.activeMenuCode = active;

@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-07-18 15:04:01 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-07-20 15:09:00
+ * @Last Modified time: 2018-09-06 17:47:52
  * 文件管理服务
  */
 
@@ -11,9 +11,8 @@ import http from '@/utils/http';
 // import {
 //     replaceParamVal
 // } from '@/utils/utils';
-import {
-    API_OSS
-} from '@/constants/apiUrl';
+import {API_OSS} from '@/constants/apiUrl';
+import {replaceParamVal} from '@/utils/utils';
 
 /**
  * 获取空间中的文件列表
@@ -24,16 +23,9 @@ import {
  * @param {*} limit 每次返回的文件最大数量
  * @description 该方法每次调用批量返回一批文件信息，如果空间中文件超过了每批允许的最大数量，则需要多次调用该方法，并传入新的marker参数才能获取到新的文件列表，其中marker参数标记了下一次调用的起始位置
  */
-export const getFileList = async ({
-    bucketId,
-    prefix = '',
-    marker = '',
-    delimiter = '',
-    limit = 99999
-} = {}) => {
-    let res = await http.get(API_OSS.fileList, {
+export const getFileList = async ({bucketId, prefix = '', marker = '', delimiter = '', limit = 99999} = {}) => {
+    let res = await http.get(replaceParamVal(API_OSS.fileList, [bucketId]), {
         params: {
-            bucketId,
             prefix,
             marker,
             delimiter,
@@ -52,14 +44,7 @@ export const getFileList = async ({
  * @param {*} limit 每次返回的文件最大数量
  * @param {*} folderMarker 查询path文件夹下的文件列表，用folderMarker
  */
-export const searchFile = async ({
-    bucketId,
-    path = '',
-    marker = '',
-    searchText = '',
-    folderMarker = '',
-    limit = 99999
-} = {}) => {
+export const searchFile = async ({bucketId, path = '', marker = '', searchText = '', folderMarker = '', limit = 99999} = {}) => {
     let res = await http.get(API_OSS.search, {
         params: {
             bucketId,
@@ -81,7 +66,7 @@ export const searchFile = async ({
  * @description 该方法只适用于小文件的上传；对于大的文件上传，强烈建议使用七牛的上传SDK进行上传
  */
 export const uploadFile = async (bucketId, localFilePath, prefix) => {
-    let res = await http.post(API_OSS.uploadFile, {
+    let res = await http.post(replaceParamVal(API_OSS.uploadFile, [bucketId]), {
         bucketId,
         prefix,
         localFilePath
@@ -96,7 +81,7 @@ export const uploadFile = async (bucketId, localFilePath, prefix) => {
  * @param {*} type one:删除单个文件,more:删除多个文件,folder:删除单个文件夹
  */
 export const removeFile = async (bucketId, fileName, type) => {
-    let res = await http.delete(API_OSS.file, {
+    let res = await http.delete(replaceParamVal(API_OSS.deleteFile, [bucketId]), {
         data: {
             bucketId,
             fileName,
@@ -114,7 +99,7 @@ export const removeFile = async (bucketId, fileName, type) => {
  * @description 该方法只适用于小文件的上传；对于大的文件上传，强烈建议使用七牛的上传SDK进行上传
  */
 export const createDir = async (bucketId, prefix, localFilePath = 's') => {
-    let res = await http.post(API_OSS.createDir, {
+    let res = await http.post(replaceParamVal(API_OSS.createDir, [bucketId]), {
         bucketId,
         prefix,
         localFilePath
@@ -162,13 +147,12 @@ export const downloadFile = async ({bucketId, fileKey, mimeType, localFilePath =
 
 /**
  * 获取文件的下载链接接口
- * @param {*} bucketId 
- * @param {*} fileKey 
+ * @param {*} bucketId
+ * @param {*} fileKey
  */
 export const getFileLink = async (bucketId, fileKey) => {
-    let res = await http.get(API_OSS.fileLink, {
+    let res = await http.get(replaceParamVal(API_OSS.fileLink, [bucketId]), {
         params: {
-            bucketId,
             fileKey
         }
     });

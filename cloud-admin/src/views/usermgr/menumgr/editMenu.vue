@@ -1,20 +1,20 @@
 <template>
     <div class="page-main">
-        <page-header>            
-            <i class="fa fa-angle-left" @click="goBack"></i>
+        <page-header>
+            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>          
             <span>菜单{{opType ===1 ? '创建' : '编辑'}}</span> 
         </page-header>
         <div class="page-body">
             <div class="mb20 font16">
-                <i class="fa fa-angle-left"></i>
-                <span>基本信息</span>
+                <i class="el-icon-tickets"></i>
+                <span class="pl6">基本信息</span>
             </div>
             <el-form class="base-info" ref="createMenu" label-position="right" v-loading.lock="fullscreenLoading" size="small" :model="menu" label-width="115px" style="width:433px;" :rules="rules" inline-message>
                 <!-- 基本信息 -->   
 
                 <!-- 上级菜单Code -->
-                <el-form-item label="上级菜单Code" prop="parentMenuCode" v-if="(opType === 1) && $route.params.code">
-                    <span>{{ $route.params.code}}</span>
+                <el-form-item label="上级菜单Code" prop="parentMenuCode" v-if="(opType === 1) && menu.parentMenuCode">
+                    <span>{{ menu.parentMenuCode}}</span>
                     <!-- <el-input clearable :maxlength="32" v-model="menu.menuName"></el-input> -->
                 </el-form-item>            
                                        
@@ -196,7 +196,9 @@ export default {
         let stateParams = this.$route.params;
         this.opType = parseInt(stateParams.opType);        
         if(this.opType === 1){
-            this.menu.parentMenuCode = stateParams.code;
+            if(parseInt(stateParams.code) > 0){
+                this.menu.parentMenuCode = stateParams.code;
+            }            
         } else if(this.opType === 2) {
             this.menu = stateParams.rowItem;            
         }

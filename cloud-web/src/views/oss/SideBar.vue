@@ -1,7 +1,6 @@
 <template>
     <li role="menuitem" aria-haspopup="true" class="el-submenu is-opened oss-ul" aria-expanded="true">
-        <div class="el-submenu__title" style="padding-left: 15px;">
-            <i class="iconfont icon-dot small-font"></i>
+        <div class="el-submenu__title" style="padding-left: 30px;">
             <span>{{$t('oss.ossName')}}</span>
             <span class="pull-right inline-block rotatex">
                 <el-dropdown placement="top" @command="handleCommand" size="small">
@@ -40,17 +39,13 @@
         <!-- 储存空间列表 -->
         <ul class="el-menu el-menu--inline oss-menu">
             <li class="el-menu-item oss-menu-item">
-                <el-button type="primary" style="height: 32px;margin-top:-10px;" size="small" @click="createBucket">{{$t('oss.createOss')}}</el-button>
+                <el-button type="primary" style="width:105px;height: 32px;margin-top:-10px;" size="small" @click="createBucket">{{$t('oss.createOss')}}</el-button>
             </li>
-            <template v-for="bucket in bucketList">
-            <router-link :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.id === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.id, 'name': bucket.name}}">
-                <el-tooltip effect="dark" :content="bucket.name" placement="right">
-                    <div>
-                        <i class="iconfont icon-dot small-font"></i> {{bucket.name}}
-                    </div>
-                </el-tooltip>
+            <router-link v-for="bucket in bucketList" :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">
+                <div>
+                    <i class="iconfont icon-dot small-font"></i> {{bucket.name}}
+                </div>
             </router-link>
-            </template>
             <create-bucket ref="createBucketDailog"></create-bucket>
         </ul>
     </li>
@@ -82,7 +77,7 @@ export default {
         CreateBucket
     },
     directives: {
-        'clickoutside':Clickoutside
+        clickoutside: Clickoutside
     },
     watch: {
         // 显示搜索框时设置自动获取焦点
@@ -155,7 +150,9 @@ export default {
             getBucketListByUid()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.bucketList = res.result;
+                        this.bucketList = res.data;
+                        this.$nextTick();
+                        this.$forceUpdate();
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }
@@ -181,16 +178,16 @@ export default {
 }
 .search-form {
     position: absolute;
-    top: 39px;
-    left: -81px;
+    top: 54px;
+    left: -66px;
     right: 0px;
     z-index: 1;
-    width: 120px;
+    width: 105px;
 }
 .arrow-up {
     position: absolute;
     left: 85px;
-    top: 2px;
+    top: 3px;
     z-index: 2;
     &::before {
         content: '';
@@ -213,8 +210,19 @@ export default {
         border-color: transparent transparent #fff;
     }
 }
-.submenu .el-menu .el-submenu .el-menu-item.oss-menu-item {
+.el-menu-item.oss-menu-item {
+    min-width: 150px !important;
     width: 150px;
+    padding-right: 15px;
+    &.router-link-active {
+        color: #2b65c5;
+        background: #ffffff !important;
+        i {
+            color: inherit;
+        }
+    }
+}
+.submenu .el-menu .el-submenu .el-menu-item.oss-menu-item {
     padding-left: 15px !important;
     &:hover:not(:first-child),
     &:active {
@@ -230,6 +238,8 @@ export default {
 }
 
 .oss-ul {
+    width: 150px;
+    overflow: hidden;
     display: flex;
     flex: 1px;
     overflow-y: auto;

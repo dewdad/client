@@ -23,7 +23,7 @@ export default [
                 component: Skeymgr
             },
             {
-                path: 'bucket/:name/:view/:bucketId',
+                path: 'bucket/:bucketId/:view',
                 name: 'app.oss.bucket',
                 // redirect: '/people/oss/bucket/overview',
                 component: Bucket,

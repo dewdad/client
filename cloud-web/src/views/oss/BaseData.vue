@@ -91,21 +91,16 @@ export default {
         headerInfo: {
             type: Object,
             default: function () {
-                return {
-                    name: '',
-                    isPrivate: false,
-                    createTime: '',
-                    usedCap: 0,
-                    transferIn: 0,
-                    hitPut: 0,
-                    hitGet: 0,
-                    objNum: 0
-                };
+                return {};
             }
         }
     },
     watch: {
         '$route': function() {
+            this.init();
+        },
+        'headerInfo': function(newval) {
+            $log(newval);
             this.init();
         }
     },
@@ -119,11 +114,11 @@ export default {
             if (this.$route.params.bucketId && this.$route.params.bucketId !== '') {
                 // 如果是单个桶 查询桶数据
                 // this.getBucket(this.$route.params.bucketId);
-                this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usedCap);
-                this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
-                this.baseData.hitPut = this.headerInfo.hitPut;
-                this.baseData.hitGet = this.headerInfo.hitGet;
-                this.baseData.objNum = this.headerInfo.objNum;
+                // this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usedCap);
+                // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
+                // this.baseData.hitPut = this.headerInfo.hitPut;
+                // this.baseData.hitGet = this.headerInfo.hitGet;
+                // this.baseData.hitDel = this.headerInfo.hitDel;
             } else {
                 // 查询总概览数据
                 this.getSpaceData();
@@ -135,11 +130,11 @@ export default {
                 .then(res => {
                     this.loading = false;
                     if (res.code === ERRCODE.SUCCESS_CODE) {
-                        this.baseData.usedCap = this.$options.filters['convertByteSize'](res.result.usedCap);
-                        this.baseData.transferIn = this.$options.filters['convertByteSize'](res.result.transferIn);
-                        this.baseData.hitPut = res.result.hitPut;
-                        this.baseData.hitGet = res.result.hitGet;
-                        this.baseData.objNum = res.result.objNum;
+                        this.baseData.usedCap = this.$options.filters['convertByteSize'](res.data.usedCap);
+                        this.baseData.transferIn = this.$options.filters['convertByteSize'](res.data.transferIn);
+                        this.baseData.hitPut = res.data.hitPut;
+                        this.baseData.hitGet = res.data.hitGet;
+                        this.baseData.hitDel = res.data.hitDel;
                     }
                 })
                 .catch(() => {
@@ -150,11 +145,11 @@ export default {
         getBucket(bucketId) {
             getBucket(bucketId).then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
-                    this.baseData.usedCap = this.$options.filters['convertByteSize'](res.result.usedCap);
-                    this.baseData.transferIn = this.$options.filters['convertByteSize'](res.result.transferIn);
-                    this.baseData.hitPut = res.result.hitPut;
-                    this.baseData.hitGet = res.result.hitGet;
-                    this.baseData.objNum = res.result.objNum;
+                    this.baseData.usedCap = this.$options.filters['convertByteSize'](res.data.usedCap);
+                    this.baseData.transferIn = this.$options.filters['convertByteSize'](res.data.transferIn);
+                    this.baseData.hitPut = res.data.hitPut;
+                    this.baseData.hitGet = res.data.hitGet;
+                    this.baseData.hitDel = res.data.hitDel;
                 }
             });
         }

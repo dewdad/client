@@ -1,5 +1,5 @@
 <template>
-    <div class="chartsBar" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
+    <div class="chartsBar" @mouseover="echartHover" @mouseout="echartOut" style="color: #000; height: 100%;">
         <div :id="idString" :style="{height: height}"></div>
     </div>
 </template>
@@ -7,6 +7,7 @@
 import background from '@/assets/images/ecs/echarts-bg.png'; 
 import {mapGetters} from 'vuex';
 import echarts from 'echarts';
+import {on, off} from '@/utils/utils';
 export default {
     data() {
         return{
@@ -75,7 +76,7 @@ export default {
     props: {
         height: {
             type: String,
-            default: '248px'
+            default: '100%'
         },
         // 文字大小
         textSize: {
@@ -225,6 +226,7 @@ export default {
         // 重新画图resize(宽度变化)
         againCanvas() {
             let myChart = echarts.init(document.getElementById(this.idString));
+            this.myChartContainer();
             myChart.resize();
         },
         // 重新setOption
@@ -283,11 +285,20 @@ export default {
             return index;
         }
     },
+    destoryed() {
+        off(window, 'resize', this.againCanvas);
+    },
+    created() {
+        this.idString = 'echarts_' + Math.random()
+            .toString(36)
+            .substr(2);
+    },
     async mounted () {
         await this.arrangeSeries();
         this.myChartContainer();
         let myChart = echarts.init(document.getElementById(this.idString));
         myChart.setOption(this.option);
+        on(window, 'resize', this.againCanvas);
     }
 };
 </script>

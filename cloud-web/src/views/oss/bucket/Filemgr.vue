@@ -23,14 +23,14 @@
                             <i class="iconfont icon-upload_people"></i> 删除
                         </el-button>
                     </zt-form-item>
-                    <zt-form-item>
+                    <!-- <zt-form-item>
                         <el-input size="small" v-model="searchText" placeholder="输入文件名前缀匹配"></el-input>
                     </zt-form-item>
                     <zt-form-item>
                         <el-button type="primary" size="small" icon="el-icon-search" @click="search(currentPath)">
                             搜索
                         </el-button>
-                    </zt-form-item>
+                    </zt-form-item> -->
                 </zt-form>
             </el-col>
         </el-row>
@@ -63,14 +63,14 @@
                             </span>
                             <span v-else>
                                 <img :src="scope.row.key|getFileIcon" width="24px" height="24px">
-                                <a href="javascript:;" @click="downloadFile(scope.row.key,scope.row.mimeType)">{{scope.row.key.replace(currentPath, "")}}</a>
+                                <a href="javascript:;" @click="downloadFile(scope.row.key)">{{scope.row.key.replace(currentPath, "")}}</a>
                             </span>
                         </template>
 
                     </el-table-column>
                     <el-table-column prop="" label="文件大小">
                         <template slot-scope="scope">
-                            {{scope.row.fileSize|convertByteSize(2, 'string') || '-'}}
+                            {{scope.row.size|convertByteSize(2, 'string') || '-'}}
                         </template>
                     </el-table-column>
                     <el-table-column prop="mimeType" label="存储类型" :show-overflow-tooltip="true">
@@ -89,17 +89,17 @@
                                 -
                             </span>
                             <span v-else>
-                                {{(scope.row.putTime/10000)|date('YYYY-MM-DD HH:mm:ss')}}
+                                {{scope.row.lastModified|date('YYYY-MM-DD HH:mm:ss')}}
                             </span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="100" class-name="option-column">
+                    <el-table-column label="操作" min-width="120" class-name="option-column">
                         <template slot-scope="scope">
                             <span v-if="getRowType(scope.row)" class="inline-block">
                                 <a href="javascript:;" @click="removeFileOne(scope.row, 'folder', scope.$index)">删除</a>
                             </span>
                             <span v-else class="inline-block">
-                                <a href="javascript:;" @click="preview(scope.row)">预览</a>
+                                <a href="javascript:;" @click="preview(scope.row)">详情</a>
                                 <b class="link-division-symbol"></b>
                                 <a href="javascript:;" @click="removeFileOne(scope.row.key, 'one', scope.$index)">删除</a>
                             </span>
@@ -109,12 +109,12 @@
             </el-col>
         </el-row>
         <upload-file ref="uploadFile" :bucketId="bucketId" :path="currentPath" :bucketName="headerInfo.name" @success="search(currentPath)"></upload-file>
-        <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId" ></create-folder>
+        <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId"></create-folder>
         <preview ref="preview" :bucketId="bucketId" :file-list="previewFiles"></preview>
     </div>
 </template>
 <script>
-import {getFileList, searchFile, removeFile, downloadFile} from '@/service/oss/filemgr';
+import {getFileList, removeFile, getFileLink} from '@/service/oss/filemgr';
 import {isEmpty, isObject} from '@/utils/utils';
 import UploadFile from './UploadFile';
 import CreateFolder from './CreateFolder';
@@ -196,8 +196,8 @@ export default {
             getFileList(post)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        let dataList = res.result.entries || [];
-                        let prefixes = res.result.prefixes || [];
+                        let dataList = res.data.objectSummaries || [];
+                        let prefixes = res.data.commonPrefixes || [];
                         this.fileNums = dataList.length;
                         this.fileList = prefixes.concat(dataList);
                         $log(this.fileList);
@@ -211,18 +211,20 @@ export default {
         search(path = '') {
             this.loading = true;
             let post = {
-                path: path,
+                prefix: path,
                 bucketId: this.bucketId,
                 searchText: this.searchText
             };
-            searchFile(post)
+            getFileList(post)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        let dataList = res.result.entries || [];
-                        let prefixes = res.result.prefixes || [];
+                        let dataList = res.data.objectSummaries || [];
+                        let prefixes = res.data.commonPrefixes || [];
                         this.fileNums = dataList.length;
-                        // 将目录和文件合并成一个数组
-                        this.fileList = prefixes.concat(dataList);
+                        this.fileList = prefixes.concat(dataList).filter(item => {
+                            return item.key !== path;
+                        });
+
                         $log(this.fileList);
                     }
                 })
@@ -268,11 +270,14 @@ export default {
         },
         // 删除单个文件或目录
         removeFileOne(fileName, type, index) {
-            this.$confirm('您确定要删除<span class="color-primary">' + fileName + '</span>' + (type === 'folder' ? '目录' : '文件') + '操作吗？', '删除', {
+            let tips = '您确定要删除所选文件吗？';
+            tips += `<br/>${fileName}`;
+            tips += '<br/>共1个';
+            this.$confirm(tips, '删除', {
                 type: 'warning',
                 dangerouslyUseHTMLString: true
             }).then(() => {
-                removeFile(this.bucketId, fileName, type)
+                removeFile(this.bucketId, [fileName], type)
                     .then(res => {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             this.$message.success('文件删除成功');
@@ -285,7 +290,7 @@ export default {
             });
         },
         // 批量删除文件
-        batchRemoveFile(){
+        batchRemoveFile() {
             if (this.multipleSelection.length <= 0) {
                 this.$message.info('请选择要删除的文件');
                 return;
@@ -297,12 +302,12 @@ export default {
                 fileName.push(file.key);
             });
             tips += '<br/>共' + this.multipleSelection.length + '个';
-            
+
             this.$confirm(tips, '删除', {
                 type: 'warning',
                 dangerouslyUseHTMLString: true
             }).then(() => {
-                removeFile(this.bucketId, fileName.join(','), 'more')
+                removeFile(this.bucketId, fileName, 'more')
                     .then(res => {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             this.$message.success('文件删除成功');
@@ -316,14 +321,10 @@ export default {
         },
         // 下载文件
         downloadFile(fileKey, mimeType) {
-            let data = {
-                bucketId: this.bucketId,
-                fileKey: fileKey,
-                mimeType: mimeType
-            };
-            downloadFile(data)
+            getFileLink(this.bucketId, fileKey)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
+                        window.open(res.data);
                     }
                 })
                 .catch(err => {

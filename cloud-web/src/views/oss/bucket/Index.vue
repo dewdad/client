@@ -3,14 +3,13 @@
         <page-header>
             <img src="@/assets/images/control/oss_icon.svg" height="50" alt="">
             <div slot="content">
-                <div class="font16">{{headerInfo.name}}</div>
-                <div class="font12">
+                <div class="font16">{{get(headerInfo, 'bucket')}}</div>
+                <div class="font12 mt10">
                     <label class="mr20">
-                        <span class="color-secondary">读写权限：</span> {{ headerInfo.isPrivate ? '私有' : '公开' }} </label>
-                    <label class="mr20">
-                        <span class="color-secondary">区域：</span> 北京1 </label>
+                        <span class="color-secondary">类型：</span> 标准存储 </label>
+                    
                     <label>
-                        <span class="color-secondary">创建时间：</span>{{headerInfo.createTime|date('YYYY-MM-DD HH:mm:ss')}}</label>
+                        <span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm:ss')}}</label>
                 </div>
             </div>
             <div slot="right">
@@ -29,8 +28,8 @@
                 <el-tab-pane label="空间管理" name="overview"></el-tab-pane>
                 <el-tab-pane label="文件管理" name="filemgr"></el-tab-pane>
                 <el-tab-pane label="基础设置" name="basicset"></el-tab-pane>
-                <el-tab-pane label="用户域名" name="domain"></el-tab-pane>
-                <el-tab-pane label="数据监控" name="basicdata"></el-tab-pane>
+                <!-- <el-tab-pane label="用户域名" name="domain"></el-tab-pane>
+                <el-tab-pane label="数据监控" name="basicdata"></el-tab-pane> -->
             </el-tabs>
             <el-row>
                 <el-col :span="24">
@@ -80,16 +79,7 @@ export default {
                 basicdata: Basicdata
             },
             // 头部信息
-            headerInfo: {
-                name: '',
-                isPrivate: false,
-                createTime: '',
-                usedCap: '',
-                transferIn: '',
-                hitPut: 0,
-                hitGet: 0,
-                objNum: 0
-            },
+            headerInfo: {},
             // 当前桶ID
             bucketId: ''
         };
@@ -133,7 +123,6 @@ export default {
             // this.currentView = tab.name
             this.$router.push({name: 'app.oss.bucket', params: {view: tab.name}});
         },
-        // 查询桶当前月份的统计数据
         async getBucket() {
             this.bucketId = this.$route.params.bucketId;
             this.loading = true;
@@ -141,7 +130,7 @@ export default {
                 .then(res => {
                     this.loading = false;
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.headerInfo = {...res.result};
+                        this.headerInfo = res.data;
                         console.log('headerInfo', this.headerInfo);
                     } else {
                         this.$alert('您查询的空间不存在', {
@@ -166,11 +155,15 @@ export default {
         },
         // 删除bucket
         deleteBucket() {
-            this.$confirm('您确定要进行bucket删除操作吗？', '删除', {
+            this.$messageBox.confirm('您确定要进行bucket删除操作吗？', '删除', {
+                subMessage: this.headerInfo.bucket,
+                alertMessage: '删除操作无法恢复，请谨慎操作',
                 type: 'warning'
             }).then(() => {
+                alert();
                 this.$refs.mobileCodeDialog.show().then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
+                        alert();
                         deleteBucket(this.bucketId).then(res => {
                             if (res.code === this.CODE.SUCCESS_CODE) {
                                 this.$message({
@@ -183,6 +176,8 @@ export default {
                             }
                         });
                     }
+                }).catch(err => {
+                    $log(err);
                 });
             });
         }

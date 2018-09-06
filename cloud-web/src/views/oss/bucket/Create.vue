@@ -1,27 +1,23 @@
 <template>
     <el-dialog v-if="isShow" title="创建存储空间" :visible.sync="isShow" width="600px" :append-to-body="true" @close="cancel">
         <div class="form" style="padding-right:130px;">
-            <zt-form ref="bucketForm" label-width="110px" :model="bucket" size="small" :rules="rules" inline-message>
+            <zt-form ref="bucketForm" label-width="120px" :model="bucket" size="small" :rules="rules" inline-message>
                 <zt-form-item label="存储空间名称" prop="name">
                     <el-input v-model="bucket.name" placeholder="请输入储存空间名称"></el-input>
                     <span class="input-help">存储名称作为唯一标识符，遇到冲突请更换名称，名称由4~63个字符组成，可包含小写字母、数字、中划线</span>
                 </zt-form-item>
                 <zt-form-item label="读写权限">
-                    <region-radio v-model="bucket.region"></region-radio>
-                </zt-form-item>
-                <zt-form-item label="存储区域">
-                    <el-radio-group v-model="bucket.rwAuth" class="primary">
-                        <el-radio label="true" border>私有</el-radio>
-                        <el-radio label="false" border>公开</el-radio>
+                    <el-radio-group v-model="bucket.rwAuth" size="small">
+                        <el-radio-button label="true">私有</el-radio-button>
+                        <el-radio-button label="false">公开</el-radio-button>
                     </el-radio-group>
-                    <span v-if="bucket.rwAuth === 'false'" class="input-help danger">公开：对文件写操作需要进行身份验证;可以对文件进行匿名读。</span>
-                    <span v-if="bucket.rwAuth === 'true'" class="input-help">私有：对文件的所有访问操作需要进行身份验证。</span>
+                    <span class="input-help">公开和私有仅对Bucket读文件生效，修改、删除、写入等对Bucket的操作均需要拥有者的授权才能进行。</span>
                 </zt-form-item>
             </zt-form>
         </div>
         <div slot="footer" class="dialog-footer text-right">
-            <el-button type="primary" @click="confirm" :loading="isSubmit" size="small">确定</el-button>
             <el-button type="info" @click="cancel" size="small">取消</el-button>
+            <el-button type="primary" @click="confirm" :loading="isSubmit" size="small">确定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -39,7 +35,6 @@ export default {
             resolve: null,
             bucket: {
                 name: '',
-                region: '',
                 rwAuth: 'false'
             },
             rules: {
@@ -47,7 +42,7 @@ export default {
                     {
                         required: true,
                         message: '请输入存储空间名称',
-                        trigger: ['blur', 'change']
+                        trigger: ['submit']
                     },
                     {
                         pattern: NAME_REGEXP,
@@ -58,7 +53,7 @@ export default {
                         min: 4,
                         max: 63,
                         message: '名称长度在4-63个字符之间',
-                        trigger: 'blur'
+                        trigger: ['submit']
                     }
                 ]
             }
@@ -80,7 +75,6 @@ export default {
             // 重置bucket表单值
             this.bucket = {
                 name: '',
-                region: '',
                 rwAuth: 'false'
             };
         },

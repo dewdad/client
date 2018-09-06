@@ -2,7 +2,7 @@
     <div id="overview" class="homeoverview">
         <el-row :gutter="20" class="overview">
             <el-col :span="24">
-                <el-row :gutter="20">
+                <el-row :gutter="20" style="height:218px;">
                     <el-col :span="16">
                         <div class="info-box data-count">
                             <div class="info-box-content">
@@ -90,7 +90,7 @@
                     </el-col>
                 </el-row>
                 <!-- 监控部分 -->
-                <el-row :gutter="20" class="mt20">
+                <el-row :gutter="20" class="mt20" style="min-height: 316px;">
                     <el-col :span="16">
                         <div class="info-box monitor-data">
                             <div class="info-box-head">
@@ -105,13 +105,12 @@
                                         <el-option value="">monitorInstance</el-option>
                                         <el-option value="monitorInstance">monitorInstance</el-option>
                                         <el-option value="monitorInstance">monitorInstance</el-option>
+                                        <i class="iconfont icon-zhuji" slot="prefix"></i>
                                     </el-select>
                                 </span>
                             </div>
-                            <div class="info-box-content">
-                                <div sytle="height:236px">
-                                    <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" height="236px" :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
-                                </div>
+                            <div class="info-box-content" id="echartsLine">
+                                <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData"  :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
                             </div>
                         </div>
                     </el-col>
@@ -128,25 +127,21 @@
                                 </div>
                                 <div class="pull-right" style="width: 100px;">
                                     <el-select v-model="value" placeholder="请选择" size="mini">
-                                        <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
+                                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                                         </el-option>
                                     </el-select>
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2"  height="190px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
                 </el-row>
                 <!-- 已申请资源 -->
-                <el-row class="mt20">
+                <el-row class="mt20" style="height: 142px;">
                     <el-col :span="24">
-                        <div class="info-box">
+                        <div class="info-box applylist">
                             <div class="info-box-head">已申请资源</div>
                             <div class="info-box-content products-flex">
                                 <el-row :gutter="10">
@@ -231,11 +226,9 @@ export default {
                     seriesData: [120, 132, 101, 134, 90, 230, 210]
                 }
             ],
-            options: [
-                {value: '7天',label: '7'}
-            ],
+            options: [{value: '7天', label: '7'}],
             value: '',
-            rightHeight: 100 // 右侧产品动态高度
+            echartsLineHeight: '200px'
         };
     },
     computed: {},
@@ -256,13 +249,21 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
-    > .el-row {
-        display: flex;
-        > .el-col-6 {
-            width: 260px;
-        }
-        > .el-col-18 {
-            flex: 1;
+    > .overview {
+        height: 100%;
+        > .el-col {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            > .el-row {
+                > .el-col {
+                    height: 100%;
+                }
+            }
+            > .el-row:nth-child(2) {
+                flex: 2;
+            }
+           
         }
     }
 }
@@ -270,6 +271,8 @@ export default {
 .info-box {
     background-color: #fff;
     padding: 20px 30px;
+    height: 100%;
+    overflow: hidden;
     &:hover {
         box-shadow: 0px 0px 15px 0px rgba(66, 103, 178, 0.15);
     }
@@ -331,11 +334,16 @@ export default {
 
 .todo,
 .data-count {
-    height: 218px;
+    height: 100%;
+}
+
+.info-box {
+    display: flex;
+    flex-direction: column;
 }
 
 .info-box-content {
-    height: 100%;
+    flex:1;
 }
 
 .info-box-content-info {
@@ -372,11 +380,6 @@ export default {
     padding: 0 22px;
 }
 
-.monitor-warning,
-monitor-data {
-    height: 316px;
-}
-
 .recharge {
     position: absolute;
     bottom: 0px;
@@ -388,38 +391,44 @@ monitor-data {
     color: #fff;
 }
 
-.products-flex {
+.applylist {
     display: flex;
     flex-direction: column;
-    min-height: 50px;
+}
+.products-flex {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .products-flex .el-row {
     flex: 1;
-}
-
-.products-flex .el-row .el-col {
-    height: 100%;
+    width: 100%;
+    .el-col {
+        height: 100%;
+        position: relative;
+    }
 }
 
 .products {
-    padding: 14.5px 20px;
-    height: 100%;
-    line-height: 100%;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    right: 0px;
+    margin-top: -10px;
 }
 
 .products .products-inner {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    top: 50%;
     line-height: 22px;
-    margin-top: -11px;
+    padding-left: 30px;
     .iconfont {
         font-size: 22px;
         color: #8da3c6;
     }
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border-right: 1px solid #f6f6f6;
 }
 
