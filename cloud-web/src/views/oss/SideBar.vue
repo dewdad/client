@@ -97,6 +97,7 @@ export default {
             });
         },
         refreshBucket: function() {
+            alert();
             // refreshBucket改变时重新加载bucket
             this.getBucketListByUid();
         }
@@ -151,8 +152,6 @@ export default {
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.bucketList = res.data;
-                        this.$nextTick();
-                        this.$forceUpdate();
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }

@@ -7,7 +7,7 @@
                 <div class="font12 mt10">
                     <label class="mr20">
                         <span class="color-secondary">类型：</span> 标准存储 </label>
-                    
+
                     <label>
                         <span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm:ss')}}</label>
                 </div>
@@ -155,31 +155,34 @@ export default {
         },
         // 删除bucket
         deleteBucket() {
-            this.$messageBox.confirm('您确定要进行bucket删除操作吗？', '删除', {
-                subMessage: this.headerInfo.bucket,
-                alertMessage: '删除操作无法恢复，请谨慎操作',
-                type: 'warning'
-            }).then(() => {
-                alert();
-                this.$refs.mobileCodeDialog.show().then(res => {
-                    if (res.code === this.CODE.SUCCESS_CODE) {
-                        alert();
-                        deleteBucket(this.bucketId).then(res => {
+            this.$messageBox
+                .confirm('您确定要进行bucket删除操作吗？', '删除', {
+                    subMessage: this.headerInfo.bucket,
+                    alertMessage: '删除操作无法恢复，请谨慎操作',
+                    type: 'warning'
+                })
+                .then(() => {
+                    this.$refs.mobileCodeDialog
+                        .show()
+                        .then(res => {
                             if (res.code === this.CODE.SUCCESS_CODE) {
-                                this.$message({
-                                    message: '删除成功',
-                                    type: 'success'
+                                deleteBucket(this.bucketId).then(res => {
+                                    if (res.code === this.CODE.SUCCESS_CODE) {
+                                        this.$message({
+                                            message: '删除成功',
+                                            type: 'success'
+                                        });
+                                        // 通知bucket列表刷新
+                                        this.$store.commit('oss/CHANGE_REFRESH_BUCKET');
+                                        this.$router.push({name: 'app.oss.overview'});
+                                    }
                                 });
-                                // 通知bucket列表刷新
-                                this.$store.commit('oss/CHANGE_REFRESH_BUCKET');
-                                this.$router.push({name: 'app.oss.overview'});
                             }
+                        })
+                        .catch(err => {
+                            $log(err);
                         });
-                    }
-                }).catch(err => {
-                    $log(err);
                 });
-            });
         }
     }
 };

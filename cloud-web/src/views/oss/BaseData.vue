@@ -65,6 +65,7 @@
 <script>
 import {getOssSpace, getBucket} from '@/service/oss';
 import ERRCODE from '@/constants/code';
+import {isEmpty} from '@/utils/utils';
 import ICountUp from 'vue-countup-v2';
 export default {
     name: 'BaseData',
@@ -104,8 +105,9 @@ export default {
             this.init();
         },
         headerInfo: function(newval) {
-            $log(newval);
-            this.init();
+            if (!isEmpty(newval)) {
+                this.init();
+            }
         }
     },
     created() {
@@ -117,12 +119,16 @@ export default {
         init() {
             if (this.$route.params.bucketId && this.$route.params.bucketId !== '') {
                 // 如果是单个桶 查询桶数据
-                // this.getBucket(this.$route.params.bucketId);
-                // this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usedCap);
-                // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
-                // this.baseData.hitPut = this.headerInfo.hitPut;
-                // this.baseData.hitGet = this.headerInfo.hitGet;
-                // this.baseData.hitDel = this.headerInfo.hitDel;
+                if (!isEmpty(this.headerInfo)) {
+                    // this.getBucket(this.$route.params.bucketId);
+                    alert(JSON.stringify(this.headerInfo));
+                    this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usage.rgwMain.size);
+                    // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
+                    // this.baseData.hitPut = this.headerInfo.hitPut;
+                    // this.baseData.hitGet = this.headerInfo.hitGet;
+                    this.baseData.objNum = this.headerInfo.usage.rgwMain.num_objects;
+                }
+                
             } else {
                 // 查询总概览数据
                 this.getSpaceData();
