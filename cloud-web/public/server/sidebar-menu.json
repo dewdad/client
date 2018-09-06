@@ -280,6 +280,7 @@
             },
             {
                 "text": "密钥管理",
+                "hidden": true,
                 "sref": "app.oss.skeymgr",
                 "psref": "app.oss"
             }

@@ -212,14 +212,14 @@ export const API_ECS = {
 // OSS对象存储模块API地址
 export const API_OSS = {
     // GET /ossSpace 获取命名空间信息-首页加载总概览
-    ossSpace: OSS_CONTROLLER + '/ossSpace',
+    ossSpace: '/oss/user/usage',
     // 获取命名空间秘钥接口
     getAuthKeys: OSS_CONTROLLER + '/ossSpace/authKeys',
     createAuthKey: OSS_CONTROLLER + '/ossSpace/authKeys',
     ossSpaceData: OSS_CONTROLLER + '/ossSpace/data',
     delete: OSS_CONTROLLER + '/ossSpace/authKeys/{keyId}',
-    bucketList: OSS_CONTROLLER + '/ossBucket/list',
-    createBucket: OSS_CONTROLLER + '/ossBucket',
+    bucketList: '/oss/bucket/list',
+    createBucket: '/oss/bucket',
     // 给空间绑定(解绑)一个域名接口
     domain: OSS_CONTROLLER + '/ossBucket/domain',
     // 获取空间下绑定的域名列表接口
@@ -230,21 +230,22 @@ export const API_OSS = {
     getBucketDataByItem: OSS_CONTROLLER + '/ossBucket/data/item/{bucketId}',
     // 查询桶的统计数据接口
     getBucketData: OSS_CONTROLLER + '/ossBucket/data/{bucketId}',
-    // 查询bucket的流量和请求数的统计数据接口
-    getBucket: OSS_CONTROLLER + '/ossBucket/{bucketId}/getBucket',
+    getBucket: '/oss/bucket/{bucketId}',
     // 查询基础设置信息
-    getBucketBasic: OSS_CONTROLLER + '/ossBucket/{bucketId}',
+    getBucketBasic: '/oss/bucket/{bucketId}/basicSet',
     // 文件操作 上传 下载 删除
     file: OSS_CONTROLLER + '/ossBucket/file',
+    deleteFile: '/oss/bucket/{bucketId}/deleteFile',
     // 获取空间中的文件列表
-    fileList: OSS_CONTROLLER + '/ossBucket/file/list',
+    fileList: '/oss/bucket/{bucketId}/file',
     // 从空间中搜索指定的文件列表接口
     search: OSS_CONTROLLER + '/ossBucket/file/search',
     // 新建目录
-    createDir: OSS_CONTROLLER + '/ossBucket/dir',
+    createDir: '/oss/bucket/{bucket_id}/createDir',
     downloadFile: OSS_CONTROLLER + '/ossBucket/file/download',
-    uploadFile: OSS_CONTROLLER + '/ossBucket/{bucket_id}/file',
-    fileLink: OSS_CONTROLLER + '/ossBucket/file/link'
+    uploadFile: '/oss/bucket/{bucket_id}/uploadFile',
+    fileLink: '/oss/bucket/{bucket_id}/getFileLink',
+    setBucketPrivacy: '/oss/bucket/{bucket_id}/setBucketPrivacy'
 };
 // 用户账号模块
 export const API_UserAccount = {

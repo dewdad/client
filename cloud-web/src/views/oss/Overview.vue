@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <el-row :gutter="15" class="overview">
-            <el-col :span="18">
+            <el-col :span="24">
                 <!-- 基础数据 -->
                 <base-data></base-data>
                 <!-- 特色服务 -->
@@ -58,9 +58,6 @@
                         </zt-card>
                     </div>
                 </div>
-            </el-col>
-            <el-col :span="6">
-                <product />
             </el-col>
         </el-row>
     </div>

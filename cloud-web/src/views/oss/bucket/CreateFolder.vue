@@ -14,8 +14,8 @@
             </zt-form>
         </div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="confirm" :loading="isSubmit" size="small">确定</el-button>
             <el-button type="info" @click="cancel" size="small">取消</el-button>
+            <el-button type="primary" @click="confirm" :loading="isSubmit" size="small">确定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -48,14 +48,14 @@ export default {
                     {
                         required: true,
                         message: '请输入目录名称',
-                        trigger: ['blur', 'change']
+                        trigger: ['submit']
                     },
-                    {validator: validateDirname, trigger: 'blur'},
+                    {validator: validateDirname, trigger: ['submit', 'blur']},
                     {
                         min: 1,
                         max: 124,
                         message: '名称长度在1-124个字符之间',
-                        trigger: 'blur'
+                        trigger: ['submit', 'blur']
                     }
                 ]
             }

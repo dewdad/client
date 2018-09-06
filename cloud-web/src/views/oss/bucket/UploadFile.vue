@@ -1,32 +1,34 @@
 <template>
     <el-dialog v-if="isShow" :title="dialogTitle" :visible.sync="isShow" width="640px" :append-to-body="true" :before-close="handleClose" :close-on-press-escape="true" :close-on-click-modal="true" @close="cancel">
-        <zt-form v-show="!uploading" ref="uploadForm" label-width="80px" :model="upload" size="small" inline-message>
-            <zt-form-item label="文件目录">
-                <el-radio-group v-model="upload.dirtype" class="primary">
-                    <el-radio label="currentdir" border>当前目录</el-radio>
-                    <el-radio label="specifieddir" border>指定目录</el-radio>
-                </el-radio-group>
-            </zt-form-item>
-            <zt-form-item v-if="upload.dirtype === 'currentdir'" label="目录地址">
-                {{ upload.currentPath==="" ? "/":upload.currentPath}}
-            </zt-form-item>
-            <zt-form-item v-show="upload.dirtype === 'specifieddir'" label="目录地址" prop="dirname" :rules="rules">
-                <el-input v-model="upload.dirname" style="width:360px;" placeholder="请输入目录名称"></el-input>
-            </zt-form-item>
-            <zt-form-item label="文件上传">
-                <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders" :data="{prefix: upload.currentPath}" :auto-upload="autoUpload" multiple>
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">将文件拖到此处，或
-                        <em>点击上传</em>支持多选</div>
-                    <div class="el-upload__tip" slot="tip">
-                        文件的命名规范如下：<br/> 1.使用UTF-8编码
-                        <br/> 2.长度必须在1-1023字节之间
-                        <br/> 3.不能以[/]或[\]开头
-                        <br/> 注意：对象名称需要区分大小写，如无特殊说明，本文档中的对象、文件称谓等同于Object
-                    </div>
-                </el-upload>
-            </zt-form-item>
-        </zt-form>
+        <div style="padding-right: 130px">
+            <zt-form v-show="!uploading" ref="uploadForm" label-width="80px" :model="upload" size="small" inline-message>
+                <zt-form-item label="文件目录">
+                    <el-radio-group v-model="upload.dirtype" class="primary">
+                        <el-radio label="currentdir" border>当前目录</el-radio>
+                        <el-radio label="specifieddir" border>指定目录</el-radio>
+                    </el-radio-group>
+                </zt-form-item>
+                <zt-form-item v-if="upload.dirtype === 'currentdir'" label="目录地址">
+                    {{ upload.currentPath==="" ? "/":upload.currentPath}}
+                </zt-form-item>
+                <zt-form-item v-show="upload.dirtype === 'specifieddir'" label="目录地址" prop="dirname" :rules="rules">
+                    <el-input v-model="upload.dirname" placeholder="请输入目录名称"></el-input>
+                </zt-form-item>
+                <zt-form-item label="文件上传">
+                    <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders" :data="{prefix: upload.currentPath}" :auto-upload="autoUpload" multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或
+                            <em>点击上传</em>支持多选</div>
+                        <div class="el-upload__tip" slot="tip">
+                            文件的命名规范如下：<br/> 1.使用UTF-8编码
+                            <br/> 2.长度必须在1-1023字节之间
+                            <br/> 3.不能以[/]或[\]开头
+                            <br/> 注意：对象名称需要区分大小写，如无特殊说明，本文档中的对象、文件称谓等同于Object
+                        </div>
+                    </el-upload>
+                </zt-form-item>
+            </zt-form>
+        </div>
         <div v-show="uploading">
             <div>
                 <span class="color-success">{{successFilesNums}}</span>已完成，
@@ -42,7 +44,7 @@
                 </el-table-column>
                 <el-table-column label="目标Bucket">
                     <template slot-scope="scope">
-                        {{bucketName}}
+                        {{bucketId}}
                     </template>
                 </el-table-column>
                 <el-table-column label="上传进度">
@@ -68,8 +70,7 @@
     </el-dialog>
 </template>
 <script>
-import {API_OSS} from '@/constants/apiUrl';
-import {replaceParamVal} from '@/utils/utils';
+import {uploadFile} from '@/service/oss/filemgr';
 const percentageBg = require('@/assets/images/percentageBg.png');
 export default {
     name: 'UploadFile',
@@ -100,7 +101,8 @@ export default {
                 dirname: '',
                 currentPath: ''
             },
-            uploadAction: API_URL + '/' + replaceParamVal(API_OSS.uploadFile, [this.bucketId]),
+            // uploadAction: API_URL + '/' + replaceParamVal(API_OSS.uploadFile, [this.bucketId]),
+            uploadAction: API_URL + '/fileProcess/upload',
             uploadHeaders: {
                 'X-People-Token': this.$store.state.token
             },
@@ -117,7 +119,6 @@ export default {
     },
     props: {
         bucketId: String,
-        bucketName: String,
         path: {
             type: String,
             default: ''
@@ -212,8 +213,15 @@ export default {
         // 文件上传成功时的钩子
         onSuccess(response, file, fileList) {
             this.fileList = fileList;
-            this.$emit('success');
-            $log('上传成功', response, fileList);
+            if (response.code === '0000') {
+                let dirname = this.upload.dirtype === 'currentdir' ? this.upload.currentPath : this.upload.dirname + '/';
+                uploadFile(this.bucketId, response.data, dirname).then(res => {
+                    if (res.code === '0000') {
+                        this.$emit('success');
+                    }
+                });
+            }
+            $log('上传完成', response, fileList);
         },
         // 文件上传失败时的钩子
         onError(response, file, fileList) {

@@ -7,7 +7,7 @@
             </el-col>
             <el-col :span="24">
                 <!-- 访问域名 -->
-                <div class="oss-box">
+                <!-- <div class="oss-box">
                     <div class="oss-box-header">{{$t('oss.overview.accessDomain')}}</div>
                     <div class="oss-box-content">
                         <el-table :data="domainList" style="width: 100%" stripe header-row-class-name="no-line" border class="data-list">
@@ -30,11 +30,11 @@
                             </el-table-column>
                         </el-table>
                     </div>
-                </div>
+                </div> -->
             </el-col>
             <el-col :span="24">
                 <!-- 基础设置 -->
-                <div class="oss-box mt20">
+                <!-- <div class="oss-box mt20">
                     <div class="oss-box-header">{{$t('oss.overview.baseSetting')}}</div>
                     <div class="oss-box-content">
                         <div class="settings">
@@ -80,14 +80,14 @@
                             </el-row>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </el-col>
         </el-row>
     </div>
 </template>
 <script>
 import BaseData from '../BaseData.vue';
-import {getBucketDomainList,getBucketBasic} from '@/service/oss/index';
+import {getBucketDomainList, getBucketBasic} from '@/service/oss/index';
 export default {
     name: 'Overview',
     data() {
@@ -101,25 +101,11 @@ export default {
                     source: ''
                 },
                 pageIndex: false
-            }
+            },
+            headerInfo: {}
         };
     },
     props: {
-        headerInfo: {
-            type: Object,
-            default: function () {
-                return {
-                    name: '',
-                    isPrivate: false,
-                    createTime: '',
-                    usedCap: '',
-                    transferIn: '',
-                    hitPut: 0,
-                    hitGet: 0,
-                    objNum: 0
-                };
-            }
-        }
     },
     components: {
         BaseData
@@ -138,7 +124,7 @@ export default {
         // 加载数据
         init() {
             let bucketId = this.$route.params.bucketId;
-            this.getBucketDomainList(bucketId);
+            // this.getBucketDomainList(bucketId);
             this.getBucketBasic(bucketId);
         },
         renderHeader(h, {column, $index}) {
@@ -165,10 +151,10 @@ export default {
         getBucketBasic(bucketId) {
             getBucketBasic(bucketId).then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
-                    this.settings = {...res.result};
+                    this.headerInfo = res.data;
                 }
             });
-        },
+        }
     }
 };
 </script>
