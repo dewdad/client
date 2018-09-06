@@ -23,4 +23,18 @@ export async function GetmenuList(data) {
     });
     return response.data;
 }
-
+/**
+ *查询部门
+ * @param {*}
+ */
+export async function getDomainList(data) {
+    let param = {
+        pageIndex:1,
+        limit:999,
+        totalItems:0
+    };
+    let response = await http.get(OVERVIEW.getdomainlist, {
+        params: param
+    });
+    return response.data;
+}

@@ -61,14 +61,14 @@ export default {
                 if(handlers[i].opertions){
                     let len = handlers[i].opertions.length;
                     for(let j = 0;j < len; j++){
-                        handlerArr.push(handlers[i].opertions[j].id);
+                        handlerArr.push(handlers[i].opertions[j]);
                     }
                     let menuL = handlers[i].submenus.length;
                     for(let m = 0;m < menuL;m++){
                         if(handlers[i].submenus[m].opertions){
                             let len2 = handlers[i].submenus[m].opertions.length;
                             for(let k = 0;k < len2;k++){
-                                handlerArr.push(handlers[i].submenus[m].opertions[k].id);
+                                handlerArr.push(handlers[i].submenus[m].opertions[k]);
                             }
                         }
                     }
@@ -109,7 +109,7 @@ export default {
             this.getKey();
             let param = {
                 menu:this.menu,
-                handlers:this.handlerArr,
+                operations:this.handlerArr,
                 roleId:this.user.id
             };
             subAuth(param)

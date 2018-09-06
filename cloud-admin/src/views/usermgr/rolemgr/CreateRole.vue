@@ -5,8 +5,9 @@
                 <el-input placeholder="输入角色名称" v-model="form.roleName"></el-input>
             </el-form-item>
             <el-form-item label="角色类型" prop="roleType" :label-width="formLabelWidth">
-                <el-radio v-model="form.roleType" label="1">管理员</el-radio>
-                <el-radio v-model="form.roleType" label="2">用户</el-radio>
+                <el-radio v-model="form.roleType" label="2">部门管理员</el-radio>
+                <el-radio v-model="form.roleType" label="3">部门管理员</el-radio>
+                <el-radio v-model="form.roleType" label="4">用户</el-radio>
             </el-form-item>
             <el-form-item label="描述 " prop="description" :label-width="formLabelWidth">
                 <el-input placeholder="输入描述" type="textarea" v-model="form.description"></el-input>
@@ -31,7 +32,7 @@ export default {
             confirmBtn: false,
             optype:1,
             form:{
-                roleType:'1',
+                roleType:'2',
                 roleName:'',
                 description:''
             },
@@ -93,6 +94,7 @@ export default {
                         this.editRole();
                     }
                 } else {
+                    this.confirmBtn = false;
                     console.log('error submit!!');
                     return false;
                 }

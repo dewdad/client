@@ -68,6 +68,7 @@ export default {
             this.$refs.rescourceForm.validate((valid) => {
                 console.log('this.resourceItem',this.resourceItem);
                 console.log('this.optype',this.optype);
+                this.confirmBtn = true;
                 if (valid) {
                     if(this.optype === 1){
                         this.add();
@@ -75,6 +76,7 @@ export default {
                         this.edit(this.resourceItem);
                     }
                 } else {
+                    this.confirmBtn = false;
                     console.log('error submit!!');
                     return false;
                 }
