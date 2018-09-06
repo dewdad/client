@@ -137,9 +137,9 @@ export const API_ECS = {
         queryFloatIp: ECS_CTRL + '/floating/interface/list'
     },
     keypairs: {
-        searchKeypairs: ECS_CTRL + '/keypairs', //get
-        sreateKeypairs: ECS_CTRL + '/keypairs', //post
-        deleteKeypairs: ECS_CTRL + '/keypairs/{keyId}' //delete {keyId}
+        searchKeypairs: '/compute/keypair/list', //get
+        sreateKeypairs: '/compute/keypair', //post
+        deleteKeypairs: '/compute/keypair/{keyId}' //delete {keyId}
     },
     labels: {
         labels: ECS_CTRL + '/labels',
@@ -154,6 +154,7 @@ export const API_ECS = {
         bindFloatIP: '/compute/floatip/associateToPort/{floatIP}/{instIP}', // 绑定浮动IP
         routerList: '/compute/router/list', // 路由列表
         editRouter: '/compute/router/', // 添加或修改路由
+        delRouter: '/compute/router/{id}', // 添加或修改路由
         applyFloatIP: '/compute/floatip', // 确认申请浮动IP
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: ECS_CTRL + '/networks/count/{vpcId}',
@@ -167,13 +168,13 @@ export const API_ECS = {
         modifyGroup: '/compute/securityGroup/updateSecurityGroup', // 修改安全组
         exampleBindGroup: ECS_CTRL + '/security-group/bind-ecs', // 给实例绑定安全组
         exampleUntieGroup: ECS_CTRL + '/security-group/unbind-ecs', // 给实例解绑安全组
-        createGroupRule: ECS_CTRL + '/security-group/rule', // 创建安全组规则
+        createGroupRule: '/compute/securityGroup/createSecurityGroupRule', // 创建安全组规则
         updateGroupRule: ECS_CTRL + '/security-group/rule/{rule_id}', // 更新安全组规则
         getGroupList: '/compute/securityGroup/getTenantSecurityGroups', // 查询安全组列表
         listByInstanceType: ECS_CTRL + '/security-group/listByInstanceType',
         existGroup: ECS_CTRL + '/security-group/not-exist-group', // 查询所有安全组-用于给实例添加安全组-过滤掉已经加入到本实例中的安全组
         existEcs: ECS_CTRL + '/security-group/{group_id}/not-exist-ecs', // 查询所有实例-用于给安全组添加实例-过滤掉已经加入到本安全组的实例
-        deleteGroupRule: ECS_CTRL + '/security-group/{rule_id}', // 删除安全组规则
+        deleteGroupRule: '/compute/securityGroup/deleteSecurityGroupRule', // 删除安全组规则
         deleteGroup: '/compute/securityGroup/{group_id}', // 删除安全组
         getGroupRuleList: '/compute/securityGroup/rule/list' // 查询安全组规则列表
     },

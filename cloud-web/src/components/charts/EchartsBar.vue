@@ -1,5 +1,5 @@
 <template>
-    <div class="charts" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
+    <div class="chartsBar" @mouseover="echartHover" @mouseout="echartOut" style="color: #000">
         <div :id="idString" :style="{height: height}"></div>
     </div>
 </template>
@@ -14,6 +14,9 @@ export default {
             option:{
                 tooltip: {
                     trigger: 'axis',
+                    axisPointer: {
+                        type: 'none'
+                    },
                     backgroundColor: '#FFF',
                     borderWidth: 1,
                     textStyle: {
@@ -37,6 +40,7 @@ export default {
                 grid: this.gridVal,
                 legend: {
                     data: this.legendData,
+                    show: '',
                     y: 'bottom',
                     icon: 'circle',
                     pageIconColor: 'yellow',
@@ -58,12 +62,7 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    axisLine: {show:false},
-                    axisTick: {show:false},
-                    splitNumber: 4, // 坐标轴的分割段数
-                    axisLabel: {
-                        formatter: '{value}' + this.yUnit // y轴坐标轴单位
-                    }
+                    show: false,
                 },
                 color: this.mouldColor,
                 series: []
@@ -219,7 +218,7 @@ export default {
     methods: {
         myChartContainer () {
             let myChartDom = document.getElementById(this.idString);
-            let charts = document.getElementsByClassName('charts');
+            let charts = document.getElementsByClassName('chartsBar');
             console.warn(charts[0].offsetWidth);
             myChartDom.style.width = charts[0].offsetWidth + 'px';
         },
@@ -242,66 +241,13 @@ export default {
             for (let o in this.seriesData) {
                 let obj = {
                     name: this.legendData[o],
-                    type:'line',
+                    type:'bar',
                     showSymbol: false,
                     symbol: 'circle',
                     smooth: true,
+                    barWidth: 16,
                     symbolSize: 6,
-                    itemStyle: {
-                        normal: {
-                            color: this.lineStyle[o],
-                            borderColor: this.dotStyle[o],
-                            borderWidth: 3,
-                        }
-                    },
-                    lineStyle: {
-                        // color: this.lineStyle[o]
-                    },
-                    areaStyle: {
-                        opacity: 0.2
-                    },
-                    data:this.seriesData[o].seriesData,
-                    markPoint: {
-                        data: [
-                            // {
-                            //     type: 'max', 
-                            //     name: '最大值',
-                            // }
-                            {
-                                coord: [this.xAxisData[this.getMaxData(this.seriesData[o].seriesData)], this.seriesData[o].seriesData[this.getMaxData(this.seriesData[o].seriesData)]]
-                            }
-                        ],
-                        animationDuration: 100,
-                        // symbol: 'rect',
-                        symbolSize: this.markPointSymbolSize,
-                        symbolOffset: ['0', '-30'],
-                        symbol: this.isMarkPoint ? this.markPointSymbol : 'none',
-                        symbolKeepAspect: true,
-                        label: {
-                            textBorderColor: 'none',
-                            offset: [0, -5],
-                            formatter: (params) => {
-                                let a = params.seriesName + '峰值: ' + params.data.coord[1] + this.yUnit;
-                                let b = params.data.coord[0];
-                                // console.log(params);
-                                return '{a|' + a + '}' + '\n{b|' + b + '}';
-                                // return '{a|' + a + '\n' + b + '}';
-                            },
-                            rich: {
-                                a: {
-                                    color: '#fff',
-                                    lineHeight: 20,
-                                    // minWidth: 100,
-                                    // align: 'center',
-                                    // backgroundColor: '#00ffff',
-                                    // padding: [5, 10]
-                                },
-                                b: {
-                                    color: '#fff',
-                                }
-                            }
-                        }
-                    }
+                    data:this.seriesData[o].seriesData
                 };
                 this.seriesArray.push(obj);
             }
@@ -310,7 +256,6 @@ export default {
         async echartHover() {
             this.markPointSymbol = 'none';
             this.againSetOption();
-            // console.warn(this.option);
         },
         async echartOut() {
             this.markPointSymbol = `image:// ${background}`;

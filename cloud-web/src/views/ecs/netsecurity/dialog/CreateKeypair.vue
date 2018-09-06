@@ -1,64 +1,82 @@
 <template>
-    <el-dialog
-        title="创建密钥对"
-        :visible.sync="isShow"
-        width="45%"
-        class="CreateKeypair">
-        <div class="enterPwd mt10 font12">
-            <span class="title">
-                密钥对名称 <b class="color-danger">*</b>
-            </span>
-            <div class="right ml20">
-                <el-input size="small" @blur="checkName" v-model="keyPairName" maxlength="64" placeholder="请输入密钥对名称"></el-input>
-                <span v-show="keyPairNameShow === 1" class="color-danger ml10">必填项</span>
-                <span v-show="keyPairNameShow === 2" class="color-danger ml10">格式不对</span>
-                <div class="color999 mt10">只能由英文字母、数字、下划线、中划线组成，且长度小于等于64个字。</div>
-            </div>
-        </div>
-        <div class="enterPwd mt10 font12">
-            <span class="title">
-                创建类型 <b class="color-danger">*</b>
-            </span>
-            <div class="right ml20">
-                <div class="mt10">
-                    <el-radio v-model="radioType" label="1">自动新建密钥对</el-radio>
-                    <el-radio v-model="radioType" label="2">导入已有密钥对</el-radio>
-                </div>
-                <div class="color999 mt10" v-show="radioType === '1'">创建完成后请一定下载私钥，您只有一下载私钥的机会。</div>
-                <div class="existKeypair mt10" v-show="radioType === '2'">
-                    <textarea v-model="keyContent"></textarea>
-                    <div class="color999">(Base64编码)<a class="finger-cursor">导入样例</a></div>
-                </div>
-            </div>
+    <el-dialog title="创建密钥对" :visible.sync="isShow" width="600px" class="CreateKeypair" @close="cancel">
+        <div style="padding-right:120px;">
+            <zt-form inline-message class="wd403" ref="ruleForm" size="small" :model="form" label-width="100px" :rules="rules">
+                <zt-form-item label="密钥对名称" class="mb0" prop="keyPairName">
+                    <el-input size="small" v-model="form.keyPairName" maxlength="64" placeholder="请输入密钥对名称"></el-input>
+                    <div class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
+                </zt-form-item>
+                <zt-form-item label="创建类型" class="mb0" prop="radioType" :rules="[{
+                        required: true,
+                        message: '请选择创建类型',
+                        trigger: ['submit']
+                    }]">
+                    <el-radio v-model="form.radioType" label="auto">自动新建密钥对</el-radio>
+                    <el-radio v-model="form.radioType" label="import">导入已有密钥对</el-radio>
+                    <div v-if="form.radioType === 'auto'" class="input-help">创建完成后请一定下载私钥，您只有一下载私钥的机会。</div>
+                </zt-form-item>
+                <zt-form-item v-if="form.radioType === 'import'" label="公钥内容" class="mb0" prop="keyContent" :rules="[{
+                        required: true,
+                        message: '请导入已有密钥对',
+                        trigger: ['submit']
+                    }]">
+                    <el-input type="textarea" size="small" :autosize="{ minRows: 6, maxRows: 10}" v-model="form.keyContent" placeholder=""></el-input>
+                    <div class="input-help">(Base64编码)
+                        <a class="finger-cursor">导入样例</a>
+                    </div>
+                </zt-form-item>
+            </zt-form>
         </div>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="font12" @click="confirm" :loading="confirmBtn">确 定</el-button>
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="info" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
 </template>
 <script>
-import { createKeypairs } from '@/service/ecs/keypairs.js';
+import {createKeypairs} from '@/service/ecs/keypairs.js';
 export default {
     data() {
         return {
             isShow: false,
             resolve: null,
             reject: null,
-            radioType: '1',
-            keyPairName: '',
-            keyPairNameShow: 0,
-            keyContent: '',
-            confirmBtn: false
+            confirmBtn: false,
+            form: {
+                radioType: 'auto',
+                keyPairName: '',
+                keyContent: ''
+            },
+            rules: {
+                keyPairName: [
+                    {
+                        required: true,
+                        message: '请输入密钥对名称',
+                        trigger: ['submit']
+                    },
+                    {
+                        min: 2,
+                        max: 64,
+                        message: '名称输入有误',
+                        trigger: ['submit', 'blur']
+                    },
+                    {
+                        pattern: /^[\u4e00-\u9fa5a-zA-Z0-9-_]+$/,
+                        message: '名称输入有误',
+                        trigger: ['submit', 'blur']
+                    }
+                ]
+            }
         };
     },
-    props:{
-
-    },
+    props: {},
     watch: {
-        isShow (val) {
+        isShow(val) {
             if (!val) {
-                this.keyPairName = '';
+                this.form.radioType = 'auto';
+                this.form.keyPairName = '';
+                this.form.keyContent = '';
+                this.$refs.ruleForm.clearValidate();
             }
         }
     },
@@ -74,77 +92,73 @@ export default {
             this.isShow = false;
         },
         cancel() {
-            this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
         setting() {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    typeof this.resolve(this.form) === 'function' &&
-                        this.resolve(this.form);
+                    typeof this.resolve(this.form) === 'function' && this.resolve(this.form);
                 }, 1000);
             });
         },
         confirm() {
-            this.confirmBtn = true;
-            let data = {
-                name: this.keyPairName,
-                zone: AREA_CITY.regions[0].value
-            };
-            console.warn(data);
-            createKeypairs(data)
-                .then(res => {
-                    this.resolve(data);
-                    this.hide();
-                    this.setting();
-                    this.confirmBtn = false;
-                })
-                .catch(err => {
-                    this.confirmBtn = false;
-                    this.$alert(err, '提示', {
-                        type: 'error'
-                    });
-                });
-        },
-        // 检查是否名称是否填写正确
-        checkName() {
-            let regResult = this.keyPairName.match(/^[a-zA-Z0-9_]{0,}$/);
-            if (!this.keyPairName) {
-                this.keyPairNameShow = 1;
-            } else if(!regResult) {
-                this.keyPairNameShow = 2;
-            } else {
-                this.keyPairNameShow = 0;
-            }
+            this.$refs.ruleForm.validate(valid => {
+                if(valid) {
+                    this.confirmBtn = true;
+                    let data = {
+                        name: this.form.keyPairName,
+                        crtype: this.form.radioType
+                    };
+                    if (this.form.radioType === 'import') {
+                        data['content'] = this.form.keyContent;
+                    }
+                    console.warn(data);
+                    createKeypairs(data)
+                        .then(res => {
+                            if (res.code === '0000') {
+                                this.$message.success('操作成功');
+                                this.resolve(data);
+                                this.hide();
+                            }
+                        })
+                        .catch(err => {
+                            $log(err);
+                        }).finally(() => {
+                            this.confirmBtn = false;
+                        });
+                }
+            });
+            
         }
     }
 };
 </script>
 <style lang="scss">
-.CreateKeypair{
-    .tip{
-        background-color: #FBF7CF;
+.CreateKeypair {
+    .tip {
+        background-color: #fbf7cf;
         padding: 15px 30px;
-        color: #F68300;
-        border: 1px solid #F6E0C4;
-        ul, li{
+        color: #f68300;
+        border: 1px solid #f6e0c4;
+        ul,
+        li {
             list-style-type: disc;
         }
     }
-    .enterPwd{
+    .enterPwd {
         display: flex;
         justify-content: center;
-        span.title{
+        span.title {
             flex: 1;
             padding-top: 10px;
             padding-left: 20px;
         }
-        .right{
+        .right {
             flex: 4;
-            div{
+            div {
                 width: 300px;
             }
-            .existKeypair textarea{
+            .existKeypair textarea {
                 min-width: 280px;
                 max-width: 280px;
                 min-height: 200px;
@@ -153,15 +167,11 @@ export default {
                 resize: none;
             }
         }
-        .el-input{
-            input{
+        .el-input {
+            input {
                 width: 300px;
             }
         }
-    }
-    .el-dialog .el-dialog__body{
-        max-height: 380px;
-        overflow: auto;
     }
 }
 </style>

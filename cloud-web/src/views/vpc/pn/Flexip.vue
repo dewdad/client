@@ -10,19 +10,16 @@
             </el-button>
         </div>
     </page-header>
-    <!-- 搜索栏 -->
-    <search-box :fields="searchObjExtra.fields" @select="getScreenVal"></search-box>
     <!-- 表格 -->
-    <el-table
-        v-loading="isLoading"
-        :data="tableData"
-        class="data-list"
-        row-class-name="data-list"
-        header-row-class-name="data-list"
-        size="small"
-        stripe
-        border
-    >
+    <zt-table
+        @filterVal="filterHandler"
+        :loading="isLoading"
+        :data="tableData" 
+        :search="true" 
+        :search-condition="fields" 
+        @search="getScreenVal" 
+        :paging="searchObj.paging"
+        size="small">
         <el-table-column prop="title" label="VPCID/名称" :min-width="180">
             <template slot-scope="scope">
                 <div>
@@ -41,7 +38,7 @@
                 {{scope.row.fixedIpAddress}}
             </template>
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="状态" prop="state" :filter-multiple="false"  :filtered-value="[state]" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'UP'},{text: '未绑定', value: 'DOWN'} ]">
             <template slot-scope="scope">
                 <span :class="{'color-danger': scope.row.state === 'DOWN'}">
                     {{scope.row.state === 'DOWN' ? '未绑定' : '已绑定'}}
@@ -53,7 +50,7 @@
                 <span>{{scope.row.subnets}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="name" label="操作" :min-width="90">
+        <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
             <template slot-scope="scope" >
                 <a @click="bindFlexFn(scope.row)">绑定</a>
                 <b class="link-division-symbol"></b>
@@ -63,21 +60,8 @@
                 <a @click="deleteFloatIP(scope.row)">释放</a>
             </template>
         </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <div class="pagination">
-        <el-pagination
-            v-if="total"
-            @size-change="sizeChange"
-            @current-change="fetchData"
-            :current-page.sync="pageIndex"
-            :page-sizes="[10, 20, 50, 100]"
-            :page-size="limit"
-            layout="sizes, prev, pager, next"
-            :total="total"
-        >
-        </el-pagination>
-    </div>
+    </zt-table>
+
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
     <!-- 申请浮动IP -->
@@ -86,22 +70,24 @@
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
-import searchBox from '@/components/search/SearchBox';
 import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
 import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.js';
 import {getEcsInstList} from '@/service/ecs/list.js';
 
 let fields = [
-    { field: 'id', label: '浮动IP地址',inputval:'', tagType: 'ID' }
+    {field: 'name', label: '浮动IP地址', tagType: 'INPUT'}
 ];
-        
-let searchObjExtra = {
-    frominfo: '',
-    fields:fields,
-    selField:fields[0]
-};
 
+let searchObj = {
+    //分页
+    paging: {
+        pageIndex: 1,
+        limit: 10,
+        totalItems: 0
+    },
+    type: 'private' //镜像类型： false 公共镜像； true:自定义镜像
+};
 export default {
     data() {
         return {
@@ -110,9 +96,11 @@ export default {
             pageIndex: 1,
             limit: 10,
             total: 0,
+            searchObj,
             listData: {},
             fields,
-            searchObjExtra,
+            state: '',
+            floatingIpAddressVal: '',
             exampleList: [],
             outerNetData: [] // 外网网络数据
         };
@@ -128,35 +116,26 @@ export default {
         await this.getOuterNet();
     },
     methods: {
-        sizeChange(val) {
-            this.pageIndex = 1;
-            this.limit = val;
-            this.fetchData();
-        },
-        search() {
-            this.pageIndex = 1;
-            this.fetchData();
-        },
         async fetchData() {
             try {
                 // 清空数据
                 this.isLoading = true;
                 let params = {
+                    ...this.searchObj.paging,
                     offset: 1,
-                    limit: this.limit,
                     statusroptionValue: 'all',
-                    pageIndex: this.pageIndex,
-                    status: ''
+                    status: this.state
                 };
-
+                if (this.floatingIpAddressVal) {
+                    params.floatingIpAddress = this.floatingIpAddressVal;
+                }
                 let ret = await queryFlexIP(params);
                 console.warn('fetchData', ret);
 
                 this.listData = ret;
-                this.date = new Date().getTime();
 
                 this.pageIndex = parseInt(ret.pages);
-                this.total = ret.total;
+                this.searchObj.paging.totalItems = ret.total;
 
                 this.isLoading = false;
             } catch (error) {
@@ -166,7 +145,9 @@ export default {
         },
         // 获得搜索条件
         getScreenVal(params) {
-            $log(params);
+            $log('searchVal',params);
+            this.floatingIpAddressVal = params.fileds.name;
+            this.fetchData();
         },
         // 绑定浮动Ip
         bindFlexFn(params){
@@ -265,10 +246,19 @@ export default {
                 });
             
         },
+        // 状态筛选
+        filterHandler(value) {
+            if (value) {
+                this.state = value;
+            } else {
+                this.state = '';
+            }
+            console.warn(value);
+            this.fetchData();
+        }
     },
     components: {
         RegionRadio,
-        searchBox,
         BindFLexIP,
         ApplyFloatIP
     }

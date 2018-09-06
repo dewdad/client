@@ -120,6 +120,14 @@ export async function amendRouter({...arg}) {
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
+/**
+ * 删除路由
+ */
+export async function deleteRouter({id}) {
+    $log('delete /editRouter ->', {id});
+    let ret = await http.delete(replaceParamVal(API_ECS.network.delRouter, [id]));
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
 
 
 /**
