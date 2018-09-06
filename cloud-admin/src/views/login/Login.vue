@@ -171,7 +171,7 @@ export default {
                         // 如果没有验证过身份
 
                         this.$router.push({
-                            name: 'app.overview'
+                            name: 'app.usrmgr.menumgr'
                         });
                     } else {
                         this.errorMsg = result.data.msg;

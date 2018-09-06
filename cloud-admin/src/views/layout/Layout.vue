@@ -1,17 +1,18 @@
 <template>
-  <el-container>
-    <el-aside width="200px">
-      <side-bar></side-bar>
-    </el-aside>
     <el-container>
-      <el-header style="background-color:#001529">
-        <nav-bar></nav-bar>
-      </el-header>
-      <el-main id="setHeightAuto" >
-        <app-main></app-main>
-      </el-main>
+        <el-header style="background-color:#001529">
+            <nav-bar></nav-bar>
+        </el-header>
+
+        <el-container>
+            <el-aside width="auto">
+                <side-bar></side-bar>
+            </el-aside>
+            <el-main id="setHeightAuto">
+                <app-main></app-main>
+            </el-main>
+        </el-container>
     </el-container>
-  </el-container>
 </template>
 
 <script>
@@ -39,13 +40,10 @@ export default {
             // isCollapse: state => state.collapse,
             // pageLoading: state => state.pageLoading,
             // pageLoadError: state => state.pageLoadError,
-            isLogined: state => state.isLogined,
+            isLogined: state => state.isLogined
             // navCollapse: state => state.navCollapse,
             // showVerifyDialog: state => state.showVerifyDialog
-        }),
-        // navList: function() {
-        //     return window.navList;
-        // },
+        })        
         // // 判断是不有二级菜单
         // hasSubMenu: function() {
         //     return this.subMenuList.length > 0 ? true : false;
@@ -70,31 +68,30 @@ export default {
         //     }
         // }
     },
-    watch:{
+    watch: {
         isLogined: function(newval) {
             if (newval !== true) {
                 this.$router.push({name: 'login'});
             }
         },
-        screenHeight (val) {
+        screenHeight(val) {
             this.screenHeight = val;
             let el = document.getElementById('setHeightAuto');
             el.style.maxHeight = this.screenHeight + 'px';
             el.style.overflow = 'auto';
         }
-
     },
     created() {},
 
     methods: {
-        setHeight () {
+        setHeight() {
             let screenH = document.documentElement.clientHeight - 60;
             let el = document.getElementById('setHeightAuto');
             el.style.maxHeight = screenH + 'px';
             el.style.overflow = 'auto';
         }
     },
-    mounted(){
+    mounted() {
         this.setHeight();
         const that = this;
         window.onresize = () => {
@@ -103,7 +100,6 @@ export default {
                 that.screenWidth = this.screenHeight;
             })();
         };
-
     }
 };
 </script>
@@ -113,7 +109,6 @@ export default {
 }
 .el-header {
     background-color: #fff;
-    border-bottom: 1px solid #e9eef3;
     color: #333;
     text-align: center;
     line-height: 60px;
@@ -123,11 +118,11 @@ export default {
     background-color: #001529;
     text-align: center;
 }
-#setHeightAuto{
-  padding:20px;
+#setHeightAuto {
+    padding: 20px;
 }
 .el-main {
-    background-color:#fff; // #e9eef3;
+    background-color: #fff; // #e9eef3;
     color: #333;
     min-width: 1166px;
 }
