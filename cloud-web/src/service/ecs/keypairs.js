@@ -2,10 +2,10 @@
  * @author bujiaxing
  * @data: 2018-07-24 20:24:00
  * ecs模块-云盘
- */ 
+ */
 
 import http from '@/utils/http';
-import { API_ECS } from '@/constants/apiUrl';
+import {API_ECS} from '@/constants/apiUrl';
 import {replaceParamVal} from '@/utils/utils';
 
 /**
@@ -18,12 +18,13 @@ import {replaceParamVal} from '@/utils/utils';
  * ip: 根据服务器的IP地址查询,
  * labels: 根据标签查询服务器
  * }
- * 
-*/
-export async function getKeypairList(data) {    
+ *
+ */
+export async function getKeypairList(data) {
     let url = API_ECS.keypairs.searchKeypairs;
-    let res = await http.get(url,{ params: data });
-    return res && res.data;   
+    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
+    let res = await http.get(url, {params: data});
+    return res && res.data;
 }
 
 /**
@@ -35,22 +36,22 @@ export async function getKeypairList(data) {
  * crtype: 创建类型 如果值为auto 则用系统自动生成的公钥,
  * content: public key 公钥
  * }
- * 
-*/
-export async function createKeypairs(data) {    
+ *
+ */
+export async function createKeypairs(data) {
     let url = API_ECS.keypairs.sreateKeypairs;
-    let res = await http.post(url,data);
-    return res && res.data;   
+    let res = await http.post(url, data);
+    return res && res.data;
 }
 
 /**
  * 删除密钥对
- * 
+ *
  * keyId: 密钥对ID
- */ 
+ */
 
 export async function deleteKeypairs(keyId) {
     let url = API_ECS.keypairs.deleteKeypairs;
     let res = await http.delete(replaceParamVal(url, [keyId]));
-    return res && res.data;   
+    return res && res.data;
 }

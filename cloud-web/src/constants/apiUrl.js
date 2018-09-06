@@ -137,9 +137,9 @@ export const API_ECS = {
         queryFloatIp: ECS_CTRL + '/floating/interface/list'
     },
     keypairs: {
-        searchKeypairs: ECS_CTRL + '/keypairs', //get
-        sreateKeypairs: ECS_CTRL + '/keypairs', //post
-        deleteKeypairs: ECS_CTRL + '/keypairs/{keyId}' //delete {keyId}
+        searchKeypairs: '/compute/keypair/list', //get
+        sreateKeypairs: '/compute/keypair', //post
+        deleteKeypairs: '/compute/keypair/{keyId}' //delete {keyId}
     },
     labels: {
         labels: ECS_CTRL + '/labels',
