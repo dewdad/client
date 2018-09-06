@@ -44,9 +44,7 @@
         </el-table-column>
         <el-table-column label="子网数量" width="100">
             <template slot-scope="scope">
-                <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id}}"> -->
-                    <el-tag>{{scope.row.subnets.length}}</el-tag>
-                <!-- </router-link> -->
+                <span>{{scope.row.subnets.length}}</span>
             </template>
         </el-table-column>
         <el-table-column label="管理状态"  width="100">

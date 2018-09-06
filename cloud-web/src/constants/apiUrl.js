@@ -157,7 +157,7 @@ export const API_ECS = {
         delRouter: '/compute/router/{id}', // 添加或修改路由
         applyFloatIP: '/compute/floatip', // 确认申请浮动IP
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
-        networkCount: ECS_CTRL + '/networks/count/{vpcId}',
+        networkCount: '/compute/network/{vpcId}', // 获取网络详情
         getNetwork: ECS_CTRL + '/networks',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',
         subnet: ECS_CTRL + '/network/subnet',
