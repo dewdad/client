@@ -11,12 +11,6 @@
         "alert": "new",
         "submenu": [
             {
-                "text": "概览",
-                "sref": "app.ecs.overview",
-                "evn": "pro",
-                "psref": "app.ecs"
-            },
-            {
                 "text": "实例",
                 "sref": "app.ecs.list",
                 "evn": "pro",
