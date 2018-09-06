@@ -120,11 +120,25 @@
                             <div class="info-box-head">监控警告
                                 <a class="pull-right font14 ">查看更多</a>
                             </div>
-                            <div style="height: 60px;">
-
-                            </div>
+                            <h5 style="height: 37px; border-left: 2px solid #d3d8de;margin: 0 0 10px 0;padding-left: 10px;">
+                                <div class="pull-left">
+                                    <span class="color-secondary font14 mb5 inline-block">近7日警告线</span>
+                                    <br>
+                                    <span class="font16">10条</span>
+                                </div>
+                                <div class="pull-right" style="width: 100px;">
+                                    <el-select v-model="value" placeholder="请选择" size="mini">
+                                        <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </h5>
                             <div class="info-box-content">
-                                <echarts-bar :isMarkPoint="false" :gridVal="gridVal2"  height="180px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar :isMarkPoint="false" :gridVal="gridVal2"  height="190px" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
@@ -217,6 +231,10 @@ export default {
                     seriesData: [120, 132, 101, 134, 90, 230, 210]
                 }
             ],
+            options: [
+                {value: '7天',label: '7'}
+            ],
+            value: '',
             rightHeight: 100 // 右侧产品动态高度
         };
     },
