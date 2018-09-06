@@ -74,36 +74,5 @@ export async function projectList(data) {
     });
     return response.data;
 }
-/**
- *编辑角色
- * @param {*}
- */
-export async function editRole(data) {
-    let url = RoleMgr.editRole;
-    let res = await http.put(url, data);
-    return res.data;
-}
 
-/**
- *获取权限列表
- * @param {*}
- */
-export async function getMenuListByType(data) {
-    console.log('data',data);
-    console.log('RoleMgr.getMgrUser',RoleMgr.getMenuListByType);
-    let url = RoleMgr.getMenuListByType;
-    let response = await http.get(url,{
-        params: data
-    });
-    return response.data;
-}
-/**
- *关联权限
- * @param {*}
- */
-export async function subAuth(data) {
-    let url = RoleMgr.subAuth;
-    let res = await http.put(url, data);
-    return res.data;
-}
 
