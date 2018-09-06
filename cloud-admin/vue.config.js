@@ -13,7 +13,7 @@ function resolve(dir) {
 
 const vueConfig = {
     // 基本路径
-    baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
+    baseUrl: process.env.NODE_ENV === 'production' ? '/admin' : '/',
     // 输出文件目录
     outputDir: 'dist',
     // 设置js css image文件输出目录

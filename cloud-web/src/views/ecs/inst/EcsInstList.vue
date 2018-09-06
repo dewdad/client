@@ -39,13 +39,13 @@
                     </template>
                 </el-table-column>
                 <!-- 操作系统 -->
-                <el-table-column prop="os" :label="getLabel('os')" min-width="70" class-name="text-center" align="center">
+                <el-table-column prop="os" :label="getLabel('os')" min-width="70" class-name="text-center" align="center" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         {{scope.row.image.name}}
                     </template>
                 </el-table-column>
                 <!-- IP地址 -->
-                <el-table-column prop="ipaddr" :label="getLabel('ipaddr')" min-width="125">
+                <el-table-column prop="ipaddr" :label="getLabel('ipaddr')" min-width="125" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <ul>
                             <li v-for="(ip, index) in scope.row.addresses.addresses" :key="index" class="text-nowrap">

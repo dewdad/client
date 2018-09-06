@@ -26,11 +26,22 @@ export const SYSCONFIG = {
 // 概览
 export const OVERVIEW = {
     deptlist: USER_RSA + '/adminOverview/view',
-    menulist: USER_RSA + '/menu/getMenuListByRoleId'
+    menulist: USER_RSA + '/menu/getMenuListByRoleId',
+    getdomainlist: USER_RSA + '/dept/list'
 };
 // 日志
 export const OPLOG = {
     getLoglist: OP_LOG + '/opLogQry/list'
+};
+// 部门管理
+export const DEPT = {
+    deptTree: USER_RSA + '/dept/departmentTree',//部门树
+    delDept: USER_RSA + '/dept/delete/',//删除部门
+    searchUser: USER_RSA + '/dept/get/',//根据id查找用户
+    createDept: USER_RSA + '/dept/',//创建部门
+    editDept: USER_RSA + '/dept/',//编辑部门
+    searchQuota: USER_RSA + '/dept/getQuotaAndUsage/',//查看配额和使用量
+    projectList: USER_RSA + '/dept/getQuotaAndUsage/',//租户列表
 };
 // 角色管理
 export const RoleMgr = {

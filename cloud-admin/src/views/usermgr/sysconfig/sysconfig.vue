@@ -7,7 +7,7 @@
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createSysconfig({},1)"><span class="icon-zt_plus"></span>新增配置</el-button>
+                        <el-button type="primary" @click="createSysconfig({},1)"><span class="icon-zt_plus"></span>  新增配置</el-button>
                         <el-button type="primary" @click="reloadCache()">刷新缓存</el-button>
                     </el-form-item>
                     <el-form-item>

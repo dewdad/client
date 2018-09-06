@@ -14,7 +14,7 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-yunzhuji-gailan" />
                                             </div>
-                                            <div class="number mt20">25</div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="25" :duration="2" /></div>
                                             <div class="font14 color999">弹性云主机</div>
                                         </div>
                                     </el-col>
@@ -25,7 +25,7 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-CPU-gailan" />
                                             </div>
-                                            <div class="number mt20">50</div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="50" :duration="2" /></div>
                                             <div class="font14 color999">CPU</div>
                                         </div>
                                     </el-col>
@@ -36,7 +36,7 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-neicun-gailan" />
                                             </div>
-                                            <div class="number mt20">75</div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="75" :duration="2" /></div>
                                             <div class="font14 color999">内存</div>
                                         </div>
                                     </el-col>
@@ -48,7 +48,7 @@
                                                 <i class="iconfont icon-cipan-gailan" />
                                             </div>
                                             <div class="number mt20 color-warning">
-                                                99
+                                                <ICountUp :startVal="0" :endVal="99" :duration="2" />
                                                 <i class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
                                             <div class="font14 color999">磁盘</div>
@@ -61,7 +61,7 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-kuaizhao-gailan" />
                                             </div>
-                                            <div class="number mt20">75</div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="125" :duration="2" /></div>
                                             <div class="font14 color999">快照</div>
                                         </div>
                                     </el-col>
@@ -193,8 +193,7 @@
 <script>
 import EchartsLine from '@/components/charts/EchartsLine.vue';
 import EchartsBar from '@/components/charts/EchartsBar.vue';
-
-import Product from '@/components/product/Index.vue';
+import ICountUp from 'vue-countup-v2';
 export default {
     name: 'Overview',
     data() {
@@ -233,9 +232,9 @@ export default {
     },
     computed: {},
     components: {
-        Product,
         EchartsLine,
-        EchartsBar
+        EchartsBar,
+        ICountUp
     },
     methods: {},
     mounted() {}

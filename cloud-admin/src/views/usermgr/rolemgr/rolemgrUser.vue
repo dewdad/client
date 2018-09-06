@@ -5,7 +5,6 @@
         </page-header>
         <div class="header-top mt20">
             <el-button type="primary" class=" fa fa-angle-left" @click="goBack" size="small">&nbsp;返回</el-button>
-            <span class="font16 pull-right">关联用户</span>
         </div>
         <el-row>
             <el-col :span="24">
@@ -69,10 +68,7 @@ export default {
             stateParams,
             cols,
             searchObj,
-            formInline: {
-                data:'',
-                searchText:''
-            },
+
             type:'name',
             tableData: []
 
