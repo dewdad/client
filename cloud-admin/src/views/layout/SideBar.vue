@@ -1,26 +1,26 @@
 <template>
-    <div class="zt-sidebar">
-        <div class="logo-con">
-            <img src="@/assets/images/logo_open.svg" width="85px" alt="">
+    <div class="height-all">
+        <div class="sidebar-menu" :class="{'sidebar-menu--collapse':isCollapse}"  @mouseenter="isCollapse = false" @mouseleave="isCollapse = true">
+            <el-menu :default-active="activeMenuCode" @select="handleSelect">           
+                <template v-for="(menu) in menuList">
+                    <el-menu-item  :index="menu.menuCode" :key="menu.menuCode">                    
+                        <em :class="menu.menuIcon"></em>
+                        <span v-if="!isCollapse" slot="title">{{menu.menuName}}</span>   
+                    </el-menu-item> 
+                </template>           
+            </el-menu>
         </div>
-        <el-menu :default-active="active" unique-opened @select="goto">           
-            <template v-for="menu in menuList">
-                <el-menu-item v-if="!menu.submenus || menu.submenus.length ===0" :index="menu.routeHref" :key="menu.menuCode">                    
-                    <em :class="menu.menuIcon"></em>
-                    <span slot="title">{{menu.menuName}}</span>                  
-                </el-menu-item>
 
-                <el-submenu v-else :index="menu.id"  :key="menu.menuCode" >
-                    <template slot="title">
-                        <em :class="menu.menuIcon" v-if="menu.menuIcon"></em>
-                        {{menu.menuName}}
-                    </template>
-                    <el-menu-item v-for="(submenu,idx) in menu.submenus" :index="submenu.routeHref" :key="idx">
-                        {{submenu.menuName}}
-                    </el-menu-item>               
-                </el-submenu>
-            </template>
-        </el-menu>
+        <div class="sidebar-submenu">          
+            <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
+                <template v-for="submenu in submenus">
+                    <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode">                    
+                        <em :class="submenu.menuIcon"></em>
+                        <span slot="title">{{submenu.menuName}}</span>                  
+                    </el-menu-item>
+                </template>              
+            </el-menu>
+        </div>       
     </div>
 </template>
 <script>
@@ -30,19 +30,36 @@ export default {
     name: 'sidebar',
     data() {
         return {          
-            navList: []
+            navList: [],
+            activeRouteHref: this.$route.name || '',
+            isCollapse: true,
+            activeMenuCode: '0000', //menuCode
         };
     },
     computed: {
         ...mapState({
             user: state => state.user.userInfo,
+            //isCollapse: state => state.collapse,
         }),
-        active: function() {
-            return this.$route.name;
-        },
         menuList: function() {
             return this.navList;
         },
+        submenus: function() {
+            if(this.menuList.length){
+                //return this.menuList[this.activeMenuCode].submenus || [];
+                let menu = this.menuList.find( (menu) => {
+                    return menu.menuCode === this.activeMenuCode;
+                });
+                return menu.submenus || [];
+            } 
+        }
+    },
+    watch: {
+        '$route': function(newVal) {            
+            if(newVal) {
+                this.activeRouteHref = this.$route.name;                
+            }
+        }
     },
     methods: { 
         goto(index) {
@@ -54,73 +71,51 @@ export default {
             }
         },
         getmenuList(){
+            $log('this.user:',this.user);
             let param = { roleId:this.user.roleId };
+            
             //let reg = /http:/;
             GetmenuList(param)
                 .then( res => {
                     this.navList = res || [];
+
+                    //匹配激活的一级菜单 （只有两级菜单的情况）
+                    this.navList.forEach( (menu) => {                    
+                        if(menu.submenus && menu.submenus.length){
+                            let submenu = menu.submenus.find( (submenu) => {
+                                if(submenu.routeHref && submenu.routeHref !== '#'){
+                                    return submenu.routeHref === this.$route.name;
+                                }                           
+                            });                        
+                            if(submenu) {                            
+                                if(submenu.parentMenuCode && submenu.parentMenuCode){
+                                    this.activeMenuCode = submenu.parentMenuCode;
+                                }
+                            }
+                        }
+                    });
                 });
+        },
+        handleSelect(active) {
+            this.activeMenuCode = active;
+
+            if(this.menuList.length){                
+                let menu = this.menuList.find( (menu) => {
+                    return menu.menuCode === this.activeMenuCode;
+                });
+                let submenus = menu.submenus || [];
+                if(submenus.length){
+                    let submenu = submenus[0];                   
+                    this.goto(submenu.routeHref);
+                }
+            } 
         }
     },
-    created(){
+    mounted(){
         this.getmenuList();
     }
 };
 </script>
 <style  lang="scss">
-.zt-sidebar {
-    height: 100%;    
-
-    .logo-con {
-        height: 59px;
-        line-height: 59px;
-        border-bottom: 1px solid #000c17;
-        img {
-            vertical-align: middle;
-        }
-    }  
-    .el-menu {
-        border-right: 0;
-        text-align: left;
-        background: #001529;
-        color: #cfcfd1;
-        em {
-            font-size:14px;
-            vertical-align: middle;
-            margin-right:5px;
-        }
-        .el-menu-item {
-            height: 40px;
-            line-height: 40px;
-            font-size:14px;    
-            color:#cfcfd1;        
-            &.is-active {                    
-                //color: #fff !important;
-                border-right: 4px solid #2d8cf0 !important;
-            }
-            &:hover,
-            &.is-active {
-                color: #fff;
-                background: #000c17;
-            }
-        }
-        
-        .el-submenu {
-            .el-menu-item {             
-                padding-left:50px !important;                
-            }
-            .el-submenu__title {
-                height: 40px;
-                line-height: 40px;
-                font-size:14px;
-                color: #cfcfd1;
-                &:hover {
-                    background: #000c17;
-                    color: #fff;
-                }
-            }                       
-        }       
-    }
-}
 
 </style>

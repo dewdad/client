@@ -1,13 +1,14 @@
+@import url('./theme/commonset.scss');
+@import url('./theme/default.scss');
 @import url('./reset.scss');
 @import url('./iconfont.less');
 @import url('./iconfont.scss');
 @import url('./icon.scss');
-@import url('./dialog.scss');
-@import url('./transition.scss');
 @import url('./fontwson.scss');
-@import url('./theme/commonset.scss');
-@import url('./theme/default.scss');
+@import url('./transition.scss');
 
+@import url('./dialog.scss');
+@import url('./sidebar.scss');
 @import url('./common.scss');
 
 
@@ -54,6 +55,10 @@ body {
 
 .mt20 {
     margin-top: 20px !important;
+}
+
+.height-all {
+    height: 100%;
 }
 
 // button
