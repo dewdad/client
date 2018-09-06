@@ -43,17 +43,17 @@
                         <td>管理状态：</td>
                         <td>{{countData.admin_state_up ? 'UP' : 'DOWN'}}</td>
                         <td>网段：</td>
-                        <td>{{countData.neutronSubnets[0].cidr}}</td>
+                        <td>{{countData.neutronSubnets && countData.neutronSubnets[0].cidr}}</td>
                     </tr>
                     <tr>
                         <td>DHCP：</td>
-                        <td>{{countData.neutronSubnets[0].enable_dhcp ? '已激活' : '未激活'}}</td>
+                        <td>{{countData.neutronSubnets && countData.neutronSubnets[0].enable_dhcp ? '已激活' : '未激活'}}</td>
                         <td>IP版本：</td>
-                        <td>IPV{{countData.neutronSubnets[0].ip_version}}</td>
+                        <td>IPV{{countData.neutronSubnets && countData.neutronSubnets[0].ip_version}}</td>
                     </tr>
                     <tr>
                         <td>网关IP：</td>
-                        <td>{{countData.neutronSubnets[0].gateway_ip}}</td>
+                        <td>{{countData.neutronSubnets && countData.neutronSubnets[0].gateway_ip}}</td>
                         <td></td>
                         <td></td>
                     </tr>
