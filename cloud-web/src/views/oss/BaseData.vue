@@ -26,10 +26,13 @@
                                 </el-select>
                             </span>
                         </div>
-                        <div class="data">
+                        <div v-if="flowType === 'in'" class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.transferIn[0])" :duration="2" /> {{baseData.transferIn[1]}}
                         </div>
-                        <div class="font12 lh32">上月外网流出流量：256MB</div>
+                        <div v-if="flowType === 'out'" class="data">
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.transferOut[0])" :duration="2" /> {{baseData.transferOut[1]}}
+                        </div>
+                        <!-- <div class="font12 lh32">上月外网流出流量：256MB</div> -->
                     </el-col>
                     <el-col :span="span">
                         <div class="title monthRequest">
@@ -46,12 +49,12 @@
                         <div class="data">
                             <ICountUp :startVal="0" :endVal="methodType === 'PUT' ? parseInt(baseData.hitPut) : parseInt(baseData.hitGet)" :duration="2" /> 次
                         </div>
-                        <div class="font12 lh32">上月请求次数：15次</div>
+                        <!-- <div class="font12 lh32">上月请求次数：15次</div> -->
                     </el-col>
                     <el-col v-if="showFileNums" :span="span">
                         <div class="title">{{$t('oss.overview.fileNums')}}</div>
                         <div class="data">
-                            <span>{{baseData.objNum}}</span>
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.objNum)" :duration="2" />
                         </div>
                     </el-col>
                 </el-row>
@@ -62,6 +65,7 @@
 <script>
 import {getOssSpace, getBucket} from '@/service/oss';
 import ERRCODE from '@/constants/code';
+import {isEmpty} from '@/utils/utils';
 import ICountUp from 'vue-countup-v2';
 export default {
     name: 'BaseData',
@@ -74,6 +78,7 @@ export default {
             baseData: {
                 usedCap: [0, ''],
                 transferIn: [0, ''],
+                transferOut: [0, ''],
                 hitPut: 0,
                 hitGet: 0,
                 objNum: 0
@@ -90,18 +95,19 @@ export default {
         },
         headerInfo: {
             type: Object,
-            default: function () {
+            default: function() {
                 return {};
             }
         }
     },
     watch: {
-        '$route': function() {
+        $route: function() {
             this.init();
         },
-        'headerInfo': function(newval) {
-            $log(newval);
-            this.init();
+        headerInfo: function(newval) {
+            if (!isEmpty(newval)) {
+                this.init();
+            }
         }
     },
     created() {
@@ -113,12 +119,17 @@ export default {
         init() {
             if (this.$route.params.bucketId && this.$route.params.bucketId !== '') {
                 // 如果是单个桶 查询桶数据
-                // this.getBucket(this.$route.params.bucketId);
-                // this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usedCap);
-                // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
-                // this.baseData.hitPut = this.headerInfo.hitPut;
-                // this.baseData.hitGet = this.headerInfo.hitGet;
-                // this.baseData.hitDel = this.headerInfo.hitDel;
+                if (!isEmpty(this.headerInfo) && this.headerInfo.usage.rgwMain) {
+                    // this.getBucket(this.$route.params.bucketId);
+                    this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usage.rgwMain.size);
+                    // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
+                    // this.baseData.hitPut = this.headerInfo.hitPut;
+                    // this.baseData.hitGet = this.headerInfo.hitGet;
+                    this.baseData.objNum = this.headerInfo.usage.rgwMain.num_objects;
+                } else {
+                    this.baseData.usedCap = [0, ''];
+                    this.baseData.objNum = 0;
+                }
             } else {
                 // 查询总概览数据
                 this.getSpaceData();
@@ -130,11 +141,7 @@ export default {
                 .then(res => {
                     this.loading = false;
                     if (res.code === ERRCODE.SUCCESS_CODE) {
-                        this.baseData.usedCap = this.$options.filters['convertByteSize'](res.data.usedCap);
-                        this.baseData.transferIn = this.$options.filters['convertByteSize'](res.data.transferIn);
-                        this.baseData.hitPut = res.data.hitPut;
-                        this.baseData.hitGet = res.data.hitGet;
-                        this.baseData.hitDel = res.data.hitDel;
+                        this.setData(res.data);
                     }
                 })
                 .catch(() => {
@@ -145,13 +152,17 @@ export default {
         getBucket(bucketId) {
             getBucket(bucketId).then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
-                    this.baseData.usedCap = this.$options.filters['convertByteSize'](res.data.usedCap);
-                    this.baseData.transferIn = this.$options.filters['convertByteSize'](res.data.transferIn);
-                    this.baseData.hitPut = res.data.hitPut;
-                    this.baseData.hitGet = res.data.hitGet;
-                    this.baseData.hitDel = res.data.hitDel;
+                    this.setData(res.data);
                 }
             });
+        },
+        setData(data) {
+            this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap);
+            this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn);
+            this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut);
+            this.baseData.hitPut = data.hitPut;
+            this.baseData.hitGet = data.hitGet;
+            this.baseData.hitDel = data.hitDel;
         }
     }
 };

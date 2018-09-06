@@ -151,8 +151,6 @@ export default {
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.bucketList = res.data;
-                        this.$nextTick();
-                        this.$forceUpdate();
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }
@@ -210,20 +208,18 @@ export default {
         border-color: transparent transparent #fff;
     }
 }
-.el-menu-item.oss-menu-item {
+.is-opened .el-submenu__title {
+    font-weight: normal !important;
+    color: #333 !important;
+}
+.oss-menu-item {
     min-width: 150px !important;
+    padding-left: 30px !important;
     width: 150px;
-    padding-right: 15px;
-    &.router-link-active {
-        color: #2b65c5;
-        background: #ffffff !important;
-        i {
-            color: inherit;
-        }
-    }
+    padding-right: 20px;
 }
 .submenu .el-menu .el-submenu .el-menu-item.oss-menu-item {
-    padding-left: 15px !important;
+    padding-left: 30px !important;
     &:hover:not(:first-child),
     &:active {
         background: #fff;

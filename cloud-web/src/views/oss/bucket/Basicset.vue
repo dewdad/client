@@ -27,17 +27,11 @@
                             <!-- <span  class="helptips">私有：对文件的所有访问操作需要进行身份验证。</span> -->
                         </div>
                         <template v-if="!rwAuthForm.setting">
-                            <el-button type="info" size="small" @click="rwAuthForm.setting = true">
-                                设置
-                            </el-button>
+                            <el-button type="info" size="small" @click="rwAuthForm.setting = true">设置</el-button>
                         </template>
                         <template v-else>
-                            <el-button type="primary" size="small" @click="setBucketPrivacy">
-                                保存
-                            </el-button>
-                            <el-button type="info" size="small" @click="rwAuthForm.setting = false">
-                                取消
-                            </el-button>
+                            <el-button type="primary" size="small" @click="setBucketPrivacy">保存</el-button>
+                            <el-button type="info" size="small" @click="rwAuthForm.setting = false">取消</el-button>
                         </template>
                     </div>
                 </div>
