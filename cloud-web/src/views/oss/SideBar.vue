@@ -41,15 +41,11 @@
             <li class="el-menu-item oss-menu-item">
                 <el-button type="primary" style="width:105px;height: 32px;margin-top:-10px;" size="small" @click="createBucket">{{$t('oss.createOss')}}</el-button>
             </li>
-            <template v-for="bucket in bucketList">
-                <router-link :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.id === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.id, 'name': bucket.name}}">
-                    <el-tooltip effect="dark" :content="bucket.name" placement="right">
-                        <div>
-                            <i class="iconfont icon-dot small-font"></i> {{bucket.name}}
-                        </div>
-                    </el-tooltip>
-                </router-link>
-            </template>
+            <router-link v-for="bucket in bucketList" :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">
+                <div>
+                    <i class="iconfont icon-dot small-font"></i> {{bucket.name}}
+                </div>
+            </router-link>
             <create-bucket ref="createBucketDailog"></create-bucket>
         </ul>
     </li>
@@ -155,6 +151,8 @@ export default {
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.bucketList = res.data;
+                        this.$nextTick();
+                        this.$forceUpdate();
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }
@@ -216,6 +214,13 @@ export default {
     min-width: 150px !important;
     width: 150px;
     padding-right: 15px;
+    &.router-link-active {
+        color: #2b65c5;
+        background: #ffffff !important;
+        i {
+            color: inherit;
+        }
+    }
 }
 .submenu .el-menu .el-submenu .el-menu-item.oss-menu-item {
     padding-left: 15px !important;
