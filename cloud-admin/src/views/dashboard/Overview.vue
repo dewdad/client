@@ -41,11 +41,10 @@
                                 </div>
                             </h5>
                             <!-- 图表 -->
-                            <echarts-line 
-                            :isMarkPoint="false" 
+                            <echarts-line
                             :gridVal="gridVal" 
                             :legendData="legendData" 
-                            height="236px" 
+                            height="346px" 
                             :seriesData="seriesData" 
                             :xAxisData="xData" 
                             :markPointSymbolSize="['150','55']" 
@@ -68,12 +67,20 @@
                                         <echarts-pie></echarts-pie>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
-                                        <span class="color-warning font30">3600</span><i></i>
+                                        <div class="color-warning font30 icon-box">
+                                            3600
+                                            <span class="icon">
+                                                <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
+                                                    <i class="iconfont icon-notice_people" v-tooltip.right="'即将达到上限'"></i>
+                                                </el-tooltip>
+                                            </span>
+                                        </div>
+                                        
                                         <br>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
                                     <div class="text-r">
-                                        <span class="font30">96</span><i></i>
+                                        <span class="font30">96</span>
                                         <br>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
@@ -169,7 +176,7 @@ export default {
                 bottom: '60',
                 right: '20',
                 left: '60',
-                top: '10'
+                top: '60'
             },
             options: [
                 {value: '7天',label: '7'}
@@ -184,7 +191,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .overflow-box{
     background: #ebeef3;
 }
@@ -224,6 +231,9 @@ export default {
             clear: both;
         }
     }
+    .el-input__inner{
+        border-radius: 0;
+    }
 }
 .cpu_net-box{
     display: flex;
@@ -241,6 +251,16 @@ export default {
                 content: '';
                 display: block;
                 clear: both;
+            }
+            .text-r{
+                position: relative;
+            }
+            .icon{
+                position: absolute;
+                right: -18px;
+                top: 0;
+                color: #ff4400;
+                cursor: pointer;
             }
         }
     }

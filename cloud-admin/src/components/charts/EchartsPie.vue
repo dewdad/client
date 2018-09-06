@@ -30,16 +30,11 @@ export default {
                                 position: 'center'
                             },
                             emphasis: {
-                                show: true,
+                                show: false,
                                 textStyle: {
                                     fontSize: '30',
                                     fontWeight: 'bold'
                                 }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
                             }
                         },
                         data:[
@@ -48,7 +43,8 @@ export default {
                         ],
                         animation: false
                     }
-                ]
+                ],
+                color:['#0d7ef2','#ebf3f7']
             },
             chartsWidth: '',
             seriesArray: []
@@ -65,13 +61,6 @@ export default {
             type: String,
             default: 'myCharts'
         },
-        // x轴数据
-        xAxisData:{
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
         seriesData: {
             type: Array,
             default: function () {
@@ -82,20 +71,6 @@ export default {
         yUnit: {
             type: String,
             default: '%'
-        },
-        // 折线颜色
-        lineStyle: {
-            type: Array,
-            default: function () {
-                return [];
-            } 
-        },
-        // 区域填充颜色
-        areaStyle: {
-            type: Array,
-            default: function () {
-                return [];
-            }
         },
         // 图例名称
         legendData: {
@@ -128,7 +103,6 @@ export default {
         },
         seriesData() {
             // this.arrangeSeries();
-            this.option.xAxis['data'] = this.xAxisData;
             setTimeout(() =>{
                 let myChart = this.$echarts.init(document.getElementById(this.idString));
                 myChart.setOption(this.option);
@@ -151,45 +125,30 @@ export default {
         arrangeSeries() {
             this.seriesArray = [];
             for (let o in this.seriesData) {
+                $log(o);
                 let obj = {
-                    name: this.legendData[o],
-                    type:'line',
-                    showSymbol: false,
-                    smooth: true,
-                    lineStyle: {
-                        // color: this.lineStyle[o]
-                    },
-                    areaStyle: {
-                        // color: this.lineStyle[o]
-                        opacity: 0.1
-                    },
-                    data:this.seriesData[o].seriesData,
-                    markPoint: {
-                        data: [
-                            {type: 'max', name: '最大值'}
-                        ],
-                        // symbol: 'rect',
-                        symbolSize: ['138','55'],
-                        symbolOffset: ['0', '-30'],
-                        symbol: `image:// ${this.background}`,
-                        symbolKeepAspect: true,
-                        label: {
-                            textBorderColor: 'none',
-                            // formatter: '{a}峰值: {c}' + this.yUnit
-                            // offset: ['0', '10'],
-                            formatter: (params) => {
-                                let a = params.seriesName + '峰值: ' + params.value + this.yUnit;
-                                let b = this.xAxisData[params.data.coord[0]];
-                                console.log(params);
-                                return a + '\n' + b;
-                                // return [ `{a| ${a}}`, `{b| ${b}}`].join('</br>');
-                            },
-                            rich: {
-                                a: {},
-                                b: {}
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['80%', '100%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: false,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
                             }
                         }
-                    }
+                    },
+                    data:[
+                        {value:1548, name:'搜索引擎'},
+                        {value:535, name:'直接访问'}
+                    ],
+                    animation: false
                 };
                 this.seriesArray.push(obj);
             }
