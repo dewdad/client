@@ -97,7 +97,6 @@ export default {
             });
         },
         refreshBucket: function() {
-            alert();
             // refreshBucket改变时重新加载bucket
             this.getBucketListByUid();
         }

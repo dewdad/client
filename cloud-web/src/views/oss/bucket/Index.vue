@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div slot="right">
-                <el-button type="info" size="small" icon="el-icon-delete" @click="deleteBucket">
+                <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')" type="info" size="small" icon="el-icon-delete" @click="deleteBucket">
                     删除
                 </el-button>
                 <el-tooltip content="刷新" placement="left">

@@ -54,7 +54,7 @@
                     <el-col v-if="showFileNums" :span="span">
                         <div class="title">{{$t('oss.overview.fileNums')}}</div>
                         <div class="data">
-                            <span>{{baseData.objNum}}</span>
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.objNum)" :duration="2" />
                         </div>
                     </el-col>
                 </el-row>
@@ -119,16 +119,17 @@ export default {
         init() {
             if (this.$route.params.bucketId && this.$route.params.bucketId !== '') {
                 // 如果是单个桶 查询桶数据
-                if (!isEmpty(this.headerInfo)) {
+                if (!isEmpty(this.headerInfo) && this.headerInfo.usage.rgwMain) {
                     // this.getBucket(this.$route.params.bucketId);
-                    alert(JSON.stringify(this.headerInfo));
                     this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usage.rgwMain.size);
                     // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
                     // this.baseData.hitPut = this.headerInfo.hitPut;
                     // this.baseData.hitGet = this.headerInfo.hitGet;
                     this.baseData.objNum = this.headerInfo.usage.rgwMain.num_objects;
+                } else {
+                    this.baseData.usedCap = [0, ''];
+                    this.baseData.objNum = 0;
                 }
-                
             } else {
                 // 查询总概览数据
                 this.getSpaceData();
