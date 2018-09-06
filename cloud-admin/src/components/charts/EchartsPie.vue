@@ -1,11 +1,13 @@
 <template>
-    <div class="charts" style="color: #000">
-        <div :id="idString" style="width:154px; height:154px;"></div>
+    <div class="charts" style="color: #000; width: 100%; height: 100%;">
+        <div :id="idString" style="height:100%;"></div>
     </div>
 </template>
 <script>
 import background from '@/assets/images/echarts-bg.png';
 import {mapGetters} from 'vuex';
+
+import {on, off} from '@/utils/utils';
 export default {
     data() {
         return{
@@ -22,7 +24,7 @@ export default {
                     {
                         name:'访问来源',
                         type:'pie',
-                        radius: ['80%', '100%'],
+                        radius: ['70%', '100%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -44,7 +46,7 @@ export default {
                         animation: false
                     }
                 ],
-                color:['#0d7ef2','#ebf3f7']
+                color: this.mouldColor
             },
             chartsWidth: '',
             seriesArray: []
@@ -67,10 +69,12 @@ export default {
                 return [];
             }
         },
-        // y轴单位
-        yUnit: {
-            type: String,
-            default: '%'
+        // 模板颜色
+        mouldColor: {
+            type: Array,
+            default: function() {
+                return ['#0d7ef2', '#ebf3f7', '#61a0a8', '#c4ccd3'];
+            }
         },
         // 图例名称
         legendData: {
@@ -160,7 +164,16 @@ export default {
         this.myChartContainer();
         let myChart = this.$echarts.init(document.getElementById(this.idString));
         myChart.setOption(this.option);
-    }
+        on(window, 'resize', this.againCanvas);
+    },
+    destoryed() {
+        off(window, 'resize', this.againCanvas);
+    },
+    created() {
+        this.idString = 'echarts_' + Math.random()
+            .toString(36)
+            .substr(2);
+    },
 };
 </script>
 <style lang="scss">

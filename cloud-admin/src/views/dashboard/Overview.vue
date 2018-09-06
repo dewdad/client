@@ -40,17 +40,17 @@
                                     </el-select>
                                 </div>
                             </h5>
-                            <!-- 图表 -->
-                            <echarts-line
-                            :gridVal="gridVal" 
-                            :legendData="legendData" 
-                            height="346px" 
-                            :seriesData="seriesData" 
-                            :xAxisData="xData" 
-                            :markPointSymbolSize="['150','55']" 
-                            :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
-                            :dotStyle="['b0e9c4', 'b0e9c4']" 
-                            :idString="'mychart'"></echarts-line>
+                            <div style="height: 320px;">
+                                <!-- 图表 -->
+                                <echarts-line
+                                :gridVal="gridVal" 
+                                :seriesData="seriesData" 
+                                :xAxisData="xData" 
+                                :markPointSymbolSize="['150','55']" 
+                                :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                                :dotStyle="['b0e9c4', 'b0e9c4']" 
+                                :idString="'mychart'"></echarts-line>
+                            </div>
                         </div>
                     </el-col>
                     <!-- CPU、内存、磁盘 -->
@@ -63,7 +63,7 @@
                                 </div>
                                 <!-- CPU 饼图 -->
                                 <div class="item__data">
-                                    <div style="width:154px;float:left;background: #fff;">
+                                    <div style="width:154px;height:154px;float:left;background: #fff;">
                                         <echarts-pie></echarts-pie>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
@@ -71,17 +71,14 @@
                                             3600
                                             <span class="icon">
                                                 <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
-                                                    <i class="iconfont icon-notice_people" v-tooltip.right="'即将达到上限'"></i>
+                                                    <i class="iconfont icon-notice_people font14"></i>
                                                 </el-tooltip>
                                             </span>
                                         </div>
-                                        
-                                        <br>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
-                                    <div class="text-r">
-                                        <span class="font30">96</span>
-                                        <br>
+                                    <div class="text-r mt10">
+                                        <div class="font30 lh30">96</div>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
                                 </div>
@@ -93,16 +90,17 @@
                                 </div>
                                 <!-- 内存 饼图 -->
                                 <div class="item__data">
-                                    <div style="width:154px;float:left;background: #fff;">
-                                        <echarts-pie idString="echartmem"></echarts-pie>
+                                    <div style="width:154px;height:154px;float:left;background: #fff;">
+                                        <echarts-pie :mouldColor="['#ffad00', '#ebf3f7']" ></echarts-pie>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
-                                        <span class="color-warning font30">3600</span><i></i>
-                                        <br>
+                                        <div class="font30 icon-box">
+                                            3600
+                                        </div>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
-                                    <div class="text-r">
-                                        <span class="font30">96</span><i></i>
+                                    <div class="text-r mt10">
+                                        <span class="font30 lh30">96</span>
                                         <br>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
@@ -125,7 +123,19 @@
                                     </div>
                                 </div>
                                 <div class="disk__data__item disk__data__pie">
-                                    
+                                    <div style="width:94px;height:94px;float:left;background: #fff;">
+                                        <echarts-pie :mouldColor="['#18bcc9', '#ebf3f7']"></echarts-pie>
+                                    </div>
+                                    <div class="text-r" style="height: 47px; border-bottom: 1px solid #ebf3f7;">
+                                        <div class="font18 pos-relative">
+                                            205604
+                                        </div>
+                                        <span class="color-secondary font12">已使用</span>
+                                    </div>
+                                    <div class="text-r pt10" style="height: 47px;">
+                                        <div class="font18">96</div>
+                                        <span class="color-secondary font12">可用</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +205,7 @@ export default {
 .overflow-box{
     background: #ebeef3;
 }
+// 弹性云主机
 .cloud-host{
     background: #fff;
     border-radius: 5px;
@@ -235,6 +246,7 @@ export default {
         border-radius: 0;
     }
 }
+// CPU、内存、磁盘
 .cpu_net-box{
     display: flex;
     .item{
@@ -252,13 +264,13 @@ export default {
                 display: block;
                 clear: both;
             }
-            .text-r{
+            .icon-box{
                 position: relative;
             }
             .icon{
                 position: absolute;
                 right: -18px;
-                top: 0;
+                top: -18px;
                 color: #ff4400;
                 cursor: pointer;
             }
@@ -275,6 +287,7 @@ export default {
     &__data{
         display: flex;
         padding: 28px 0;
+        align-items: center;
         &__item{
             flex: 1;
             padding-left: 89px;
@@ -282,6 +295,10 @@ export default {
         &__pie{
             flex: 1;
             border-left: 1px solid #ebf3f7;
+            .text-r{
+                margin-right: 89px;
+                box-sizing: border-box;
+            }
         }
     }
 }
@@ -302,7 +319,7 @@ export default {
         background-color: #ff4400;
     }
 }
-
+// 已申请资源
 .info-box {
     background-color: #fff;
     padding: 39px 60px;
