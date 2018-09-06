@@ -212,13 +212,13 @@ export const API_ECS = {
 // OSS对象存储模块API地址
 export const API_OSS = {
     // GET /ossSpace 获取命名空间信息-首页加载总概览
-    ossSpace: OSS_CONTROLLER + '/ossSpace',
+    ossSpace: '/oss/user/usage',
     // 获取命名空间秘钥接口
     getAuthKeys: OSS_CONTROLLER + '/ossSpace/authKeys',
     createAuthKey: OSS_CONTROLLER + '/ossSpace/authKeys',
     ossSpaceData: OSS_CONTROLLER + '/ossSpace/data',
     delete: OSS_CONTROLLER + '/ossSpace/authKeys/{keyId}',
-    bucketList: OSS_CONTROLLER + '/ossBucket/list',
+    bucketList: '/oss/bucket/list',
     createBucket: OSS_CONTROLLER + '/ossBucket',
     // 给空间绑定(解绑)一个域名接口
     domain: OSS_CONTROLLER + '/ossBucket/domain',
