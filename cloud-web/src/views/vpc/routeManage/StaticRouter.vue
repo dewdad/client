@@ -44,7 +44,7 @@
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import AddStaticRouter from './dialog/AddStaticRouter';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
-// import {queryNetwork, deleteNetwork} from '@/service/ecs/network.js';
+import {getRouterList} from '@/service/ecs/network.js';
 
 let searchObj = {
     //分页
@@ -61,6 +61,7 @@ export default {
             region: '',
             isLoading: false,
             searchObj,
+            routerList: [],
             ECS_STATUS,
             listData: {}
         };
@@ -68,22 +69,50 @@ export default {
     computed: {
         tableData() {
             return this.listData ? this.listData.data || [] : [];
+        },
+        selRoute() {
+            return this.routerList.filter(
+                item => item.id === this.$route.params.id
+            );
         }
     },
     created() {
+        this.getRouterListFn();
     },
     methods: {
         addStaticRouterFn() {
             let AddStaticRouter = this.$refs.AddStaticRouter;
             if (AddStaticRouter) {
                 AddStaticRouter.show({
-                    type: 'create'
+                    type: 'create',
+                    route: this.selRoute
                 }).then(ret => {
                     if (ret) {
                         this.fetchData();
                     }
                 });
             }
+        },
+        // 获得所有路由列表
+        getRouterListFn(fileds) {
+            let params = {
+                pageIndex: 1,
+                totalItems: 0
+            };
+            getRouterList(params)
+                .then(res => {
+                    if (res && res.data) {
+                        let data = res.data;
+                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
+                            let dataList = data.data || [];
+                            this.routerList = dataList.data;
+                            $log('getRouterList ->', dataList);
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
         },
         // 抛出函数
         getVpcList(params) {
