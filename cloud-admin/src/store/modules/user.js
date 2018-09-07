@@ -2,10 +2,7 @@
 const user = {
     namespaced: true,
     state: {
-
-        datumId: '',
-        // 记录登录过的账号ID
-        accountList: []
+        userInfo: {}
     },
     getters: {
 
