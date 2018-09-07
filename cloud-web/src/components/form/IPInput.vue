@@ -71,6 +71,16 @@ export default {
                 this.next();
             }
         }
+    },
+    created() {
+        if (this.value) {
+            let valArr = this.value.split('.').map(e => e.split('/'));
+            this.ipt1 = valArr[0];
+            this.ipt2 = valArr[1];
+            this.ipt3 = valArr[2];
+            this.ipt4 = valArr[3][0];
+            this.ipt5 = valArr[3][1];
+        }
     }
 };
 </script>

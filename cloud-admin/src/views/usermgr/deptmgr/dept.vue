@@ -40,7 +40,14 @@
                     </el-form-item>
                 </el-form>
                 <div>
-                    <el-tree :data="deptTreeData" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree
+                            show-checkbox
+                            default-expand-all
+                            highlight-current
+                            :data="deptTreeData"
+                            :props="defaultProps"
+                            @node-click="handleNodeClick"
+                    ></el-tree>
                 </div>
             </el-col>
             <el-col :span="19" class="p20">
@@ -54,8 +61,7 @@
                     <el-tab-pane label="租户管理" name="first">
                         <el-form :inline="true" :model="rentForm" size="small">
                             <el-form-item>
-                                <el-button type="primary" @click="createSysconfig({},1)"><span class="icon-zt_plus"></span>  新增租户</el-button>
-                                <el-button type="primary" @click="createSysconfig()">刷新缓存</el-button>
+                                <el-button type="primary" @click="createRenter()"><span class="icon-zt_plus"></span>  新增租户</el-button>
                             </el-form-item>
                             <el-form-item>
                                 <el-select placeholder="请选择" v-model="rentForm.type" @change="rentForm.searchText=''">
@@ -83,7 +89,7 @@
                                 <template v-if="col.column=='username'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.id}}</span>
+                                            <span class="font12 mr10">{{scope.row.name}}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -91,7 +97,7 @@
                                 <template v-if="col.column=='descprition'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.resource}}</span>
+                                            <span class="font12 mr10">{{scope.row.descprition}}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -99,7 +105,7 @@
                                 <template v-if="col.column=='id'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.createTime | date }}</span>
+                                            <span class="font12 mr10">{{scope.row.id }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -107,7 +113,7 @@
                                 <template v-if="col.column=='start'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.createTime }}</span>
+                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -115,27 +121,26 @@
                                 <template v-if="col.column=='dept'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.createTime }}</span>
+                                            <span class="font12 mr10">{{scope.row.deptId }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
                             </template>
                             <!-- 操作 -->
-                            <template>
-                                <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                            <template >
+                                <el-table-column label="操作" style="width:25%" key="op" min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
                                         <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >查看使用量</a>
                                         <b class="link-division-symbol"></b>
-                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >修改配额</a>
-                                        <b class="link-division-symbol"></b>
-                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >管理成员</a>
                                         <el-dropdown>
-                                            <span class="el-dropdown-link">
+                                            <span class="btn-linker">
                                             更多<i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
+                                                <el-dropdown-item @click="createDept(scope.row)">修改配额</el-dropdown-item>
+                                                <el-dropdown-item @click="createDept(scope.row)">管理成员</el-dropdown-item>
                                                 <el-dropdown-item @click="createDept(scope.row)">编辑租户</el-dropdown-item>
-                                                <el-dropdown-item @click="createDept(scope.row)">删除租户</el-dropdown-item>
+                                                <el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
                                     </template>
@@ -155,15 +160,115 @@
                             </el-pagination>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="用户管理" name="second">用户管理</el-tab-pane>
+                    <el-tab-pane label="用户管理" name="second">
+                        <el-form :inline="true" :model="userForm" size="small">
+                            <el-form-item>
+                                <el-button type="primary" @click="createUser()"><span class="icon-zt_plus"></span>  新增用户</el-button>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-select placeholder="请选择" v-model="userForm.type" @change="userForm.searchText=''">
+                                    <el-option label="租户名" value="name"></el-option>
+                                    <el-option label="激活" value="enabled"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="关键字">
+                                <el-input placeholder="搜索关键字" v-model="userForm.searchText" v-if="userForm.type !== 'enabled'"></el-input>
+                                <el-select clearable v-model="userForm.searchText"  placeholder="请选择" v-if="userForm.type === 'enabled'">
+                                    <el-option label="是" value="0"></el-option>
+                                    <el-option label="否" value="1"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="createDept">查询</el-button>
+                            </el-form-item>
+                            <el-form-item class="pull-right">
+                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="disableDept"></el-button>
+                            </el-form-item>
+                        </el-form>
+                        <el-table :data="tableData2"  header-row-class-name="data-list">
+                            <template v-for="col in usercols">
+                                <!-- 用户名 -->
+                                <template v-if="col.column=='username'">
+                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                        <template slot-scope="scope">
+                                            <span class="font12 mr10">{{scope.row.id}}</span>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                                <!--邮箱-->
+                                <template v-if="col.column=='emailAddress'">
+                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                        <template slot-scope="scope">
+                                            <span class="font12 mr10">{{scope.row.emailAddress}}</span>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                                <!--租户ID-->
+                                <template v-if="col.column=='id'">
+                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                        <template slot-scope="scope">
+                                            <span class="font12 mr10">{{scope.row.id }}</span>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                                <!--激活-->
+                                <template v-if="col.column=='start'">
+                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                        <template slot-scope="scope">
+                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                                <!--部门-->
+                                <template v-if="col.column=='dept'">
+                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                        <template slot-scope="scope">
+                                            <span class="font12 mr10">{{scope.row.createTime }}</span>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                            </template>
+                            <!-- 操作 -->
+                            <template>
+                                <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                                    <template slot-scope="scope">
+                                        <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >编辑</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >重置密码</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >禁用用户</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >删除用户</a>
+                                    </template>
+                                </el-table-column>
+                            </template>
+                        </el-table>
+                        <!--分页-->
+                        <div class="pagination">
+                            <el-pagination background
+                                           @current-change="currentChange2"
+                                           @size-change="handleSizeChange2"
+                                           :current-page="searchObj2.paging.pageIndex"
+                                           :page-sizes="[10, 20, 50, 100]"
+                                           :page-size="searchObj2.paging.limit"
+                                           layout="sizes, prev, pager, next"
+                                           :total="searchObj2.paging.totalItems">
+                            </el-pagination>
+                        </div>
+                    </el-tab-pane>
                 </el-tabs>
 
             </el-col>
         </el-row>
+        <!--创建部门-->
         <create-dept ref="CreateDept"></create-dept>
+        <!--查看配额使用量-->
         <quota-and-usage ref="QuotaAndUsage"></quota-and-usage>
+        <!--用户详情-->
         <client-detail ref="ClientDetail"></client-detail>
+        <!--租户详情-->
         <project-detail ref="ProjectDetail"></project-detail>
+        <!--重置密码-->
         <reset-pwd ref="ResetPwd"></reset-pwd>
     </div>
 </template>

@@ -153,14 +153,17 @@
                             <div class="info-box__item">
                                 <i class="iconfont icon-anquanzu-gailan font20 color-secondary"></i>
                                 <span class="ml10">安全组</span>
+                                <span class="pull-right"><span>1</span>/100</span>
                             </div>
                             <div class="info-box__item">
                                 <i class="iconfont icon-luyouqi-gailan font20 color-secondary"></i>
                                 <span class="ml10">路由器 </span>
+                                <span class="pull-right"><span>1</span>/100</span>
                             </div>
                             <div class="info-box__item">
                                 <i class="iconfont icon-fudongIP-gailan font20 color-secondary"></i>
                                 <span class="ml10">浮动IP</span>
+                                <span class="pull-right"><span>1</span>/100</span>
                             </div>
                         </div>
                     </el-col>

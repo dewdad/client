@@ -153,8 +153,8 @@ export default {
 
             });
         },
-        relateAuth(){
-            this.$refs.RelateAuth.show()
+        relateAuth(item){
+            this.$refs.RelateAuth.show(item)
                 .then(ret => {
                     return this.$confirm('操作成功');
                 })

@@ -51,7 +51,8 @@ router.beforeEach(async (to, from, next) => {
         from.name ? next({name: from.name}) : next('/login'); // 如果上级也未匹配到路由则跳转登录页面，如果上级能匹配到则转上级路由
     } else {
         if (to.name !== 'login' && !store.getters.isLogined) {
-            return next('/login');
+            //return next('/login');
+            return window.location.href = '/#/login';
         }
         next();
     }
