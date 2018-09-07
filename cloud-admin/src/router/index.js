@@ -33,7 +33,9 @@ export default new Router({
                         title: '概览'
                     },
                     //redirect: '/user/auth',
-                    component: () => import('@/views/dashboard/Dashboard')
+                    // component: () => import('@/views/dashboard/Dashboard')
+                    // component: () => import('@/views/dashboard/Overview')
+                    component: () => import('@/views/dashboard/DepartOverview')
                 },
                 {
                     path: 'usrmgr',
