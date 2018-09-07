@@ -121,6 +121,18 @@ export async function amendRouter({...arg}) {
 }
 
 /**
+ * 添加静态路由
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function addStaticRouter({...arg}) {
+    $log('put /editRouter ->', {...arg});
+    let ret = await http.put(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
+
+/**
  * 删除路由
  */
 export async function deleteRouter({id}) {
@@ -128,6 +140,7 @@ export async function deleteRouter({id}) {
     let ret = await http.delete(replaceParamVal(API_ECS.network.delRouter, [id]));
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
+
 
 
 /**
