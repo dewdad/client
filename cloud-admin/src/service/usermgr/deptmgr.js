@@ -1,7 +1,7 @@
 import http from '../../utils/http';
-import {API_MENU_MGR, DEPT, RoleMgr} from '../../constants/apiUrl';
+import { DEPT, RoleMgr} from '../../constants/apiUrl';
 import {replaceParamVal} from "../../utils/utils";
-//import { replaceParamVal } from '../../utils/utils';
+import RSA from '@/utils/RSA';
 
 /**
  *部门树
@@ -105,4 +105,17 @@ export async function delRenter(data) {
     var url = DEPT.delRenter+'?req_param='+data;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
+}
+/**
+ *创建用户
+ * @param {*}
+ */
+export async function createUser(data) {
+    let pwd = data.password;
+    let RSA_PWD = await RSA.encrypt(pwd);
+    data.password = RSA_PWD;
+    console.log('data',data);
+    let url = DEPT.createUser;
+    let response = await http.post(url,data);
+    return response;
 }

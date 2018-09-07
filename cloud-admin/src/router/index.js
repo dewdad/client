@@ -175,6 +175,13 @@ export default new Router({
                                 title: '创建租户'
                             },
                             component: () => import('@/views/usermgr/deptmgr/createRente')
+                        },{
+                            path: 'createUser/:optType',
+                            name: 'app.usrmgr.createUser',
+                            meta: {
+                                title: '创建用户'
+                            },
+                            component: () => import('@/views/usermgr/deptmgr/createUser')
                         }
                     ]
                 }
