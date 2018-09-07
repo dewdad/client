@@ -252,8 +252,8 @@ export const API_UserAccount = {
     checkMobileExist: '/user/checkMobileExist',
     checkEmailExist: USER_CONTROLLER + '/user/checkEmailExist',
     validatePassword: USER_CONTROLLER + '/user/validatePassword',
-    checkImageCode: 'user/checkImageCode',
-    checkMobileCode: 'user/checkImageCode',
+    checkImageCode: '/user/checkImageCode/{code}',
+    checkMobileCode: '/user/checkImageCode',
     pwdForget: USER_CONTROLLER + '/user/resetPassword',
     bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
     // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码

@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <page-header>
-            平台管理
+            关联用户
         </page-header>
         <div class="header-top mt20">
             <el-button type="primary" class=" fa fa-angle-left" @click="goBack" size="small">&nbsp;返回</el-button>
@@ -13,7 +13,7 @@
                         <template v-if="col.column=='userCode'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.userId}}</span>
+                                    <span class="font12 mr10">{{scope.row.id}}</span>
                                 </template>
                             </el-table-column>
                         </template>

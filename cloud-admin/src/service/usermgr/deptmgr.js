@@ -1,5 +1,6 @@
 import http from '../../utils/http';
-import {DEPT} from '../../constants/apiUrl';
+import {API_MENU_MGR, DEPT, RoleMgr} from '../../constants/apiUrl';
+import {replaceParamVal} from "../../utils/utils";
 //import { replaceParamVal } from '../../utils/utils';
 
 /**
@@ -53,6 +54,16 @@ export async function ableDept(data) {
     return response;
 }
 /**
+ *创建租户
+ * @param {*}
+ */
+export async function createRenter(data) {
+    console.log('data',data);
+    let url = DEPT.createRenter;
+    let response = await http.post(url,data);
+    return response;
+}
+/**
  *查看配额和使用量
  * @param {*}
  */
@@ -74,5 +85,24 @@ export async function projectList(data) {
     });
     return response.data;
 }
-
-
+/**
+ *根据租户ID查询用户集合
+ * @param {*}
+ */
+export async function selectAllUsers(data) {
+    let url = DEPT.selectAllUsers;
+    let response = await http.get(url,{
+        params: data
+    });
+    return response.data;
+}
+/**
+ *删除租户
+ * @param {*}
+ */
+export async function delRenter(data) {
+    console.log('data',data);
+    var url = DEPT.delRenter+'?req_param='+data;
+    let response = await http.delete(url);
+    return response.data.code === '0000'&&response.data;
+}
