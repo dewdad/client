@@ -166,6 +166,13 @@ export default new Router({
                                 title: '部门管理'
                             },
                             component: () => import('@/views/usermgr/deptmgr/dept')
+                        },{
+                            path: 'createRente/:optType',
+                            name: 'app.usrmgr.createRente',
+                            meta: {
+                                title: '创建租户'
+                            },
+                            component: () => import('@/views/usermgr/deptmgr/createRente')
                         }
                     ]
                 }

@@ -6,7 +6,7 @@ import ProjectDetail from './ProjectDetail';
 import ResetPwd from './ResetPwd';
 import { mapState } from 'vuex';
 
-import {deptTree,delDept,ableDept,projectList} from '@/service/usermgr/deptmgr.js';
+import {deptTree,delDept,ableDept,projectList,delRenter} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'deptmgr',
     data() {
@@ -30,14 +30,14 @@ export default {
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'descprition', text:'描述' , width: '10%'},
             { column: 'id', text: '租户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '10%' },
+            { column: 'start', text: '激活', width: '5%' },
             { column: 'dept', text: '部门', width: '10%' },
         ];
         let usercols = [
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'emailAddress', text:'邮箱' , width: '10%'},
             { column: 'id', text: '用户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '10%' },
+            { column: 'start', text: '激活', width: '5%' },
             { column: 'dept', text: '部门', width: '10%' },
         ];
         return {
@@ -53,7 +53,7 @@ export default {
                 searchText:''
             },
             userForm:{
-                type:'',
+                type:'name',
                 searchText:''
             },
             activeName:'first',
@@ -89,6 +89,7 @@ export default {
             sessionStorage.setItem('deptTree',data);
             console.log(data);
         },
+        //获取部门树
         deptTree(){
             let params = {
                 pageIndex: 1,
@@ -113,8 +114,34 @@ export default {
                     }else{
                         this.brunch = this.deptTreeData[0];
                     }
+                    this.getprojectList();
                     sessionStorage.setItem('deptTree',this.deptTreeData[0]);
                 }
+            });
+        },
+        //创建租户
+        createRenter(){
+            return this.$router.push({name:'app.usrmgr.createRente',params:{optType:1,item:this.brunch}});
+        },
+        //创建用户
+        createUser(){
+            return this.$router.push({name:'app.usrmgr.createRente',params:{optType:1,item:this.brunch}});
+        },
+        //删除租户
+        delRenter(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                delRenter(item.id).then(ret=>{
+                    this.getprojectList();
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
             });
         },
         for_each_branch(treeData,f) {
@@ -144,18 +171,16 @@ export default {
             let param = {
                 [this.rentForm.type]:this.rentForm.searchText,
                 paging:this.searchObj1,
-                domain_id:this.brunch?this.brunch.id:this.user.deptId
+                deptId:this.brunch?this.brunch.id:this.user.deptId
             };
             $log('params', param);
             projectList(param).then(ret => {
                 $log('list', ret);
-                // let resData = ret.data;
-                // if(resData){
-                //     this.deptTreeData = resData|| [];
-                //     if(!this.hasBrunch){
-                //         this.brunch = this.deptTreeData[0];
-                //     }
-                // }
+                let resData = ret.data;
+                if(resData){
+                    this.tableData1 = resData.data|| [];
+
+                }
 
             });
         },
@@ -191,13 +216,18 @@ export default {
                 });
         },
         enableDept(item){
+            let enableState = item.enabled;
+            let status = item.status;
             item.enabled = true;
+            item.status = 1;
             ableDept(item).then(ret => {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
                     return this.$confirm('操作成功');
                 }else{
+                    item.enabled = enableState;
+                    item.status = status;
                     this.$alert('操作失败', '提示', {
                         type: 'error'
                     });
@@ -207,13 +237,18 @@ export default {
             });
         },
         disableDept(item){
+            let enableState = item.enabled;
+            let status = item.status;
             item.enabled = false;
+            item.status = 0;
             ableDept(item).then(ret => {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
                     return this.$confirm('操作成功');
                 }else{
+                    item.enabled = enableState;
+                    item.status = status;
                     this.$alert('操作失败', '提示', {
                         type: 'error'
                     });
@@ -284,6 +319,5 @@ export default {
     mounted(){
         console.log('dd',this.dept);
         this.deptTree();
-        this.getprojectList();
     }
 };
