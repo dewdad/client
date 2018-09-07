@@ -388,3 +388,9 @@ export const API_IMAGE = {
     //添加自定义镜像
     addCustomImage: IMAGE_CTRL + '/image'
 };
+
+// 概览
+export const API_OVERVIEW = {
+    //添加自定义镜像
+    getOrderCount: '/compute/order/getOrderCount' // 概览-工单数量
+};

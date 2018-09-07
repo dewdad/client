@@ -125,7 +125,7 @@ export default {
         },
         //创建用户
         createUser(){
-            return this.$router.push({name:'app.usrmgr.createRente',params:{optType:1,item:this.brunch}});
+            return this.$router.push({name:'app.usrmgr.createUser',params:{optType:1,item:this.brunch}});
         },
         //删除租户
         delRenter(item) {

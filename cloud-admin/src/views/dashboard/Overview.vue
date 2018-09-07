@@ -16,7 +16,7 @@
                                     <div class="font16">弹性云主机</div>
                                     <div>
                                         <span class="is-bold font25">705</span>个
-                                        <span class="pull-right">
+                                        <span class="pull-right mt10 color-secondary">
                                             较上月同期：
                                             <span class="color-success">+20个</span>
                                         </span>
@@ -46,6 +46,7 @@
                                 :gridVal="gridVal" 
                                 :seriesData="seriesData" 
                                 :xAxisData="xData" 
+                                :isMarkPoint="false"
                                 :markPointSymbolSize="['150','55']" 
                                 :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
                                 :dotStyle="['b0e9c4', 'b0e9c4']" 
@@ -114,10 +115,10 @@
                             </div>
                             <div class="disk__data">
                                 <div class="disk__data__item">
-                                    <div class="pull-left cloud-host__title__icon">
+                                    <div class="pull-left cloud-host__title__icon back-gray">
                                         <i class="iconfont icon-cipan-gailan"></i>
                                     </div>
-                                    <div class="font16 color-secondary"><i class="dot"></i>SATA</div>
+                                    <div class="font16"><i class="dot"></i>SATA</div>
                                     <div>
                                         <span class="is-bold font25">232936 </span>GB
                                     </div>
@@ -321,6 +322,9 @@ export default {
     &.color-warning {
         background-color: #ff4400;
     }
+}
+.back-gray{
+    background-color: #8da3c6;
 }
 // 已申请资源
 .info-box {

@@ -14,7 +14,7 @@ export default new Router({
     },
     routes: [
         {
-            path: '',
+            path: '/',
             redirect: '/app/overview'
         },
         {
@@ -39,8 +39,8 @@ export default new Router({
                     },
                     //redirect: '/user/auth',
                     // component: () => import('@/views/dashboard/Dashboard')
-                    // component: () => import('@/views/dashboard/Overview')
-                    component: () => import('@/views/dashboard/DepartOverview')
+                    component: () => import('@/views/dashboard/Overview')
+                    // component: () => import('@/views/dashboard/DepartOverview')
                 },
                 {
                     path: 'usrmgr',
@@ -175,6 +175,13 @@ export default new Router({
                                 title: '创建租户'
                             },
                             component: () => import('@/views/usermgr/deptmgr/createRente')
+                        },{
+                            path: 'createUser/:optType',
+                            name: 'app.usrmgr.createUser',
+                            meta: {
+                                title: '创建用户'
+                            },
+                            component: () => import('@/views/usermgr/deptmgr/createUser')
                         }
                     ]
                 }
