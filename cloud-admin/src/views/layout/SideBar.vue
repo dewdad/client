@@ -7,11 +7,14 @@
                         <em :class="menu.menuIcon"></em>
                         <span v-if="!isCollapse" slot="title">{{menu.menuName}}</span>   
                     </el-menu-item> 
-                </template>           
+                </template> 
+
+                <!-- 这里写一个空的是为了返回控制台首页清空activeIndex的时候菜单选中状态不变化的问题 -->
+                <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
 
-        <div class="sidebar-submenu">          
+        <div class="sidebar-submenu" v-if="submenus.length">          
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode">                    
@@ -25,7 +28,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {GetmenuList} from '@/service/overview.js';
+//import {GetmenuList} from '@/service/overview.js';
 export default {
     name: 'sidebar',
     data() {
@@ -41,23 +44,31 @@ export default {
             user: state => state.user.userInfo,
             //isCollapse: state => state.collapse,
         }),
-        menuList: function() {
-            return this.navList;
+        menuList: function() {            
+            return window.navList || [];
         },
         submenus: function() {
-            if(this.menuList.length){
-                //return this.menuList[this.activeMenuCode].submenus || [];
-                let menu = this.menuList.find( (menu) => {
+            if(window.navList.length){
+                let submenus = [];
+                this.parseActivemenu(window.navList); 
+                $log('activeMenuCode----------',this.activeMenuCode);                        
+                let menu = window.navList.find( (menu) => {
                     return menu.menuCode === this.activeMenuCode;
-                });
-                return menu.submenus || [];
+                });                
+                if(menu) {                     
+                    submenus = menu.submenus || [];
+                }
+                
+                $log('menu----------',menu);
+                return submenus;                              
             } 
+            return [];
         }
     },
     watch: {
         '$route': function(newVal) {            
-            if(newVal) {                
-                this.activeRouteHref = this.parseRouterName();                
+            if(newVal) {
+                this.parseActivemenu(this.menuList);
             }
         }
     },
@@ -70,34 +81,7 @@ export default {
                 this.$router.push({name: index});
             }
         },
-        getmenuList(){
-            $log('this.user:',this.user);
-            let param = { roleId:this.user.roleId };
-            
-            //let reg = /http:/;
-            GetmenuList(param)
-                .then( res => {
-                    this.navList = res || [];
-
-                    //匹配激活的一级菜单 （只有两级菜单的情况）
-                    this.navList.forEach( (menu) => {                    
-                        if(menu.submenus && menu.submenus.length){
-                            let routerName = this.parseRouterName();
-                            let submenu = menu.submenus.find( (submenu) => {
-                                if(submenu.routeHref && submenu.routeHref !== '#'){
-                                    return submenu.routeHref === routerName;
-                                }                           
-                            });                        
-                            if(submenu) { 
-                                this.activeRouteHref = routerName;                        
-                                if(submenu.parentMenuCode && submenu.parentMenuCode){
-                                    this.activeMenuCode = submenu.parentMenuCode;
-                                }
-                            }
-                        }
-                    });
-                });
-        },
+     
         parseRouterName(){
             let routerName = '';
             if (this.$route.meta && this.$route.meta.parentName) {
@@ -107,6 +91,28 @@ export default {
             }
             return routerName;
         },
+
+        //处理激活的一二级菜单；
+        parseActivemenu(menuList){        
+            if(menuList && menuList.length){
+                this.activeRouteHref = this.parseRouterName();
+                menuList.forEach( (menu) =>{
+                    if(menu.submenus && menu.submenus.length){                        
+                        let submenu = menu.submenus.find( (submenu) => {
+                            if(submenu.routeHref && submenu.routeHref !== '#'){
+                                return submenu.routeHref === this.activeRouteHref;
+                            }                           
+                        });                        
+                        if(submenu) { 
+                            this.activeMenuCode = menu.menuCode; 
+                        }else{                         
+                            this.activeMenuCode = '0000';
+                        }
+                    }
+                }); 
+            }
+        },
+
         handleSelect(active) {
             this.activeMenuCode = active;
 
@@ -122,8 +128,8 @@ export default {
             } 
         }
     },
-    mounted(){
-        this.getmenuList();
+    created(){
+        this.parseActivemenu();
     }
 };
 </script>

@@ -2,7 +2,7 @@
     <div>
         
         <div class="logo-con pull-left">
-            <img src="@/assets/images/logo_open.svg" width="85px" alt="">
+            <img src="@/assets/images/logo_open.svg" width="85px" alt="" @click="goHome">
         </div>
         
         <!--  <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -66,8 +66,13 @@ export default {
 
         logOut() {
             this.$store.dispatch('LOGOUT');
-            this.$router.push({name: 'login'});
-        },       
+            window.location.href = '/#/login';
+            //this.$router.push({name: 'login'});
+        },  
+        
+        goHome(){
+            this.$router.push({name: 'app.overview'});
+        }
     }
 };
 </script>
