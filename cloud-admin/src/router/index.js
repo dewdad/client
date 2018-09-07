@@ -14,6 +14,10 @@ export default new Router({
     },
     routes: [
         {
+            path: '',
+            redirect: '/app/overview'
+        },
+        {
             path: '/login',
             name: 'login',
             component: () => import('@/views/login/Login')
@@ -21,6 +25,7 @@ export default new Router({
         {
             path: '/app',
             name: 'app',
+            redirect: '/app/overview',
             component: () => import('@/views/layout/Layout'),
             meta: {
                 title: '首页'

@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-07-28 18:14:00
+ * @Last Modified time: 2018-09-07 11:00:42
  * ecs模块 读取网络信息接口
  */
 
@@ -15,9 +15,12 @@ import ERRCODE from '@/constants/code';
  * data: 值为空查询所有
  * @param {*} data
  */
-export async function getNetwork(data) {
+export async function getNetwork({sysCode = 'image', isSensitive = 0} = {}) {
     let res = await http.get(API_ECS.network.getNetwork, {
-        params: {data}
+        params: {
+            sysCode,
+            isSensitive
+        }
     });
     return res && res.data;
 }
@@ -162,7 +165,6 @@ export async function getNetworkCount({vpcId}) {
     let ret = await http.get(replaceParamVal(API_ECS.network.networkCount, [vpcId]));
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
-
 
 /**
  * 创建网络 POST /networks

@@ -121,7 +121,6 @@ export default {
             const range = document.createRange();
             range.setStart(ele, 0);
             range.setEnd(ele, ele.childNodes.length);
-            console.log(parseInt(getStyle(ele, 'width')), ele.scrollWidth);
             if (ele.scrollWidth > parseInt(getStyle(ele, 'width'))) {
                 this.tooltipDisabled = false;
             } else {
