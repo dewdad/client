@@ -18,7 +18,7 @@
                     </el-select> -->
                     <!-- <i v-show="opType === 1" class="font16 ml10 finger-cursor iconfont icon-Refreshshuaxin" @click="getUnbindPublicIP"></i> -->
                 </div>
-                <a v-show="opType === 1" class="mt10 finger-cursor font12">{{$t('dialog.bindPublicip.goCreatePublicIP')}}</a>
+                <router-link  v-show="opType === 1" :to="{name: 'app.vpc.pn-flexip'}" target="_blank" class="mt10 finger-cursor font12">{{$t('dialog.bindPublicip.goCreatePublicIP')}}</router-link>
             </zt-form-item>
             
         </zt-form>
