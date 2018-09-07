@@ -66,7 +66,6 @@ export default {
 
         logOut() {
             this.$store.dispatch('LOGOUT');
-            window.location.href = '/#/login';
             //this.$router.push({name: 'login'});
         },  
         
