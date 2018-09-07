@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-07 16:09:55
+ * @Last Modified time: 2018-09-07 18:10:28
  * ecs模块 列表页面
  */
 
@@ -16,6 +16,8 @@ import RSA from '@/utils/RSA';
  */
 export async function getEcsInstList(data) {
     let url = API_ECS.inst.getInstList;
+    data.pageIndex = data.pageIndex || 1;
+    data.limit = data.limit || 10;
     data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     return http.get(url, {
         params: data
