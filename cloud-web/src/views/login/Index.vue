@@ -220,9 +220,14 @@ export default {
                             // 如果路由中存在redirect参数 跳转到redirect对应的页面
                             this.$router.push(redirect);
                         } else {
-                            this.$router.push({
-                                name: 'app'
-                            });
+                            if (result.data.roleType === '4') {
+                                this.$router.push({
+                                    name: 'app'
+                                });
+                            } else {
+                                window.location.href = '/admin';
+                            }
+                            
                         }
                     } else {
                         this.errorMsg = result.msg;

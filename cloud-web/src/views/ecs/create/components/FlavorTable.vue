@@ -1,10 +1,10 @@
 <template>
     <div style="width: 100%;position:relative;">
-        <div class="mb10">
+        <!-- <div class="mb10">
             <el-radio-group v-model="platform" size="small">
                 <el-radio-button v-for="plat in PLAT_FORM" :key="plat.text" :label="plat.value" :disabled="plat.disabled">{{plat.text}}</el-radio-button>
             </el-radio-group>
-        </div>
+        </div> -->
         <div class="mb10">
             <el-radio-group v-model="flavor_type" size="small">
                 <el-radio-button v-for="flavor in FLAVOR_TYPE" :key="flavor.value" :label="flavor.value">{{flavor.label}}</el-radio-button>
@@ -119,7 +119,7 @@ export default {
             getInstFlavor()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.tableData = res.result;
+                        this.tableData = res.data;
                         this.currentFlavor = this.tableData[this.flavor_type][0];
                     }
                 })
@@ -135,7 +135,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .el-radio-group .el-radio-button {
-    margin-right:5px;
+    margin-right: 5px;
 }
 .tips-help {
     display: inline-block;

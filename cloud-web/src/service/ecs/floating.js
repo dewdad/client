@@ -1,8 +1,8 @@
 /*
  * @Author: sunersheng 
  * @Date: 2018-07-18 16:59:00 
- * @Last Modified by: sunersheng
- * @Last Modified time: 2018-08-30 20:04:59
+ * @Last Modified by: wenfang
+ * @Last Modified time: 2018-09-07 16:28:36
  * ecs模块 浮动IP
  */
 
@@ -16,10 +16,14 @@ const ECS_CTRL = 'services-ecs';
 //绑定：找所有未绑定的 公网IP
 //status: 值为'DOWN' 时查询找所有未绑定的 公网IP,
 //eip_subnet: 传值且为true时查询连接IP
-export async function getUnbindPublicIP({status = 'down',eip_subnet} = {}) {
-    let url = ECS_CTRL + `/floating/list`;
+export async function getUnbindPublicIP({status = 'down', floatingIpAddress = ''} = {}) {
+    let url = API_ECS.floatIp.list;
     let response = await http.get(url, {
-        params: {status,eip_subnet}
+        params: {
+            state: status,
+            pageIndex: 1,
+            limit: 1000
+        }
     });
     return response.data;
 }
@@ -33,6 +37,30 @@ export async function getUnbindPublicIP({status = 'down',eip_subnet} = {}) {
 export async function modifyFloatIP({id, type, port, bindwidth}) {
     let url = ECS_CTRL + `/floating/${id}`;
     return http.put(url, {type, port, bindwidth});
+}
+
+/**
+ *
+ * 绑定IP
+ * @export
+ * @param {*} {instanceId, floatipId}
+ * @returns
+ */
+export async function bundlingIp({instanceId, floatipId}) {
+    let url = replaceParamVal(API_ECS.floatIp.bundlingIp, [instanceId, floatipId]);
+    return http.put(url);
+}
+
+/**
+ *
+ * 解绑IP
+ * @export
+ * @param {*} {id}
+ * @returns
+ */
+export async function unbundlingIp({floatipId}) {
+    let url = replaceParamVal(API_ECS.floatIp.unbundlingIp, [floatipId]);
+    return http.put(url);
 }
 
 /**更新浮动IP:更新浮动IP（解绑、绑定、修改带宽） *
