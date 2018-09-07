@@ -129,8 +129,9 @@ export default {
             createEcsFormData: state => state.createEcsFormData
         }),
         sizeRange: function() {
-            let minSize = this.createEcsFormData.mirror && this.createEcsFormData.mirror.imageObj !== '' ? this.createEcsFormData.mirror.imageObj.minSize : '20';
+            let minSize = this.createEcsFormData.mirror && this.createEcsFormData.mirror.imageObj !== '' ? (this.createEcsFormData.mirror.imageObj.size / 1073741824).toFixed(0) : '20';
             let size = minSize.indexOf(',') !== -1 ? minSize.split(',') : [minSize, 500];
+            $log(minSize);
             return size;
         },
         sysDiskMinSize: function() {

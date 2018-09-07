@@ -18,11 +18,7 @@
                     <el-col :span="8">
                         <span>{{$t('common.instName')}}：</span>{{get(createEcsFormData,'instance.instname')}}</el-col>
                     <el-col :span="8">
-                        <span>{{$t('common.payType')}}：</span>{{$t('ecs.inst.list.freeTrial')}}</el-col>
-                    <el-col :span="8">
-                        <span>{{$t('common.area')}}：</span>{{zone}}</el-col>
-                    <el-col :span="8">
-                        <span>{{$t('common.instSpec')}}：</span>X86计算 {{get(createEcsFormData,'flavorObj.types')}} {{get(createEcsFormData,'flavorObj.vCpu')}} {{$t('abbr.vcpu')}} {{get(createEcsFormData, 'flavorObj.ram')}}{{$t('abbr.gb')}}内存</el-col>
+                        <span>{{$t('common.instSpec')}}：</span>{{get(createEcsFormData,'flavorObj.types')}} {{get(createEcsFormData,'flavorObj.vCpu')}} {{$t('abbr.vcpu')}} {{get(createEcsFormData, 'flavorObj.ram')}}{{$t('abbr.gb')}}内存</el-col>
                     <el-col :span="8">
                         <span>{{$t('common.applyNumber')}}：</span>{{get(createEcsFormData, 'applyNumber')}}</el-col>
                     <el-col :span="8">
@@ -57,20 +53,20 @@
                         <span>{{$t('common.net')}}：</span>{{$t('common.privateNet')}}</el-col>
                     <el-col :span="8">
                         <span>{{$t('common.privateNet')}}：</span>{{get(createEcsFormData,'netWorkInfo.netWork.name')}}</el-col>
-                    <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'isReady'">
+                    <!-- <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'isReady'">
                         <span>{{$t('common.publicNetworkIP')}}：</span>{{get(createEcsFormData,'broadBand.ipAdd.ipAdd')}} / {{get(createEcsFormData,'broadBand.ipAdd.name')}}</el-col>
                     <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'newCreate'">
                         <span>{{$t('common.publicNet')}}：</span>分配公网IP地址 / BGP(多线)</el-col>
                     <el-col :span="8">
-                        <span>{{$t('common.subnet')}}：</span>{{get(createEcsFormData,'netWorkInfo.subNet.name')}}({{get(createEcsFormData,'netWorkInfo.subNet.subnet')||'-'}})</el-col>
-                    <el-col :span="16">
-                        <span>{{$t('common.securityGroup')}}：</span>{{get(createEcsFormData.securityGroup, 'currentSecurityGroup.name')||'默认安全组'}}(开通端口：{{ports}}) </el-col>
+                        <span>{{$t('common.subnet')}}：</span>{{get(createEcsFormData,'netWorkInfo.subNet.name')}}({{get(createEcsFormData,'netWorkInfo.subNet.subnet')||'-'}})</el-col> -->
+                    <el-col :span="8">
+                        <span>{{$t('common.securityGroup')}}：</span>{{get(createEcsFormData.securityGroup, 'currentSecurityGroup.name')||'默认安全组'}}</el-col>
                 </el-row>
             </div>
         </el-card>
         <!-- 所选配置 end -->
         <!-- 服务协议 start -->
-        <el-card class="box-card create-form-item create-form-item__name" shadow="hover">
+        <!-- <el-card class="box-card create-form-item create-form-item__name" shadow="hover">
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-chuangjianyunzhuji-fuwutiaokuan"></zt-icon>
@@ -82,7 +78,7 @@
                     <span :class="{'color-primary': !isError}">《媒体云服务条款》</span>
                 </el-checkbox>
             </div>
-        </el-card>
+        </el-card> -->
         <!-- 服务协议 end -->
     </div>
 </template>

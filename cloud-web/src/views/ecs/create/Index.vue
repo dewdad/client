@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-import {addClass, removeClass, isEmpty} from '@/utils/utils';
+import {addClass, removeClass} from '@/utils/utils';
 import {createECS} from '@/service/ecs/list';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
@@ -151,16 +151,7 @@ export default {
             this.active = active;
         },
         createInst() {
-            if (this.$refs.stepthree.argee === false) {
-                this.$refs.stepthree.isError = true;
-                this.$alert('创建前请阅读<a>《媒体云服务条款》</a>并勾选同意', '提示', {
-                    dangerouslyUseHTMLString: true,
-                    type: 'warning',
-                    confirmButtonText: '去操作'
-                });
-            } else {
-                this.doCreate();
-            }
+            this.doCreate();
         },
         setValue() {
             let formData = Object.assign({}, this.dataOne, this.dataTwo);
@@ -170,7 +161,7 @@ export default {
             // 请求体
             let body = {
                 server: {
-                    flavorRef: this.createEcsFormData.flavorObj.hwId,
+                    flavorRef: this.createEcsFormData.flavorObj.id,
                     name: this.createEcsFormData.instance.instname,
                     adminPass: this.createEcsFormData.keyPair.password1,
                     circle: '1_month',
@@ -178,7 +169,7 @@ export default {
                         {
                             source_type: 'image',
                             destination_type: 'volume',
-                            uuid: this.createEcsFormData.mirror.imageObj.hwId,
+                            uuid: this.createEcsFormData.mirror.imageObj.id,
                             delete_on_termination: 'False',
                             boot_index: '0',
                             volume_type: this.createEcsFormData.storage.sysDisk.type.value,
@@ -187,30 +178,29 @@ export default {
                     ],
                     security_groups: [
                         {
-                            name: this.createEcsFormData.securityGroup.currentSecurityGroup ? this.createEcsFormData.securityGroup.currentSecurityGroup.hwId : ''
+                            name: this.createEcsFormData.securityGroup.currentSecurityGroup ? this.createEcsFormData.securityGroup.currentSecurityGroup.id : ''
                         }
                     ],
                     networks: [
                         {
-                            uuid: this.createEcsFormData.netWorkInfo.subNet.networkHwId
+                            uuid: this.createEcsFormData.netWorkInfo.netWork.id
                         }
                     ],
-                    availability_zone: this.createEcsFormData.region,
+                    availability_zone: 'az1.dc1',
                     key_name: this.createEcsFormData.keyPair.keyname
                 },
                 instanceDescribe: this.createEcsFormData.instance.desc,
                 applyInstNum: this.createEcsFormData.applyNumber,
                 dataDiskList: this.dataDiskList,
                 ecsName: this.createEcsFormData.instance.instname,
-                availabilityZone: this.createEcsFormData.region,
-                imageId: this.createEcsFormData.mirror.imageObj.hwId,
+                availabilityZone: this.createEcsFormData.region || 'az1.dc1',
+                imageId: this.createEcsFormData.mirror.imageObj.id,
                 bandWidth: 0,
                 floatIpId: (this.createEcsFormData.broadBand.checked && this.createEcsFormData.broadBand.type !== 'isReady' && this.createEcsFormData.broadBand.ipAdd) ? this.createEcsFormData.broadBand.ipAdd.id : '',
-                floatIpType: this.createEcsFormData.broadBand.checked ? this.createEcsFormData.broadBand.type : '',
-                eip_subnet_id: (this.createEcsFormData.broadBand.checked && this.createEcsFormData.broadBand.type === 'newCreate') ? '79e1ce89-1d94-481b-b4f7-67a0632a51c1' : '', // 79e1ce89-1d94-481b-b4f7-67a0632a51c1
+                floatIpType: this.createEcsFormData.broadBand.checked ? this.createEcsFormData.broadBand.type : '新建',
                 loginCert: this.createEcsFormData.keyPair.loginType,
-                ports: this.createEcsFormData.securityGroup.setType === '1' ? this.createEcsFormData.securityGroup.labelList.join(',') : this.createEcsFormData.securityGroup.ports.join(','),
-                labels: []
+                // ports: this.createEcsFormData.securityGroup.setType === '1' ? this.createEcsFormData.securityGroup.labelList.join(',') : this.createEcsFormData.securityGroup.ports.join(','),
+                // labels: []
                 // bill: [
                 //     {
                 //         billType: 1
@@ -236,24 +226,24 @@ export default {
                 // ]
             };
             // 如果没有指定安全组
-            if (isEmpty(this.createEcsFormData.securityGroup.currentSecurityGroup)) {
-                // 如果是自定义端口
-                if (this.createEcsFormData.securityGroup.setType === '2') {
-                    if (this.createEcsFormData.securityGroup.custom_port !== '') {
-                        body.ports += ',' + this.createEcsFormData.securityGroup.custom_port;
-                    }
-                    if (this.createEcsFormData.securityGroup.custom_udp !== '') {
-                        body.ports += ',' + this.createEcsFormData.securityGroup.custom_udp;
-                    }
-                    if (this.createEcsFormData.securityGroup.ping === '1') {
-                        body.ports += ',icmp';
-                    }
-                } else {
-                    body.ports += ',icmp';
-                }
-            } else {
-                body.ports = '';
-            }
+            // if (isEmpty(this.createEcsFormData.securityGroup.currentSecurityGroup)) {
+            //     // 如果是自定义端口
+            //     if (this.createEcsFormData.securityGroup.setType === '2') {
+            //         if (this.createEcsFormData.securityGroup.custom_port !== '') {
+            //             body.ports += ',' + this.createEcsFormData.securityGroup.custom_port;
+            //         }
+            //         if (this.createEcsFormData.securityGroup.custom_udp !== '') {
+            //             body.ports += ',' + this.createEcsFormData.securityGroup.custom_udp;
+            //         }
+            //         if (this.createEcsFormData.securityGroup.ping === '1') {
+            //             body.ports += ',icmp';
+            //         }
+            //     } else {
+            //         body.ports += ',icmp';
+            //     }
+            // } else {
+            //     body.ports = '';
+            // }
             
             $log(body);
             this.creating = true;

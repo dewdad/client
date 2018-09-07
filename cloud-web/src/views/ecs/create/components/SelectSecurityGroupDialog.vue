@@ -8,7 +8,7 @@
                         <el-radio v-model="currentGroup" :label="scope.row"></el-radio>
                     </template>
                 </el-table-column>
-                <el-table-column prop="id" label="安全组名称ID ">
+                <el-table-column prop="id" min-width="200" label="安全组名称ID ">
                 </el-table-column>
                 <el-table-column prop="name" label="安全组名称">
                 </el-table-column>
@@ -118,8 +118,8 @@ export default {
             getSecurityGroupList(data)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.tableData = res.result.records;
-                        this.searchObj.paging.totalItems = res.result.total;
+                        this.tableData = res.data.data;
+                        this.searchObj.paging.totalItems = res.data.total;
                     }
                 })
                 .catch(err => {
