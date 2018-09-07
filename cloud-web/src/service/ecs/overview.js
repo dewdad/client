@@ -7,7 +7,7 @@
  */
 
 import http from '@/utils/http';
-import { API_ECS } from '@/constants/apiUrl';
+import { API_ECS, API_OVERVIEW } from '@/constants/apiUrl';
 import {replaceParamVal} from '@/utils/utils';
 
 /**
@@ -58,5 +58,13 @@ export async function moniterEchartMetricData(data ) {
     let res = await http.get(API_ECS.monitor.moniterEchartMetricData,{
         params:{ data }
     });
+    return res && res.data; 
+}
+
+/**
+ * 概览-工单数量
+ */
+export async function getOrderCount() {    
+    let res = await http.get(API_OVERVIEW.getOrderCount);
     return res && res.data; 
 }

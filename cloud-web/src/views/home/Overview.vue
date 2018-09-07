@@ -194,6 +194,7 @@
 import EchartsLine from '@/components/charts/EchartsLine.vue';
 import EchartsBar from '@/components/charts/EchartsBar.vue';
 import ICountUp from 'vue-countup-v2';
+import {getOrderCount} from '@/service/ecs/overview.js';
 export default {
     name: 'Overview',
     data() {
@@ -236,8 +237,26 @@ export default {
         EchartsBar,
         ICountUp
     },
-    methods: {},
-    mounted() {}
+    methods: {
+        getOrderCountFn() {
+            getOrderCount()
+                .then(res => {
+                    if (res && res.data) {
+                        let data = res.data;
+                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
+                            let dataList = data.data || [];
+                            $log(dataList);
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
+        }
+    },
+    mounted() {
+        this.getOrderCountFn();
+    }
 };
 </script>
 <style scoped lang="scss">

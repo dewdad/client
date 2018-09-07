@@ -132,28 +132,28 @@
                                             <i class="iconfont icon-wangluo-gailan"></i>
                                             <span class="ml10">网络</span>
                                         </div>
-                                        <span class="pull-right statistics"><span class="font30">25</span>/100个</span>
+                                        <span class="pull-right statistics font12"><span class="font30">25</span>/100个</span>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-anquanzu-gailan"></i>
                                             <span class="ml10">安全组</span>
                                         </div>
-                                        <div class="pull-right statistics"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-luyouqi-gailan"></i>
                                             <span class="ml10">路由器</span>
                                         </div>
-                                        <div class="pull-right statistics"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-fudongIP-gailan"></i>
                                             <span class="ml10">浮动IP</span>
                                         </div>
-                                        <div class="pull-right statistics"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
                                     </li>
                                 </ul>
                             </div>
@@ -166,12 +166,13 @@
                         <el-col :span="8">
                             <div class="floor-tenant__box">
                                 <div class="title demo-input-suffix">
-                                    <span class="mr40 font16">租户</span>
+                                    <span class="mr40 font16 lh32">租户</span>
                                     <el-input
                                         style="width:180px"
                                         placeholder="请输入内容"
                                         prefix-icon="el-icon-search"
                                         size="small"
+                                        class="pull-right"
                                         v-model="searchVal">
                                     </el-input>
                                 </div>
@@ -204,11 +205,13 @@
                                 </div>
                                 <div class="floor-tenant__resource__list">
                                     <div class="resource-list" v-for="(item, index) in resourceArr" :key="index">
-                                        <div class="resource-title">
-                                            <i :class="item.class"></i>
-                                            <span class="ml10">{{item.name}}</span>
+                                        <div class="resource-list__father">
+                                            <div class="resource-title">
+                                                <i :class="item.class"></i>
+                                                <span class="ml10">{{item.name}}</span>
+                                            </div>
+                                            <div class="pull-right statistics"><span>25</span>/100</div>
                                         </div>
-                                        <div class="pull-right statistics"><span>25</span>/100个</div>
                                     </div>
                                 </div>
                             </div>
@@ -304,6 +307,9 @@ export default {
         border-radius: 4px;
         .title{
             padding: 14px 30px;
+            .el-input__inner{
+                border-radius: 0;
+            }
         }
         &__ul{
             height: 246px;
@@ -341,12 +347,19 @@ export default {
             .resource-list{
                 height: 50px;
                 line-height: 50px;
-                background-color: #f6f8fb;
-                padding: 0 20px;
-                width: 32%;
-                float: left;
-                margin-right: 10px;
+                width: 33.3%;
                 margin-bottom: 10px;
+                float: left;
+                &__father{
+                    margin: 0 5px;
+                    padding: 0 20px;
+                    background-color: #f6f8fb;
+                    &::after{
+                        content: '';
+                        display: block;
+                        clear: both;
+                    }
+                }
                 .resource-title{
                     display: flex;
                     align-items: center;
