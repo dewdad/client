@@ -2,13 +2,14 @@
  * @Author: wenfang 
  * @Date: 2018-07-03 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-07-09 15:09:26
+ * @Last Modified time: 2018-09-07 17:04:47
  * 注册服务
  */
 
 import http from '../utils/http';
-import { API_REGISTER } from '../constants/apiUrl';
+import {API_REGISTER} from '../constants/apiUrl';
 import RSA from '@/utils/RSA';
+import {replaceParamVal} from '@/utils/utils';
 
 /**
  * 验证手机号码是否已注册-
@@ -39,13 +40,9 @@ export async function getImageCode() {
  * @param {*} code 图片验证码
  */
 export async function checkImageCode(code) {
-    let response = await http.post(API_REGISTER.checkImageCode, {
-        imageCode: code
-    });
+    let response = await http.get(replaceParamVal(API_REGISTER.checkImageCode, [code]));
     return response && response.data;
 }
-
-
 
 export async function registerUser(data) {
     let RSA_PWD = await RSA.encrypt(data.loginPass);

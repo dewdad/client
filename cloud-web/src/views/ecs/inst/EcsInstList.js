@@ -17,7 +17,7 @@ import {
     //reloadSystem
 } from '@/service/ecs/list.js';
 import ZT_CONFIG from '@/constants/config';
-import {showTextByKey, cloneDeep /*convertToVchartData*/} from '@/utils/utils.js';
+import {showTextByKey, cloneDeep, sleep /*convertToVchartData*/} from '@/utils/utils.js';
 //import {moniterEchartMetricData} from '@/service/ecs/overview';
 import CopyText from '@/components/copy/copyText';
 
@@ -554,7 +554,8 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 'start', 2)
-                                .then(() => {
+                                .then(async () => {
+                                    await sleep(5000);
                                     ret.loading = false;
                                     ret.hide();
                                     this.$message.success($t('common.successOpt'));
@@ -590,7 +591,8 @@ export default {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 'stop', 3)
-                                .then(() => {
+                                .then(async () => {
+                                    await sleep(5000);
                                     ret.loading = false;
                                     ret.hide();
                                     this.$message.success($t('common.successOpt'));
@@ -631,6 +633,9 @@ export default {
                                     ret.hide();
                                     this.$message.success($t('common.successOpt'));
                                     this.getEcsInstList();
+                                    setTimeout(() => {
+                                        this.getEcsInstList({show: false});
+                                    }, 5000);
                                 })
                                 .catch(err => {
                                     ret.loading = false;
