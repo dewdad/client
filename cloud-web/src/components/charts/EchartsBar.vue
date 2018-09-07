@@ -86,7 +86,7 @@ export default {
         // 图表ID
         idString: {
             type: String,
-            default: 'myCharts'
+            default: 'echarts_' + Math.random().toString(36).substr(2)
         },
         // x轴数据
         xAxisData:{
@@ -287,11 +287,6 @@ export default {
     },
     destoryed() {
         off(window, 'resize', this.againCanvas);
-    },
-    created() {
-        this.idString = 'echarts_' + Math.random()
-            .toString(36)
-            .substr(2);
     },
     async mounted () {
         await this.arrangeSeries();

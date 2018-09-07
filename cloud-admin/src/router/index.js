@@ -159,6 +159,13 @@ export default new Router({
                                 parentName:'app.usrmgr.sysconfig'
                             },
                             component: () => import('@/views/usermgr/sysconfig/editConfig')
+                        },{
+                            path: 'deptmgr',
+                            name: 'app.usrmgr.deptmgr',
+                            meta: {
+                                title: '部门管理'
+                            },
+                            component: () => import('@/views/usermgr/deptmgr/dept')
                         }
                     ]
                 }

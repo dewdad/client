@@ -107,7 +107,7 @@
 <script>
 import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
-import {getDeptList} from '@/service/overview.js';
+import {getDeptList,getDomainList} from '@/service/overview.js';
 export default {
     name: 'app',
     data() {
@@ -141,6 +141,13 @@ export default {
         }),
     },
     methods:{
+        getDomainList(){
+            getDomainList().then(ret => {
+                console.log('dept',ret);
+                // // 记录部门信息
+                this.$store.commit('user/DEPT', ret.data.data);
+            });
+        },
         calcChart(documentId,data1,data2,name) {
             let thisdom = document.getElementById(documentId);
             let myChart = this.$echarts.init(thisdom);
@@ -335,6 +342,7 @@ export default {
     },
     mounted() {
         this.queryDeptlist();
+        this.getDomainList();
     }
 };
 </script>
