@@ -41,7 +41,10 @@ export const DEPT = {
     createDept: USER_RSA + '/dept/',//创建部门
     editDept: USER_RSA + '/dept/',//编辑部门
     searchQuota: USER_RSA + '/dept/getQuotaAndUsage/',//查看配额和使用量
-    projectList: USER_RSA + '/dept/getQuotaAndUsage/',//租户列表
+    projectList: USER_RSA + '/project/list',//租户列表
+    selectAllUsers: USER_RSA + '/user/list',//根据租户ID查询用户集合
+    createRenter: USER_RSA + '/project/',//创建租户
+    delRenter: USER_RSA + '/project/delete',//删除租户
 };
 // 角色管理
 export const RoleMgr = {
