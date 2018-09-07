@@ -141,7 +141,7 @@ export default {
             this.version = 4;
             this.DHCPVal = true;
             if (type === 'update') {
-                console.warn(data);
+                console.warn('update', data);
                 this.data.name = data.name;
                 this.data.cindr = data.neutronSubnets && data.neutronSubnets[0].cidr;
                 this.cindrVal = data.neutronSubnets && data.neutronSubnets[0].cidr;
