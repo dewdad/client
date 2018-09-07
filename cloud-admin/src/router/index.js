@@ -14,7 +14,7 @@ export default new Router({
     },
     routes: [
         {
-            path: '',
+            path: '/',
             redirect: '/app/overview'
         },
         {

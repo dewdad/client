@@ -42,6 +42,7 @@ import 'nprogress/nprogress.css';
 const echarts = require('echarts');
 Vue.prototype.$echarts = echarts;
 
+import {GetmenuList} from '@/service/overview.js';
 // 路由跳转前执行
 router.beforeEach(async (to, from, next) => {
     // 如果是登录成功后跳转或F5刷新，加载左侧菜单
@@ -50,9 +51,42 @@ router.beforeEach(async (to, from, next) => {
         // 如果未匹配到路由
         from.name ? next({name: from.name}) : next('/login'); // 如果上级也未匹配到路由则跳转登录页面，如果上级能匹配到则转上级路由
     } else {
+        let isProduction = process.env.NODE_ENV === 'production' ? true : false;
         if (to.name !== 'login' && !store.getters.isLogined) {
-            //return next('/login');
-            return window.location.href = '/#/login';
+            if(isProduction){
+                return window.location.href = '/#/login';
+            }
+            return next('/login');
+            
+        }else { 
+            let userInfo = store.getters.userInfo || {}; 
+            // 登录状态下
+            if (store.state.isLogined ){
+                //打包版本
+                if(isProduction){
+                    //登录角色判断，admin角色            
+                    if( ['1','2','3'].includes(userInfo.roleType) ){ 
+                                        
+                    }else {//租户角色 访问admin页面，无权限；则可以弹出窗口提示无权限，或者返回到登录页面
+                        //返回到登录页面
+                        return window.location.href = '/#/login' ;
+                    }
+                }
+                //如果目标路由是登录直接跳转到概览页面
+                if(to.path.includes('login') ) {
+                    next('/app');
+                    return;
+                }
+                                 
+            } 
+            
+            // 如果来源路由是登录或注册 或者已登录进行浏览器刷新
+            if (from.name === 'login' || (store.state.isLogined && from.name === null)) {
+                let param = { roleId: userInfo.roleId };
+                let navList = await GetmenuList(param);                   
+                window.navList = navList || [];
+            }  
+                        
         }
         next();
     }
