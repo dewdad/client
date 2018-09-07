@@ -39,8 +39,8 @@ export default new Router({
                     },
                     //redirect: '/user/auth',
                     // component: () => import('@/views/dashboard/Dashboard')
-                    // component: () => import('@/views/dashboard/Overview')
-                    component: () => import('@/views/dashboard/DepartOverview')
+                    component: () => import('@/views/dashboard/Overview')
+                    // component: () => import('@/views/dashboard/DepartOverview')
                 },
                 {
                     path: 'usrmgr',
