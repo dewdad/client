@@ -11,7 +11,7 @@
             <div class="create-form-item__content">
                 <div>
                     <el-radio-group v-model="form.netWorkType" size="small">
-                        <el-radio-button label="1">{{$t('common.privateNet')}}</el-radio-button>
+                        <el-radio-button label="1">专有网络</el-radio-button>
                     </el-radio-group>
                     <el-popover placement="bottom" title="" width="340" trigger="hover">
                         <div>
@@ -27,7 +27,7 @@
                     <span class="input-help pt0">如需使用其他私有网络，请选择已有私有网络或
                         <router-link :to="{name: 'app.vpc.pn'}" target="_blank">前往控制台创建></router-link>
                     </span>
-                    <div class="network-info">
+                    <!-- <div class="network-info">
                         <el-row>
                             <el-col :span="10">
                                 <label>所选私有网络：</label>{{get(form.netWorkInfo, 'netWork.id')}}/{{get(form.netWorkInfo, 'netWork.name')}} </el-col>
@@ -38,13 +38,13 @@
                             <el-col :span="8">
                                 <label>子网网段：</label>{{get(form.netWorkInfo, 'subNet.subnet')}}</el-col>
                         </el-row>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </el-card>
         <!-- 网络 end -->
         <!-- 公网带宽 strat -->
-        <el-card class="box-card create-form-item" shadow="hover" v-loading="bandLoading" element-loading-spinner="el-icon-loading">
+        <!-- <el-card class="box-card create-form-item" shadow="hover" v-loading="bandLoading" element-loading-spinner="el-icon-loading">
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-yunzhujichuangjian-gongwangkuandai"></zt-icon>
@@ -54,7 +54,7 @@
             <div class="create-form-item__content">
                 <broad-band ref="broadBand" v-if="created" v-model="form.broadBand" @loading="checkBandLoading"></broad-band>
             </div>
-        </el-card>
+        </el-card> -->
         <!-- 公网带宽 end -->
         <!-- 安全组 strat -->
         <el-card class="box-card create-form-item" shadow="hover">
@@ -148,7 +148,7 @@ export default {
                     if (valid) {
                         // return resolve();
                         // 验证公网带宽
-                        this.validBand(resolve, reject);
+                        this.validSecurityGroup(resolve, reject);
                     } else {
                         this.showError(field);
                     }
@@ -172,13 +172,12 @@ export default {
         },
         // 验证安全组
         validSecurityGroup(resolve, reject) {
-            if (isEmpty(this.$refs.securityGroup.form.currentSecurityGroup) && this.$refs.securityGroup.form.setType === '2') {
-                this.$refs.securityGroup.$refs.customForm.validate((valid, field) => {
-                    if (valid) {
-                        return resolve();
-                    } else {
-                        this.showError(field);
-                    }
+            if (isEmpty(this.$refs.securityGroup.form.currentSecurityGroup)) {
+                showErrAlert('请选择安全组', () => {
+                    scrollTo('#select-security', {
+                        offset: -200
+                    });
+                    // if (refs) refs[keys[0]].focus();
                 });
             } else {
                 return resolve();

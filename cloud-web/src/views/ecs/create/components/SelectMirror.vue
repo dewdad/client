@@ -16,18 +16,28 @@
         <div>
             <zt-form ref="imageForm" :inline="true" :show-message="false" inline-message size="small" :model="form" :rules="rules" label-width="0">
                 <zt-form-item id="osType" label="" class="mb0 hide-star" prop="osType">
-                    <el-select v-model="form.osType" :placeholder="$t('form.input.ostype')" size="small" :popper-append-to-body="false" value-key="categoryId" style="width:170px;" @change="getImages">
-                        <el-option v-for="item in sysTypes" :key="item.categoryId" :value="item" :label="item.name">
-                            <zt-icon :icon="item.pic" type="svg"></zt-icon> {{item.name}}
+                    <el-select v-model="form.osType" :placeholder="$t('form.input.ostype')" size="small" :popper-append-to-body="false" style="width:170px;">
+                        <el-option v-for="item in sysTypes" :key="item.pic" :value="item.name" :label="item.name">
+                            <zt-icon :icon="item.pic" type="font"></zt-icon> {{item.name}}
                         </el-option>
                     </el-select>
                 </zt-form-item>
                 <zt-form-item id="imageObj" label="" class="mb0 hide-star" prop="imageObj">
-                    <el-select v-model="form.imageObj" :placeholder="$t('form.input.osversion')" size="small" :popper-append-to-body="false" value-key="id" style="width:436px;" no-data-text="暂无镜像">
+                    <el-select v-model="form.imageObj" :placeholder="$t('form.input.osversion')" size="small" :popper-append-to-body="false" value-key="id" style="width:320px;" no-data-text="暂无镜像">
                         <el-option v-for="item in versions" :key="item.id" :label="item.name" :value="item">
                         </el-option>
                     </el-select>
+                    <el-checkbox class="ml10" v-model="form.secure_selected">安全加固</el-checkbox>
+                    <el-popover placement="top" title="" width="340" trigger="hover">
+                        <div>
+                            免费加载云服务器安全组件，提供网站后门检测、异地登录提醒、暴力破解拦截等安全功能
+                        </div>
+                        <span class="tips-help ml5" slot="reference">
+                            <zt-icon icon="icon-iconfontwenhao1"></zt-icon>
+                        </span>
+                    </el-popover>
                 </zt-form-item>
+
             </zt-form>
         </div>
     </div>
@@ -35,18 +45,40 @@
 <script>
 // import {getImagesGroups} from '@/service/ecs/image';
 import {getImageList, getImages} from '@/service/ecs/newimage';
+const sysTypes = [
+    {
+        pic: 'icon-centos',
+        name: 'CentOS'
+    },
+    {
+        pic: 'icon-windows',
+        name: 'Windows'
+    },
+    {
+        pic: 'icon-redhat',
+        name: 'Redhat'
+    },
+    {
+        pic: 'icon-ubuntu',
+        name: 'Ubuntu'
+    },
+    {
+        pic: 'icon-freebsd',
+        name: 'FreeBSD'
+    }
+];
 export default {
     name: 'SelectMirror',
     data() {
         return {
             loading: false,
-            sysTypes: [],
+            sysTypes,
             imagesGroups: {},
-            versions: [],
             form: {
                 mirrorType: '1',
                 osType: '',
-                imageObj: ''
+                imageObj: '',
+                secure_selected: true
             },
             rules: {
                 osType: [
@@ -84,26 +116,19 @@ export default {
         this.getImagesGroups();
         this.$emit('input', this.form);
     },
-    // computed: {
-    //     versions: function() {
-    //         // let ostype = this.form.osType.toLowerCase();
-    //         let arr = [
-    //             {
-    //                 id: 'fdsafdsaf-fdsajsh',
-    //                 name: '7.4 32bit'
-    //             }
-    //         ];
-    //         // return this.imagesGroups[ostype] || arr;
-    //         return arr;
-    //     }
-    // },
+    computed: {
+        versions: function() {
+            let ostype = this.form.osType.toLowerCase();
+            return this.imagesGroups[ostype] || [];
+        }
+    },
     methods: {
         getImagesGroups() {
             this.loading = true;
             getImageList()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.sysTypes = res.result.records;
+                        this.imagesGroups = res.data;
                     }
                 })
                 .catch(err => {

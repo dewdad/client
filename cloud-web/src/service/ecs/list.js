@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-03 19:41:50
+ * @Last Modified time: 2018-09-07 16:09:55
  * ecs模块 列表页面
  */
 
@@ -16,6 +16,7 @@ import RSA from '@/utils/RSA';
  */
 export async function getEcsInstList(data) {
     let url = API_ECS.inst.getInstList;
+    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     return http.get(url, {
         params: data
     });
@@ -60,9 +61,14 @@ export async function modifyVncPwd({ecsId, password1, password2}) {
 /**获取实例规格 *
  * @param {*} data  *
  */
-export async function getInstFlavor() {
+export async function getInstFlavor({sysCode = 'iamge', isSensitive = 0} = {}) {
     let url = API_ECS.flavors.getFlavors;
-    let res = await http.get(url, {});
+    let res = await http.get(url, {
+        params: {
+            sysCode,
+            isSensitive
+        }
+    });
     return res && res.data;
 }
 
@@ -92,9 +98,12 @@ export async function saveInstFlavor({instanceId, flavorId}) {
  * 实例列表：开关机操作:开机、软关机、硬关机、软重启、硬重启
  * type:1开机os-start、2软关机os-stop-soft、3硬关机os-stop-hard、4软重启os-reboot-soft、5硬重启os-reboot-hard
  */
-export async function ecsInstAction(instanceId, type) {
-    let url = replaceParamVal(API_ECS.inst.actionInst, [instanceId, type]);
-    let res = await http.post(url, {});
+export async function ecsInstAction(instanceId, actionReq, type) {
+    let url = replaceParamVal(API_ECS.inst.actionInst, [instanceId]);
+    let res = await http.post(url, {
+        actionReq,
+        type
+    });
     return res && res.data;
 }
 
@@ -103,16 +112,16 @@ export async function ecsInstAction(instanceId, type) {
  */
 export async function editInstInfo({instanceId, name, remark}) {
     let url = replaceParamVal(API_ECS.inst.editInstInfo, [instanceId]);
-    let res = await http.put(url, {name, remark});
+    let res = await http.post(url, {name, remark});
     return res && res.data;
 }
 
 /**删除实例 *
  * @param {*} data
  */
-export async function deleteEcsInstList({instanceId /*, releaseFloatIp = false, releaseDataDisk = false*/}) {
+export async function deleteEcsInstList({instanceId, actionReq = {}, type = 1} = {}) {
     let url = replaceParamVal(API_ECS.inst.deleteInst, [instanceId]);
-    let res = await http.delete(url, {});
+    let res = await http.delete(url, {actionReq, type});
     return res && res.data;
 }
 
@@ -121,7 +130,7 @@ export async function deleteEcsInstList({instanceId /*, releaseFloatIp = false, 
  */
 export async function createCustomImage({ecsId, imageName, imageDesc}) {
     let url = API_ECS.images.createImage;
-    let res = await http.post(url, {ecsId, imageName, imageDesc});
+    let res = await http.post(replaceParamVal(url, [ecsId]), {name: imageName, describe: imageDesc});
     return res && res.data;
 }
 

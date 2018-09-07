@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-08-25 15:45:17
+ * @Last Modified time: 2018-09-07 10:06:44
  * ecs模块 镜像接口
  */
 
@@ -49,13 +49,11 @@ export async function getImagesGroups(types, osType) {
  * @param {pageIndex} [limit=1000]
  * @returns
  */
-export async function getImageList({name = '', platformName = '', limit = 1000, pageIndex = 1} = {}) {
+export async function getImageList({sysCode = 'image', isSensitive = 0} = {}) {
     let res = await http.get(API_ECS.newimages.type, {
         params: {
-            name,
-            platformName,
-            limit,
-            pageIndex
+            sysCode,
+            isSensitive
         }
     });
     return res && res.data;

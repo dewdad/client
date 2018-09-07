@@ -39,7 +39,7 @@
         </el-card>
         <!-- 计费方式 end -->
         <!-- 区域选择 strat -->
-        <el-card class="box-card create-form-item" shadow="hover">
+        <!-- <el-card class="box-card create-form-item" shadow="hover">
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-quyu"></zt-icon>
@@ -49,7 +49,7 @@
             <div class="create-form-item__content">
                 <region-select v-model="form.region"></region-select>
             </div>
-        </el-card>
+        </el-card> -->
         <!-- 区域选择 end -->
         <!-- 实例选择 strat -->
         <el-card class="box-card create-form-item" shadow="hover" v-loading="flavorLoading" element-loading-spinner="el-icon-loading">

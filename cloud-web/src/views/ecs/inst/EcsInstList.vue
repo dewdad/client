@@ -41,7 +41,7 @@
                 <!-- 操作系统 -->
                 <el-table-column prop="os" :label="getLabel('os')" min-width="70" class-name="text-center" align="center" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        {{scope.row.image.name}}
+                        {{scope.row.image ? scope.row.image.name : '-'}}
                     </template>
                 </el-table-column>
                 <!-- IP地址 -->
@@ -185,12 +185,8 @@
         <stop-inst-dialog ref="stopInstDialog" />
         <!-- 对话框 修改信息 -->
         <modify-info-dialog ref="ModifyInfoDialog" />
-        <!-- 对话框 远程登录 -->
-        <telnet-dialog ref="telnetDialog" />
         <!-- 对话框 编辑标签 -->
         <!-- <edit-label-dialog ref="editLabelDialog"/> -->
-        <!-- 对话框 远程登录指导 -->
-        <telnet-guide-dialog ref="telnetGuideDialog" />
         <!-- 对话框 修改实例名称 -->
         <amend-name-dialog ref="amendNameDialog" />
         <!-- 对话框 删除 -->
@@ -198,7 +194,7 @@
         <!-- 对话框 删除 -->
         <delete-inst-dialog ref="deleteInstDialog" />
         <!-- 对话框 创建自定义镜像 -->
-        <!-- <custom-image-dialog ref="CustomImageDialog"/> -->
+        <custom-image-dialog ref="CustomImageDialog" />
         <!-- 对话框 更换系统磁盘 -->
         <!-- <rep-sys-disk-dialog ref="RepSysDiskDialog"/> -->
         <!-- 对话框 更换系统磁盘二级对话框 -->

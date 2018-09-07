@@ -82,7 +82,7 @@ export default {
 
         //创建子菜单
         createSubmenu(rowItem){
-            return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:rowItem.menuCode}});
+            return this.$router.push({name:'app.usrmgr.createRent',params:{opType:1,code:rowItem.menuCode}});
         },
 
         //编辑

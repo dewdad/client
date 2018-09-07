@@ -68,7 +68,7 @@ function checkWhiteList(url) {
 /*  create http client */
 const http = axios.create({
     timeout: 30000, // 请求超时时间 30s,
-    baseURL: 'http://10.11.3.80:7100/',
+    baseURL: 'http://10.11.3.61:7100/',
     // baseURL: API_URL,
     // 请求方法同上
     method: 'post', // default

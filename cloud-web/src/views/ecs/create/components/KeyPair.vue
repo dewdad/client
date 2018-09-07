@@ -179,10 +179,10 @@ export default {
     methods: {
         getKeypairList() {
             this.loading = true;
-            getKeypairList()
+            getKeypairList({pageIndex:1, limit: 1000})
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.keyPairList = res.result.data || [];
+                        this.keyPairList = res.data.data || [];
                     }
                 })
                 .catch(err => {

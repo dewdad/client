@@ -1,6 +1,6 @@
 <template>
     <div class="select-security-group">
-        <div class="mb10">
+        <div id="select-security" class="mb10">
             <span class="select-security color-primary img-text-center">
                 <span class="finger-cursor img-text-center" @click="showDialog">
                     <zt-icon icon="zticon-chuangjiananquanzu" class=" select-security__icon" type="svg"></zt-icon>{{$t('ecs.create.safeGroup.select')}}</span>
@@ -15,22 +15,21 @@
                 </span>
             </span>
         </div>
-        <div class="current-security">
+        <div v-if="form.currentSecurityGroup" class="current-security">
             <span>
                 <label class="label">{{$t('ecs.create.safeGroup.selectLabel')}}：</label> {{securityGroupName}}</span>
-            <i v-if="form.currentSecurityGroup" class="font14 ml10 el-icon-refresh" v-tooltip="{content: $t('common.clickRefresh'), theme: 'is-light'}" @click="getSecurityGroupRules"></i>
             <span class="template-name color999">{{labelName}}</span>
             <i :class="{'el-icon-arrow-up': true, 'is-hidden': !isOpen}" @click="isOpen = !isOpen"></i>
         </div>
-        <el-alert v-if="form.currentSecurityGroup && unopen" type="warning" title="" class="mt10" :closable="false">
+        <!-- <el-alert v-if="form.currentSecurityGroup && unopen" type="warning" title="" class="mt10" :closable="false">
             <i class="iconfont icon-notice_people"></i>
             <span v-if="isWindows">{{$t('ecs.create.safeGroup.windowAlert')}}</span>
             <span v-else>{{$t('ecs.create.safeGroup.linuxAlert')|replaceParamVal([osType])}}</span>
             <router-link class="btn-linker" target="_blank" :to="{name:'app.ecs.groupRule.safegrpRule', params: {ruleId:form.currentSecurityGroup.id}}">前往设置</router-link>
-        </el-alert>
+        </el-alert> -->
         <transition>
             <div v-if="isOpen">
-                <div v-if="!form.currentSecurityGroup" class="setting-port">
+                <div v-if="false" class="setting-port">
                     <div class="mb10 font12">{{$t('ecs.create.safeGroup.defaultPort')}}：</div>
                     <div>
                         <el-radio-group v-model="form.setType" size="small">
@@ -111,27 +110,26 @@
                 </div>
                 <!-- 所选安全组规则 -->
                 <div v-if="form.currentSecurityGroup" v-loading="ruleLoading" element-loading-spinner="el-icon-loading" class="security-group-rules">
-                    <div class="mb10 font12">{{$t('ecs.create.safeGroup.rule')}}：</div>
+                    <div class="font12">{{$t('ecs.create.safeGroup.rule')}}：</div>
                     <div class="security-group-rules__inner">
-                        <div v-if="form.ruleList.length === 0 && !ruleLoading" class="rows">该安全组还未配置规则</div>
-                        <div v-for="rule in form.ruleList" :key="rule.id" class="rows">
-                            允许
-                            <span v-if="rule.enableIp && (!rule.enableIp.includes('-') && !rule.enableIp.includes('IP'))" class="inline-block" style="width:150px;">
-                                <span class="value inline-block" style="width: 100px">{{rule.enableIp.split(',')[0]}}，</span>共
-                                <el-popover placement="top" title="" trigger="hover">
-                                    <div v-html="rule.enableIp.replace(/,/ig, '<br>')"></div>
-                                    <span class="color-primary" slot="reference">{{rule.ipNum}}</span>
-                                </el-popover> 个IP
-                            </span>
-                            <span v-if="rule.enableIp && (rule.enableIp.includes('-') || rule.enableIp.includes('IP'))" class="inline-block" style="width:150px;">
-                                <span class="value">所有IP地址</span>
-                            </span>
-                            通过
-                            <span class="value" style="width:30px;">{{rule.protocol.toUpperCase()}}</span> 协议访问弹性云主机的
-                            <span class="value" style="width:35px;">{{rule.port}}</span> 端口
-                        </div>
+                        <!-- 切换展示条件 -->
+                        <el-tabs v-model="direction">
+                            <el-tab-pane label="入方向" name="ingress"></el-tab-pane>
+                            <el-tab-pane label="出方向" name="egress"></el-tab-pane>
+                        </el-tabs>
+                        <el-table :data="tableData" class="data-list" :search="false" empty-text="还未配置相关规则">
+                            <!-- 协议类型 -->
+                            <el-table-column prop="protocol" label="协议类型"></el-table-column>
+                            <!-- 端口范围 -->
+                            <el-table-column prop="protocol" label="端口范围">
+                                <template slot-scope="scope">
+                                    {{scope.row.port_range_min}} - {{scope.row.port_range_max}}
+                                </template>
+                            </el-table-column>
+                            <!-- 授权类型 -->
+                            <el-table-column prop="ethertype" label="授权类型"></el-table-column>
+                        </el-table>
                     </div>
-                    <div class="color999 mt10">* {{$t('ecs.create.safeGroup.moreinfo')}}</div>
                 </div>
             </div>
         </transition>
@@ -153,6 +151,7 @@ export default {
             showSelectSecurityGroupDialog: false,
             ruleLoading: false,
             isOpen: true,
+            direction: 'ingress',
             /**
              * 常用端口
              */
@@ -213,7 +212,7 @@ export default {
         }),
         osType: function() {
             try {
-                return this.createEcsFormData.mirror.osType ? this.createEcsFormData.mirror.osType.name : '';
+                return this.createEcsFormData.mirror.osType ? this.createEcsFormData.mirror.osType : '';
             } catch (err) {
                 $log(err);
                 return '';
@@ -265,13 +264,19 @@ export default {
         },
         isWindows: function() {
             return this.osType.toLowerCase().includes('windows') ? true : false;
+        },
+        tableData: function() {
+            return this.form.ruleList.filter(item => {
+                return item.direction === this.direction;
+            });
         }
     },
     watch: {
         // 安全组变化时获取规则
         'form.currentSecurityGroup': function(newval) {
             if (newval.id) {
-                this.getSecurityGroupRules();
+                // this.getSecurityGroupRules();
+                this.form.ruleList = newval.security_group_rules;
             }
         },
         osType: function(newval) {
@@ -460,9 +465,6 @@ export default {
         font-size: 12px;
     }
     .security-group-rules {
-        &__inner {
-            border: solid 1px #d1d4d8;
-        }
         .rows {
             &:not(:last-child) {
                 border-bottom: solid 1px #d1d4d8;

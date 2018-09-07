@@ -62,18 +62,18 @@ export const API_ECS = {
     },
     inst: {
         getInstList: '/compute/server/list',
-        createECS: ECS_CTRL + '/servers',
+        createECS: '/compute/ecs/createECS',
         getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
         getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
         modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
-        actionInst: ECS_CTRL + '/servers/{instanceId}/action/{type}',
-        editInstInfo: ECS_CTRL + '/servers/{instanceId}',
-        deleteInst: ECS_CTRL + '/servers/{instanceId}',
-        getPortByEcsId: ECS_CTRL + '/servers/{ecsId}/port',
-        getBindedPublicIpByEcsId: ECS_CTRL + '/servers/{ecsId}/float-ip',
+        actionInst: '/compute/server/action/{instanceId}',
+        editInstInfo: '/compute/ecs/editEcs/{instanceId}',
+        deleteInst: '/compute/server/{instanceId}',
+        getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
+        getBindedPublicIpByEcsId: '/compute/floatip/list',
         getAllPortList: ECS_CTRL + '/servers/ports',
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
     },
@@ -81,12 +81,12 @@ export const API_ECS = {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData'
     },
     flavors: {
-        getFlavors: ECS_CTRL + '/flavors',
+        getFlavors: '/compute/ecs/getFlavorGroup',
         getFlavorsDetail: ECS_CTRL + '/flavors/{flavorId}/detail'
     },
     vnc: {
         vncCheck: ECS_CTRL + '/vnc/{instanceId}/check',
-        vncGetUrl: ECS_CTRL + '/compute/ecs/getVNCConsole/{instanceId}',
+        vncGetUrl: '/compute/ecs/getVNCConsole/{instanceId}',
         vncModify: ECS_CTRL + '/vnc/modify'
     },
     disk: {
@@ -117,19 +117,19 @@ export const API_ECS = {
     },
     images: {
         createImage: '/compute/ecs/createImage/{instanceId}',
-        getImages: 'compute/image/list',
+        getImages: '/compute/image/list',
         imageGroups: ECS_CTRL + '/images/groups',
         updateImages: '/compute/image/{imageId}',
         deleteImages: '/compute/image/{imageId}'
     },
     floatIp: {
         create: ECS_CTRL + '/floating/create',
-        bundlingIp: ECS_CTRL + '/floating/bundlingIp',
+        bundlingIp: '/compute/floatip/associateToPort/{instanceId}/{floatipId}',
         getPortByInstanceId: ECS_CTRL + '/floating/getPortByInstanceId',
         llistFloatIpist: ECS_CTRL + '/floating/interface/list',
-        list: ECS_CTRL + '/floating/list',
+        list: '/compute/floatip/list',
         updateFloatingIp: ECS_CTRL + '/floating/{id}',
-        unbundlingIp: ECS_CTRL + '/floating/unbundlingIp',
+        unbundlingIp: '/compute/floatip/disassociateFromPort/{id}',
         deleteFloatIp: ECS_CTRL + '/floating/{id}',
         getFloatingList: ECS_CTRL + '/floating/list',
         modifyFloating: ECS_CTRL + '/floating/{id}',
@@ -158,7 +158,7 @@ export const API_ECS = {
         applyFloatIP: '/compute/floatip', // 确认申请浮动IP
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: '/compute/network/{vpcId}', // 获取网络详情
-        getNetwork: ECS_CTRL + '/networks',
+        getNetwork: '/compute/ecs/getNetwork',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',
         subnet: ECS_CTRL + '/network/subnet',
         subnetID: ECS_CTRL + '/network/subnet/{subnetId}'
@@ -205,7 +205,7 @@ export const API_ECS = {
         // 根据类别查询镜像接口
         list: IMAGE_CTRL + '/image/images/list',
         // 列表接口
-        type: IMAGE_CTRL + '/image/list'
+        type: '/compute/ecs/getImageGroup'
     }
 };
 
@@ -252,8 +252,8 @@ export const API_UserAccount = {
     checkMobileExist: '/user/checkMobileExist',
     checkEmailExist: USER_CONTROLLER + '/user/checkEmailExist',
     validatePassword: USER_CONTROLLER + '/user/validatePassword',
-    checkImageCode: 'user/checkImageCode',
-    checkMobileCode: 'user/checkImageCode',
+    checkImageCode: '/user/checkImageCode/{code}',
+    checkMobileCode: '/user/checkImageCode',
     pwdForget: USER_CONTROLLER + '/user/resetPassword',
     bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
     // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码
