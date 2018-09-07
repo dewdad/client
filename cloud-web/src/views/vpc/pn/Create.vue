@@ -8,7 +8,7 @@
                 <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
             <zt-form-item label="网段" prop="cindr">
-                <ip-input v-model="data.cindr" v-if="isShow"></ip-input>
+                <ip-input v-model="data.cindr" :value="cindrVal" v-if="isShow"></ip-input>
                 <span class="input-help">
                     <span class="color-warning lh20">创建后无法修改。</span><br>
                     <span class="text-break-all lh20">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
@@ -87,6 +87,7 @@ export default {
             isShow: false,
             loading: false,
             type: 'create',
+            cindrVal: '',
             data: {
                 name: '默认专有网络',
                 cindr: '',
@@ -114,9 +115,16 @@ export default {
             return this.type === 'create' ? '新建专有网络' : '编辑专有网络';
         }
     },
+    watch: {
+        isShow(val) {
+            if(!val) {
+                this.data.name = '默认专有网络';
+                this.$refs.form.resetFields();
+            }
+        }
+    },
     methods: {
         clear() {
-            this.data.name = '默认专有网络';
             this.$nextTick(() => {
                 this.$refs.form.resetFields();
             });
@@ -128,8 +136,17 @@ export default {
             this.isShow = true;
             this.type = type;
             this.row = data;
+            this.data.cindr = '';
+            this.cindrVal = '';
+            this.version = 4;
+            this.DHCPVal = true;
             if (type === 'update') {
+                console.warn(data);
                 this.data.name = data.name;
+                this.data.cindr = data.neutronSubnets && data.neutronSubnets[0].cidr;
+                this.cindrVal = data.neutronSubnets && data.neutronSubnets[0].cidr;
+                this.version = data.neutronSubnets && data.neutronSubnets[0].ip_version;
+                this.DHCPVal = data.neutronSubnets && data.neutronSubnets[0].enable_dhcp;
             } else {
                 this.clear();
             }
@@ -149,8 +166,6 @@ export default {
                     ipVersion: this.data.version,
                 }
             };
-            alert(params);
-            debugger;
             createNetwork(params)
                 .then(ret => {
                     if (ret) {
@@ -167,7 +182,16 @@ export default {
         },
         // 修改专有网络
         updateNetwork() {
-            let params = Object.assign({}, this.data);
+            // let params = Object.assign({}, this.data);
+            let params = {
+                id: this.row.id,
+                name: this.data.name,
+                subnet: {
+                    cidr: this.data.cindr,
+                    dHCPEnabled: this.data.DHCPVal,
+                    ipVersion: this.data.version,
+                }
+            };
             params.vpcId = this.row.id;
             this.loading = true;
             updateNetwork(params)
