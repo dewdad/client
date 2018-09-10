@@ -41,7 +41,14 @@ export default {
                         },
                         data:[
                             {value:1548, name:'搜索引擎'},
-                            {value:535, name:'直接访问'}
+                            {
+                                value:535, 
+                                name:'直接访问',
+                                itemStyle: {
+                                    normal:{color:'#ebf3f7'},
+                                    emphasis:{color:'#ebf3f7'}
+                                }
+                            }
                         ],
                         animation: false
                     }
