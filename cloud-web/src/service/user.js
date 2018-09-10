@@ -1,5 +1,5 @@
 import http from '../utils/http';
-import { API_UserAccount,API_USR_AUTH,API_CONTACT } from '../constants/apiUrl';
+import { API_UserAccount,API_USR_AUTH,API_CONTACT,API_PROJECT } from '../constants/apiUrl';
 import { replaceParamVal } from '../utils/utils';
 import RSA from '@/utils/RSA';
 /**
@@ -262,4 +262,16 @@ export async function sendContactEmail(rowItem) {
     };
     let ret = await http.post(API_UserAccount.bindMail, params);
     return ret;
+}
+
+
+//租户管理接口
+/** { pageIndex,limit,userId }
+ */
+export async function getProjectByUserId(data) {
+    let url = API_PROJECT.getProjectByUserId;
+    let res = await http.get(url,{
+        params:data
+    });
+    return res && res.data;
 }
