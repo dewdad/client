@@ -3,10 +3,15 @@ import CreateDept from './CreateDept';
 import QuotaAndUsage from './QuotaAndUsage';
 import ClientDetail from './ClientDetail';
 import ProjectDetail from './ProjectDetail';
+import ChangeQuota from './ChangeQuota';
+import EditRente from './EditRente';
+import EditUser from './EditUser';
+import SelectMember from './SelectMember';
+import ViewUsage from './ViewUsage';
 import ResetPwd from './ResetPwd';
 import { mapState } from 'vuex';
 
-import {deptTree,delDept,ableDept,projectList,delRenter} from '@/service/usermgr/deptmgr.js';
+import {deptTree,delDept,ableDept,projectList,delRenter,findeRole,delUser,editUser} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'deptmgr',
     data() {
@@ -74,19 +79,30 @@ export default {
         QuotaAndUsage,
         ClientDetail,
         ProjectDetail,
-        ResetPwd
+        ResetPwd,
+        ViewUsage,
+        ChangeQuota,
+        SelectMember,
+        EditRente,
+        EditUser
 
     },
     computed:{
         ...mapState({
             dept: state => state.user.dept,
             user: state => state.user.userInfo,
+            deptbrunch: state => state.user.brunch,
         }),
     },
     methods: {
         handleNodeClick(data){
             this.brunch = data;
-            sessionStorage.setItem('deptTree',data);
+            // 记录当前部门分支
+            this.$store.commit('user/DEPTBRUNCH', data);
+            let hahahahah = this.deptbrunch;
+            console.log('hahahahah',hahahahah);
+            this.getprojectList();
+            this.findeRole();
             console.log(data);
         },
         //获取部门树
@@ -102,20 +118,20 @@ export default {
             deptTree(params).then(ret => {
                 $log('treedata', ret);
                 let resData = ret.data;
-                let tree = sessionStorage.getItem('deptTree');
+                let tree = this.deptbrunch;
                 if(resData){
                     this.deptTreeData = resData|| [];
-                    if(tree&&tree.id){
-                        this.for_each_branch( this.deptTreeData,function (b) {
-                            if(tree.id == b.id){
-                                this.branch = tree;
-                            }
-                        });
+                    if(tree){
+                        console.log('tree....',tree);
+                        this.brunch = tree;
                     }else{
                         this.brunch = this.deptTreeData[0];
+                        // 记录当前部门分支
+                        this.$store.commit('user/DEPTBRUNCH', this.brunch);
                     }
                     this.getprojectList();
-                    sessionStorage.setItem('deptTree',this.deptTreeData[0]);
+                    this.findeRole();
+
                 }
             });
         },
@@ -135,7 +151,14 @@ export default {
                 type: 'warning'
             }).then(() => {
                 delRenter(item.id).then(ret=>{
-                    this.getprojectList();
+                    if(ret.code === '0000'){
+                        this.getprojectList();
+                        return this.$confirm('操作成功');
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                    }
                 });
             }).catch(() => {
                 this.$message({
@@ -144,29 +167,32 @@ export default {
                 });
             });
         },
-        for_each_branch(treeData,f) {
-            let do_f, root_branch, _i, _len, _ref, _results;
-            do_f = function(branch) {
-                let child, _i, _len, _ref, _results;
-                f(branch);
-                if ( (branch.children != null) && (branch.children.length>0) ){
-                    _ref = branch.children;
-                    _results = [];
-                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                        child = _ref[_i];
-                        _results.push(do_f(child));
+        //删除用户
+        delUser(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                delUser(item.id).then(ret=>{
+                    if(ret.code === '0000'){
+                        this.findeRole();
+                        return this.$confirm('操作成功');
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
                     }
-                    return _results;
-                }
-            };
-            _ref = treeData;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                root_branch = _ref[_i];
-                _results.push(do_f(root_branch, 1));
-            }
-            return _results;
+
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         },
+        //获取租户列表
         getprojectList(){
             let param = {
                 [this.rentForm.type]:this.rentForm.searchText,
@@ -184,6 +210,25 @@ export default {
 
             });
         },
+        //获取用户列表
+        findeRole(){
+            let param = {
+                [this.userForm.type]:this.userForm.searchText,
+                paging:this.searchObj2,
+                deptId:this.brunch?this.brunch.id:this.user.deptId
+            };
+            $log('findeRoleparams', param);
+            findeRole(param).then(ret => {
+                $log('findeRole', ret);
+                let resData = ret.data;
+                if(resData){
+                    this.tableData2 = resData.data|| [];
+
+                }
+
+            });
+        },
+        //创建部门
         createDept(item,optype){
             this.$refs.CreateDept.show(item,optype)
                 .then(ret => {
@@ -199,9 +244,43 @@ export default {
                     }
                 });
         },
-        deleteDept(){
-
+        //查看配额
+        viewUsage(item,brunch){
+            this.$refs.ViewUsage.show(item,brunch);
         },
+        //修改配额
+        changeRentQuota(item,brunch){
+            this.$refs.ChangeQuota.show(item,brunch).then(ret=>{
+                    if(ret) this.getprojectList();
+                }
+            );
+        },
+        //管理成员
+        manageMember(item,brunch){
+            this.$refs.SelectMember.show(item,brunch);
+        },
+        //修改租户
+        editRente(item,brunch){
+            this.$refs.EditRente.show(item,brunch).then(ret=>{
+                    if(ret) this.getprojectList();
+                }
+            );
+        },
+        //修改用户
+        EditUser(item,brunch){
+            this.$refs.EditUser.show(item,brunch).then(ret=>{
+                    if(ret) this.findeRole();
+                }
+            );
+        },
+        //修改用户
+        resetPwd(item,brunch){
+            this.$refs.ResetPwd.show(item,brunch).then(ret=>{
+                    if(ret) this.findeRole();
+                }
+            );
+        },
+        //查看配额
         viewDept(){
             this.$refs.QuotaAndUsage.show(this.brunch)
                 .then(ret => {
@@ -215,6 +294,7 @@ export default {
                     }
                 });
         },
+        //启用部门
         enableDept(item){
             let enableState = item.enabled;
             let status = item.status;
@@ -236,6 +316,7 @@ export default {
 
             });
         },
+        //禁用部门
         disableDept(item){
             let enableState = item.enabled;
             let status = item.status;
@@ -256,11 +337,33 @@ export default {
                 }
             });
         },
-        editDept(){
-
-        },
-        searchDeptTree(){
-
+        //禁用用户
+        disableUser(item,brunch){
+            let enableState = item.enabled;
+            let status = item.status;
+            item.enabled = false;
+            item.status = 0;
+            let param = {
+                data:{
+                    enabled:false,
+                    status:0,
+                },
+                id:item.id
+            };
+            editUser(item).then(ret => {
+                if(ret.data.code === '0000'){
+                    console.log('操作成功', ret);
+                    this.findeRole();
+                    return this.$confirm('操作成功');
+                }else{
+                    item.enabled = enableState;
+                    item.status = status;
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
         },
         /**
          * 删除部门
@@ -281,22 +384,7 @@ export default {
                 });
             });
         },
-        //创建平台
-        createPlatForm(item,optype){
-            this.$refs.CreateResource.show(item,optype)
-                .then(ret => {
-                    console.log('操作成功', ret);
-                    this.getplatformList();
-                    return this.$confirm('操作成功');
-                })
-                .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log('取消');
-                    }
-                });
-        },
+
 
         currentChange1(val){
             this.searchObj1.paging.pageIndex = val;
@@ -313,11 +401,11 @@ export default {
         handleSizeChange2 (val) {
             this.searchObj2.paging.limit = val;
             this.getplatformList();
-        },
-        onSubmit() {}
+        }
     },
     mounted(){
         console.log('dd',this.dept);
         this.deptTree();
+
     }
 };

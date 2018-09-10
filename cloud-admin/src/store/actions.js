@@ -11,5 +11,6 @@ export default {
         });
         commit('user/SET_USERINFO', {});
         commit('user/DEPT', {});
+        commit('user/DEPTBRUNCH', {});
     }
 };

@@ -1,5 +1,5 @@
 import http from '../../utils/http';
-import { DEPT, RoleMgr} from '../../constants/apiUrl';
+import {API_LOGIN, DEPT, RoleMgr} from '../../constants/apiUrl';
 import {replaceParamVal} from "../../utils/utils";
 import RSA from '@/utils/RSA';
 
@@ -64,6 +64,16 @@ export async function createRenter(data) {
     return response;
 }
 /**
+ *修改租户
+ * @param {*}
+ */
+export async function editRente(data) {
+    console.log('data',data);
+    let url = DEPT.editRente;
+    let response = await http.put(url,data);
+    return response;
+}
+/**
  *查看配额和使用量
  * @param {*}
  */
@@ -118,4 +128,89 @@ export async function createUser(data) {
     let url = DEPT.createUser;
     let response = await http.post(url,data);
     return response;
+}
+/**
+ *编辑用户
+ * @param {*}
+ */
+export async function editUser(data) {
+    console.log('data',data);
+    let url = DEPT.editUser+data.id;
+    let response = await http.put(url,data.data);
+    return response;
+}
+/**
+ *编辑用户
+ * @param {*}
+ */
+export async function resetPwd(data) {
+    let newPwd = await RSA.encrypt(data.newPwd);
+    let oldPwd = await RSA.encrypt(data.oldPwd);
+    let confirmPwd = await RSA.encrypt(data.confirmPwd);
+    let postdata = {
+        newPwd:newPwd,
+        oldPwd:oldPwd,
+        confirmPwd:confirmPwd,
+        userId:data.userId,
+        userName:data.username
+    };
+    let response = await http.put(DEPT.resetPwd, postdata);
+    return response;
+}
+/**
+ *查询用户列表
+ * @param {*}
+ */
+export async function findeRole(data) {
+    let response = await http.get(DEPT.findeRole, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *通过租户id查找用户
+ * @param {*}
+ */
+export async function searchByProjectId(data) {
+    let url=DEPT.searchByProjectId+'/'+data.deptId+'/'+data.projectId
+    let response = await http.get(url);
+    return response.data;
+}
+/**
+ *查询租户使用量
+ * @param {*}
+ */
+export async function viewUsage(data) {
+    let response = await http.get(DEPT.viewUsage, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *查询租户配额
+ * @param {*}
+ */
+export async function searchRentQuota(data) {
+    let url = DEPT.searchRentQuota+data;
+    let response = await http.get(url);
+    return response.data;
+}
+/**
+ *修改配额
+ * @param {*}
+ */
+export async function changeQuota(data) {
+    let url = DEPT.changeQuota;
+    let response = await http.put(url,data);
+    return response.data;
+}
+/**
+ *删除用户
+ * @param {*}
+ */
+export async function delUser(data) {
+    console.log('data',data);
+    var url = DEPT.delUser+'?req_param='+data;
+    let response = await http.delete(url);
+    return response.data.code === '0000'&&response.data;
 }

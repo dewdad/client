@@ -223,10 +223,13 @@ export default {
                 if (valid) {
                     createRenter(param).then(ret => {
                         $log('result...', ret);
-                        // let resData = ret.data;
-                        // if(resData){
-                        //     this.allUsers = resData.data || [];
-                        // }
+                        if(ret.data.code === '0000'){
+                            return this.$confirm('操作成功');
+                        }else{
+                            this.$alert('操作失败', '提示', {
+                                type: 'error'
+                            });
+                        }
 
                     });
                 } else {

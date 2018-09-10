@@ -20,10 +20,18 @@ const user = {
         /**
          * 记录部门信息
          * @param {*} state
-         * @param {*} userInfo
+         * @param {*} dept
          */
         DEPT(state, dept) {
             state.dept = dept;
+        },
+        /**
+         * 记录当前部门分支
+         * @param {*} state
+         * @param {*} brunch
+         */
+        DEPTBRUNCH(state, brunch) {
+            state.deptbrunch = brunch;
         },
 
     },
