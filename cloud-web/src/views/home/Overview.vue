@@ -36,7 +36,10 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-neicun-gailan" />
                                             </div>
-                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="75" :duration="2" /></div>
+                                            <div class="number mt20">
+                                                <ICountUp :startVal="0" :endVal="75" :duration="2" />
+                                                <i v-show="false" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                            </div>
                                             <div class="font14 color999">内存</div>
                                         </div>
                                     </el-col>
@@ -69,21 +72,22 @@
                             </div>
                         </div>
                     </el-col>
+                    <!-- 待办工单 -->
                     <el-col :span="8">
                         <div class="info-box todo">
                             <div class="info-box-head">待办工单</div>
                             <div class="info-box-content">
-                                <div class="todo-task ">
-                                    工单
-                                    <span class="pull-right">4</span>
+                                <div class="todo-task">
+                                    我的工单
+                                    <span class="pull-right">{{allOrder.myorderCount}}</span>
                                 </div>
                                 <div class="todo-task mt10">
-                                    工单
-                                    <span class="pull-right">0</span>
+                                    未处理工单
+                                    <span class="pull-right">{{allOrder.todoOrderCount}}</span>
                                 </div>
                                 <div class="todo-task mt10">
-                                    工单
-                                    <span class="pull-right">0</span>
+                                    已处理工单
+                                    <span class="pull-right">{{allOrder.doneOrderCount}}</span>
                                 </div>
                             </div>
                         </div>
@@ -96,10 +100,10 @@
                             <div class="info-box-head">
                                 监控数据
                                 <span class="pull-right">
-                                    <el-radio-group value="1d" class="header-radio-group mr5">
-                                        <el-radio border name="1天" label="1d">1天</el-radio>
-                                        <el-radio border name="7天" label="7d">7天</el-radio>
-                                        <el-radio border name="30天" label="30d">30天</el-radio>
+                                    <el-radio-group value="1d" v-model="radioTime" @click="getMonitorData" class="header-radio-group mr5">
+                                        <el-radio border name="1天" label="1">1天</el-radio>
+                                        <el-radio border name="7天" label="7">7天</el-radio>
+                                        <el-radio border name="30天" label="30">30天</el-radio>
                                     </el-radio-group>
                                     <el-select value="" placeholder="请选择" size="mini">
                                         <el-option value="">monitorInstance</el-option>
@@ -110,7 +114,17 @@
                                 </span>
                             </div>
                             <div class="info-box-content" id="echartsLine">
-                                <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData"  :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
+                                <echarts-line 
+                                :isMarkPoint="false" 
+                                :gridVal="gridVal" 
+                                :legendData="legendData"  
+                                :seriesData="seriesData" 
+                                :xAxisData="xData" 
+                                legendIcon="rect"
+                                :markPointSymbolSize="['150','55']" 
+                                :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                                :dotStyle="['b0e9c4', 'b0e9c4']" 
+                                :idString="'mychart'"></echarts-line>
                             </div>
                         </div>
                     </el-col>
@@ -121,19 +135,19 @@
                             </div>
                             <h5 style="height: 37px; border-left: 2px solid #d3d8de;margin: 0 0 10px 0;padding-left: 10px;">
                                 <div class="pull-left">
-                                    <span class="color-secondary font14 mb5 inline-block">近7日警告线</span>
+                                    <span class="color-secondary font14 mb5 inline-block">近{{value}}日警告线</span>
                                     <br>
                                     <span class="font16">10条</span>
                                 </div>
                                 <div class="pull-right" style="width: 100px;">
-                                    <el-select v-model="value" placeholder="请选择" size="mini">
+                                    <el-select v-model="value" @change="getMonitorWarnFn" placeholder="请选择" size="mini">
                                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                                         </el-option>
                                     </el-select>
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
@@ -194,19 +208,20 @@
 import EchartsLine from '@/components/charts/EchartsLine.vue';
 import EchartsBar from '@/components/charts/EchartsBar.vue';
 import ICountUp from 'vue-countup-v2';
-import {getOrderCount} from '@/service/ecs/overview.js';
+import {getOrderCount, getMonitorWarn} from '@/service/ecs/overview.js';
 export default {
     name: 'Overview',
     data() {
         return {
-            legendData: ['邮件营销', '联盟广告'],
-            xData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            legendData: ['CPU使用率', '内存使用率'],
+            xData: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
+            xWarnData: [],
             seriesData: [
                 {
-                    seriesData: [120, 132, 101, 134, 90, 230, 210]
+                    seriesData: [20, 22, 81, 34, 50, 50, 70, 67, 63]
                 },
                 {
-                    seriesData: [220, 182, 191, 234, 290, 330, 310]
+                    seriesData: [20, 32, 91, 34, 60, 20, 10, 56, 24]
                 }
             ],
             gridVal: {
@@ -226,9 +241,15 @@ export default {
                     seriesData: [120, 132, 101, 134, 90, 230, 210]
                 }
             ],
-            options: [{value: '7天', label: '7'}],
-            value: '',
-            echartsLineHeight: '200px'
+            options: [
+                {value: 1, label: '1天'},
+                {value: 3, label: '3天'},
+                {value: 7, label: '7天'}
+            ],
+            value: 7,
+            echartsLineHeight: '200px',
+            radioTime: '1',
+            allOrder: []
         };
     },
     computed: {},
@@ -241,21 +262,42 @@ export default {
         getOrderCountFn() {
             getOrderCount()
                 .then(res => {
-                    if (res && res.data) {
-                        let data = res.data;
-                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let dataList = data.data || [];
-                            $log(dataList);
-                        }
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.allOrder = res.data && res.data.allOrder || [];
                     }
                 })
                 .catch(e => {
                     console.error('getEcsInstList', e);
                 });
+        },
+        // 监控告警接口
+        getMonitorWarnFn() {
+            getMonitorWarn(this.value)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let monitoRet = res.data || [];
+                        // this.seriesData2 = [];
+                        this.xWarnData = []; 
+                        for (let w in monitoRet) {
+                            let xVal = monitoRet[w].countDate;
+                            this.xWarnData.push(xVal.substring(5, xVal.length));
+                            // this.seriesData2.push(monitoRet[w].count);
+                        }
+                        $log('dfdsfs', monitoRet);
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
+        },
+        // 监控数据
+        getMonitorData(){
+            
         }
     },
     mounted() {
         this.getOrderCountFn();
+        this.getMonitorWarnFn();
     }
 };
 </script>
@@ -362,6 +404,13 @@ export default {
 
 .info-box-content {
     flex:1;
+    .todo-task:hover{
+        background-color: #e1e6ed;
+        cursor: pointer;
+        span{
+            color: #999;
+        }
+    }
 }
 
 .info-box-content-info {
@@ -435,6 +484,12 @@ export default {
     left: 0px;
     right: 0px;
     margin-top: -10px;
+    cursor: pointer;
+    &:hover{
+        i, span{
+            color:#0d7ff2 !important;
+        }
+    }
 }
 
 .products .products-inner {

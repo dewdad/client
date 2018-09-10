@@ -15,6 +15,12 @@ export default {
             option: {
                 tooltip: {
                     trigger: 'item',
+                    borderRadius: 0,
+                    backgroundColor: '#FFF',
+                    borderWidth: 1,
+                    textStyle: {
+                        color: 'rgb(51, 51, 51)',
+                    },
                     formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
                 legend: {
@@ -41,13 +47,21 @@ export default {
                         },
                         data:[
                             {value:1548, name:'搜索引擎'},
-                            {value:535, name:'直接访问'}
+                            {
+                                value:535, 
+                                name:'直接访问',
+                                itemStyle: {
+                                    normal:{color:'#ebf3f7'},
+                                    emphasis:{color:'#ebf3f7'}
+                                }
+                            }
                         ],
                         animation: false
                     }
                 ],
                 color: this.mouldColor
             },
+            idString: 'myCharts',
             chartsWidth: '',
             seriesArray: []
         };
@@ -57,11 +71,6 @@ export default {
         textSize: {
             type: Number,
             default: 21
-        },
-        // 图表ID
-        idString: {
-            type: String,
-            default: 'myCharts'
         },
         seriesData: {
             type: Array,

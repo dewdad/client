@@ -985,3 +985,13 @@ h5.title {
     height:32px;
     left: 100%;
 }
+
+// tooltip样式
+.el-tooltip__popper.is-light{
+    border: 1px solid #cfd4d8;
+    box-shadow: 0px 0px 4px 0px 
+		rgba(0, 0, 0, 0.25);
+    .popper__arrow{
+        border-right-color:#cfd4d8 !important;
+    }
+}
