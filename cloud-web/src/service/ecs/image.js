@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 19:00:02
+ * @Last Modified time: 2018-09-10 10:39:39
  * ecs模块 镜像接口
  */
 
@@ -16,13 +16,18 @@ import {replaceParamVal} from '@/utils/utils';
  * data:{
  * limit:每页条数
  * pageIndex:分页索引
- * type: rue表示查询自定义镜像， false表示查询公共镜像
+ * type: private表示查询自定义镜像， public表示查询公共镜像
  * }
  */
-export async function getImages(data) {
-    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
+export async function getImages({pageIndex = 1, limit = 10, type = ''} = {}) {
+    let offset = (pageIndex - 1) * limit + 1;
     let res = await http.get(API_ECS.images.getImages, {
-        params: data
+        params: {
+            pageIndex,
+            limit,
+            offset,
+            type
+        }
     });
     return res && res.data;
 }

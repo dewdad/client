@@ -10,7 +10,7 @@
                 <el-radio-button v-for="flavor in FLAVOR_TYPE" :key="flavor.value" :label="flavor.value">{{flavor.label}}</el-radio-button>
             </el-radio-group>
         </div>
-        <el-table ref="singleTable" max-height="358" :loading="loading" class="data-list" :data="tableData[flavor_type]" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;">
+        <el-table ref="singleTable" max-height="358" :loading="loading" class="data-list" :data="tableDataList" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;">
             <el-table-column prop="id" label="" width="50" class-name="raido-column">
                 <template slot-scope="scope">
                     <el-radio v-model="currentFlavor" :label="scope.row"></el-radio>
@@ -45,7 +45,7 @@
                     {{scope.row.cpuSpeed}}
                 </template>
             </el-table-column>
-            <el-table-column prop="band" :label="$t('common.wapNet')" width="80">
+            <!-- <el-table-column prop="band" :label="$t('common.wapNet')" width="80">
                 <template slot-scope="scope">
                     {{scope.row.band || '8'}} Gbps
                 </template>
@@ -54,7 +54,7 @@
                 <template slot-scope="scope">
                     -{{$t('common.priceUnit')}}
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div v-if="currentFlavor.id" class="mt15 font12">
             <span class="color666">当前实例：</span>{{get(currentFlavor, 'types')}}，{{get(currentFlavor, 'vCpu')}} {{$t('abbr.vcpu')}} &nbsp;&nbsp;{{get(currentFlavor, 'ram')}} {{$t('abbr.gb')}}内存</div>
@@ -92,17 +92,33 @@ export default {
         };
     },
     props: {
-        value: Object
+        value: Object,
+        filterId: {
+            type: String,
+            default: ''
+        }
     },
     watch: {
         flavor_type: function(newval) {
-            this.currentFlavor = this.tableData[newval][0];
+            this.currentFlavor = this.tableDataList.length ? this.tableDataList[0] : {};
         },
         currentFlavor: function(newval) {
             this.$emit('input', newval);
         },
         loading: function(newval) {
             this.$emit('loading', newval);
+        },
+        tableDataList: function() {
+            this.currentFlavor = this.tableDataList.length ? this.tableDataList[0] : {};
+        }
+    },
+    computed: {
+        tableDataList: function() {
+            return this.tableData[this.flavor_type]
+                ? this.tableData[this.flavor_type].filter(item => {
+                    return item.id !== this.filterId;
+                })
+                : [];
         }
     },
     created() {
@@ -120,7 +136,6 @@ export default {
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.tableData = res.data;
-                        this.currentFlavor = this.tableData[this.flavor_type][0];
                     }
                 })
                 .catch(err => {

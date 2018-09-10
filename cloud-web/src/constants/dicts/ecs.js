@@ -44,7 +44,7 @@ export const ECS_STATUS = [
     },
     {
         text: '创建中',
-        value: 'BUILD',
+        value: 'build',
         className: 'color-primary',
         type: 'progress'
     },
@@ -55,20 +55,20 @@ export const ECS_STATUS = [
         type: 'progress'
     },
     {
-        text: '更换中',
-        value: 'RESIZE',
+        text: '调整套餐中',
+        value: 'resize',
         className: 'color-progress-warning',
         type: 'progress'
     },
     {
         text: '重启中',
-        value: 'HARD_REBOOT',
+        value: 'hard_reboot',
         className: 'color-success',
         type: 'progress'
     },
     {
         text: '重启中',
-        value: 'REBOOT',
+        value: 'reboot',
         className: 'color-success',
         type: 'progress'
     },
@@ -80,9 +80,39 @@ export const ECS_STATUS = [
     },
     {
         text: '重装中',
-        value: 'REBUILD',
+        value: 'rebuild',
         className: 'color-progress-info',
         type: 'progress'
+    },
+    {
+        text: '确认中',
+        value: 'verify_resize',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除中',
+        value: 'deleted',
+        className: 'color-warning',
+        type: 'progress'
+    },
+    {
+        text: '恢复中',
+        value: 'revert_resize',
+        className: 'color-warning',
+        type: 'progress'
+    },
+    {
+        text: '挂起',
+        value: 'suspended',
+        className: 'color-primary',
+        icon: 'zticon-stop'
+    },
+    {
+        text: '未知',
+        value: 'unknown',
+        className: 'color-danger',
+        icon: 'zticon-stop'
     }
 ];
 
@@ -101,7 +131,9 @@ export const ECS_DROPDOWN = [
             {key: 1, text: $t('ecs.inst.list.dropdownBtns.start'), activedStatus: ['SHUTOFF', 'WAIT_REBOOT'], tip: '', handle: 'startinst'},
             {key: 2, text: $t('ecs.inst.list.dropdownBtns.stop'), activedStatus: ['ACTIVE'], tip: '', handle: 'stopinst'},
             {key: 3, text: $t('ecs.inst.list.dropdownBtns.restart'), activedStatus: ['ACTIVE'], tip: '', handle: 'restart'},
-            {key: 14, text: $t('ecs.inst.list.dropdownBtns.delete'), tip: '', handle: 'delECS', activedStatus: ECS_STATU_SET.filter(e => e !== 'BUILD')} // 创建中不能删除
+            {key: 14, text: $t('ecs.inst.list.dropdownBtns.delete'), tip: '', handle: 'delECS', activedStatus: ECS_STATU_SET.filter(e => e !== 'BUILD')}, // 创建中不能删除
+            {text: '恢复', activedStatus: ['verify_resize'], tip: '', handle: 'revertResize'},
+            {text: '确认', activedStatus: ['verify_resize'], tip: '', handle: 'flavorConfirm'}
             // {key: 4, text: $t('ecs.inst.list.dropdownBtns.reinstallOperateSysem'), activedStatus: ['SHUTOFF'], tip: $t('common.tips.mustStopInst'), handle: 'reinstall'}
         ]
     },
