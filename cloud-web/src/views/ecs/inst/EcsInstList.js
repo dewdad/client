@@ -537,10 +537,8 @@ export default {
         //开关机操作统一处理 （停止、强制停止、启动、重启、强制重启）
         ecsInstAction: async function(instanceId, actionReq, type) {
             //向后台提交表单请求
-            return ecsInstAction(instanceId, actionReq, type).then(res => {
-                console.log('ecsInstAction:::', res);
-                // this.getEcsInstList();
-            });
+            let result = ecsInstAction(instanceId, actionReq, type);
+            return result;
         },
 
         /**
@@ -556,12 +554,14 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 'start', 2)
-                                .then(async () => {
-                                    await sleep(5000);
-                                    ret.loading = false;
-                                    ret.hide();
-                                    this.$message.success($t('common.successOpt'));
-                                    this.getEcsInstList();
+                                .then(async res => {
+                                    if (res.code === '0000') {
+                                        await sleep(5000);
+                                        ret.loading = false;
+                                        ret.hide();
+                                        this.$message.success($t('common.successOpt'));
+                                        this.getEcsInstList();
+                                    }
                                 })
                                 .catch(err => {
                                     ret.loading = false;
@@ -593,12 +593,14 @@ export default {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 'stop', 3)
-                                .then(async () => {
-                                    await sleep(5000);
-                                    ret.loading = false;
-                                    ret.hide();
-                                    this.$message.success($t('common.successOpt'));
-                                    this.getEcsInstList();
+                                .then(async res => {
+                                    if (res.code === '0000') {
+                                        await sleep(5000);
+                                        ret.loading = false;
+                                        ret.hide();
+                                        this.$message.success($t('common.successOpt'));
+                                        this.getEcsInstList();
+                                    }
                                 })
                                 .catch(err => {
                                     ret.loading = false;
@@ -630,14 +632,16 @@ export default {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
                             this.ecsInstAction(rowItem.id, 'reboot', 1)
-                                .then(() => {
-                                    ret.loading = false;
-                                    ret.hide();
-                                    this.$message.success($t('common.successOpt'));
-                                    this.getEcsInstList();
-                                    setTimeout(() => {
-                                        this.getEcsInstList({show: false});
-                                    }, 5000);
+                                .then(async res => {
+                                    if (res.code === '0000') {
+                                        ret.loading = false;
+                                        ret.hide();
+                                        this.$message.success($t('common.successOpt'));
+                                        this.getEcsInstList();
+                                        setTimeout(() => {
+                                            this.getEcsInstList({show: false});
+                                        }, 5000);
+                                    }
                                 })
                                 .catch(err => {
                                     ret.loading = false;
