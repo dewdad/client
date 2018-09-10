@@ -135,19 +135,19 @@
                             </div>
                             <h5 style="height: 37px; border-left: 2px solid #d3d8de;margin: 0 0 10px 0;padding-left: 10px;">
                                 <div class="pull-left">
-                                    <span class="color-secondary font14 mb5 inline-block">近7日警告线</span>
+                                    <span class="color-secondary font14 mb5 inline-block">近{{value}}日警告线</span>
                                     <br>
                                     <span class="font16">10条</span>
                                 </div>
                                 <div class="pull-right" style="width: 100px;">
-                                    <el-select v-model="value" placeholder="请选择" size="mini">
+                                    <el-select v-model="value" @change="getMonitorWarnFn" placeholder="请选择" size="mini">
                                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                                         </el-option>
                                     </el-select>
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
@@ -215,7 +215,7 @@ export default {
         return {
             legendData: ['CPU使用率', '内存使用率'],
             xData: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
-            xWarnData: ['8-24', '8-25', '8-26', '8-27', '8-28', '8-29', '8-30'],
+            xWarnData: [],
             seriesData: [
                 {
                     seriesData: [20, 22, 81, 34, 50, 50, 70, 67, 63]
@@ -242,11 +242,11 @@ export default {
                 }
             ],
             options: [
-                {value: '1', label: '1天'},
-                {value: '3', label: '3天'},
-                {value: '7', label: '7天'}
+                {value: 1, label: '1天'},
+                {value: 3, label: '3天'},
+                {value: 7, label: '7天'}
             ],
-            value: '',
+            value: 7,
             echartsLineHeight: '200px',
             radioTime: '1d',
             allOrder: []
@@ -272,14 +272,18 @@ export default {
         },
         // 监控告警接口
         getMonitorWarnFn() {
-            getMonitorWarn(7)
+            getMonitorWarn(this.value)
                 .then(res => {
-                    if (res && res.data) {
-                        let data = res.data;
-                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let dataList = data.data || [];
-                            $log(dataList);
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let monitoRet = res.data || [];
+                        // this.seriesData2 = [];
+                        this.xWarnData = []; 
+                        for (let w in monitoRet) {
+                            let xVal = monitoRet[w].countDate;
+                            this.xWarnData.push(xVal.substring(5, xVal.length));
+                            // this.seriesData2.push(monitoRet[w].count);
                         }
+                        $log('dfdsfs', monitoRet);
                     }
                 })
                 .catch(e => {
