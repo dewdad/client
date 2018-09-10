@@ -34,11 +34,11 @@
 
                     <el-col :span="8">
                         <b>实例 : </b>
-                        <span>{{ ecsInst.flavor.instSpec }} {{ecsInst.flavor.vcpus}} vCPU {{ecsInst.flavor.ram/1024}} GB</span>
+                        <span>{{ get(ecsInst, 'flavor.instSpec') }} {{get(ecsInst, 'flavor.vcpus')}} vCPU {{ get(ecsInst,'flavor.ram')/1024}} GB</span>
                     </el-col>
                     <el-col :span="8">
                         <b>镜像 : </b>
-                        <span>{{ecsInst.image.name}}</span>
+                        <span>{{get(ecsInst, 'image.name')}}</span>
                     </el-col>
                     <!-- <el-col :span="8">
                         <b>系统盘 : </b>
@@ -95,7 +95,8 @@
 </template>
 
 <script>
-import {saveInstFlavor, getEcsInstList} from '@/service/ecs/list.js';
+import {saveInstFlavor} from '@/service/ecs/list.js';
+import {getInstanceDetail} from '@/service/ecs/detail/index';
 import FlavorTable from '@/views/ecs/create/components/FlavorTable';
 import {mapGetters} from 'vuex';
 export default {
@@ -124,7 +125,7 @@ export default {
             this.ecsInst = this.$route.params.item;
         } else {
             alert(this.$route.params.id);
-            this.getEcsInstList(this.$route.params.id);
+            this.getInstanceDetail(this.$route.params.id);
         }
         
         // this.getInstanceNet(this.stateParams.id);
@@ -140,14 +141,16 @@ export default {
             this.currentSpec = val;
         },
         //获取实例规格
-        getEcsInstList: function(instId) {
-            getEcsInstList({id: instId}).then(res => {
+        getInstanceDetail: function(instId) {
+            getInstanceDetail(instId).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                     console.log('getFlavorsDetail', res);
                     this.ecsInst = res.data[0];
                     this.flavor = res.data[0].flavor;
                     console.log('getFlavorsDetail flavor', this.flavor);
                 }
+            }).catch(err => {
+                $log(err);
             });
         },
 
