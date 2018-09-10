@@ -96,7 +96,7 @@ Vue.filter('mobileReplace', mobile => {
  * @param {*} endLen 后面需要保留几位
  */
 Vue.filter('hiddenStr', (str = '', frontLen = 0, endLen = 0) => {
-    if (str === '' || str.length === 0) return '';
+    if (str === '' || str === null || str.length === 0) return '';
     // 如果str长度小于等于2 endLen设为0
     endLen = str.length <= 2 ? 0 : endLen;
     let len = str.length - frontLen - endLen;

@@ -42,6 +42,7 @@ import MobileCodeDialog from '@/components/dialog/MobileCodeDialog';
 import HelpDialog from '@/views/ecs/inst/ecsDialog/HelpDialog.vue';
 import ChartsLine from '@/components/charts/ChartsLine.vue';
 import Retrieval from '@/components/retrieval/retrieval';
+import flavorConfirm from './ecsDialog/flavorConfirm.vue';
 import {ECS_STATUS, ECS_DROPDOWN, remoteLoginActivedStatus, modifyConfigActivedStatus} from '@/constants/dicts/ecs.js';
 
 export default {
@@ -274,7 +275,8 @@ export default {
         MobileCodeDialog,
         ChartsLine,
         HelpDialog,
-        Retrieval
+        Retrieval,
+        flavorConfirm
     },
     destroyed() {},
     created() {},
@@ -547,7 +549,7 @@ export default {
         startinst: function(rowItem) {
             console.log('start:', rowItem);
             this.$refs.startInstDialog
-                .show(rowItem)
+                .show(rowItem, '启动')
                 .then(ret => {
                     this.$refs.mobileCodeDialog.show().then(async res => {
                         console.log('restartInst ret:::', ret);
@@ -861,7 +863,7 @@ export default {
                                         ret.hide();
                                         this.$message.success($t('common.successOpt'));
                                         this.getEcsInstList({show: false});
-                                    }, 500);
+                                    }, 1000);
                                 },
                                 () => {
                                     ret.loading = false;
@@ -958,6 +960,22 @@ export default {
                         });
                 })
                 .catch(err => {});
+        },
+        /**
+         * 升降配-恢复
+         */
+        revertResize: function(row) {
+            this.$refs.flavorConfirm.show(row, '恢复').then(() => {
+                this.getEcsInstList({show: false});
+            });
+        },
+        /**
+         * 升降配-确认
+         */
+        flavorConfirm(row) {
+            this.$refs.flavorConfirm.show(row, '确认').then(() => {
+                this.getEcsInstList({show: false});
+            });
         },
 
         // //改变当前选择的实例

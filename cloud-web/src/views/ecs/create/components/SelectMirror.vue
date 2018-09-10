@@ -2,7 +2,8 @@
     <div>
         <div class="mb10">
             <el-radio-group v-model="form.mirrorType" size="small">
-                <el-radio-button label="1">{{$t('ecs.image.list.publicImage')}}</el-radio-button>
+                <el-radio-button label="public">公共镜像</el-radio-button>
+                <el-radio-button label="private">自定义镜像</el-radio-button>
             </el-radio-group>
             <el-popover placement="top" title="" width="340" trigger="hover">
                 <div>
@@ -15,14 +16,19 @@
         </div>
         <div>
             <zt-form ref="imageForm" :inline="true" :show-message="false" inline-message size="small" :model="form" :rules="rules" label-width="0">
-                <zt-form-item id="osType" label="" class="mb0 hide-star" prop="osType">
+               <template v-if="form.mirrorType === 'public'">
+                <zt-form-item id="osType" label="" class="mb0 hide-star" prop="osType" :rules="[{
+                        required: true,
+                        message: '请选择操作系统类别',
+                        trigger: ['submit', 'change']
+                    }]">
                     <el-select v-model="form.osType" :placeholder="$t('form.input.ostype')" size="small" :popper-append-to-body="false" style="width:170px;">
                         <el-option v-for="item in sysTypes" :key="item.pic" :value="item.name" :label="item.name">
                             <zt-icon :icon="item.pic" type="font"></zt-icon> {{item.name}}
                         </el-option>
                     </el-select>
                 </zt-form-item>
-                <zt-form-item id="imageObj" label="" class="mb0 hide-star" prop="imageObj">
+                <zt-form-item id="imageObj" key="publicImage" label="" class="mb0 hide-star" prop="imageObj">
                     <el-select v-model="form.imageObj" :placeholder="$t('form.input.osversion')" size="small" :popper-append-to-body="false" value-key="id" style="width:320px;" no-data-text="暂无镜像">
                         <el-option v-for="item in versions" :key="item.id" :label="item.name" :value="item">
                         </el-option>
@@ -37,6 +43,15 @@
                         </span>
                     </el-popover>
                 </zt-form-item>
+                </template>
+                <template v-if="form.mirrorType === 'private'" >
+                    <zt-form-item id="imageObj" key="privateImage" label="" class="mb0 hide-star" prop="imageObj">
+                    <el-select v-model="form.imageObj" placeholder="请选择自定义镜像" size="small" :popper-append-to-body="false" value-key="id" style="width:320px;" no-data-text="暂无镜像">
+                        <el-option v-for="item in versions" :key="item.id" :label="item.name" :value="item">
+                        </el-option>
+                    </el-select>
+                </zt-form-item>
+                </template>
 
             </zt-form>
         </div>
@@ -44,7 +59,8 @@
 </template>
 <script>
 // import {getImagesGroups} from '@/service/ecs/image';
-import {getImageList, getImages} from '@/service/ecs/newimage';
+import {getImageList} from '@/service/ecs/newimage';
+import {getImages as getPrivateIages} from '@/service/ecs/image.js';
 const sysTypes = [
     {
         pic: 'icon-centos',
@@ -75,19 +91,12 @@ export default {
             sysTypes,
             imagesGroups: {},
             form: {
-                mirrorType: '1',
+                mirrorType: 'public',
                 osType: '',
                 imageObj: '',
                 secure_selected: true
             },
             rules: {
-                osType: [
-                    {
-                        required: true,
-                        message: '请选择操作系统类别',
-                        trigger: ['submit', 'change']
-                    }
-                ],
                 imageObj: [
                     {
                         required: true,
@@ -109,6 +118,11 @@ export default {
                 this.$nextTick(() => {
                     this.$refs.imageForm.clearValidate();
                 });
+            }
+        },
+        'form.mirrorType': function(newval) {
+            if (newval === 'private') {
+                this.getPrivateIages();
             }
         }
     },
@@ -138,14 +152,13 @@ export default {
                     this.loading = false;
                 });
         },
-        getImages(value) {
+        getPrivateIages() {
             this.form.imageObj = '';
-            this.versions = [];
             this.loading = true;
-            getImages(value.categoryId)
+            getPrivateIages({type: 'private'})
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.versions = res.result;
+                        this.versions = res.data;
                     }
                 })
                 .catch(err => {
