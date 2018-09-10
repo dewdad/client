@@ -109,18 +109,14 @@
                 </div>
             </el-form>
         </div>
-        <select-member ref="SelectMember"></select-member>
     </div>
 </template>
 
 <script>
-import SelectMember from './SelectMember';
 import {selectAllUsers,createRenter} from '@/service/usermgr/deptmgr.js';
-// import { addtMenu,updateMenu} from '@/service/usermgr/menumgr';
 export default {
     name: 'createRenter',
     components: {
-        SelectMember
     },
     data() {
         let stateParams = this.$route.params || {};
@@ -244,7 +240,6 @@ export default {
                 limit:9999,
                 domainId:this.stateParams.item.id
             };
-
             selectAllUsers(param).then(ret => {
                 $log('list', ret);
                 let resData = ret.data;

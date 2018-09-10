@@ -45,6 +45,8 @@ export const DEPT = {
     selectAllUsers: USER_RSA + '/user/list',//根据租户ID查询用户集合
     createRenter: USER_RSA + '/project/',//创建租户
     delRenter: USER_RSA + '/project/delete',//删除租户
+    createUser: USER_RSA + '/user/',//创建用户
+    findeRole: USER_RSA + '/role/list',//获取
 };
 // 角色管理
 export const RoleMgr = {

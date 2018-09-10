@@ -71,7 +71,7 @@ export default {
     watch: {
         isLogined: function(newval) {
             if (newval !== true) {
-                this.$router.push({name: 'login'});
+                window.location.href = '/#/login';
             }
         },
         screenHeight(val) {
