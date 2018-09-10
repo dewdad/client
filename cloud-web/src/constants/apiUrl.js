@@ -66,7 +66,7 @@ export const API_ECS = {
         getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
         getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
-        modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
+        modifyInstFlavor: '/compute/ecs/resizeECS',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
         actionInst: '/compute/server/action/{instanceId}',
@@ -75,7 +75,9 @@ export const API_ECS = {
         getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
         getBindedPublicIpByEcsId: '/compute/floatip/list',
         getAllPortList: ECS_CTRL + '/servers/ports',
-        resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
+        resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password',
+        flavorConfirm: '/compute/ecs/flavorConfirm/{ecsId}',
+        revertResize: '/compute/serverAction/revertResize/{ecsId}'
     },
     monitor: {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData'

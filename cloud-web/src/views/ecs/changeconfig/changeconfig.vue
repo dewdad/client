@@ -1,9 +1,10 @@
 <template>
-    <div class="LiftAndFall">
+    <div class="LiftAndFall" v-loading.fullscreen="loading">
         <!-- 返回上一级 -->
         <div class="GoBack">
             <b class="font16 mr10">升降配</b>
-            <el-button size="mini" type="info" @click="$router.go(-1)"><i class="iconfont icon-fanhui"></i>{{ $t('common.goback') }}</el-button>
+            <el-button size="mini" type="info" @click="$router.go(-1)">
+                <i class="iconfont icon-fanhui"></i>{{ $t('common.goback') }}</el-button>
         </div>
         <!-- 升降配须知 -->
         <div class="Notes">
@@ -17,7 +18,6 @@
             <div class="title">
                 <i class="iconfont icon-user_setting_people mr10"></i>{{ $t('ecs.changeconfig.ConfigureTitle') }}</div>
             <div class="Intro">
-                {{ecsInst}}
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <b>实例名称 : </b>
@@ -70,8 +70,8 @@
                 <el-col :span="24" style="">
                     <!-- 切换规格类型 -->
                     <div class="title pull-left lh30" style="width: 80px;">{{ $t('ecs.changeconfig.SpecTitle') }}</div>
-                    <div class="Switch" style="overflow: hidden">
-                        <flavor-table v-model="flavor" @loading="handleFlavorLoading"></flavor-table>
+                    <div class="Switch" v-loading="flavorLoading" style="overflow: hidden">
+                        <flavor-table v-model="flavor" :filterId="get(ecsInst, 'flavor.id')" @loading="handleFlavorLoading"></flavor-table>
                     </div>
                 </el-col>
             </el-row>
@@ -87,8 +87,8 @@
                 <span ng-if="!isComputing" style="color:#FF6600;font-size:24px" class="ng-binding ng-scope">¥&nbsp;8,700.00</span>
             </div> -->
             <div class="pull-right">
-                <button type="button" class="mr20 zt-next font12" @click="confirm">{{ $t('ecs.changeconfig.CostBtn') }}</button>
-                <button class="btn ng-cancle font12">{{ $t('common.cancel') }}</button>
+                <el-button type="warning" class="mr20 zt-next font12"  @click="confirm">{{ $t('ecs.changeconfig.CostBtn') }}</el-button>
+                <el-button type="info" :disabled="loading" @click="$router.go(-1)">{{ $t('common.cancel') }}</el-button>
             </div>
         </div>
     </div>
@@ -99,10 +99,12 @@ import {saveInstFlavor} from '@/service/ecs/list.js';
 import {getInstanceDetail} from '@/service/ecs/detail/index';
 import FlavorTable from '@/views/ecs/create/components/FlavorTable';
 import {mapGetters} from 'vuex';
+import {isEmpty} from '@/utils/utils';
 export default {
     data() {
         return {
             flavorLoading: false,
+            loading: false,
             ecsInst: {},
             sysDisk: [],
             dataDisks: [],
@@ -124,10 +126,9 @@ export default {
         if (this.$route.params.item) {
             this.ecsInst = this.$route.params.item;
         } else {
-            alert(this.$route.params.id);
             this.getInstanceDetail(this.$route.params.id);
         }
-        
+
         // this.getInstanceNet(this.stateParams.id);
         // this.getDiskList({instanceId: this.stateParams.id});
     },
@@ -142,16 +143,18 @@ export default {
         },
         //获取实例规格
         getInstanceDetail: function(instId) {
-            getInstanceDetail(instId).then(res => {
-                if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    console.log('getFlavorsDetail', res);
-                    this.ecsInst = res.data[0];
-                    this.flavor = res.data[0].flavor;
-                    console.log('getFlavorsDetail flavor', this.flavor);
-                }
-            }).catch(err => {
-                $log(err);
-            });
+            getInstanceDetail(instId)
+                .then(res => {
+                    if (res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.log('getFlavorsDetail', res);
+                        this.ecsInst = res.data;
+                        // this.flavor = res.data.flavor;
+                        console.log('getFlavorsDetail flavor', this.flavor);
+                    }
+                })
+                .catch(err => {
+                    $log(err);
+                });
         },
 
         // //获取实例网络信息
@@ -187,27 +190,30 @@ export default {
         // },
         //确定升降配
         confirm: function() {
+            if (isEmpty(this.flavor)) {
+                this.$alert('请先选择实例', {
+                    type: 'warning'
+                });
+                return;
+            }
             let data = {
-                instanceId: this.stateParams.id,
-                flavorId: this.currentSpec.id
+                ecsId: this.ecsInst.id,
+                flavorId: this.flavor.id
             };
-            saveInstFlavor(data).then(
-                res => {
+            this.loading = true;
+            saveInstFlavor(data)
+                .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                         this.$router.push({name: 'app.ecs.list'});
                         this.$message.success('操作成功');
-                    } else {
-                        this.$alert(res.msg, '提示', {
-                            type: 'error'
-                        });
                     }
-                },
-                error => {
-                    this.$alert(error, '提示', {
-                        type: 'error'
-                    });
-                }
-            );
+                })
+                .catch(err => {
+                    $log(err);
+                })
+                .finally(err => {
+                    this.loading = false;
+                });
         }
     }
 };
@@ -217,16 +223,15 @@ export default {
 .LiftAndFall {
     padding: 20px 50px 20px 20px;
     margin-bottom: 76px;
-    .cost1{
-        left:50px;
+    .cost1 {
+        left: 50px;
     }
-    .cost2{
-        left:50px;
+    .cost2 {
+        left: 50px;
     }
-    .cost3{
-        left:200px;
+    .cost3 {
+        left: 200px;
     }
-
 }
 .GoBack {
     height: 70px;
@@ -281,9 +286,6 @@ export default {
         margin-right: 30px;
         color: #fff;
         background: #ff8a00;
-    }
-    button:last-child {
-        color: #333;
     }
 }
 </style>
