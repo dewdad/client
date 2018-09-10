@@ -68,7 +68,7 @@ function checkWhiteList(url) {
 /*  create http client */
 const http = axios.create({
     timeout: 30000, // 请求超时时间 30s,
-    baseURL: 'http://10.11.3.61:7100/',
+    baseURL: API_URL,
     // baseURL: API_URL,
     // 请求方法同上
     method: 'post', // default
@@ -108,7 +108,7 @@ http.interceptors.request.use(
         config.params = params(config.params, {});
         // config.headers['X-People-Token'] = '6dca163cd317fc2408669dfdb8a26be85e3f9e62cb21def7f94b6b8af08011126ca0bc1b68c54d153e28accf412edfd8'||store.state.token;
         config.headers['X-People-Token'] = store.state.token;
-        config.headers["zt"]='zt';//登录session区分admmin和web
+        config.headers['zt'] = 'zt'; //登录session区分admmin和web
 
         return config;
     },
