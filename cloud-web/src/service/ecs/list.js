@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-07 18:10:28
+ * @Last Modified time: 2018-09-10 09:33:46
  * ecs模块 列表页面
  */
 
@@ -90,9 +90,12 @@ export async function modifyInstFlavor({instanceId, flavorId}) {
  * instanceId:
  * flavorId： 规格id
  */
-export async function saveInstFlavor({instanceId, flavorId}) {
-    let url = replaceParamVal(API_ECS.inst.modifyInstFlavor, [instanceId, flavorId]);
-    let res = await http.post(url, {});
+export async function saveInstFlavor({ecsId, flavorId}) {
+    let url = API_ECS.inst.modifyInstFlavor;
+    let res = await http.post(url, {
+        ecsId,
+        flavorId
+    });
     return res && res.data;
 }
 

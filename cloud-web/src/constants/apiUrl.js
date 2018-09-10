@@ -66,7 +66,7 @@ export const API_ECS = {
         getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
         getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
-        modifyInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
+        modifyInstFlavor: '/compute/ecs/resizeECS',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
         actionInst: '/compute/server/action/{instanceId}',

@@ -44,7 +44,7 @@ export const ECS_STATUS = [
     },
     {
         text: '创建中',
-        value: 'BUILD',
+        value: 'build',
         className: 'color-primary',
         type: 'progress'
     },
@@ -55,20 +55,20 @@ export const ECS_STATUS = [
         type: 'progress'
     },
     {
-        text: '更换中',
-        value: 'RESIZE',
+        text: '调整套餐中',
+        value: 'resize',
         className: 'color-progress-warning',
         type: 'progress'
     },
     {
         text: '重启中',
-        value: 'HARD_REBOOT',
+        value: 'hard_reboot',
         className: 'color-success',
         type: 'progress'
     },
     {
         text: '重启中',
-        value: 'REBOOT',
+        value: 'reboot',
         className: 'color-success',
         type: 'progress'
     },
@@ -80,9 +80,27 @@ export const ECS_STATUS = [
     },
     {
         text: '重装中',
-        value: 'REBUILD',
+        value: 'rebuild',
         className: 'color-progress-info',
         type: 'progress'
+    },
+    {
+        text: '确认中',
+        value: 'verify_resize',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '挂起',
+        value: 'suspended',
+        className: 'color-primary',
+        icon: 'zticon-stop'
+    },
+    {
+        text: '未知',
+        value: 'unknown',
+        className: 'color-danger',
+        icon: 'zticon-stop'
     }
 ];
 
