@@ -78,8 +78,31 @@ export const PlatForm = {
 export const API_USR_AUTH = {
     RSA:USER_RSA + '/rsa', //GET 获取公钥加密
 };
-
-
+// 用户账号模块
+export const API_UserAccount = {
+    checkMobileExist: '/user/checkMobileExist',
+    checkEmailExist: USER_CONTROLLER + '/user/checkEmailExist',
+    validatePassword: USER_CONTROLLER + '/user/validatePassword',
+    checkImageCode: '/user/checkImageCode/{code}',
+    checkMobileCode: '/user/checkImageCode',
+    pwdForget: USER_CONTROLLER + '/user/resetPassword',
+    bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
+    // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码
+    pwdReset: USER_CONTROLLER + '/user/changePassword',
+    activeMail: USER_CONTROLLER + '/user/activeMail',
+    validateEmailCode: USER_CONTROLLER + '/user/validateEmailCode',
+    uploadFile: USER_CONTROLLER + '/file/upload',
+    getUploadFile: USER_CONTROLLER + '/file',
+    // userAuthApply: USER_CONTROLLER + '/userAuth/apply ',
+    // userAuthResult: USER_CONTROLLER + '/userAuth/{user_id}',
+    // userAuthMoneyConfirm: USER_CONTROLLER + '/userAuth/confirm ',
+    getUserInfo: USER_CONTROLLER + '/user/{user_id}/info',
+    getUserInfoDetail: USER_CONTROLLER + '/user/{user_id}/info',
+    getUserDetail: USER_CONTROLLER + '/user/{user_id}',
+    saveUserInfo: USER_CONTROLLER + '/user/info',
+    updateUserInfo: USER_CONTROLLER + '/user/info/{id}',
+    bindMobile: USER_CONTROLLER + '/user/bindPhone'
+};
 export const API_MENU_MGR = {
     addMenu: USER_RSA + '/menu/add', //post 新增菜单 menu
     updateMenu: USER_RSA + '/menu/update', //put 更新菜单menu

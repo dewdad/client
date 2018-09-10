@@ -72,7 +72,7 @@
                                             3600
                                             <span class="icon">
                                                 <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
-                                                    <i class="iconfont icon-notice_people font14"></i>
+                                                    <i class="iconfont icon-wuuiconsuotanhao font14"></i>
                                                 </el-tooltip>
                                             </span>
                                         </div>
@@ -193,7 +193,9 @@ export default {
                 top: '60'
             },
             options: [
-                {value: '7天',label: '7'}
+                {value: '1', label: '1天'},
+                {value: '3', label: '3天'},
+                {value: '7', label: '7天'}
             ],
             value: '',
         };

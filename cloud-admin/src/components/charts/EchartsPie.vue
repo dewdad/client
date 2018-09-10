@@ -48,6 +48,7 @@ export default {
                 ],
                 color: this.mouldColor
             },
+            idString: 'myCharts',
             chartsWidth: '',
             seriesArray: []
         };
@@ -57,11 +58,6 @@ export default {
         textSize: {
             type: Number,
             default: 21
-        },
-        // 图表ID
-        idString: {
-            type: String,
-            default: 'myCharts'
         },
         seriesData: {
             type: Array,
