@@ -27,7 +27,6 @@ import DeleteDialog from './ecsDialog/deleteDialog';
 import CustomImageDialog from './ecsDialog/CustomImageDialog';
 import ModifyRemotePwd from './ecsDialog/ModifyRemotePwd';
 import ResetPassword from './ecsDialog/resetPassword';
-import TelnetDialog from './ecsDialog/telnetDialog';
 import TelnetGuideDialog from './ecsDialog/longDialog';
 import EditLabelDialog from './ecsDialog/editLabelDialog';
 import StopInstDialog from './ecsDialog/stopCaseDialog';
@@ -256,7 +255,6 @@ export default {
         PageHeader,
         LabelDropdown,
         ModifyInfoDialog,
-        TelnetDialog,
         TelnetGuideDialog,
         EditLabelDialog,
         StopInstDialog,

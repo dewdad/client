@@ -32,7 +32,7 @@ export const API_LOGIN = {
 export const API_REGISTER = {
     register: USER_CONTROLLER + '/user/register',
     checkMobileExist: USER_CONTROLLER + '/user/checkMobileExist',
-    checkImageCode: USER_CONTROLLER + '/user/checkImageCode',
+    checkImageCode: USER_CONTROLLER + '/user/checkImageCode/{code}',
     checkMobileCode: USER_CONTROLLER + '/user/checkMobileCode',
     getImageCode: USER_CONTROLLER + '/user/imageCode',
     sendMobileCode: USER_CONTROLLER + '/user/sendMobileCode'
@@ -62,33 +62,33 @@ export const API_ECS = {
     },
     inst: {
         getInstList: '/compute/server/list',
-        createECS: '/compute/ecs/createECS',
+        createECS: '/compute/server/createECS',
         getInstanceCountInfo: '/compute/server/detailInstanceTop/{instanceId}',
         getInstanceDetail: '/compute/server/{instanceId}',
         getInstanceNet: ECS_CTRL + '/servers/{instanceId}/net-info',
-        modifyInstFlavor: '/compute/ecs/resizeECS',
+        modifyInstFlavor: '/compute/server/resizeECS',
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
         actionInst: '/compute/server/action/{instanceId}',
-        editInstInfo: '/compute/ecs/editEcs/{instanceId}',
+        editInstInfo: '/compute/server/editEcs/{instanceId}',
         deleteInst: '/compute/server/{instanceId}',
         getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
         getBindedPublicIpByEcsId: '/compute/floatip/list',
         getAllPortList: ECS_CTRL + '/servers/ports',
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password',
-        flavorConfirm: '/compute/ecs/flavorConfirm/{ecsId}',
+        flavorConfirm: '/compute/server/flavorConfirm/{ecsId}',
         revertResize: '/compute/serverAction/revertResize/{ecsId}'
     },
     monitor: {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData'
     },
     flavors: {
-        getFlavors: '/compute/ecs/getFlavorGroup',
+        getFlavors: '/compute/server/getFlavorGroup',
         getFlavorsDetail: ECS_CTRL + '/flavors/{flavorId}/detail'
     },
     vnc: {
         vncCheck: ECS_CTRL + '/vnc/{instanceId}/check',
-        vncGetUrl: '/compute/ecs/getVNCConsole/{instanceId}',
+        vncGetUrl: '/compute/server/getVNCConsole/{instanceId}',
         vncModify: ECS_CTRL + '/vnc/modify'
     },
     disk: {
@@ -118,7 +118,7 @@ export const API_ECS = {
         deletePolicy: ECS_CTRL + '/policy/{policy_id}'
     },
     images: {
-        createImage: '/compute/ecs/createImage/{instanceId}',
+        createImage: '/compute/server/createImage/{instanceId}',
         getImages: '/compute/image/list',
         imageGroups: ECS_CTRL + '/images/groups',
         updateImages: '/compute/image/{imageId}',
@@ -160,7 +160,7 @@ export const API_ECS = {
         applyFloatIP: '/compute/floatip', // 确认申请浮动IP
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: '/compute/network/{vpcId}', // 获取网络详情
-        getNetwork: '/compute/ecs/getNetwork',
+        getNetwork: '/compute/server/getNetwork',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',
         subnet: ECS_CTRL + '/network/subnet',
         subnetID: ECS_CTRL + '/network/subnet/{subnetId}'
@@ -207,7 +207,7 @@ export const API_ECS = {
         // 根据类别查询镜像接口
         list: IMAGE_CTRL + '/image/images/list',
         // 列表接口
-        type: '/compute/ecs/getImageGroup'
+        type: '/compute/server/getImageGroup'
     }
 };
 

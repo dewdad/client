@@ -1,6 +1,6 @@
 <template>
     <li role="menuitem" aria-haspopup="true" class="el-submenu is-opened oss-ul" aria-expanded="true">
-        <div class="el-submenu__title" style="padding-left: 30px;">
+        <!-- <div class="el-submenu__title" style="padding-left: 30px;">
             <span>{{$t('oss.ossName')}}</span>
             <span class="pull-right inline-block rotatex">
                 <el-dropdown placement="top" @command="handleCommand" size="small">
@@ -35,15 +35,41 @@
                     </div>
                 </transition>
             </span>
-        </div>
+        </div> -->
         <!-- 储存空间列表 -->
         <ul class="el-menu el-menu--inline oss-menu">
-            <li class="el-menu-item oss-menu-item">
-                <el-button type="primary" style="width:105px;height: 32px;margin-top:-10px;" size="small" @click="createBucket">{{$t('oss.createOss')}}</el-button>
+            <li class="el-menu-item oss-menu-item no-link">
+                <el-button type="primary" style="width:110px;height: 32px;" size="small" @click="createBucket">{{$t('oss.createOss')}}</el-button>
+            </li>
+            <li class="el-menu-item oss-menu-item no-link">
+                <zt-form size="small">
+                    <zt-form-item >
+                        <el-input v-model="searchKeyords" prefix-icon="el-icon-search" clearable placeholder="搜索"></el-input>
+                    </zt-form-item>
+                </zt-form>
+            </li>
+            <li class="el-menu-item oss-menu-item no-link" style="cursor: default">
+                <span class="ml10"><strong>存储空间</strong></span>
+                <span class="pull-right inline-block rotatex">
+                    <el-dropdown placement="top" @command="handleCommand" size="small">
+                        <i class="iconfont icon-changeconfiguration" @click="sortData"></i>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item :class="{'is-active': sortBy === 'default'}" command="default">{{$t('oss.sortText.default')}}
+                                <i v-if="sortBy === 'default'" class="el-icon-check"></i>
+                            </el-dropdown-item>
+                            <el-dropdown-item :class="{'is-active': sortBy === 'name'}" command="name">{{$t('oss.sortText.name')}}
+                                <i v-if="sortBy === 'name'" class="el-icon-check"></i>
+                            </el-dropdown-item>
+                            <el-dropdown-item :class="{'is-active': sortBy === 'date'}" command="date">{{$t('oss.sortText.time')}}
+                                <i v-if="sortBy === 'date'" class="el-icon-check"></i>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </span>
             </li>
             <router-link v-for="bucket in bucketList" :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">
                 <div>
-                    <i class="iconfont icon-dot small-font"></i> {{bucket.name}}
+                  {{bucket.name}}
                 </div>
             </router-link>
             <create-bucket ref="createBucketDailog"></create-bucket>
@@ -150,7 +176,12 @@ export default {
             getBucketListByUid()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.bucketList = res.data;
+                        this.bucketList = res.data || [];
+                        if (this.bucketList.length === 0) {
+                            this.$router.push({name: 'app.oss.empty'});
+                        } else {
+                            this.$router.push({'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': this.bucketList[0].name}});
+                        }
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
                     }
@@ -170,56 +201,19 @@ export default {
     transition: rotate 0.3;
     transform: rotate(90deg);
 }
-.search-btn {
-    width: 20px;
-    position: relative;
-}
-.search-form {
-    position: absolute;
-    top: 54px;
-    left: -66px;
-    right: 0px;
-    z-index: 1;
-    width: 105px;
-}
-.arrow-up {
-    position: absolute;
-    left: 85px;
-    top: 3px;
-    z-index: 2;
-    &::before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        margin-left: -10px;
-        bottom: 100%;
-        border-width: 10px;
-        border-style: solid;
-        border-color: transparent transparent #0d7ef2;
-    }
-    &::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        margin-left: -9px;
-        bottom: 100%;
-        border-width: 9px;
-        border-style: solid;
-        border-color: transparent transparent #fff;
-    }
-}
+
 .is-opened .el-submenu__title {
     font-weight: normal !important;
     color: #333 !important;
 }
 .oss-menu-item {
     min-width: 150px !important;
-    padding-left: 30px !important;
+    padding-left: 20px !important;
     width: 150px;
     padding-right: 20px;
 }
 .submenu .el-menu .el-submenu .el-menu-item.oss-menu-item {
-    padding-left: 30px !important;
+    padding-left: 20px !important;
     &:hover:not(:first-child),
     &:active {
         background: #fff;
@@ -233,6 +227,12 @@ export default {
     }
 }
 
+.no-link {
+    cursor: default;
+    &:hover, &:active {
+        background: #f0f1f5 !important;
+    }
+}
 .oss-ul {
     width: 150px;
     overflow: hidden;

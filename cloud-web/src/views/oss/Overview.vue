@@ -1,5 +1,5 @@
 <template>
-    <div class="page-main">
+    <div v-if="false" class="page-main">
         <el-row :gutter="15" class="overview">
             <el-col :span="24">
                 <!-- 基础数据 -->
