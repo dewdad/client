@@ -13,10 +13,10 @@
                                     <i class="iconfont icon-yunzhuji-gailan"></i>
                                 </div>
                                 <div>
-                                    <div class="font16">弹性云主机</div>
-                                    <div>
+                                    <div style="height: 20px;" class="font16">弹性云主机</div>
+                                    <div style="line-height:28px;height:28px;">
                                         <span class="is-bold font25">705</span>个
-                                        <span class="pull-right mt10 color-secondary">
+                                        <span style="margin-top:3px;" class="pull-right color-secondary">
                                             较上月同期：
                                             <span class="color-success">+20个</span>
                                         </span>
@@ -25,12 +25,12 @@
                             </div>
                             <h5 class="cloud-host__data">
                                 <div class="pull-left">
-                                    <span class="color-secondary font14 mb5 inline-block">近7日警告线</span>
+                                    <span class="color-secondary font14 mb5 inline-block">近{{timeVal}}日警告线</span>
                                     <br>
                                     <span class="font16">108个</span>
                                 </div>
                                 <div class="pull-right" style="width: 100px;">
-                                    <el-select v-model="value" placeholder="请选择" size="mini">
+                                    <el-select v-model="timeVal" placeholder="请选择" size="mini">
                                         <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -40,10 +40,11 @@
                                     </el-select>
                                 </div>
                             </h5>
-                            <div style="height: 320px;">
+                            <div style="height: 350px;">
                                 <!-- 图表 -->
                                 <echarts-line
                                 :gridVal="gridVal" 
+                                :legendData="legendData"
                                 :seriesData="seriesData" 
                                 :xAxisData="xData" 
                                 :isMarkPoint="false"
@@ -60,7 +61,7 @@
                             <div class="cpu item back-white mr20">
                                 <div class="item__title">
                                     <span>CPU</span>
-                                    <span class="pull-right"><i class="dot color-warning"></i> 总配额：3696个</span>
+                                    <span class="pull-right"><i class="dot color-warning"></i> 总配额：{{quota.cpu || '0'}}个</span>
                                 </div>
                                 <!-- CPU 饼图 -->
                                 <div class="item__data">
@@ -69,7 +70,7 @@
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="color-warning font30 icon-box">
-                                            3600
+                                            {{usages.cpu || '0'}}
                                             <span class="icon">
                                                 <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
                                                     <i class="iconfont icon-wuuiconsuotanhao font14"></i>
@@ -79,7 +80,7 @@
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
                                     <div class="text-r mt10">
-                                        <div class="font30 lh30">96</div>
+                                        <div class="font30 lh30">9</div>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
                                 </div>
@@ -87,7 +88,7 @@
                             <div class="mem item back-white">
                                 <div class="item__title">
                                     <span>内存</span>
-                                    <span class="pull-right"><i class="dot"></i> 总配额：3696GB</span>
+                                    <span class="pull-right"><i class="dot"></i> 总配额：{{quota.ram || '0'}}GB</span>
                                 </div>
                                 <!-- 内存 饼图 -->
                                 <div class="item__data">
@@ -96,7 +97,7 @@
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font30 icon-box">
-                                            3600
+                                            {{usages.ram || '0'}}
                                         </div>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
@@ -120,7 +121,7 @@
                                     </div>
                                     <div class="font16"><i class="dot"></i>SATA</div>
                                     <div>
-                                        <span class="is-bold font25">232936 </span>GB
+                                        <span class="is-bold font25">{{quota.volumeSize || '0'}} </span>GB
                                     </div>
                                 </div>
                                 <div class="disk__data__item disk__data__pie">
@@ -129,7 +130,7 @@
                                     </div>
                                     <div class="text-r" style="height: 47px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font18 pos-relative">
-                                            205604
+                                            {{usages.volumeSize || '0'}}
                                         </div>
                                         <span class="color-secondary font12">已使用</span>
                                     </div>
@@ -149,22 +150,22 @@
                             <div class="info-box__item">
                                 <i class="iconfont icon-wangluo-gailan font20 color-secondary"></i>
                                 <span class="ml10">网络</span>
-                                <span class="pull-right"><span>1</span>/100</span>
+                                <span class="pull-right"><span>{{usages.network || '0'}}</span>/{{quota.network || '0'}}</span>
                             </div>
                             <div class="info-box__item">
                                 <i class="iconfont icon-anquanzu-gailan font20 color-secondary"></i>
                                 <span class="ml10">安全组</span>
-                                <span class="pull-right"><span>1</span>/100</span>
+                                <span class="pull-right"><span>{{usages.securityGroup || '0'}}</span>/{{quota.securityGroup || '0'}}</span>
                             </div>
                             <div class="info-box__item">
                                 <i class="iconfont icon-luyouqi-gailan font20 color-secondary"></i>
                                 <span class="ml10">路由器 </span>
-                                <span class="pull-right"><span>1</span>/100</span>
+                                <span class="pull-right"><span>{{usages.routers || '0'}}</span>/{{quota.routers || '0'}}</span>
                             </div>
                             <div class="info-box__item">
                                 <i class="iconfont icon-fudongIP-gailan font20 color-secondary"></i>
                                 <span class="ml10">浮动IP</span>
-                                <span class="pull-right"><span>1</span>/100</span>
+                                <span class="pull-right"><span>{{usages.floatingIps || '0'}}</span>/{{quota.floatingIps || '0'}}</span>
                             </div>
                         </div>
                     </el-col>
@@ -176,6 +177,8 @@
 <script>
 import EchartsLine from '@/components/charts/EchartsLine';
 import EchartsPie from '@/components/charts/EchartsPie';
+
+import {getAdminOverview, selectUsageByDate, selectUsageByMoth} from '@/service/overview.js';
 export default {
     data() {
         return {
@@ -188,17 +191,73 @@ export default {
             ],
             gridVal: {
                 bottom: '60',
-                right: '20',
-                left: '60',
+                right: '30',
+                left: '70',
                 top: '60'
             },
             options: [
-                {value: '1', label: '1天'},
-                {value: '3', label: '3天'},
-                {value: '7', label: '7天'}
+                {value: 1, label: '1天'},
+                {value: 3, label: '3天'},
+                {value: 7, label: '7天'}
             ],
-            value: '',
+            timeVal: 1,
+            quota: {},
+            usages: {},
         };
+    },
+    methods: {
+        // 概览数据
+        getAdminOverviewFn(){
+            // let params = {
+            //     deptId: 'deptId'
+            // };
+            getAdminOverview()
+                .then(res => {
+                    console.warn(res);
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.quota = res.data && res.data.quota || [];
+                        this.usages = res.data && res.data.usages || [];
+                    }
+                })
+                .catch(e => {
+
+                    console.error('getEcsInstList', e);
+                });
+        },
+        // 获取租户ecs每日使用量
+        selectUsageByDateFn() {
+            let params = {
+                days: 7
+            };
+            selectUsageByDate(params)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.allOrder = res.data && res.data.allOrder || [];
+                    }
+                })
+                .catch(e => {
+
+                    console.error('getEcsInstList', e);
+                });
+        },
+        // 
+        selectUsageByMothFn() {
+            selectUsageByMoth()
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.allOrder = res.data && res.data.allOrder || [];
+                    }
+                })
+                .catch(e => {
+
+                    console.error('getEcsInstList', e);
+                });
+        }
+    },
+    mounted() {
+        this.getAdminOverviewFn();
+        this.selectUsageByDateFn();
+        this.selectUsageByMothFn();
     },
     components: {
         EchartsLine,
@@ -223,7 +282,7 @@ export default {
     &__data{
         height: 37px;
         border-left: 2px solid #d3d8de;
-        margin: 30px 20px 10px 20px;
+        margin: 30px 30px 0 30px;
         padding-left: 10px;
     }
     &__title{
@@ -262,6 +321,7 @@ export default {
         &__title{
             padding: 20px 30px;
             border-bottom: 1px solid #ebf3f7;
+            height: 60px;
         }
         &__data{
             padding: 40px 54px;

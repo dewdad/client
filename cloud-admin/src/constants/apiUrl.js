@@ -27,7 +27,11 @@ export const SYSCONFIG = {
 export const OVERVIEW = {
     deptlist: USER_RSA + '/adminOverview/view',
     menulist: USER_RSA + '/menu/getMenuListByRoleId',
-    getdomainlist: USER_RSA + '/dept/list'
+    getdomainlist: USER_RSA + '/dept/list',
+    getAdminOverview: USER_RSA + '/adminOverview/view',
+    selectUsageByDate: '/compute/ecsRecord/selectUsageByDate',
+    selectUsageByMoth: '/compute/ecsRecord/selectUsageByMoth',
+    tenantUsages: USER_RSA + '/project/tenantUsages'
 };
 // 日志
 export const OPLOG = {

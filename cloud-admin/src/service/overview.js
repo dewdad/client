@@ -41,9 +41,46 @@ export async function getDomainList(data) {
 
 
 /**
+ * 概览-超级管理员版本查询概览
+ */
+export async function getAdminOverview() {
+    let res = await http.get(OVERVIEW.getAdminOverview);
+    return res && res.data;
+}
+
+/**
  * 概览-管理员版本查询概览
  */
-export async function getAdminOverview(days) { 
-    let res = await http.get(API_OVERVIEW.getAdminOverview);
-    return res && res.data;     
+export async function getAdminOverviewOrdinary(params) {
+    let res = await http.get(OVERVIEW.getAdminOverview, {...params});
+    return res && res.data;  
+}
+
+/**
+ * 超级管理员概览-获取租户ecs每日使用量
+ */
+export async function selectUsageByDate(params) {
+    let res = await http.get(OVERVIEW.selectUsageByDate, {
+        params: params
+    });
+    return res && res.data;  
+}
+
+/**
+ * 超级管理员概览-根条件据获取本月和上月ecs使用量差额
+ */
+export async function selectUsageByMoth() {
+    let res = await http.get(OVERVIEW.selectUsageByMoth);
+    return res && res.data;  
+}
+
+/**
+ * 管理员概览-租户使用量和配额
+ */
+
+export async function tenantUsages(params) {
+    let res = await http.get(OVERVIEW.tenantUsages, {
+        params: params
+    });
+    return res && res.data;  
 }

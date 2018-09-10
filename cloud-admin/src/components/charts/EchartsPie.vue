@@ -15,6 +15,12 @@ export default {
             option: {
                 tooltip: {
                     trigger: 'item',
+                    borderRadius: 0,
+                    backgroundColor: '#FFF',
+                    borderWidth: 1,
+                    textStyle: {
+                        color: 'rgb(51, 51, 51)',
+                    },
                     formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
                 legend: {

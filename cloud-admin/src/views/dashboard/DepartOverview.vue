@@ -479,20 +479,15 @@ export default {
         position: absolute;
         padding: 12px;
         z-index: 999;
+        .el-tree-node__expand-icon{
+            font-family: "iconfont" !important;
+        }
         .el-icon-caret-right:before{
-            content: "\e616";
-            font-weight: 400;
-            font-variant: normal;
-            text-transform: none;
-            line-height: 1;
-            font-size: inherit;
-            &[class*='el-icon'] {
-                font-family: 'element-icons' !important;
-            }
+            content: "\e70d";
         }
         .el-tree-node__expand-icon.expanded{
             &:before{
-                content: "\E63C";
+                content: "\e70c";
             }
             transform: rotate(180deg);
         }  
