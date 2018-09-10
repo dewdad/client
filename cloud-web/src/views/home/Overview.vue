@@ -100,10 +100,10 @@
                             <div class="info-box-head">
                                 监控数据
                                 <span class="pull-right">
-                                    <el-radio-group value="1d" v-model="radioTime" class="header-radio-group mr5">
-                                        <el-radio border name="1天" label="1d">1天</el-radio>
-                                        <el-radio border name="7天" label="7d">7天</el-radio>
-                                        <el-radio border name="30天" label="30d">30天</el-radio>
+                                    <el-radio-group value="1d" v-model="radioTime" @click="getMonitorData" class="header-radio-group mr5">
+                                        <el-radio border name="1天" label="1">1天</el-radio>
+                                        <el-radio border name="7天" label="7">7天</el-radio>
+                                        <el-radio border name="30天" label="30">30天</el-radio>
                                     </el-radio-group>
                                     <el-select value="" placeholder="请选择" size="mini">
                                         <el-option value="">monitorInstance</el-option>
@@ -248,7 +248,7 @@ export default {
             ],
             value: 7,
             echartsLineHeight: '200px',
-            radioTime: '1d',
+            radioTime: '1',
             allOrder: []
         };
     },
@@ -289,6 +289,10 @@ export default {
                 .catch(e => {
                     console.error('getEcsInstList', e);
                 });
+        },
+        // 监控数据
+        getMonitorData(){
+            
         }
     },
     mounted() {
