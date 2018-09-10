@@ -1,4 +1,5 @@
 const Index = () => import('@/views/oss/Index.vue');
+const Empty = () => import('@/views/oss/Empty.vue');
 const Overview = () => import('@/views/oss/Overview.vue');
 const Skeymgr = () => import('@/views/oss/skeymgr/Skeymgr.vue');
 const Bucket = () => import('@/views/oss/bucket/Index.vue');
@@ -12,6 +13,11 @@ export default [
         redirect: '/app/oss/overview',
         component: Index,
         children: [
+            {
+                path: 'empty',
+                name: 'app.oss.empty',
+                component: Empty
+            },
             {
                 path: 'overview',
                 name: 'app.oss.overview',

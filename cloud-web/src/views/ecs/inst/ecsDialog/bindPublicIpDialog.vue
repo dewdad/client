@@ -24,7 +24,7 @@
         </zt-form>
         <span slot="footer" class="dialog-footer">            
             <el-button type="info" class="font12" @click="isShow = false" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
-            <el-button type="primary" class="font12" :loading="loading" :disabled="loading" @click="confirm" size="small">{{ $t('common.ok') }}</el-button>
+            <el-button type="primary" class="font12" :loading="loading" @click="confirm" size="small">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>

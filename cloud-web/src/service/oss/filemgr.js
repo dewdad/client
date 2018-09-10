@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-07-18 15:04:01 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-06 17:47:52
+ * @Last Modified time: 2018-09-10 20:19:16
  * 文件管理服务
  */
 
@@ -67,7 +67,6 @@ export const searchFile = async ({bucketId, path = '', marker = '', searchText =
  */
 export const uploadFile = async (bucketId, localFilePath, prefix) => {
     let res = await http.post(replaceParamVal(API_OSS.uploadFile, [bucketId]), {
-        bucketId,
         prefix,
         localFilePath
     });
