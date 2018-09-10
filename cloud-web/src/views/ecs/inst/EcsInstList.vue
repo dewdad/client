@@ -212,7 +212,8 @@
         <bind-public-ip-dialog :opType="opType" ref="bindPublicIpDialog" />
         <!-- 对话框 绑定连接IP -->
         <bind-link-ip-dialog :opType="opType" ref="bindLinkIpDialog" />
-
+        <!-- 恢复 确认 -->
+        <flavor-confirm ref="flavorConfirm" />
         <!-- 手机验证弹框 -->
         <mobile-code-dialog ref="mobileCodeDialog" :code-type="CHECK"></mobile-code-dialog>
 

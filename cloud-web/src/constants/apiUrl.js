@@ -75,7 +75,9 @@ export const API_ECS = {
         getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
         getBindedPublicIpByEcsId: '/compute/floatip/list',
         getAllPortList: ECS_CTRL + '/servers/ports',
-        resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password'
+        resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password',
+        flavorConfirm: '/compute/ecs/flavorConfirm/{ecsId}',
+        revertResize: '/compute/serverAction/revertResize/{ecsId}'
     },
     monitor: {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData'

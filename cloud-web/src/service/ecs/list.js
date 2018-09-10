@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-10 09:33:46
+ * @Last Modified time: 2018-09-10 11:26:08
  * ecs模块 列表页面
  */
 
@@ -261,5 +261,23 @@ export async function resetEcsInstPassword({ecsId, password1, password2}) {
         password1: RSA_PWD1,
         password2: RSA_PWD2
     });
+    return res && res.data;
+}
+
+/**
+ * 恢复ECS实例
+ * @param {*} ecsId
+ */
+export async function revertResize(ecsId) {
+    let res = await http.post(replaceParamVal(API_ECS.inst.revertResize, [ecsId]));
+    return res && res.data;
+}
+
+/**
+ * 确认ECS实例
+ * @param {*} ecsId
+ */
+export async function flavorConfirm(ecsId) {
+    let res = await http.post(replaceParamVal(API_ECS.inst.flavorConfirm, [ecsId]));
     return res && res.data;
 }

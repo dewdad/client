@@ -1,5 +1,5 @@
 <template>
-    <div class="LiftAndFall">
+    <div class="LiftAndFall" v-loading.fullscreen="loading">
         <!-- 返回上一级 -->
         <div class="GoBack">
             <b class="font16 mr10">升降配</b>
@@ -71,7 +71,7 @@
                     <!-- 切换规格类型 -->
                     <div class="title pull-left lh30" style="width: 80px;">{{ $t('ecs.changeconfig.SpecTitle') }}</div>
                     <div class="Switch" v-loading="flavorLoading" style="overflow: hidden">
-                        <flavor-table v-model="flavor" @loading="handleFlavorLoading"></flavor-table>
+                        <flavor-table v-model="flavor" :filterId="get(ecsInst, 'flavor.id')" @loading="handleFlavorLoading"></flavor-table>
                     </div>
                 </el-col>
             </el-row>
@@ -87,7 +87,7 @@
                 <span ng-if="!isComputing" style="color:#FF6600;font-size:24px" class="ng-binding ng-scope">¥&nbsp;8,700.00</span>
             </div> -->
             <div class="pull-right">
-                <el-button type="warning" class="mr20 zt-next font12" :loading="loading" @click="confirm">{{ $t('ecs.changeconfig.CostBtn') }}</el-button>
+                <el-button type="warning" class="mr20 zt-next font12"  @click="confirm">{{ $t('ecs.changeconfig.CostBtn') }}</el-button>
                 <el-button type="info" :disabled="loading" @click="$router.go(-1)">{{ $t('common.cancel') }}</el-button>
             </div>
         </div>
@@ -99,6 +99,7 @@ import {saveInstFlavor} from '@/service/ecs/list.js';
 import {getInstanceDetail} from '@/service/ecs/detail/index';
 import FlavorTable from '@/views/ecs/create/components/FlavorTable';
 import {mapGetters} from 'vuex';
+import {isEmpty} from '@/utils/utils';
 export default {
     data() {
         return {
@@ -147,7 +148,7 @@ export default {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                         console.log('getFlavorsDetail', res);
                         this.ecsInst = res.data;
-                        this.flavor = res.data.flavor;
+                        // this.flavor = res.data.flavor;
                         console.log('getFlavorsDetail flavor', this.flavor);
                     }
                 })
@@ -189,6 +190,12 @@ export default {
         // },
         //确定升降配
         confirm: function() {
+            if (isEmpty(this.flavor)) {
+                this.$alert('请先选择实例', {
+                    type: 'warning'
+                });
+                return;
+            }
             let data = {
                 ecsId: this.ecsInst.id,
                 flavorId: this.flavor.id

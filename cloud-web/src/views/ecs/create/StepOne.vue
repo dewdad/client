@@ -60,7 +60,7 @@
                 </label>
                 <div v-html="$t('ecs.create.flavor.descTxt')"></div>
             </div>
-            <div class="create-form-item__content">
+            <div id="flavor" class="create-form-item__content">
                 <flavor-table v-model="form.flavorObj" @loading="handleFlavorLoading"></flavor-table>
                 <div class="mt10 font12 color666">申请数量：
                     <zt-input-number v-model="form.applyNumber" :tooltip="$t('ecs.create.maxApplyNumber')|replaceParamVal([form.applyMax])" size="small" suffix="台" :precision="0" controls-position="right" :min="1" :max="form.applyMax"></zt-input-number>
@@ -118,7 +118,7 @@ import FlavorTable from './components/FlavorTable';
 import SelectMirror from './components/SelectMirror';
 import Storage from './components/Storage';
 import KeyPair from './components/KeyPair';
-import {showErrAlert, scrollTo} from '@/utils/utils';
+import {showErrAlert, scrollTo, isEmpty} from '@/utils/utils';
 const applyMax = ZT_ECS_APPLY_MAX;
 export default {
     name: 'StepOne',
@@ -175,7 +175,7 @@ export default {
                 this.$refs.instname.$refs.instNameForm.validate((valid, field) => {
                     if (valid) {
                         // return resolve();
-                        return this.validMirror(resolve, reject);
+                        return this.validImage(resolve, reject);
                     } else {
                         this.showError(field, this.$refs.instname.$refs);
                         // let keys = Object.keys(field);
@@ -185,6 +185,21 @@ export default {
                     }
                 });
             });
+        },
+        /**
+         * 验证实例
+         */
+        validImage(resolve, reject) {
+            if (!isEmpty(this.form.flavorObj)) {
+                return this.validMirror(resolve, reject);
+            } else {
+                showErrAlert('请选择实例', () => {
+                    // 如果是未选择镜像，根据数据盘数量动态计算偏移量
+                    scrollTo('#flavor', {
+                        offset: -200
+                    });
+                });
+            }
         },
         /**
          * 验证镜像
