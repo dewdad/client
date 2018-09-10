@@ -50,7 +50,15 @@ export const DEPT = {
     createRenter: USER_RSA + '/project/',//创建租户
     delRenter: USER_RSA + '/project/delete',//删除租户
     createUser: USER_RSA + '/user/',//创建用户
-    findeRole: USER_RSA + '/role/list',//获取
+    findeRole: USER_RSA + '/user/list',//获取用户列表
+    delUser: USER_RSA + '/user/delete',//删除用户
+    viewUsage: USER_RSA + '/project/tenantUsages',//删除用户
+    searchRentQuota: USER_RSA + '/project/quertProjectQuota/',//租户配额查询
+    changeQuota: USER_RSA + '/project/updateProjectQuota',//修改配额
+    searchByProjectId: USER_RSA + '/project/getUserByProject',//通过租户id查找用户
+    editRente: USER_RSA + '/project/',//修改租户
+    editUser: USER_RSA + '/user/update/',//修改用户
+    resetPwd: USER_RSA + '/user/resetPwd',//修改密码
 };
 // 角色管理
 export const RoleMgr = {

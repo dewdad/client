@@ -25,7 +25,7 @@ const IMAGE_CTRL = 'services-image';
 export const API_LOGIN = {
     login: USER_CONTROLLER + '/auth/token',
     checkUserName: USER_CONTROLLER + '/user/checkUserName',
-    getLoginState: '/auth/getLoginState'
+    getLoginState: '/auth/getLoginState', 
 };
 
 // 注册模块
@@ -268,11 +268,16 @@ export const API_UserAccount = {
     // userAuthResult: USER_CONTROLLER + '/userAuth/{user_id}',
     // userAuthMoneyConfirm: USER_CONTROLLER + '/userAuth/confirm ',
     getUserInfo: USER_CONTROLLER + '/user/{user_id}/info',
-    getUserInfoDetail: USER_CONTROLLER + '/user/{user_id}/info',
+    getUserInfoDetail: USER_CONTROLLER + '/user/detail/{user_id}',
     getUserDetail: USER_CONTROLLER + '/user/{user_id}',
     saveUserInfo: USER_CONTROLLER + '/user/info',
     updateUserInfo: USER_CONTROLLER + '/user/info/{id}',
     bindMobile: USER_CONTROLLER + '/user/bindPhone'
+};
+
+//租户管理接口
+export const API_PROJECT = {
+    getProjectByUserId: USER_CONTROLLER + '/project/getProjectByUserId',
 };
 
 // 云安全
