@@ -392,5 +392,6 @@ export const API_IMAGE = {
 // 概览
 export const API_OVERVIEW = {
     //添加自定义镜像
-    getOrderCount: '/compute/order/getOrderCount' // 概览-工单数量
+    getOrderCount: '/resources/order/getOrderCount', // 概览-工单数量
+    getMonitorWarn: '/monitor/alarm/countAlarm/{days}'
 };

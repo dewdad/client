@@ -41,7 +41,7 @@ export default {
                 legend: {
                     data: this.legendData,
                     y: 'bottom',
-                    icon: 'circle',
+                    icon: this.legendIcon,
                     pageIconColor: 'yellow',
                     selectedMode: 'multiple'
                 },
@@ -126,6 +126,11 @@ export default {
             default: function() {
                 return [];
             }
+        },
+        // 图例图标
+        legendIcon: {
+            type: String,
+            default: 'circle'
         },
         // 峰值背景宽度
         markPointSymbolSize: {

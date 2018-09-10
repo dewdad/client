@@ -36,7 +36,10 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-neicun-gailan" />
                                             </div>
-                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="75" :duration="2" /></div>
+                                            <div class="number mt20">
+                                                <ICountUp :startVal="0" :endVal="75" :duration="2" />
+                                                <i v-show="false" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                            </div>
                                             <div class="font14 color999">内存</div>
                                         </div>
                                     </el-col>
@@ -69,21 +72,22 @@
                             </div>
                         </div>
                     </el-col>
+                    <!-- 待办工单 -->
                     <el-col :span="8">
                         <div class="info-box todo">
                             <div class="info-box-head">待办工单</div>
                             <div class="info-box-content">
-                                <div class="todo-task ">
-                                    工单
-                                    <span class="pull-right">4</span>
+                                <div class="todo-task">
+                                    我的工单
+                                    <span class="pull-right">{{allOrder.myorderCount}}</span>
                                 </div>
                                 <div class="todo-task mt10">
-                                    工单
-                                    <span class="pull-right">0</span>
+                                    未处理工单
+                                    <span class="pull-right">{{allOrder.todoOrderCount}}</span>
                                 </div>
                                 <div class="todo-task mt10">
-                                    工单
-                                    <span class="pull-right">0</span>
+                                    已处理工单
+                                    <span class="pull-right">{{allOrder.doneOrderCount}}</span>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +100,7 @@
                             <div class="info-box-head">
                                 监控数据
                                 <span class="pull-right">
-                                    <el-radio-group value="1d" class="header-radio-group mr5">
+                                    <el-radio-group value="1d" v-model="radioTime" class="header-radio-group mr5">
                                         <el-radio border name="1天" label="1d">1天</el-radio>
                                         <el-radio border name="7天" label="7d">7天</el-radio>
                                         <el-radio border name="30天" label="30d">30天</el-radio>
@@ -110,7 +114,17 @@
                                 </span>
                             </div>
                             <div class="info-box-content" id="echartsLine">
-                                <echarts-line :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData"  :seriesData="seriesData" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
+                                <echarts-line 
+                                :isMarkPoint="false" 
+                                :gridVal="gridVal" 
+                                :legendData="legendData"  
+                                :seriesData="seriesData" 
+                                :xAxisData="xData" 
+                                legendIcon="rect"
+                                :markPointSymbolSize="['150','55']" 
+                                :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                                :dotStyle="['b0e9c4', 'b0e9c4']" 
+                                :idString="'mychart'"></echarts-line>
                             </div>
                         </div>
                     </el-col>
@@ -133,7 +147,7 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                             </div>
                         </div>
                     </el-col>
@@ -194,19 +208,20 @@
 import EchartsLine from '@/components/charts/EchartsLine.vue';
 import EchartsBar from '@/components/charts/EchartsBar.vue';
 import ICountUp from 'vue-countup-v2';
-import {getOrderCount} from '@/service/ecs/overview.js';
+import {getOrderCount, getMonitorWarn} from '@/service/ecs/overview.js';
 export default {
     name: 'Overview',
     data() {
         return {
-            legendData: ['邮件营销', '联盟广告'],
-            xData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            legendData: ['CPU使用率', '内存使用率'],
+            xData: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
+            xWarnData: ['8-24', '8-25', '8-26', '8-27', '8-28', '8-29', '8-30'],
             seriesData: [
                 {
-                    seriesData: [120, 132, 101, 134, 90, 230, 210]
+                    seriesData: [20, 22, 81, 34, 50, 50, 70, 67, 63]
                 },
                 {
-                    seriesData: [220, 182, 191, 234, 290, 330, 310]
+                    seriesData: [20, 32, 91, 34, 60, 20, 10, 56, 24]
                 }
             ],
             gridVal: {
@@ -226,9 +241,15 @@ export default {
                     seriesData: [120, 132, 101, 134, 90, 230, 210]
                 }
             ],
-            options: [{value: '7天', label: '7'}],
+            options: [
+                {value: '1', label: '1天'},
+                {value: '3', label: '3天'},
+                {value: '7', label: '7天'}
+            ],
             value: '',
-            echartsLineHeight: '200px'
+            echartsLineHeight: '200px',
+            radioTime: '1d',
+            allOrder: []
         };
     },
     computed: {},
@@ -240,6 +261,18 @@ export default {
     methods: {
         getOrderCountFn() {
             getOrderCount()
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.allOrder = res.data && res.data.allOrder || [];
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
+        },
+        // 监控告警接口
+        getMonitorWarnFn() {
+            getMonitorWarn(7)
                 .then(res => {
                     if (res && res.data) {
                         let data = res.data;
@@ -256,6 +289,7 @@ export default {
     },
     mounted() {
         this.getOrderCountFn();
+        this.getMonitorWarnFn();
     }
 };
 </script>
@@ -362,6 +396,13 @@ export default {
 
 .info-box-content {
     flex:1;
+    .todo-task:hover{
+        background-color: #e1e6ed;
+        cursor: pointer;
+        span{
+            color: #999;
+        }
+    }
 }
 
 .info-box-content-info {
@@ -435,6 +476,12 @@ export default {
     left: 0px;
     right: 0px;
     margin-top: -10px;
+    cursor: pointer;
+    &:hover{
+        i, span{
+            color:#0d7ff2 !important;
+        }
+    }
 }
 
 .products .products-inner {
