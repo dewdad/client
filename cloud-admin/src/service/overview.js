@@ -38,3 +38,12 @@ export async function getDomainList(data) {
     });
     return response.data;
 }
+
+
+/**
+ * 概览-管理员版本查询概览
+ */
+export async function getAdminOverview(days) { 
+    let res = await http.get(API_OVERVIEW.getAdminOverview);
+    return res && res.data;     
+}
