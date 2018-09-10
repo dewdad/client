@@ -7,40 +7,40 @@
         <div class="userInfo">
             <zt-form ref="userInfo" v-loading.lock="fullscreenLoading" size="small" label-width="102px" :rules="rules" inline-message>                
                 <zt-form-item label="用户名：" class="mt20">
-                   <span>{{userInfo.name}}</span>
+                   <span>{{userDetailInfo.name}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="用户ID：" >
-                   <span>{{userInfo.id}}</span>
+                   <span>{{userDetailInfo.id}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="租户名称：" >
-                   <span>{{userInfo.name}}</span>
+                   <span>{{userDetailInfo.name}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="租户ID：" >
-                   <span>{{userInfo.id}}</span>
+                   <span>{{userDetailInfo.projectId || '--'}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="部门名称：" >
-                   <span>{{userInfo.deptId}}</span>
+                   <span>{{userDetailInfo.deptId}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="邮箱：" >                   
-                   <el-input v-if="userDetailInfo.isEditEmail" type="email" class="wd200" v-model="userInfo.email"></el-input>
-                   <span class="wd200 inline-block" v-else>{{userInfo.email  || '--'}}</span>
+                   <el-input v-if="userDetailInfo.isEditEmail" type="email" class="wd200" v-model="userDetailInfo.email"></el-input>
+                   <span class="wd200 inline-block" v-else>{{userDetailInfo.email  || '--'}}</span>
                    <a class="pl20" @click="userDetailInfo.isEditEmail = true;">修改</a>
                 </zt-form-item>
 
                 <zt-form-item label="密码：" >                   
-                   <el-input v-if="userDetailInfo.isEditPwd" type="password" class="wd200" v-model="userInfo.email"></el-input>
-                   <span class="wd200 inline-block" v-else>{{ userInfo.password|hiddenStr(0,0) || '--' }}</span>
+                   <el-input v-if="userDetailInfo.isEditPwd" type="password" class="wd200" v-model="userDetailInfo.email"></el-input>
+                   <span class="wd200 inline-block" v-else>{{ userDetailInfo.password ? '******' : '--' }}</span>
                    <a class="pl20" @click="userDetailInfo.isEditPwd = true;">修改</a>
                 </zt-form-item>
 
                 <zt-form-item label="描述：" >                   
-                   <el-input v-if="userDetailInfo.isEditDesc" type="textarea" class="wd200" v-model="userInfo.description"></el-input>
-                   <span class="wd200 inline-block" v-else>{{userInfo.description  || '--'}}</span>
+                   <el-input v-if="userDetailInfo.isEditDesc" type="textarea" class="wd200" v-model="userDetailInfo.description"></el-input>
+                   <span class="wd200 inline-block" v-else>{{userDetailInfo.description  || '--'}}</span>
                    <a class="pl20" @click="userDetailInfo.isEditDesc = true;">修改</a>
                 </zt-form-item>
 
@@ -48,17 +48,17 @@
                    <el-table :data="roleTableData" row-class-name="data-list" header-row-class-name="data-list" border class="data-list">
                         <el-table-column label="角色名称" width="318">
                             <template slot-scope="scope">
-                                <span class="font12">{{scope.row.name}}</span>
+                                <span class="font12">{{scope.row.roleName}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="角色类型" width="202">
+                        <el-table-column label="角色类型" width="318">
                             <template slot-scope="scope">
                                 <span class="font12">{{scope.row.roleType}}</span>
                             </template>
                         </el-table-column>                       
                         <el-table-column label="描述">
                             <template slot-scope="scope">
-                                <span class="font12">{{scope.row.desc}}</span>
+                                <span class="font12">{{scope.row.roleDescription}}</span>
                             </template>
                         </el-table-column>                    
                     </el-table>
@@ -71,19 +71,19 @@
                                 <span class="font12">{{scope.row.name}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="ID" width="202">
+                        <el-table-column label="ID" width="318">
                             <template slot-scope="scope">
-                                <span class="font12">{{scope.row.ID}}</span>
+                                <span class="font12">{{scope.row.id}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="地域" width="202">
+                        <el-table-column label="地域" width="200">
                             <template slot-scope="scope">
                                 <span class="font12">{{scope.row.region}}</span>
                             </template>
                         </el-table-column>                        
                         <el-table-column label="描述">
                             <template slot-scope="scope">
-                                <span class="font12">{{scope.row.desc}}</span>
+                                <span class="font12">{{scope.row.description}}</span>
                             </template>
                         </el-table-column>                    
                     </el-table>
@@ -105,7 +105,7 @@
     </div>
 </template>
 <script>
-import {getUserInfoDetail} from '@/service/user';
+import { getUserInfoDetail,getProjectByUserId } from '@/service/user';
 import {mapGetters} from 'vuex';
 export default {
     data() {   
@@ -124,33 +124,58 @@ export default {
                 isEditEmail: false,
                 isEditPwd: false,
                 isEditDesc: false
-            },  
-            roleTableData:[
-                {name:'Resource Admin',roleType:'系统预置角色',desc:'资源管理租户管理员，资源管理角色，具有所有资源管理租户内的所有资源管理权限。'},
-                {name:'Menu Admin',roleType:'系统预置角色',desc:'菜单管理租户管理员，菜单管理角色，具有所有菜单管理租户内的所有菜单管理权限。'},
-            ],
-            projectTableData:[
-                {name:'project01',ID:'44dfdfsjqw',region:'长沙',desc:'证通云平台测试'},
-                {name:'project02',ID:'bbvffcdefw',region:'长沙',desc:'证通云平台测试'},
-            ],          
+            }, 
+            roleTableData: [],            
+            projectTableData:[],          
             rules: {                
             },         
         };
     },
     created() {
-        this.getUserInfoDetail();       
+        this.getUserInfoDetail(); 
+        this.getProjectByUserId();      
     },
     computed: {
-        ...mapGetters(['userInfo'])
+        ...mapGetters(['userInfo']),        
     },
     methods: {
         // 获取基本资料详情
         getUserInfoDetail() {
             // this.fullscreenLoading = true;
-            getUserInfoDetail({uid: this.userInfo.id}).then( res => {
-                this.userDetailInfo = res.result || {};               
-            });
+            getUserInfoDetail({uid: this.userInfo.id})
+                .then( res => {
+                    if (res.code === this.CODE.SUCCESS_CODE) {
+                        $log(res); 
+                        Object.assign(this.userDetailInfo,res.data || { }); 
+
+                        let {id,roleId, roleName,roleType,roleDescription } = this.userDetailInfo;
+                        this.roleTableData = [ {id,roleId, roleName,roleType,roleDescription }]; 
+                    }else {
+
+                    }                                
+                })
+                .catch(err => {                    
+                    $log(err);
+                });
         }, 
+
+        getProjectByUserId(){           
+            getProjectByUserId({userId:this.userInfo.id})
+                .then( res => {
+                    if (res.code === this.CODE.SUCCESS_CODE) {
+                        $log(res); 
+                        let resData = res.data;
+                        if(resData && resData.data){
+                            this.projectTableData = resData.data || [];
+                        }     
+                    }else {
+                        $log(res.msg);
+                    }
+                })
+                .catch(err => {                    
+                    $log(err);
+                });
+        },
 
         handleSizeChange: function(params) {
             console.log('params:', params);
