@@ -400,5 +400,5 @@ export const API_IMAGE = {
 export const API_OVERVIEW = {
     getOrderCount: '/resources/order/getOrderCount', // 概览-工单数量
     getMonitorWarn: '/monitor/alarm/countAlarm/{days}',
-    getUserUsagesAndQuota: '/project/getUserUsagesAndQuota'
+    getUserUsagesAndQuota: '/identity/project/getUserUsagesAndQuota'
 };
