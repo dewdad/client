@@ -112,7 +112,7 @@ export async function selectAllUsers(data) {
  */
 export async function delRenter(data) {
     console.log('data',data);
-    var url = DEPT.delRenter+'?req_param='+data;
+    var url = DEPT.delRenter+'/'+data;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
 }

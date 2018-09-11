@@ -97,7 +97,19 @@ export default {
         }),
     },
     methods: {
-
+        // handleClick(data,checked, node) {
+        //     this.i++;
+        //     if(this.i%2==0){
+        //         if(checked){
+        //             this.$refs.tree.setCheckedNodes([]);
+        //             this.$refs.tree.setCheckedNodes([data]);
+        //             //交叉点击节点
+        //         }else{
+        //             this.$refs.tree.setCheckedNodes([]);
+        //             //点击已经选中的节点，置空
+        //         }
+        //     }
+        // },
         handleNodeClick(data){
             this.brunch = data;
             // 记录当前部门分支
@@ -270,6 +282,10 @@ export default {
         //租户详情
         showRentaDetail(item){
             this.$refs.ProjectDetail.show(item);
+        },
+        //用户详情
+        showUserDetail(item){
+            this.$refs.ClientDetail.show(item);
         },
         //修改租户
         editRente(item,brunch){
