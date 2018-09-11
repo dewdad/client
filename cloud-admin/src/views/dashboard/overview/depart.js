@@ -1,7 +1,7 @@
 import EchartsLine from '@/components/charts/EchartsLine';
 import EchartsPie from '@/components/charts/EchartsPie';
 
-import {getAdminOverview} from '@/service/overview.js';
+import {getAdminOverview, getTenantIntro} from '@/service/overview.js';
 
 let resourceArr = [
     {class: 'iconfont icon-yunzhuji-gailan', name: '弹性主机'},
@@ -21,7 +21,6 @@ export default {
         return {
             resourceArr,
             searchVal: '',
-            searchFocus: false,
             departData: [
                 {
                     label: '一级部门1',
@@ -83,7 +82,6 @@ export default {
             };
             getAdminOverview(params)
                 .then(res => {
-                    console.warn(res);
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         this.quota = res.data && res.data.quota || [];
                         this.usages = res.data && res.data.usages || [];
@@ -95,8 +93,21 @@ export default {
         },
         // 租户筛选
         searchTenant() {
-            this.searchFocus = true;
-            // alert(this.searchVal);
+        },
+        // 
+        getTenantIntroFn() {
+            let params = {
+                deptId: 'deptId'
+            };
+            getTenantIntro(params)
+                .then(res => {
+                    console.warn(res);
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
         }
 
     },
