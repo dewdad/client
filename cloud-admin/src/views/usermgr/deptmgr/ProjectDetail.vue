@@ -1,10 +1,10 @@
 <template>
     <el-dialog title="租户详情" :visible.sync="isShow" width="600px"  v-dialogDrag>
         <div class="detailbox">
-            <p> 租户名称: {{item.id}}</p>
-            <p> 租户ID: {{item.serviceDesc}}</p>
-            <p>  激活: {{ item.result==0?'未知':(item.result==1?'成功':'失败') }}</p>
-            <p>  描述: {{item.operUserId}}</p>
+            <p> 租户名称: {{item.name}}</p>
+            <p> 租户ID: {{item.id}}</p>
+            <p>  激活: {{ item.status==0?'未知':(item.status==1?'成功':'失败') }}</p>
+            <p>  描述: {{item.description}}</p>
         </div>
     </el-dialog>
 </template>
@@ -24,6 +24,7 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
+            console.log('item',item);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

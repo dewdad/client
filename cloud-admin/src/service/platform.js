@@ -14,6 +14,17 @@ export async function getplatformList(data) {
     return response.data;
 }
 /**
+ *查询平台扩展列表
+ * @param {*}
+ */
+export async function getExpandList(data) {
+    console.log('data',data);
+    let response = await http.get(PlatForm.getExpandList, {
+        params: data
+    });
+    return response.data;
+}
+/**
  *添加平台
  * @param {*}
  */
@@ -123,6 +134,35 @@ export async function bindAuth(data) {
     console.log('data',data);
     var utl = PlatForm.bindAuth + '/' + data.roleType;
     let response = await http.put(utl,data.ids);
+    return response.data;
+}
+/**
+ *添加扩展信息
+ * @param {*}
+ */
+export async function createExpand(data) {
+    console.log('data',data);
+    let response = await http.post(PlatForm.createExpand,data.expand);
+    return response.data;
+}
+/**
+ *修改扩展信息
+ * @param {*}
+ */
+export async function editExpand(data) {
+    console.log('data',data);
+    let url = PlatForm.editExpand + data.id;
+    let response = await http.put(url,data.expand);
+    return response.data;
+}
+/**
+ *删除平台扩展信息
+ * @param {*}
+ */
+export async function delExpand(data) {
+    console.log('data',data);
+    var utl = PlatForm.delExpand  + data.id;
+    let response = await http.delete(utl);
     return response.data;
 }
 

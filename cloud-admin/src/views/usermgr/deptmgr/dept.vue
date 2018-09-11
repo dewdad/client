@@ -195,7 +195,7 @@
                                 <template v-if="col.column=='username'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.name}}</span>
+                                            <a class="font12 mr10" @click="showUserDetail(scope.row)">{{scope.row.name}}</a>
                                         </template>
                                     </el-table-column>
                                 </template>
