@@ -36,7 +36,7 @@ export const OPLOG = {
 // 部门管理
 export const DEPT = {
     deptTree: USER_RSA + '/dept/departmentTree',//部门树
-    delDept: USER_RSA + '/dept/delete/',//删除部门
+    delDept: USER_RSA + '/dept/',//删除部门
     searchUser: USER_RSA + '/dept/get/',//根据id查找用户
     createDept: USER_RSA + '/dept/',//创建部门
     editDept: USER_RSA + '/dept/',//编辑部门
@@ -48,9 +48,9 @@ export const DEPT = {
     createUser: USER_RSA + '/user/',//创建用户
     findeRole: USER_RSA + '/user/list',//获取用户列表
     delUser: USER_RSA + '/user/delete',//删除用户
-    viewUsage: USER_RSA + '/project/tenantUsages',//删除用户
-    searchRentQuota: USER_RSA + '/project/quertProjectQuota/',//租户配额查询
-    changeQuota: USER_RSA + '/project/updateProjectQuota',//修改配额
+    viewUsage: USER_RSA + '/project/getUserUsagesAndQuota',//查看使用量
+    searchRentQuota: USER_RSA + '/project/quota/',//租户配额查询
+    changeQuota: USER_RSA + '/project/quota',//修改配额
     searchByProjectId: USER_RSA + '/project/getUserByProject',//通过租户id查找用户
     editRente: USER_RSA + '/project/',//修改租户
     editUser: USER_RSA + '/user/update/',//修改用户

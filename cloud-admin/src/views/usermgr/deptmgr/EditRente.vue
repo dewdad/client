@@ -100,16 +100,19 @@ export default {
         submitForm() {
             this.confirmBtn = true;
             let param = {
-                grantUsers:[],
-                quota:{},
-                tenantinfo:{
-                    enabled:this.form.enabled == '1' ? true : false,
-                    status:this.form.enabled == '1' ? 1 : 0,
-                    deptId:this.brunch.id,
-                    name:this.form.name,
-                    description:this.form.description,
-                },
-                revokeUsers:[]
+                id:this.item.id,
+                data:{
+                    grantUsers:[],
+                    quota:{},
+                    tenantinfo:{
+                        enabled:this.form.enabled == '1' ? true : false,
+                        status:this.form.enabled == '1' ? 1 : 0,
+                        deptId:this.brunch.id,
+                        name:this.form.name,
+                        description:this.form.description,
+                    },
+                    revokeUsers:[]
+                }
             };
             editRente(param).then(ret => {
                 if(ret.data.code === '0000'){
