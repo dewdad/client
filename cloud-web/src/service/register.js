@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-07-03 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-07 17:04:47
+ * @Last Modified time: 2018-09-11 09:21:06
  * 注册服务
  */
 
@@ -40,7 +40,7 @@ export async function getImageCode() {
  * @param {*} code 图片验证码
  */
 export async function checkImageCode(code) {
-    let response = await http.get(replaceParamVal(API_REGISTER.checkImageCode, [code]));
+    let response = await http.post(replaceParamVal(API_REGISTER.checkImageCode, [code]));
     return response && response.data;
 }
 
