@@ -211,6 +211,14 @@ export default {
                 let myChart = echarts.init(document.getElementById(this.idString));
                 myChart.setOption(this.option);
             }, 200);
+        },
+        xAxisData() {
+            this.arrangeSeries();
+            this.option.xAxis['data'] = this.xAxisData;
+            setTimeout(() => {
+                let myChart = echarts.init(document.getElementById(this.idString));
+                myChart.setOption(this.option);
+            }, 200);
         }
     },
     methods: {
