@@ -43,7 +43,7 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-table ref="fileTable" :data="fileList" v-loading="loading" stripe border class="data-list mt10" @selection-change="handleSelectionChange">
+                <el-table ref="fileTable" :data="fileList" v-loading="loading" stripe border empty-text="还没有上传文件" class="data-list mt10" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" :selectable="selectable">
                     </el-table-column>
                     <el-table-column label="文件名(Object Name)" :show-overflow-tooltip="true">
@@ -93,7 +93,7 @@
                             <span v-else class="inline-block">
                                 <a href="javascript:;" @click="preview(scope.row)">详情</a>
                                 <b class="link-division-symbol"></b>
-                                <a href="javascript:;" @click="removeFileOne(scope.row.key, 'one', scope.$index)">删除</a>
+                                <a href="javascript:;" @click="removeFileOne(scope.row, 'one', scope.$index)">删除</a>
                             </span>
                         </template>
                     </el-table-column>
@@ -111,14 +111,16 @@
         <upload-file ref="uploadFile" :bucketId="bucketId" :path="currentPath" :bucketName="headerInfo.name" @success="search(currentPath)"></upload-file>
         <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId"></create-folder>
         <preview ref="preview" :bucketId="bucketId" :file-list="previewFiles"></preview>
+        <delete-file-dialog ref="DeleteFileDialog" :bucketId="bucketId"></delete-file-dialog>
     </div>
 </template>
 <script>
-import {getFileList, removeFile, getFileLink} from '@/service/oss/filemgr';
+import {getFileList, getFileLink} from '@/service/oss/filemgr';
 import {isEmpty, isObject} from '@/utils/utils';
 import UploadFile from './UploadFile';
 import CreateFolder from './CreateFolder';
 import Preview from './Preview';
+import DeleteFileDialog from './components/DeleteFileDialog';
 export default {
     name: 'Filemrg',
     data() {
@@ -141,11 +143,16 @@ export default {
     components: {
         UploadFile,
         CreateFolder,
-        Preview
+        Preview,
+        DeleteFileDialog
     },
     watch: {
         multipleSelection: function(newval) {
             this.allSelect = newval.length && newval.length === this.fileNums;
+        },
+        bucketId: function() {
+            this.currentPath = '';
+            this.getFileList();
         }
     },
     computed: {
@@ -289,25 +296,29 @@ export default {
             return !this.getRowType(row);
         },
         // 删除单个文件或目录
-        removeFileOne(fileName, type, index) {
-            let tips = '您确定要删除所选文件吗？';
-            tips += `<br/>${fileName}`;
-            tips += '<br/>共1个';
-            this.$confirm(tips, '删除', {
-                type: 'warning',
-                dangerouslyUseHTMLString: true
-            }).then(() => {
-                removeFile(this.bucketId, [fileName], type)
-                    .then(res => {
-                        if (res.code === this.CODE.SUCCESS_CODE) {
-                            this.$message.success('文件删除成功');
-                            this.fileList.splice(index, 1);
-                        }
-                    })
-                    .catch(err => {
-                        $log(err);
-                    });
+        removeFileOne(file, type, index) {
+            let files = [file];
+            this.$refs.DeleteFileDialog.show(files, type).then(res => {
+                this.fileList.splice(index, 1);
             });
+            // let tips = '您确定要删除所选文件吗？';
+            // tips += `<br/>${fileName}`;
+            // tips += '<br/>共1个';
+            // this.$confirm(tips, '删除', {
+            //     type: 'warning',
+            //     dangerouslyUseHTMLString: true
+            // }).then(() => {
+            //     removeFile(this.bucketId, [fileName], type)
+            //         .then(res => {
+            //             if (res.code === this.CODE.SUCCESS_CODE) {
+            //                 this.$message.success('文件删除成功');
+            //                 this.fileList.splice(index, 1);
+            //             }
+            //         })
+            //         .catch(err => {
+            //             $log(err);
+            //         });
+            // });
         },
         // 批量删除文件
         batchRemoveFile() {
@@ -315,29 +326,32 @@ export default {
                 this.$message.info('请选择要删除的文件');
                 return;
             }
-            let tips = '您确定要删除所选文件吗？';
-            let fileName = [];
-            this.multipleSelection.forEach(file => {
-                tips += `<br/>${file.key}`;
-                fileName.push(file.key);
+            this.$refs.DeleteFileDialog.show(this.multipleSelection, 'more').then(res => {
+                this.search();
             });
-            tips += '<br/>共' + this.multipleSelection.length + '个';
+            // let tips = '您确定要删除所选文件吗？';
+            // let fileName = [];
+            // this.multipleSelection.forEach(file => {
+            //     tips += `<br/>${file.key}`;
+            //     fileName.push(file.key);
+            // });
+            // tips += '<br/>共' + this.multipleSelection.length + '个';
 
-            this.$confirm(tips, '删除', {
-                type: 'warning',
-                dangerouslyUseHTMLString: true
-            }).then(() => {
-                removeFile(this.bucketId, fileName, 'more')
-                    .then(res => {
-                        if (res.code === this.CODE.SUCCESS_CODE) {
-                            this.$message.success('文件删除成功');
-                            this.search();
-                        }
-                    })
-                    .catch(err => {
-                        $log(err);
-                    });
-            });
+            // this.$confirm(tips, '删除', {
+            //     type: 'warning',
+            //     dangerouslyUseHTMLString: true
+            // }).then(() => {
+            //     removeFile(this.bucketId, fileName, 'more')
+            //         .then(res => {
+            //             if (res.code === this.CODE.SUCCESS_CODE) {
+            //                 this.$message.success('文件删除成功');
+            //                 this.search();
+            //             }
+            //         })
+            //         .catch(err => {
+            //             $log(err);
+            //         });
+            // });
         },
         // 下载文件
         downloadFile(fileKey, mimeType) {
