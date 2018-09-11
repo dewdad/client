@@ -134,13 +134,28 @@ export async function pwdForget(data) {
     let response = await http.post(API_UserAccount.pwdForget, postdata);
     return response.data;
 }
-//修改密码   
+
+
+//修改密码 
+/**
+ * {
+  "confirmPwd": "string",
+  "newPwd": "string",
+  "oldPwd": "string",
+  "userId": "string",
+  "userName": "string"
+}
+ */  
 export async function pwdChange(data) {
-    let RSA_PWD = await RSA.encrypt(data.loginPass);
+    let { newPwd,oldPwd,confirmPwd,userId,userName } = data;    
     let postdata = {
-        password: RSA_PWD
+        newPwd:await RSA.encrypt(newPwd),
+        oldPwd:await RSA.encrypt(oldPwd),
+        confirmPwd:await RSA.encrypt(confirmPwd),
+        userId,
+        userName
     };
-    let response = await http.post(API_UserAccount.pwdReset, postdata);
+    let response = await http.put(API_UserAccount.pwdReset, postdata);
     return response.data;
 }
 
