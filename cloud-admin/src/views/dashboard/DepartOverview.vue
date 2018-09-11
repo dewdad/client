@@ -4,10 +4,10 @@
         <div class="selDepart mb20">
             <div class="finger-cursor" @click="selDepartBox">
                 <span class="el-dropdown-link font18">
-                    VDC部门1<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
+                    {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
                 </span>
             </div>
-            <el-tree v-show="departShow"
+            <el-tree v-show="false"
             :data="departData" 
             :expand-on-click-node="false" 
             :props="defaultProps"
@@ -182,19 +182,15 @@
                                         size="small"
                                         class="pull-right"
                                         v-model="searchVal"
-                                        @focus="searchTenant">
-                                        <el-button slot="prepend" size="mini" icon="el-icon-search"></el-button>
+                                        >
+                                        <el-button slot="prepend" @click="searchTenant" size="mini" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                                 <!-- 租户列表 -->
                                 <ul class="floor-tenant__box__ul">
-                                    <li class="floor-tenant__box__li" v-for="(item, index) in tenantList" :key="index">
+                                    <li class="floor-tenant__box__li" :class="{'be-selected': item.projectId === selTenantId }" v-for="(item, index) in tenantList" :key="index">
                                         <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>{{item.name}}</span>
-                                    </li>
-                                    <li class="floor-tenant__box__li">
-                                        <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>租户a</span>
+                                        <span @click="selTenant(item.projectId)">{{item.projectName}}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -205,13 +201,13 @@
                                     <span class="mr40 font16">租户资源</span>
                                 </div>
                                 <div class="floor-tenant__resource__list">
-                                    <div class="resource-list" v-for="(item, index) in resourceArr" :key="index">
+                                    <div class="resource-list"  v-for="(item, index) in resourceArr" :key="index">
                                         <div class="resource-list__father">
                                             <div class="resource-title">
                                                 <i :class="item.class"></i>
                                                 <span class="ml10">{{item.name}}</span>
                                             </div>
-                                            <div class="pull-right statistics"><span>25</span>/100</div>
+                                            <div class="pull-right statistics" v-if="tenantResource[0]"><span>{{tenantResource[0] && tenantResource[0][item.field] || '0'}}</span>/{{tenantResource[0][item.totalField] || '0'}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +228,6 @@
         color: #333 !important;
     }
 }
-// 
 .floor-one{
     &__box{
         background-color: #fff;
@@ -265,8 +260,6 @@
         }
     }
 }
-
-// 
 .floor-two{
     &__box{
         background-color: #fff;
@@ -319,6 +312,7 @@
             .el-input__inner{
                 border-radius: 0;
                 border-left: 0;
+                padding-left: 0;
                 &:focus{
                     border-color: #dcdfe6;
                 }
@@ -326,9 +320,13 @@
                     border-color: #dcdfe6;
                 }
             }
+            .el-button--mini, .el-button--mini.is-round{
+                margin: 0;
+                padding: 7px 10px;
+            }
             .el-input-group__prepend{
                 background-color: #fff;
-                padding: 0 10px;
+                padding: 0;
             }
             .border-primary{
                 border-color: #409EFF;
@@ -344,11 +342,14 @@
             line-height: 40px;
             padding-left: 30px;
             &:hover{
-                // color: #0d7ef2;
-                background-color: #eceff8;
-                // i{
-                //     color: #0d7ef2;
-                // }
+                background-color: rgba(236, 239, 248, 0.5);
+            }
+            &.be-selected{
+                color: #0d7ef2;
+                background-color: rgba(236, 239, 248, 0.5);
+                i{
+                    color: #0d7ef2;
+                }
             }
         }
     }

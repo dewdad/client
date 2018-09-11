@@ -54,6 +54,7 @@
                                 :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
                                 :dotStyle="['b0e9c4', 'b0e9c4']" 
                                 :idString="'mychart'"></echarts-line>
+                                <div v-else class="color-secondary text-c font20" style="line-height: 350px">暂无数据</div>
                             </div>
                         </div>
                     </el-col>
@@ -412,6 +413,5 @@ export default {
         }
     }
 }
-
 
 </style>
