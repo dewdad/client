@@ -147,7 +147,14 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0" 
+                                    :legendData="legendData" :isMarkPoint="false" 
+                                    :gridVal="gridVal2" :seriesData="seriesData2" 
+                                    :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" 
+                                    :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                                    :dotStyle="['b0e9c4']" 
+                                    :idString="'mychart1'"></echarts-bar>
+                                <div v-else class="color-secondary text-c font20" style="line-height: 180px">暂无数据</div>
                             </div>
                         </div>
                     </el-col>
@@ -293,6 +300,19 @@ export default {
         // 监控数据
         getMonitorData(){
             
+        },
+        // 用户使用量与配额
+        getUserUsagesAndQuotaFn() {
+            getMonitorWarn(this.value)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let monitoRet = res.data || [];
+                        $log('dfdsfs', monitoRet);
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
         }
     },
     mounted() {
