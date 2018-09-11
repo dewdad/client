@@ -59,7 +59,7 @@ export default {
     }
 };
 </script>
-<style lang="scss">
+<style scoped lang="scss">
     .copy{
         display: inline-block;
         position: relative;

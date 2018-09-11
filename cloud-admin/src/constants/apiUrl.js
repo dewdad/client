@@ -48,7 +48,7 @@ export const DEPT = {
     projectList: USER_RSA + '/project/list',//租户列表
     selectAllUsers: USER_RSA + '/user/list',//根据租户ID查询用户集合
     createRenter: USER_RSA + '/project/',//创建租户
-    delRenter: USER_RSA + '/project/delete',//删除租户
+    delRenter: USER_RSA + '/project',//删除租户
     createUser: USER_RSA + '/user/',//创建用户
     findeRole: USER_RSA + '/user/list',//获取用户列表
     delUser: USER_RSA + '/user/delete',//删除用户
@@ -85,6 +85,10 @@ export const PlatForm = {
     getPlatformList: USER_RSA + '/roleType/getPlatformList',//查询平台角色权限列表
     searchBindAuth: USER_RSA + '/roleType/bindPlatformRole',//查询用户角色类型绑定的平台权限
     bindAuth: USER_RSA + '/roleType/bindPlatformRole',//用户角色类型绑定平台权限
+    getExpandList: USER_RSA + '/platform/extend/',//查询平台列表扩展信息
+    delExpand: USER_RSA + '/platform/extend/',//删除平台列表扩展信息
+    createExpand: USER_RSA + '/platform/extend',//创建平台列表扩展信息
+    editExpand: USER_RSA + '/platform/extend/',//修改平台列表扩展信息
 };
 //获取公钥加密
 export const API_USR_AUTH = {

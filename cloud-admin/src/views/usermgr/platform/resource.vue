@@ -48,6 +48,8 @@
                             <template slot-scope="scope">
                                 <router-link :to="{name:'app.platform.platAuth',params:{id:scope.row.id,item:scope.row,fromstate:'app.platform.resource'}}" class="btn-linker">查看平台权限</router-link>
                                 <b class="link-division-symbol" ></b>
+                                <router-link :to="{name:'app.platform.platformExpand',params:{id:scope.row.id,item:scope.row,fromstate:'app.platform.resource'}}" class="btn-linker">平台扩展信息</router-link>
+                                <b class="link-division-symbol" ></b>
                                 <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >编辑</a>
                                 <b class="link-division-symbol"></b>
                                 <a  @click="delPlatForm(scope.row)" class="btn-linker" >删除</a>

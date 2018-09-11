@@ -130,6 +130,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/platform/roletype')
                         } ,
                         {
+                            path: 'platformExpand/:id',
+                            name: 'app.platform.platformExpand',
+                            meta: {
+                                title: '平台扩展'
+                            },
+                            component: () => import('@/views/usermgr/platform/platformExpand')
+                        } ,
+                        {
                             path: 'bindPlatAuth/:val',
                             name: 'app.platform.bindPlatAuth',
                             meta: {

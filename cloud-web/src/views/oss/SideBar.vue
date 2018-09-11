@@ -43,16 +43,18 @@
             </li>
             <li class="el-menu-item oss-menu-item no-link">
                 <zt-form size="small">
-                    <zt-form-item >
+                    <zt-form-item>
                         <el-input v-model="searchKeyords" prefix-icon="el-icon-search" clearable placeholder="搜索"></el-input>
                     </zt-form-item>
                 </zt-form>
             </li>
             <li class="el-menu-item oss-menu-item no-link" style="cursor: default">
-                <span class="ml10"><strong>存储空间</strong></span>
+                <span class="ml10">
+                    <strong>存储空间</strong>
+                </span>
                 <span class="pull-right inline-block rotatex">
                     <el-dropdown placement="top" @command="handleCommand" size="small">
-                        <i class="iconfont icon-changeconfiguration" @click="sortData"></i>
+                        <i class="iconfont icon-changeconfiguration" ></i>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item :class="{'is-active': sortBy === 'default'}" command="default">{{$t('oss.sortText.default')}}
                                 <i v-if="sortBy === 'default'" class="el-icon-check"></i>
@@ -69,7 +71,7 @@
             </li>
             <router-link v-for="bucket in bucketList" :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">
                 <div>
-                  {{bucket.name}}
+                    {{bucket.name}}
                 </div>
             </router-link>
             <create-bucket ref="createBucketDailog"></create-bucket>
@@ -116,7 +118,7 @@ export default {
         },
         searchKeyords: function(newval) {
             // oldBucketList为空时将bucketList赋给oldBucketList
-            this.oldBucketList = this.oldBucketList || this.bucketList;
+            this.oldBucketList = this.oldBucketList.length ? this.oldBucketList : this.bucketList;
             // 从oldBucketList数据中搜索匹配数据
             this.bucketList = this.oldBucketList.filter(arr => {
                 return arr.name.includes(newval);
@@ -168,6 +170,7 @@ export default {
             this.$refs.createBucketDailog.show().then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
                     // this.bucketList.push(res.result);
+                    this.$router.push({name: 'app.oss.bucket', params: {view: 'overview', bucketId: res.data.name}});
                     this.getBucketListByUid();
                 }
             });
@@ -180,10 +183,15 @@ export default {
                         if (this.bucketList.length === 0) {
                             this.$router.push({name: 'app.oss.empty'});
                         } else {
-                            this.$router.push({'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': this.bucketList[0].name}});
+                            if (!this.$route.params.bucketId) {
+                                this.$router.push({name: 'app.oss.bucket', params: {view: 'overview', bucketId: this.bucketList[0].name}});
+                            }
                         }
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
+                    } else {
+                        this.$router.push({name: 'app.oss.empty'});
+                        // this.$store.commit('SET_PAGE_LOAD_ERROR', res.msg);
                     }
                 })
                 .catch(err => {
@@ -229,7 +237,8 @@ export default {
 
 .no-link {
     cursor: default;
-    &:hover, &:active {
+    &:hover,
+    &:active {
         background: #f0f1f5 !important;
     }
 }
