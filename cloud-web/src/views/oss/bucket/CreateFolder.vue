@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-if="isShow" title="新建目录s" :visible.sync="isShow" width="600px" :append-to-body="true" @close="cancel">
+    <el-dialog v-if="isShow" title="新建目录" :visible.sync="isShow" width="600px" :append-to-body="true" @close="cancel">
         <div class="form" style="padding-right:130px;">
             <zt-form ref="myForm" label-width="90px" :model="myForm" size="small" :rules="rules" inline-message>
                 <zt-form-item label="目录名" prop="dirname">
