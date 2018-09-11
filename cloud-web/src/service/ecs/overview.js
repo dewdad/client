@@ -79,3 +79,12 @@ export async function getMonitorWarn(days) {
     let res = await http.get(replaceParamVal(API_OVERVIEW.getMonitorWarn, [days]));
     return res && res.data;      
 }
+
+/**
+ * 概览-用户使用量与配额
+ */
+
+export async function getUserUsagesAndQuota() {
+    let res = await http.get(API_OVERVIEW.getUserUsagesAndQuota);
+    return res && res.data;
+}

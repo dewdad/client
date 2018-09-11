@@ -31,7 +31,7 @@ export const OVERVIEW = {
     getAdminOverview: USER_RSA + '/adminOverview/view',
     selectUsageByDate: '/compute/ecsRecord/selectUsageByDate',
     selectUsageByMoth: '/compute/ecsRecord/selectUsageByMoth',
-    tenantUsages: USER_RSA + '/project/tenantUsages'
+    getTenantIntro: USER_RSA + '/project/getUserUsagesAndQuotaByDept'
 };
 // 日志
 export const OPLOG = {

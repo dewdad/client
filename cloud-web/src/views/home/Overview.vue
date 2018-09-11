@@ -10,34 +10,34 @@
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot"></i> 100</div>
+                                                <i class="dot"></i> {{tenantData.qInstances || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-yunzhuji-gailan" />
                                             </div>
-                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="25" :duration="2" /></div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="tenantData.INSTANCES || 0" :duration="2" /></div>
                                             <div class="font14 color999">弹性云主机</div>
                                         </div>
                                     </el-col>
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot"></i> 100</div>
+                                                <i class="dot"></i>{{tenantData.qCpu || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-CPU-gailan" />
                                             </div>
-                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="50" :duration="2" /></div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="tenantData.INSTANCES || 0" :duration="2" /></div>
                                             <div class="font14 color999">CPU</div>
                                         </div>
                                     </el-col>
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot"></i> 100</div>
+                                                <i class="dot"></i> {{tenantData.qRam || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-neicun-gailan" />
                                             </div>
                                             <div class="number mt20">
-                                                <ICountUp :startVal="0" :endVal="75" :duration="2" />
+                                                <ICountUp :startVal="0" :endVal="tenantData.RAM || 0" :duration="2" />
                                                 <i v-show="false" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
                                             <div class="font14 color999">内存</div>
@@ -46,12 +46,12 @@
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot color-warning"></i> 100</div>
+                                                <i class="dot color-warning"></i>{{tenantData.qVolumes || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-cipan-gailan" />
                                             </div>
                                             <div class="number mt20 color-warning">
-                                                <ICountUp :startVal="0" :endVal="99" :duration="2" />
+                                                <ICountUp :startVal="0" :endVal="tenantData.VOLUMES || 0" :duration="2" />
                                                 <i class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
                                             <div class="font14 color999">磁盘</div>
@@ -60,11 +60,11 @@
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot"></i> 100</div>
+                                                <i class="dot"></i>{{tenantData.qSnapshot || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-kuaizhao-gailan" />
                                             </div>
-                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="125" :duration="2" /></div>
+                                            <div class="number mt20"><ICountUp :startVal="0" :endVal="tenantData.SNAPSHOTS  || 0" :duration="2" /></div>
                                             <div class="font14 color999">快照</div>
                                         </div>
                                     </el-col>
@@ -147,7 +147,14 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesData2" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0" 
+                                    :legendData="legendData" :isMarkPoint="false" 
+                                    :gridVal="gridVal2" :seriesData="seriesData2" 
+                                    :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" 
+                                    :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                                    :dotStyle="['b0e9c4']" 
+                                    :idString="'mychart1'"></echarts-bar>
+                                <div v-else class="color-secondary text-c font20" style="line-height: 180px">暂无数据</div>
                             </div>
                         </div>
                     </el-col>
@@ -208,7 +215,7 @@
 import EchartsLine from '@/components/charts/EchartsLine.vue';
 import EchartsBar from '@/components/charts/EchartsBar.vue';
 import ICountUp from 'vue-countup-v2';
-import {getOrderCount, getMonitorWarn} from '@/service/ecs/overview.js';
+import {getOrderCount, getMonitorWarn, getUserUsagesAndQuota} from '@/service/ecs/overview.js';
 export default {
     name: 'Overview',
     data() {
@@ -249,7 +256,8 @@ export default {
             value: 7,
             echartsLineHeight: '200px',
             radioTime: '1',
-            allOrder: []
+            allOrder: [],
+            tenantData: {}
         };
     },
     computed: {},
@@ -293,11 +301,25 @@ export default {
         // 监控数据
         getMonitorData(){
             
+        },
+        // 用户使用量与配额
+        getUserUsagesAndQuotaFn() {
+            getUserUsagesAndQuota(this.value)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.tenantData = res.data[0] || [];
+                        // $log('dfdsfs', monitoRet);
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
         }
     },
     mounted() {
         this.getOrderCountFn();
         this.getMonitorWarnFn();
+        this.getUserUsagesAndQuotaFn();
     }
 };
 </script>

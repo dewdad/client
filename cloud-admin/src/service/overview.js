@@ -78,8 +78,8 @@ export async function selectUsageByMoth() {
  * 管理员概览-租户使用量和配额
  */
 
-export async function tenantUsages(params) {
-    let res = await http.get(OVERVIEW.tenantUsages, {
+export async function getTenantIntro(params) {
+    let res = await http.get(OVERVIEW.getTenantIntro, {
         params: params
     });
     return res && res.data;  

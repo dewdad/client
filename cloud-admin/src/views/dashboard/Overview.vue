@@ -15,10 +15,10 @@
                                 <div>
                                     <div style="height: 20px;" class="font16">弹性云主机</div>
                                     <div style="line-height:28px;height:28px;">
-                                        <span class="is-bold font25">705</span>个
+                                        <span class="is-bold font25">{{ecsTotal}}</span>个
                                         <span style="margin-top:3px;" class="pull-right color-secondary">
                                             较上月同期：
-                                            <span class="color-success">+20个</span>
+                                            <span class="color-success">+{{addAmount}}个</span>
                                         </span>
                                     </div>
                                 </div>
@@ -27,10 +27,10 @@
                                 <div class="pull-left">
                                     <span class="color-secondary font14 mb5 inline-block">近{{timeVal}}日警告线</span>
                                     <br>
-                                    <span class="font16">108个</span>
+                                    <span class="font16">{{ecsTotal}}个</span>
                                 </div>
                                 <div class="pull-right" style="width: 100px;">
-                                    <el-select v-model="timeVal" placeholder="请选择" size="mini">
+                                    <el-select v-model="timeVal" @change="selEcsFn" placeholder="请选择" size="mini">
                                         <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -43,15 +43,18 @@
                             <div style="height: 350px;">
                                 <!-- 图表 -->
                                 <echarts-line
+                                v-if="xData.length > 0"
                                 :gridVal="gridVal" 
                                 :legendData="legendData"
                                 :seriesData="seriesData" 
                                 :xAxisData="xData" 
                                 :isMarkPoint="false"
+                                yUnit=" "
                                 :markPointSymbolSize="['150','55']" 
                                 :mouldColor="['#3ac76c', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
                                 :dotStyle="['b0e9c4', 'b0e9c4']" 
                                 :idString="'mychart'"></echarts-line>
+                                <div v-else class="color-secondary text-c font20" style="line-height: 350px">暂无数据</div>
                             </div>
                         </div>
                     </el-col>
@@ -182,13 +185,9 @@ import {getAdminOverview, selectUsageByDate, selectUsageByMoth} from '@/service/
 export default {
     data() {
         return {
-            legendData: ['邮件营销'],
-            xData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            seriesData: [
-                {
-                    seriesData: [120, 132, 101, 134, 90, 230, 210]
-                }
-            ],
+            legendData: ['警告数'],
+            xData: [],
+            seriesData: [],
             gridVal: {
                 bottom: '60',
                 right: '30',
@@ -203,36 +202,57 @@ export default {
             timeVal: 1,
             quota: {},
             usages: {},
+            addAmount: '', // 较上月增加量
+            ecsTotal: ''
         };
     },
     methods: {
         // 概览数据
         getAdminOverviewFn(){
-            // let params = {
-            //     deptId: 'deptId'
-            // };
             getAdminOverview()
                 .then(res => {
-                    console.warn(res);
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         this.quota = res.data && res.data.quota || [];
                         this.usages = res.data && res.data.usages || [];
                     }
                 })
                 .catch(e => {
-
                     console.error('getEcsInstList', e);
                 });
         },
         // 获取租户ecs每日使用量
         selectUsageByDateFn() {
             let params = {
-                days: 7
+                days: this.timeVal
             };
             selectUsageByDate(params)
                 .then(res => {
+                    console.warn(res);
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        this.allOrder = res.data && res.data.allOrder || [];
+                        let dayEcsUsages = res.data && res.data.dayEcsUsages || [];
+                        this.ecsTotal = res.data && res.data.ecsTotal || '0';
+                        this.xData = []; // x轴数据
+                        let ecsNumArr = {
+                            seriesData: []
+                        };
+                        this.seriesData = [];
+                        for(let d in dayEcsUsages) {
+                            this.xData.push(dayEcsUsages[d].countDate.substring(5));
+                            ecsNumArr.seriesData.push(dayEcsUsages[d].ecsNum);
+                        }
+                        this.seriesData.push(ecsNumArr);
+                    }
+                })
+                .catch(e => {
+                    console.error('getEcsInstList', e);
+                });
+        },
+        // 根条件据获取本月和上月ecs使用量差额
+        selectUsageByMothFn() {
+            selectUsageByMoth()
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.addAmount = res.data || [];
                     }
                 })
                 .catch(e => {
@@ -240,18 +260,9 @@ export default {
                     console.error('getEcsInstList', e);
                 });
         },
-        // 
-        selectUsageByMothFn() {
-            selectUsageByMoth()
-                .then(res => {
-                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        this.allOrder = res.data && res.data.allOrder || [];
-                    }
-                })
-                .catch(e => {
-
-                    console.error('getEcsInstList', e);
-                });
+        // 根据时间筛选ecs使用量
+        selEcsFn() {
+            this.selectUsageByDateFn();
         }
     },
     mounted() {
@@ -402,6 +413,5 @@ export default {
         }
     }
 }
-
 
 </style>
