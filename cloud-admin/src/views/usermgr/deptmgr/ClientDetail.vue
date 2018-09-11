@@ -5,7 +5,7 @@
             <p>  描述: {{item.description}}</p>
             <p>  ID: {{item.id}}</p>
             <p> 邮箱: {{item.email }}</p>
-            <p>  激活: {{ item.status==0?'未知':(item.status==1?'成功':'失败') }}</p>
+            <p>  激活: {{ item.status==1?'是':'否' }}</p>
             <p>  角色名称: {{item.roleName}}</p>
             <p >  角色类型:
                 <span v-if="item.roleType == 1">超级管理员</span>

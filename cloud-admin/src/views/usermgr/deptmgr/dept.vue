@@ -51,6 +51,7 @@
                             :props="defaultProps"
                             :default-checked-keys="selectedKey"
                             @node-click="handleNodeClick"
+                            ref="tree"
                     ></el-tree>
                 </div>
             </el-col>
@@ -117,7 +118,7 @@
                                 <template v-if="col.column=='start'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
+                                            <span class="font12 mr10">{{scope.row.status =='1'?'是':'否' }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -219,7 +220,7 @@
                                 <template v-if="col.column=='start'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
+                                            <span class="font12 mr10">{{scope.row.status =='1'?'是':'否' }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>

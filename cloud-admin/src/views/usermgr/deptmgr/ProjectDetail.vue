@@ -3,7 +3,7 @@
         <div class="detailbox">
             <p> 租户名称: {{item.name}}</p>
             <p> 租户ID: {{item.id}}</p>
-            <p>  激活: {{ item.status==0?'未知':(item.status==1?'成功':'失败') }}</p>
+            <p>  激活: {{ item.status==1?'是':'否' }}</p>
             <p>  描述: {{item.description}}</p>
         </div>
     </el-dialog>

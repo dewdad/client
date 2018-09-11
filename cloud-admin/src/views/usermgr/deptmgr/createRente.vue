@@ -26,9 +26,9 @@
                 </el-form-item>
 
                 <!-- 是否激活 -->
-                <el-form-item label="是否激活" prop="enabled"  >
-                    <el-radio v-model="form.enabled" label='1'>是</el-radio>
-                    <el-radio v-model="form.enabled" label='2'>否</el-radio>
+                <el-form-item label="是否激活" prop="status"  >
+                    <el-radio v-model="form.status" label='1'>是</el-radio>
+                    <el-radio v-model="form.status" label='0'>否</el-radio>
                 </el-form-item>
                 <div class="mb20 font16">
                     <i class="icon-new-配额"></i>
@@ -103,7 +103,7 @@
                         <!--</div>-->
                     <!--</el-col>-->
                 <!--</el-row>-->
-                <div class="mt10">
+                <div class="mt10" style="margin-left:115px;">
                     <el-button type="default" size="small" class="font12" @click="goBack">取 消</el-button>
                     <el-button type="primary" size="small" class="font12" @click="submitForm">提 交</el-button>
                 </div>
@@ -129,7 +129,7 @@ export default {
                 name: '',
                 domainId: '',
                 description: '',
-                enabled: '1',
+                status: '1',
                 quota:{
                     cpu:20,
                     instances:10,
@@ -209,7 +209,7 @@ export default {
         submitForm() {
             let param = {
                 quota:this.form.quota,
-                status:this.form.enabled == '1' ? 1 : 0,
+                status:this.form.status == '1' ? '1' : '0',
                 deptId:this.stateParams.item.id,
                 extendId:this.stateParams.item.extendId,
                 name:this.form.name,
