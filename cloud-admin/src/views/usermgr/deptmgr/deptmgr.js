@@ -70,7 +70,9 @@ export default {
                 label: 'name'
             },
             brunch:{},
-            hasBrunch:false
+            hasBrunch:false,
+            selectedKey:[],
+            i:0,
         };
     },
     components: {
@@ -91,19 +93,21 @@ export default {
         ...mapState({
             dept: state => state.user.dept,
             user: state => state.user.userInfo,
-            deptbrunch: state => state.user.brunch,
+            deptbrunch: state => state.user.deptbrunch,
         }),
     },
     methods: {
+
         handleNodeClick(data){
             this.brunch = data;
             // 记录当前部门分支
             this.$store.commit('user/DEPTBRUNCH', data);
-            let hahahahah = this.deptbrunch;
-            console.log('hahahahah',hahahahah);
+            this.selectedKey = [];
+            this.selectedKey.push(data.id);
+            console.log('this.selectedKey',this.selectedKey);
+            this.deptTree();
             this.getprojectList();
             this.findeRole();
-            console.log(data);
         },
         //获取部门树
         deptTree(){
@@ -113,19 +117,23 @@ export default {
                 totalItems: 0,
                 roleType:this.user.roleType,
                 domain:this.user.deptId,
+                searchText:this.formInline.searchText
             };
             $log('params', params);
             deptTree(params).then(ret => {
                 $log('treedata', ret);
                 let resData = ret.data;
                 let tree = this.deptbrunch;
+                this.selectedKey = [];
                 if(resData){
                     this.deptTreeData = resData|| [];
-                    if(tree){
+                    if(tree && tree.id){
                         console.log('tree....',tree);
                         this.brunch = tree;
+                        this.selectedKey.push(tree.id);
                     }else{
                         this.brunch = this.deptTreeData[0];
+                        this.selectedKey.push(this.brunch.id);
                         // 记录当前部门分支
                         this.$store.commit('user/DEPTBRUNCH', this.brunch);
                     }
@@ -259,6 +267,10 @@ export default {
         manageMember(item,brunch){
             this.$refs.SelectMember.show(item,brunch);
         },
+        //租户详情
+        showRentaDetail(item){
+            this.$refs.ProjectDetail.show(item);
+        },
         //修改租户
         editRente(item,brunch){
             this.$refs.EditRente.show(item,brunch).then(ret=>{
@@ -350,7 +362,7 @@ export default {
                 },
                 id:item.id
             };
-            editUser(item).then(ret => {
+            editUser(param).then(ret => {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
@@ -375,6 +387,8 @@ export default {
                 type: 'warning'
             }).then(() => {
                 delDept(item).then(ret=>{
+                    // 清空被删除的部门分支
+                    this.$store.commit('user/DEPTBRUNCH', {});
                     this.deptTree();
                 });
             }).catch(() => {
