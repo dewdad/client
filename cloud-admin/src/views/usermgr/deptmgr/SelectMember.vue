@@ -93,16 +93,19 @@ export default {
         submitForm() {
             this.confirmBtn = true;
             let param = {
-                grantUsers:this.selectedUser,
-                quota:{},
-                tenantinfo:{
-                    enabled:this.brunch.enabled == '1' ? true : false,
-                    status:this.brunch.enabled == '1' ? 1 : 0,
-                    deptId:this.brunch.id,
-                    name:this.item.name,
-                    description:this.item.description,
-                },
-                revokeUsers:[]
+                id:this.item.id,
+                data:{
+                    grantUsers:this.selectedUser,
+                    quota:{},
+                    tenantinfo:{
+                        enabled:this.brunch.enabled == '1' ? true : false,
+                        status:this.brunch.enabled == '1' ? 1 : 0,
+                        deptId:this.brunch.id,
+                        name:this.item.name,
+                        description:this.item.description,
+                    },
+                    revokeUsers:[]
+                }
             };
             editRente(param).then(ret => {
                 $log('result...', ret);
