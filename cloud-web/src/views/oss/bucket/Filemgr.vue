@@ -1,27 +1,18 @@
 <template>
     <div class="filemrg mt10">
-        <el-alert title="欢迎使用对象存储OSS客户端，管理文件更轻松！  OSS客户端下载" type="success" :closable="false">
-        </el-alert>
-        <el-row class="mt20">
+        <!-- <el-alert title="欢迎使用对象存储OSS客户端，管理文件更轻松！  OSS客户端下载" type="success" :closable="false">
+        </el-alert> -->
+        <el-row>
             <el-col :span="6">
                 <span class="font16 lh32">文件管理</span>
             </el-col>
             <el-col :span="18" class="text-right lh32">
                 <zt-form :inline="true" size="small" class="search-form-inline">
                     <zt-form-item>
-                        <el-button type="primary" size="small" @click="showUpload">
-                            <i class="iconfont icon-upload_people"></i> 上传文件
-                        </el-button>
+                        <el-button type="primary" size="small" @click="showUpload">上传文件</el-button>
                     </zt-form-item>
                     <zt-form-item>
-                        <el-button type="info" size="small" @click="createFolder">
-                            <i class="iconfont icon-creat_people"></i> 新建目录
-                        </el-button>
-                    </zt-form-item>
-                    <zt-form-item>
-                        <el-button type="info" class="button-remove" :disabled="multipleSelection.length === 0" size="small" @click="batchRemoveFile">
-                            <i class="iconfont icon-upload_people"></i> 删除
-                        </el-button>
+                        <el-button type="info" size="small" @click="createFolder">新建目录</el-button>
                     </zt-form-item>
                     <!-- <zt-form-item>
                         <el-input size="small" v-model="searchText" placeholder="输入文件名前缀匹配"></el-input>
@@ -36,7 +27,7 @@
         </el-row>
         <el-row>
             <el-col :span="24" class="font12">
-                <span v-if="currentPath === ''">全部文件</span>
+                <span v-if="currentPath === ''">全部文件，共{{fileNums}}个({{fileSize}})</span>
                 <span v-if="currentPath !== ''">
                     <a href="javascript:;" class="font12" @click="returnLast">返回上一级</a>
                     <b class="link-division-symbol"></b>
@@ -52,7 +43,7 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-table :data="fileList" v-loading="loading" stripe border class="data-list mt10" @selection-change="handleSelectionChange">
+                <el-table ref="fileTable" :data="fileList" v-loading="loading" stripe border class="data-list mt10" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" :selectable="selectable">
                     </el-table-column>
                     <el-table-column label="文件名(Object Name)" :show-overflow-tooltip="true">
@@ -79,7 +70,8 @@
                                 -
                             </span>
                             <span v-else>
-                                {{scope.row.mimeType}}
+                                <!-- {{scope.row.storageClass}} -->
+                                标准存储
                             </span>
                         </template>
                     </el-table-column>
@@ -108,6 +100,14 @@
                 </el-table>
             </el-col>
         </el-row>
+        <el-row class="mt20">
+            <el-col :span="24" style="padding-left:30px;">
+                <el-checkbox v-model="allSelect" @change="toggleAllSelection"></el-checkbox>
+                <el-button type="info" class="ml20" :disabled="multipleSelection.length === 0" size="small" @click="batchRemoveFile">
+                    删除文件
+                </el-button>
+            </el-col>
+        </el-row>
         <upload-file ref="uploadFile" :bucketId="bucketId" :path="currentPath" :bucketName="headerInfo.name" @success="search(currentPath)"></upload-file>
         <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId"></create-folder>
         <preview ref="preview" :bucketId="bucketId" :file-list="previewFiles"></preview>
@@ -126,9 +126,9 @@ export default {
             loading: true,
             fileList: [],
             multipleSelection: [], // 所选文件
-            fileNums: 0, // 当前文件总数,
             currentPath: '',
-            searchText: ''
+            searchText: '',
+            allSelect: false
         };
     },
     props: {
@@ -143,7 +143,26 @@ export default {
         CreateFolder,
         Preview
     },
+    watch: {
+        multipleSelection: function(newval) {
+            this.allSelect = newval.length && newval.length === this.fileNums;
+        }
+    },
     computed: {
+        fileNums: function() {
+            try {
+                return this.headerInfo.usage.rgwMain.num_objects;
+            } catch (err) {
+                return 0;
+            }
+        },
+        fileSize: function() {
+            try {
+                return this.$options.filters.convertByteSize(this.headerInfo.usage.rgwMain.size, 2, 'string');
+            } catch (err) {
+                return 0;
+            }
+        },
         // 目录路径
         folderPath: function() {
             if (this.currentPath !== '') {
@@ -183,6 +202,9 @@ export default {
             }
             return false;
         },
+        toggleAllSelection() {
+            this.$refs.fileTable.toggleAllSelection();
+        },
         // 加载文件列表数据
         getFileList() {
             this.loading = true;
@@ -198,7 +220,6 @@ export default {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         let dataList = res.data.objectSummaries || [];
                         let prefixes = res.data.commonPrefixes || [];
-                        this.fileNums = dataList.length;
                         this.fileList = prefixes.concat(dataList);
                         $log(this.fileList);
                     }
@@ -220,7 +241,6 @@ export default {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         let dataList = res.data.objectSummaries || [];
                         let prefixes = res.data.commonPrefixes || [];
-                        this.fileNums = dataList.length;
                         this.fileList = prefixes.concat(dataList).filter(item => {
                             return item.key !== path;
                         });

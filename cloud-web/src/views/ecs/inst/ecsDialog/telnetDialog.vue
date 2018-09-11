@@ -178,8 +178,7 @@ export default {
     }
 };
 </script>
-<style lang="scss">
-.telnetDialog {
+<style scoped lang="scss">
     .el-input .el-input--small .wd318 {
         width:318px;
     }
@@ -187,5 +186,4 @@ export default {
         margin-bottom: 0;
     }
     
-}
 </style>

@@ -104,27 +104,28 @@ export default {
             this.$refs.ruleForm.validate(valid => {
                 if (valid) {
                     this.loading = true;
-                    createCustomImage(this.customImage).then(
-                        res => {
+                    createCustomImage(this.customImage)
+                        .then(res => {
                             if (res.code === this.CODE.SUCCESS_CODE) {
                                 this.hide();
                                 // this.setting();
                                 this.$message.success('操作成功');
                                 this.resolve(this.customImage);
                             }
-                        }
-                    ).catch(err => {
-                        $log(err);
-                    }).finally(() => {
-                        this.loading = false;
-                    });
+                        })
+                        .catch(err => {
+                            $log(err);
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
                 }
             });
         }
     }
 };
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .CustomImageDialog {
     .tip {
         background-color: #fbf7cf;

@@ -16,7 +16,7 @@
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="cancel" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
+            <el-button type="info" class="font12" @click="isShow = false" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
             <el-button type="primary" class="font12" @click="confirm" size="small" :loading="loading" :disabled="loading">{{ $t('common.ok') }}</el-button>            
         </span>
     </el-dialog>
@@ -63,6 +63,18 @@ export default {
             }
         };
     },
+    watch: {
+        isShow: function(newval) {
+            if (!newval) {
+                this.rowItem = {};
+                this.ecsInst = {
+                    instanceId: '',
+                    name: '',
+                    remark: ''
+                };
+            }
+        }
+    },
     methods: {
         show(rowItem) {
             this.rowItem = rowItem; 
@@ -77,16 +89,8 @@ export default {
         },
         hide() {
             this.isShow = false;
-
-            this.rowItem = {};
-            this.ecsInst = {
-                instanceId: '',
-                name: '',
-                remark: ''
-            };
         },
         cancel() {
-            this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
         setting() {

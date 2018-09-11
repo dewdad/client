@@ -181,11 +181,11 @@
         &:focus,
         &:active {
             // color: $--color-text-secondary;
-            border-color: $--color-info;
+            // border-color: $--color-info;
             background: #ccd1db;
             // color: $--color-white;
         }
-        background: #ccd1db;
+        background: #ffffff !important;
         // color: $--color-white;
     }
     &.button-remove:not(:disabled):hover {

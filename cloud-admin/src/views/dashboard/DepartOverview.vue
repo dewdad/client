@@ -2,18 +2,16 @@
     <div class="page-main overflow-box">
         <!-- 头部(部门选择) -->
         <div class="selDepart mb20">
-            <div>
-                <el-dropdown>
-                    <span class="el-dropdown-link font18">
-                        VDC部门1<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>黄金糕</el-dropdown-item>
-                        <el-dropdown-item>狮子头</el-dropdown-item>
-                        <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div> 
+            <div class="finger-cursor" @click="selDepartBox">
+                <span class="el-dropdown-link font18">
+                    VDC部门1<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
+                </span>
+            </div>
+            <el-tree v-show="departShow"
+            :data="departData" 
+            :expand-on-click-node="false" 
+            :props="defaultProps"
+            @node-click="selDepart"></el-tree>
             <span class="color-secondary font12">您可以通过切换部门查看相应配额使用情况</span>
         </div>
         <!-- 外层 -->
@@ -242,8 +240,52 @@ export default {
     data() {
         return {
             resourceArr,
-            searchVal: ''
+            searchVal: '',
+            departData: [
+                {
+                    label: '一级部门1',
+                    children: [{
+                        label: '二级部门1-1',
+                        children: [{
+                            label: '三级部门1-1-1'
+                        }]
+                    }]
+                },
+                {
+                    label: '一级部门2',
+                    children: [{
+                        label: '二级部门2-1',
+                        children: [{
+                            label: '三级部门2-1-1'
+                        }]
+                    }]
+                },
+                {
+                    label: '一级部门3',
+                    children: [{
+                        label: '二级部门3-1',
+                        children: [{
+                            label: '三级部门3-1-1s'
+                        }]
+                    }]
+                }
+            ],
+            departShow: false,
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            }
         };
+    },
+    methods:{
+        // 选择部门
+        selDepart() {
+            this.departShow = false;
+        },
+        // 打开部门菜单
+        selDepartBox(){
+            this.departShow = !this.departShow;
+        }
     },
     components: {
         EchartsLine,
@@ -422,6 +464,35 @@ export default {
         }
         .statistics{
             height: 75px;
+        }
+    }
+}
+
+.selDepart{
+    position: relative;
+    .el-tree{
+        width: 210px;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 6px 0px 
+            rgba(0, 0, 0, 0.1);
+        border: solid 1px #ebebeb;
+        position: absolute;
+        padding: 12px;
+        z-index: 999;
+        .el-tree-node__expand-icon{
+            font-family: "iconfont" !important;
+        }
+        .el-icon-caret-right:before{
+            content: "\e70d";
+        }
+        .el-tree-node__expand-icon.expanded{
+            &:before{
+                content: "\e70c";
+            }
+            transform: rotate(180deg);
+        }  
+        .el-tree-node:focus>.el-tree-node__content{
+            color: #0d7ef2;
         }
     }
 }

@@ -36,16 +36,20 @@
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText" style="width:115px;"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="ml10" size="small" type="primary" @click="searchDeptTree" >搜索</el-button>
+                        <el-button class="ml10" size="small" type="primary" @click="deptTree" >搜索</el-button>
                     </el-form-item>
                 </el-form>
                 <div>
                     <el-tree
                             show-checkbox
                             default-expand-all
-                            highlight-current
+                            :highlight-current="true"
+                            expand-on-click-node
+                            node-key="id"
                             :data="deptTreeData"
+                            :check-strictly="true"
                             :props="defaultProps"
+                            :default-checked-keys="selectedKey"
                             @node-click="handleNodeClick"
                     ></el-tree>
                 </div>
@@ -72,15 +76,15 @@
                             <el-form-item label="关键字">
                                 <el-input placeholder="搜索关键字" v-model="rentForm.searchText" v-if="rentForm.type !== 'enabled'"></el-input>
                                 <el-select clearable v-model="rentForm.searchText"  placeholder="请选择" v-if="rentForm.type === 'enabled'">
-                                    <el-option label="是" value="0"></el-option>
-                                    <el-option label="否" value="1"></el-option>
+                                    <el-option label="是" value="1"></el-option>
+                                    <el-option label="否" value="0"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="createDept">查询</el-button>
+                                <el-button type="primary" @click="getprojectList">查询</el-button>
                             </el-form-item>
                             <el-form-item class="pull-right">
-                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="disableDept"></el-button>
+                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getprojectList"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData1"  header-row-class-name="data-list">
@@ -89,7 +93,7 @@
                                 <template v-if="col.column=='username'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.name}}</span>
+                                            <a class="font12 mr10" @click="showRentaDetail(scope.row)">{{scope.row.name}}</a>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -97,7 +101,7 @@
                                 <template v-if="col.column=='descprition'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.descprition}}</span>
+                                            <span class="font12 mr10">{{scope.row.description}}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -130,16 +134,16 @@
                             <template >
                                 <el-table-column label="操作" style="width:25%" key="op" min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
-                                        <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >查看使用量</a>
+                                        <a  @click="viewUsage(scope.row,brunch)" class="btn-linker" >查看使用量</a>
                                         <b class="link-division-symbol"></b>
                                         <el-dropdown>
                                             <span class="btn-linker">
                                             更多<i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item @click="createDept(scope.row)">修改配额</el-dropdown-item>
-                                                <el-dropdown-item @click="createDept(scope.row)">管理成员</el-dropdown-item>
-                                                <el-dropdown-item @click="createDept(scope.row)">编辑租户</el-dropdown-item>
+                                                <el-dropdown-item @click.native="changeRentQuota(scope.row,brunch)">修改配额</el-dropdown-item>
+                                                <el-dropdown-item @click.native="manageMember(scope.row,brunch)">管理成员</el-dropdown-item>
+                                                <el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
@@ -174,15 +178,15 @@
                             <el-form-item label="关键字">
                                 <el-input placeholder="搜索关键字" v-model="userForm.searchText" v-if="userForm.type !== 'enabled'"></el-input>
                                 <el-select clearable v-model="userForm.searchText"  placeholder="请选择" v-if="userForm.type === 'enabled'">
-                                    <el-option label="是" value="0"></el-option>
-                                    <el-option label="否" value="1"></el-option>
+                                    <el-option label="是" value="1"></el-option>
+                                    <el-option label="否" value="0"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="createDept">查询</el-button>
+                                <el-button type="primary" @click="findeRole">查询</el-button>
                             </el-form-item>
                             <el-form-item class="pull-right">
-                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="disableDept"></el-button>
+                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="findeRole"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData2"  header-row-class-name="data-list">
@@ -191,7 +195,7 @@
                                 <template v-if="col.column=='username'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.id}}</span>
+                                            <span class="font12 mr10">{{scope.row.name}}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -199,7 +203,7 @@
                                 <template v-if="col.column=='emailAddress'">
                                     <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.emailAddress}}</span>
+                                            <span class="font12 mr10">{{scope.row.email}}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -232,13 +236,19 @@
                             <template>
                                 <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
-                                        <a  @click="createPlatForm(scope.row,2)" class="btn-linker" >编辑</a>
+                                        <a  @click="EditUser(scope.row,brunch)" class="btn-linker" >编辑</a>
                                         <b class="link-division-symbol"></b>
-                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >重置密码</a>
+                                        <a  @click="resetPwd(scope.row,brunch)" class="btn-linker" >重置密码</a>
                                         <b class="link-division-symbol"></b>
-                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >禁用用户</a>
-                                        <b class="link-division-symbol"></b>
-                                        <a  @click="createPlatForm(scope.row)" class="btn-linker" >删除用户</a>
+                                        <el-dropdown>
+                                            <span class="btn-linker">
+                                            更多<i class="el-icon-arrow-down el-icon--right"></i>
+                                            </span>
+                                            <el-dropdown-menu slot="dropdown">
+                                                <el-dropdown-item @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
+                                                <el-dropdown-item @click.native="delUser(scope.row)">删除用户</el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </el-dropdown>
                                     </template>
                                 </el-table-column>
                             </template>
@@ -270,6 +280,16 @@
         <project-detail ref="ProjectDetail"></project-detail>
         <!--重置密码-->
         <reset-pwd ref="ResetPwd"></reset-pwd>
+        <!--查看租户使用量-->
+        <view-usage ref="ViewUsage"></view-usage>
+        <!--修改配额-->
+        <change-quota ref="ChangeQuota"></change-quota>
+        <!--管理成员-->
+        <select-member ref="SelectMember"></select-member>
+        <!--修改租户-->
+        <edit-rente ref="EditRente"></edit-rente>
+        <!--修改用户-->
+        <edit-user ref="EditUser"></edit-user>
     </div>
 </template>
 <script src="./deptmgr.js"></script>
@@ -282,12 +302,15 @@
         color:#656565;
     }
     .deptContainer{
+        &>.el-col-19{
+            border-left: 1px solid #dee7f1;
+        }
         .p20{
             padding:20px;
         }
         .deptTree{
-            background-color:#f4f8f9;
-            border-right:1px solid #dee7f1;
+            /*background-color:#f4f8f9;*/
+
             min-height:300px;
         }
         border: 1px solid #dee7f1;
