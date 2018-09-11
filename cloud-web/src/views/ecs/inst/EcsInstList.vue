@@ -62,6 +62,7 @@
                         <el-tooltip class="item" effect="light" :disabled="scope.row.status !== 'BUILD'" :content="scope.row.status === 'BUILD' ? '预计需要3-6分钟' : ''" placement="top">
                             <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column"></zt-status>
                         </el-tooltip>
+                        <!-- <i class="el-icon-warning" v-tooltip="''"></i> -->
                     </template>
                 </el-table-column>
                 <!-- 配置  -->

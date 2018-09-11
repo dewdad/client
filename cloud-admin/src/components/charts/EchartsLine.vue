@@ -17,31 +17,33 @@ export default {
                     trigger: 'axis',
                     backgroundColor: '#FFF',
                     borderWidth: 1,
+                    borderRadius: 0,
                     textStyle: {
                         color: '#333',
                         fontSize: 12
                     },
-                    formatter: params => {
-                        let res = '';
-                        for (let i = 0; i < params.length; i++) {
-                            if (i === 0) {
-                                res += `<p style="margin: 10px 0 5px 0;">
-                                <span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${this.yUnit}</p>`;
-                                continue;
-                            }
-                            res += `<p  style="margin-bottom: 5px;"><span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${
-                                this.yUnit
-                            }</p>`;
-                        }
-                        res += '<p>' + params[0].name + '</p>';
-                        return res;
-                    }
+                    // formatter: params => {
+                    //     let res = '';
+                    //     for (let i = 0; i < params.length; i++) {
+                    //         if (i === 0) {
+                    //             res += `<p style="margin: 10px 0 5px 0;">
+                    //             <span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${this.yUnit}</p>`;
+                    //             continue;
+                    //         }
+                    //         res += `<p  style="margin-bottom: 5px;"><span class="tooltip-icon" style="background: ${params[i].color};"></span>${params[i].seriesName}: ${params[i].data}${
+                    //             this.yUnit
+                    //         }</p>`;
+                    //     }
+                    //     res += '<p>' + params[0].name + '</p>';
+                    //     return res;
+                    // }
                 },
                 grid: this.gridVal,
                 legend: {
                     data: this.legendData,
                     y: 'bottom',
                     icon: 'circle',
+                    show: '',
                     pageIconColor: 'yellow',
                     selectedMode: 'multiple'
                 },

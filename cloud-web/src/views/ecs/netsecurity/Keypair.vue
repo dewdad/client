@@ -25,7 +25,7 @@
             </zt-table>
         </div>
         <el-dialog title="密钥对详情" :visible.sync="dialogVisible" width="600px">
-            <zt-form label-width="60px">
+            <zt-form label-width="80px">
                 <zt-form-item label="名称：">
                     {{get(currentKey, 'name')}}
                 </zt-form-item>

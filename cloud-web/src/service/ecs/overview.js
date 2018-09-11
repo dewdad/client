@@ -68,3 +68,14 @@ export async function getOrderCount() {
     let res = await http.get(API_OVERVIEW.getOrderCount);
     return res && res.data; 
 }
+
+
+/**
+ * 概览-监控警告
+ * @param {*} days // 查询天数
+ */
+
+export async function getMonitorWarn(days) { 
+    let res = await http.get(replaceParamVal(API_OVERVIEW.getMonitorWarn, [days]));
+    return res && res.data;      
+}

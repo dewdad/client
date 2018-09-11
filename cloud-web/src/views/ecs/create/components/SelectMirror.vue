@@ -47,7 +47,7 @@
                 <template v-if="form.mirrorType === 'private'" >
                     <zt-form-item id="imageObj" key="privateImage" label="" class="mb0 hide-star" prop="imageObj">
                     <el-select v-model="form.imageObj" placeholder="请选择自定义镜像" size="small" :popper-append-to-body="false" value-key="id" style="width:320px;" no-data-text="暂无镜像">
-                        <el-option v-for="item in versions" :key="item.id" :label="item.name" :value="item">
+                        <el-option v-for="item in privateImages" :key="item.id" :label="item.name" :value="item">
                         </el-option>
                     </el-select>
                 </zt-form-item>
@@ -96,6 +96,7 @@ export default {
                 imageObj: '',
                 secure_selected: true
             },
+            privateImages: [],
             rules: {
                 imageObj: [
                     {
@@ -155,10 +156,10 @@ export default {
         getPrivateIages() {
             this.form.imageObj = '';
             this.loading = true;
-            getPrivateIages({type: 'private'})
+            getPrivateIages({type: 'private', 'status': 'active'})
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.versions = res.data;
+                        this.privateImages = res.data.data;
                     }
                 })
                 .catch(err => {
