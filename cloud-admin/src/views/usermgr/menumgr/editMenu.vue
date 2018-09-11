@@ -2,7 +2,7 @@
     <div class="page-main">
         <page-header>
             <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>          
-            <span>菜单{{opType ===1 ? '创建' : '编辑'}}</span> 
+            <span class="ml20">菜单{{opType ===1 ? '创建' : '编辑'}}</span>
         </page-header>
         <div class="page-body">
             <div class="mb20 font16">

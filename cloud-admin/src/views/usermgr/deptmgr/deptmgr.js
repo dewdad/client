@@ -98,9 +98,11 @@ export default {
     },
     methods: {
         // handleClick(data,checked, node) {
+        //     console.log(data,checked, node);
         //     this.i++;
-        //     if(this.i%2==0){
+        //     if(this.i % 1 == 0){
         //         if(checked){
+        //             console.log('this.$refs.tree',this.$refs.tree);
         //             this.$refs.tree.setCheckedNodes([]);
         //             this.$refs.tree.setCheckedNodes([data]);
         //             //交叉点击节点

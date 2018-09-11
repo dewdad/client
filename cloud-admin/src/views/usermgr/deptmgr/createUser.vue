@@ -37,9 +37,9 @@
                     </el-select>
                 </el-form-item>
                 <!-- 是否激活 -->
-                <el-form-item label="是否激活" prop="enabled"  >
-                    <el-radio v-model="form.enabled" label='1'>是</el-radio>
-                    <el-radio v-model="form.enabled" label='2'>否</el-radio>
+                <el-form-item label="是否激活" prop="status"  >
+                    <el-radio v-model="form.status" label='1'>是</el-radio>
+                    <el-radio v-model="form.status" label='0'>否</el-radio>
                 </el-form-item>
             </el-form>
             <div class="mt10" style="margin-left:115px;">
@@ -68,7 +68,7 @@ export default {
                 name: '',
                 domainId: '',
                 description: '',
-                enabled: '1',
+                status: '1',
                 email: '',
                 roleId: '',
                 password: '',
@@ -97,8 +97,7 @@ export default {
         //保存（提交）
         submit() {
             let param = {
-                enabled:this.form.enabled == '1' ? true : false,
-                status:this.form.enabled == '1' ? 1 : 0,
+                status:this.form.status == '1' ? '1' : '0',
                 deptId:this.stateParams.item.id,
                 name:this.form.name,
                 description:this.form.description,
