@@ -189,6 +189,9 @@ export default {
                         }
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;
+                    } else {
+                        this.$router.push({name: 'app.oss.empty'});
+                        // this.$store.commit('SET_PAGE_LOAD_ERROR', res.msg);
                     }
                 })
                 .catch(err => {
