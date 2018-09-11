@@ -26,22 +26,17 @@
                    <span>{{userDetailInfo.deptId}}</span>
                 </zt-form-item>
 
-                <zt-form-item label="邮箱：" >                   
-                   <el-input v-if="userDetailInfo.isEditEmail" type="email" class="wd200" v-model="userDetailInfo.email"></el-input>
-                   <span class="wd200 inline-block" v-else>{{userDetailInfo.email  || '--'}}</span>
-                   <a class="pl20" @click="userDetailInfo.isEditEmail = true;">修改</a>
+                <zt-form-item label="邮箱：" >
+                    <span class="wd200 inline-block">{{userDetailInfo.email  || '--'}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="密码：" >                   
-                   <el-input v-if="userDetailInfo.isEditPwd" type="password" class="wd200" v-model="userDetailInfo.email"></el-input>
-                   <span class="wd200 inline-block" v-else>{{ userDetailInfo.password ? '******' : '--' }}</span>
-                   <a class="pl20" @click="userDetailInfo.isEditPwd = true;">修改</a>
+                   <span class="wd200 inline-block">{{ userDetailInfo.password ? '******' : '--' }}</span>
+                   <a class="pl20" @click="changePwd">修改</a>
                 </zt-form-item>
 
                 <zt-form-item label="描述：" >                   
-                   <el-input v-if="userDetailInfo.isEditDesc" type="textarea" class="wd200" v-model="userDetailInfo.description"></el-input>
-                   <span class="wd200 inline-block" v-else>{{userDetailInfo.description  || '--'}}</span>
-                   <a class="pl20" @click="userDetailInfo.isEditDesc = true;">修改</a>
+                   <span class="wd200 inline-block">{{userDetailInfo.description  || '--'}}</span>
                 </zt-form-item>
 
                 <zt-form-item label="角色：" >
@@ -75,12 +70,7 @@
                             <template slot-scope="scope">
                                 <span class="font12">{{scope.row.id}}</span>
                             </template>
-                        </el-table-column>
-                        <el-table-column label="地域" width="200">
-                            <template slot-scope="scope">
-                                <span class="font12">{{scope.row.region}}</span>
-                            </template>
-                        </el-table-column>                        
+                        </el-table-column>                                               
                         <el-table-column label="描述">
                             <template slot-scope="scope">
                                 <span class="font12">{{scope.row.description}}</span>
@@ -102,19 +92,26 @@
                 
             </zt-form>
         </div>
+
+        <!-- 修改密码 -->
+        <change-pwd-dialog ref="changePwdDialog" />
     </div>
 </template>
 <script>
-import { getUserInfoDetail,getProjectByUserId } from '@/service/user';
 import {mapGetters} from 'vuex';
-export default {
+import { getUserInfoDetail,getProjectByUserId } from '@/service/user';
+import ChangePwdDialog from '@/components/dialog/ChangePwdDialog';
+export default {   
+    components: {
+        ChangePwdDialog,       
+    },
     data() {   
         let searchObj = {
             //分页
             paging: {
                 pageIndex: 1,
                 limit: 10,
-                totalItems: 2
+                totalItems: 0
             },            
         };   
         return {
@@ -159,14 +156,21 @@ export default {
                 });
         }, 
 
-        getProjectByUserId(){           
-            getProjectByUserId({userId:this.userInfo.id})
+        getProjectByUserId(){    
+            let { pageIndex,limit } = this.searchObj.paging;
+            let data = {
+                pageIndex,
+                limit,
+                userId: this.userInfo.id,
+            };       
+            getProjectByUserId(data)
                 .then( res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         $log(res); 
                         let resData = res.data;
                         if(resData && resData.data){
                             this.projectTableData = resData.data || [];
+                            this.searchObj.paging.totalItems = resData.total;
                         }     
                     }else {
                         $log(res.msg);
@@ -177,19 +181,27 @@ export default {
                 });
         },
 
+        //修改密码
+        changePwd(){
+            this.$refs.changePwdDialog
+                .show()
+                .then( res => {
+                    
+                });
+        },
+
         handleSizeChange: function(params) {
             console.log('params:', params);
             this.searchObj.paging.limit = params;
-            this.searchObj.paging.pageIndex = 1;       
+            this.searchObj.paging.pageIndex = 1; 
+            this.getProjectByUserId();      
         },
 
         handleCurrentChange: function(params) {
-            console.log('handleCurrentChange:', params);          
+            console.log('handleCurrentChange:', params);     
+            this.getProjectByUserId();     
         },
-    },
-    components: {
-       
-    }
+    },    
 };
 </script>
 <style  lang='scss'>

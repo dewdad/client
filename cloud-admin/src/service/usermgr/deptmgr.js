@@ -69,8 +69,8 @@ export async function createRenter(data) {
  */
 export async function editRente(data) {
     console.log('data',data);
-    let url = DEPT.editRente;
-    let response = await http.put(url,data);
+    let url = DEPT.editRente+data.id;
+    let response = await http.put(url,data.data);
     return response;
 }
 /**

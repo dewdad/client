@@ -259,7 +259,7 @@ export const API_UserAccount = {
     pwdForget: USER_CONTROLLER + '/user/resetPassword',
     bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
     // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码
-    pwdReset: USER_CONTROLLER + '/user/changePassword',
+    pwdReset: USER_CONTROLLER + '/user/changePwd',
     activeMail: USER_CONTROLLER + '/user/activeMail',
     validateEmailCode: USER_CONTROLLER + '/user/validateEmailCode',
     uploadFile: USER_CONTROLLER + '/file/upload',
