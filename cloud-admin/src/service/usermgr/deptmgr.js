@@ -188,6 +188,16 @@ export async function viewUsage(data) {
     return response.data;
 }
 /**
+ *通过用户id查找租户集合
+ * @param {*}
+ */
+export async function searchProjectByuserId(data) {
+    let response = await http.get(DEPT.searchProjectByuserId, {
+        params: data
+    });
+    return response.data;
+}
+/**
  *查询租户配额
  * @param {*}
  */
@@ -214,4 +224,44 @@ export async function delUser(data) {
     var url = DEPT.delUser+'/'+data;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
+}
+/**
+ *取消关联用户
+ * @param {*}
+ */
+export async function delRelateUser(data) {
+    console.log('data',data);
+    var url = DEPT.delRelateUser+data.projectId+'/relation/'+data.userId;
+    let response = await http.delete(url);
+    return response;
+}
+/**
+ *关联用户
+ * @param {*}
+ */
+export async function relateUser(data) {
+    console.log('data',data);
+    var url = DEPT.relateUser+data.projectId+'/relation/'+data.userId;
+    let response = await http.put(url);
+    return response;
+}
+/**
+ *取消关联租户
+ * @param {*}
+ */
+export async function delRelateProject(data) {
+    console.log('data',data);
+    var url = DEPT.delRelateProject+data.userId+'/relation/'+data.projectId;
+    let response = await http.delete(url);
+    return response;
+}
+/**
+ *关联租户
+ * @param {*}
+ */
+export async function relateProject(data) {
+    console.log('data',data);
+    var url = DEPT.relateProject+data.userId+'/relation/'+data.projectId;
+    let response = await http.put(url);
+    return response;
 }

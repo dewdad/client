@@ -1,16 +1,16 @@
 <template>
-    <el-dialog title="关联用户" :visible.sync="isShow" width="600px"  v-dialogDrag>
+    <el-dialog title="关联租户" :visible.sync="isShow" width="600px"  v-dialogDrag>
         <el-row>
             <el-col :span="12" style="padding:10px;border:1px solid #BBB;height:400px;overflow-y: auto">
                 <div class="mb10">所有未关联成员：</div>
-                <div class="item" v-for="(user,index) in allUsers" :key="user.id" v-if="allUsers.length>0">
+                <div class="item" v-for="(user,index) in allProject" :key="user.id" v-if="allProject.length>0">
                     <span>{{user.name}}</span>
                     <el-button type="primary pull-right selectBtn" size="small" style="font-size: 18px;" @click="chooseCur(user,index)">关联</el-button>
                 </div>
             </el-col>
             <el-col :span="12" style="padding:10px;border:1px solid #BBB;border-left:0;height:400px;overflow-y: auto">
                 <div class="mb10">已关联成员：</div>
-                <div class="item" v-for="(user,index) in selectedUser" :key="user.id" v-if="selectedUser.length>0">
+                <div class="item" v-for="(user,index) in selectedProject" :key="user.id" v-if="selectedProject.length>0">
                     <span>{{user.name}}</span>
                     <el-button type="primary pull-right selectBtn" size="small" style="font-size: 18px;" @click="delCur(user,index)">取消关联</el-button>
                 </div>
@@ -23,7 +23,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {selectAllUsers,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
+import {searchProjectByuserId,projectList,relateProject,delRelateProject} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
         return{
@@ -32,8 +32,8 @@ export default {
             reject: null,
             item:{},
             brunch:{},
-            allUsers:[],
-            selectedUser:[],
+            allProject:[],
+            selectedProject:[],
             confirmBtn:false
         };
     },
@@ -50,48 +50,50 @@ export default {
             this.brunch = brunch;
             console.log('item????',item);
             console.log('item????,,,,',brunch);
-            this.searchByProjectId();
+            this.searchByUserId();
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
             });
 
         },
-        //通过租户id查找用户
-        searchByProjectId(){
+        //通过用户租户id查找用户
+        searchByUserId(){
             let param = {
                 deptId:this.brunch.id,
-                projectId:this.item.id,
+                limit: 999,
+                userId:this.item.id,
             };
-            searchByProjectId(param).then(ret => {
+            searchProjectByuserId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
                 let resData = ret.data;
                 if(resData){
-                    this.selectAllProject();
-                    this.selectedUser = resData || [];
+                    this.getprojectList();
+                    this.selectedProject = resData.data || [];
                 }
             });
         },
-        //查询所有用户
-        selectAllProject(){
+        //获取租户列表
+        getprojectList(){
             let param = {
-                limit:9999,
-                domainId:this.brunch.id
+                limit: 999,
+                deptId:this.brunch ? this.brunch.id : this.user.deptId
             };
-            selectAllUsers(param).then(ret => {
+            $log('params', param);
+            projectList(param).then(ret => {
                 $log('list', ret);
                 let resData = ret.data;
                 if(resData){
                     let allArr = [];
                     for(let i = 0;i < resData.data.length;i++){
-                        for(let j = 0;j < this.selectedUser.length;j++){
-                            if(this.selectedUser[j].id !== resData.data[i].id){
+                        for(let j = 0;j < this.selectedProject.length;j++){
+                            if(this.selectedProject[j].id !== resData.data[i].id){
                                 allArr.push(resData.data[i]);
                             }
                         }
                     }
-                    console.log('allArr',allArr);
-                    this.allUsers = allArr || [];
+                    this.allProject = allArr || [];
                 }
 
             });
@@ -113,22 +115,22 @@ export default {
         },
         chooseCur(user,i){
             let param = {
-                userId:user.id,
-                projectId:this.item.id
+                userId:this.item.id,
+                projectId:user.id
             };
-            relateUser(param).then(ret => {
+            relateProject(param).then(ret => {
                 $log('result...', ret);
                 if(ret.data.code === '0000'){
-                    let item = this.allUsers.splice(i,1);
-                    for(let j = 0;j < this.selectedUser.length;j++){
-                        if(this.selectedUser[j].id === item.id){
+                    let item = this.allProject.splice(i,1);
+                    for(let j = 0;j < this.selectedProject.length;j++){
+                        if(this.selectedProject[j].id === item.id){
                             this.$alert('已有重复成员', '提示', {
                                 type: 'error'
                             });
                             return;
                         }
                     }
-                    this.selectedUser.push(item[0]);
+                    this.selectedProject.push(item[0]);
                     return this.$confirm('操作成功');
                 }else{
                     this.$alert('操作失败', '提示', {
@@ -141,22 +143,22 @@ export default {
         },
         delCur(user,i){
             let param = {
-                userId:user.id,
-                projectId:this.item.id
+                userId:this.item.id,
+                projectId:user.id
             };
-            delRelateUser(param).then(ret => {
+            delRelateProject(param).then(ret => {
                 $log('result...', ret);
                 if(ret.data.code === '0000'){
-                    let item = this.selectedUser.splice(i,1);
-                    for(let j = 0;j < this.allUsers.length;j++){
-                        if(this.allUsers[j].id === item.id){
+                    let item = this.selectedProject.splice(i,1);
+                    for(let j = 0;j < this.allProject.length;j++){
+                        if(this.allProject[j].id === item.id){
                             this.$alert('已有重复成员', '提示', {
                                 type: 'error'
                             });
                             return;
                         }
                     }
-                    this.allUsers.push(item[0]);
+                    this.allProject.push(item[0]);
                     return this.$confirm('操作成功');
                 }else{
                     this.$alert('操作失败', '提示', {
