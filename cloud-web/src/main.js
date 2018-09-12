@@ -10,6 +10,8 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import modules from '@/modules.js';
 
+// 注册弹框可拖动指令
+import './directive/dialogdrag';
 // 注册VueClipboards全局指令
 import VueClipboards from 'vue-clipboards';
 Vue.use(VueClipboards);

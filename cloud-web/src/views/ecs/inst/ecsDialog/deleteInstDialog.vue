@@ -15,11 +15,11 @@
             </el-alert>
         </div>
 
-        <el-alert class="font12 mt20" type="warning" :closable="false" title="">
+        <!-- <el-alert class="font12 mt20" type="warning" :closable="false" title="">
             <div>
                 {{ $t('dialog.deleteEcsInst.alert') }}              
             </div>
-        </el-alert>
+        </el-alert> -->
               
         <span slot="footer" class="dialog-footer">            
             <el-button type="info" class="font12" @click="cancel" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>

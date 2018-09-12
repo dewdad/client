@@ -59,6 +59,11 @@ export const DEPT = {
     editRente: USER_RSA + '/project/',//修改租户
     editUser: USER_RSA + '/user/',//修改用户
     resetPwd: USER_RSA + '/user/',//修改密码
+    relateUser: USER_RSA + '/project/',//关联用户
+    delRelateUser: USER_RSA + '/project/',//取消关联用户
+    relateProject: USER_RSA + '/user/',//关联租户
+    delRelateProject: USER_RSA + '/user/',//取消关联租户
+    searchProjectByuserId: USER_RSA + '/project/getProjectByUserId',//通过用户id查找租户集合
 };
 // 角色管理
 export const RoleMgr = {

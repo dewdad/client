@@ -7,7 +7,7 @@
             </el-radio-group>
             <el-popover placement="top" title="" width="340" trigger="hover">
                 <div>
-                    <span class="font14 is-bold">{{$t('ecs.image.list.publicImage')}}</span><br> {{$t('ecs.create.imageTips')}}
+                    <span class="font14 is-bold">公共镜像</span><br> 是由证通云提供公共基础镜像，仅包括初始系统环境。请根据您的实际情况自助配置应用环境或相关软件配置。
                 </div>
                 <span class="tips-help" slot="reference">
                     <zt-icon icon="icon-iconfontwenhao1"></zt-icon>

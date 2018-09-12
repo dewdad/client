@@ -84,7 +84,10 @@ export default [
             {
                 path: 'clouddisc/createDisc',
                 name: 'app.ecs.clouddisc.createDisc',
-                component: CreateDisc
+                component: CreateDisc,
+                meta: {
+                    fullpage: true
+                }
             },
             {
                 path: 'image',

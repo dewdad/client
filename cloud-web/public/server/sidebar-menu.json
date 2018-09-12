@@ -76,23 +76,6 @@
                         "psref": "ecs.netsecurity",
                         "icon": "icon ecs-menu_link-icon_people",
                         "opennewtab": true
-                    },
-                    {
-                        "text": "弹性公网IP",
-                        "heading": true,
-                        "psref": "#",
-                        "sref": "app.ip",
-                        "icon": "iconfont icon-danxinggongwangIP",
-                        "translate": "",
-                        "arrow": "nav-dropdown-toggle",
-                        "alert": "new",
-                        "submenu": [
-                            {
-                                "text": "弹性公网IP",
-                                "sref": "app.ip.flexip",
-                                "psref": "app.ip"
-                            }
-                        ]
                     }
                 ]
             },
@@ -775,6 +758,12 @@
         "alert": "new",
         "hidden": true,
         "submenu": [
+            {
+                "text": "我的账号",
+                "sref": "accountMg.myAccount",
+                "evn": "pro",
+                "psref": "app.accountMg"
+            },
             {
                 "text": "基本资料",
                 "sref": "accountMg.info",

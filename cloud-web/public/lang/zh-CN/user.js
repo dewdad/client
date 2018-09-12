@@ -27,7 +27,7 @@ export default {
     register: {
         register: '注册',
         hasAcount: '已有账号',
-        title: '欢迎您加入人民日报媒体云',
+        title: '欢迎您加入人民日报证通云',
         mobilePlacehoder: '请输入手机号码',
         loginPassPlacehoder: '设置你的登录密码',
         confirmPassPlacehoder: '请再次输入你的登录密码',
@@ -81,7 +81,7 @@ export default {
                 certNo: '证件号码',
                 creditCode: '统一社会信用代码',
                 status0: {
-                    title: '您还未进行实名认证，认证通过后方可申请媒体云资源',
+                    title: '您还未进行实名认证，认证通过后方可申请证通云资源',
                     tip: '接下来您可以申请认证'
                 },
                 status1: {
@@ -89,7 +89,7 @@ export default {
                     tip: '您可以去文档与支持进行阅览'
                 },
                 status2: {
-                    //title: '您已通过媒体云实名认证！'
+                    //title: '您已通过证通云实名认证！'
                     title: '认证成功！',
                     tip: '接下来您可以创建自己的云服务器'
                 },
@@ -99,10 +99,10 @@ export default {
                     tip: '接下来您可以重新申请认证'
                 },
                 status4: {
-                    //title: '您的审核已通过，媒体云将在2-3日内向您输入的对公账号进行打款认证，请注意查收',
+                    //title: '您的审核已通过，证通云将在2-3日内向您输入的对公账号进行打款认证，请注意查收',
                     moneyConfirm: {
                         //确认打款
-                        title: '媒体云已向您的对公账号进行打款，请输入打款金额完成认证',
+                        title: '证通云已向您的对公账号进行打款，请输入打款金额完成认证',
                         subtitle: '输入错误3次则认证失败，请您仔细核对后提交',
                         placeholder: '输入打款金额',
                         tipSuccess: '金额输入正确',
@@ -119,9 +119,9 @@ export default {
 
             companyAuth: {
                 companyAuthTitle: '企业认证',
-                title: '尊敬的客户，您因为订购媒体云服务需进行认证。',
+                title: '尊敬的客户，您因为订购证通云服务需进行认证。',
                 subtitle: '请确认贵公司工商在册，并规定通过年检，谢谢',
-                contextTitle: '请按照要求填写认证信息，认证成功后将为您开启媒体云服务',
+                contextTitle: '请按照要求填写认证信息，认证成功后将为您开启证通云服务',
                 alterTips: '请核对认证申请信息，提交后将不能修改',
                 companyLicense: '营业执照',
                 companyNameExist: '该企业名称已认证',
@@ -144,7 +144,7 @@ export default {
                     companyLicense: '支持格式：JPG/JPEG/PNG，最大值{filesize}MiB，数量：1'
                 },
                 dlg: {
-                    context: '{companyName}已在媒体云存在认证记录,<br/>是否认证为该公司所属部门？<br/>'
+                    context: '{companyName}已在证通云存在认证记录,<br/>是否认证为该公司所属部门？<br/>'
                 },
                 msg: {
                     imageAccept: '上传图片支持的格式：JPG/JPEG/PNG'
@@ -179,7 +179,7 @@ export default {
 
             departAuth: {
                 departAuthTitle: '部门认证',
-                title: '尊敬的客户，您因为订购媒体云服务需进行认证。',
+                title: '尊敬的客户，您因为订购证通云服务需进行认证。',
                 subtitle: '请确认您所在的企业已通过实名认证，谢谢!',
                 tips: ' 请核对认证申请信息，提交后将不能修改',
                 companyName: {

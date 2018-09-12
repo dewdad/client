@@ -52,8 +52,6 @@ export default {
             this.optype = optype;
             this.expandItem = item;
             this.platformResourceId = id;
-            console.log('this.expandItem',this.expandItem);
-            console.log('this.optype',this.optype);
             this.expandForm.paramName = item.paramName;
             this.expandForm.paramVal = item.paramVal;
             this.expandForm.description = item.description;
