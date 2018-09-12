@@ -14,8 +14,7 @@ import {
 
 
 import { 
-    getInstanceDetail,
-    getInstanceCountInfo
+    getInstanceDetail
 } from '@/service/ecs/detail/index';
 
 
@@ -131,7 +130,6 @@ export default {
         },
         async search (type) {
             await this.getInstanceDetail(this.stateParams.id);
-            this.getInstanceCountInfo(this.stateParams.id);
             await this.searchCharts('mem');
             await this.searchCharts('cpu');
             await this.searchCharts('net');
@@ -149,18 +147,6 @@ export default {
                     this.addresses = ecsInst.addresses.addresses;                               
                 } 
             });            
-        },
-        // 获取磁盘数量等信息
-        getInstanceCountInfo:function (instanceId) {
-            getInstanceCountInfo(instanceId).then( (res) => {
-                if(res.code && res.code === this.CODE.SUCCESS_CODE){
-                    console.log('getInstanceCountInfo',res);   
-                    let instDetailTop = res.data;
-                    this.instDetailTop = instDetailTop;  
-                    console.log('getInstanceCountInfo ecsInst',this.ecsInst);                                       
-                } 
-            });
-            
         },
         searchCharts:function (dataType) {
             if(!this.searchObj.startDate || !this.searchObj.endDate)

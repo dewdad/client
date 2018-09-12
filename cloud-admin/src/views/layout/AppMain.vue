@@ -15,6 +15,7 @@ export default {
 </script>
 <style scoped>
 .main {
-    background: #fff;   
+    background: #fff;
+    height: 100%;  
 }
 </style>
