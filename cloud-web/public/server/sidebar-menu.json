@@ -76,23 +76,6 @@
                         "psref": "ecs.netsecurity",
                         "icon": "icon ecs-menu_link-icon_people",
                         "opennewtab": true
-                    },
-                    {
-                        "text": "弹性公网IP",
-                        "heading": true,
-                        "psref": "#",
-                        "sref": "app.ip",
-                        "icon": "iconfont icon-danxinggongwangIP",
-                        "translate": "",
-                        "arrow": "nav-dropdown-toggle",
-                        "alert": "new",
-                        "submenu": [
-                            {
-                                "text": "弹性公网IP",
-                                "sref": "app.ip.flexip",
-                                "psref": "app.ip"
-                            }
-                        ]
                     }
                 ]
             },
