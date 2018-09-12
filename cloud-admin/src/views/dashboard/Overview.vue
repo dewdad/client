@@ -15,7 +15,7 @@
                                 <div>
                                     <div style="height: 20px;" class="font16">弹性云主机</div>
                                     <div style="line-height:28px;height:28px;">
-                                        <span class="is-bold font25">{{ecsTotal}}</span>个
+                                        <span class="is-bold font25">{{usages.instances}}</span>个
                                         <span style="margin-top:3px;" class="pull-right color-secondary">
                                             较上月同期：
                                             <span class="color-success">+{{addAmount}}个</span>
