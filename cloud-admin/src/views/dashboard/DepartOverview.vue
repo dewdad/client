@@ -31,8 +31,8 @@
                                         <span class="color-secondary">弹性云主机</span>
                                     </div>
                                     <div class="usageBox">
-                                        <span class="color-secondary font12 usage">已使用：50%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.instances/quota.instances) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.instances/quota.instances) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -48,8 +48,8 @@
                                         <span class="color-secondary">CPU </span>
                                     </div>
                                     <div class="usageBox">
-                                        <span class="color-secondary font12 usage">已使用：50%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.cpu/quota.cpu) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -65,8 +65,8 @@
                                         <span class="color-secondary">内存</span>
                                     </div>
                                     <div class="usageBox">
-                                        <span class="color-secondary font12 usage">已使用：50%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.ram/quota.ram) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -88,8 +88,8 @@
                                             <span class="color-secondary">磁盘数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
-                                            <span class="color-secondary font12">已使用：{{parseFloat(parseInt(usages.volumes)/parseInt(quota.volumes)) || '50'}}%</span>
+                                            <el-progress :percentage="parseInt(usages.volumes/quota.volumes) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseFloat(parseInt(usages.volumes)/parseInt(quota.volumes)) || '0'}}%</span>
                                         </div>
                                     </div>
                                     <div class="pull-left box-right__capacity" style="width: 49%">
@@ -98,8 +98,8 @@
                                             <span class="color-secondary">磁盘容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
-                                            <span class="color-secondary font12">已使用：50%</span>
+                                            <el-progress :percentage="parseInt(usages.volumeSize/quota.volumeSize) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.volumeSize/quota.volumeSize) || '0'}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -115,8 +115,8 @@
                                             <span class="color-secondary">快照数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
-                                            <span class="color-secondary font12">已使用：50%</span>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
                                     <div class="pull-left box-right__capacity" style="width: 49%">
@@ -125,8 +125,8 @@
                                             <span class="color-secondary">快照容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
-                                            <span class="color-secondary font12">已使用：50%</span>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -242,11 +242,11 @@
             padding: 46px 30px;
             position: relative;
             .usageBox{
-                &::after{
-                    content: '';
-                    display: block;
-                    clear: both;
-                }
+                // &::after{
+                //     content: '';
+                //     display: block;
+                //     clear: both;
+                // }
                 &:hover span.usage{
                     display: block;
                 }
