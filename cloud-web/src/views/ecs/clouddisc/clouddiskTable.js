@@ -25,6 +25,24 @@ let statusArr = [
         icon: 'zticon-recentcreation_peop'
     },
     {
+        text: '连接中',
+        value: 'attaching',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '挂载中',
+        value: 'in-user',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '分离中',
+        value: 'detaching',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
         text: '恢复失败',
         value: 'error-restoring',
         className: 'color-danger',
@@ -153,7 +171,7 @@ export default {
             this.getDiskList();
         },
         //获取云盘列表数据
-        getDiskList() {
+        getDiskList(loading = true) {
             let params = {
                 paging: this.searchObj.paging,
                 fileds: {
@@ -161,8 +179,10 @@ export default {
                 },
                 status: this.status
             };
-            this.loading = true;
-            this.tableData = [];
+            if (loading) {
+                this.loading = true;
+                this.tableData = [];
+            }
             getDiskList(params)
                 .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
@@ -198,10 +218,10 @@ export default {
         },
 
         //卸载
-        unmountDisk(rowItem) {
+        unmoutDisk(rowItem) {
             let msg = {};
-            switch (rowItem.isBoot) {
-                case '1': {
+            switch (rowItem.bootable) {
+                case true: {
                     msg.diskType = '系统盘';
                     msg.alertInfo = `
                     1、云硬盘卸载前，请保证该云硬盘在操作系统内的逻辑磁盘已通过unmount等命令进行卸载操作。<br/>
@@ -209,7 +229,7 @@ export default {
                     `;
                     break;
                 }
-                case '0': {
+                case false: {
                     msg.diskType = '数据盘';
                     msg.alertInfo = `
                     1、云服务器卸载系统盘后，将无法登录及使用。<br/>
@@ -221,9 +241,9 @@ export default {
                 }
             }
             const h = this.$createElement;
-            let message = h('div', null, [
-                h('p', {class: {font16: true, mt10: true}}, `您确认要卸载此${msg.diskType}吗？`),
-                h('el-alert', {props: {type: 'warning', closable: false}}, [
+            let message = h('div', {style: {width: '500px'}}, [
+                h('p', {class: {font16: true}}, `您确认要卸载此${msg.diskType}吗？`),
+                h('el-alert', {class: {mt20: true}, props: {type: 'warning', closable: false, title: ''}}, [
                     h('p', {
                         attr: {slot: 'description'},
                         domProps: {
@@ -233,9 +253,21 @@ export default {
                 ])
             ]);
             //卸载磁盘
-            this.$confirm(message, '卸载磁盘').then(() => {
+            this.$confirm(message, '卸载云盘').then(() => {
                 //提交后台,卸载磁盘
-                unmoutDisk({disk_id: rowItem.id}).then();
+                unmoutDisk({volumeId: rowItem.id, instanceId: rowItem.attachments[0].serverId})
+                    .then(res => {
+                        if (res.code === '0000') {
+                            this.$message.success('操作成功');
+                            this.getDiskList(false);
+                            setTimeout(() => {
+                                this.getDiskList(false);
+                            }, 4000);
+                        }
+                    })
+                    .catch(err => {
+                        $log(err);
+                    });
             });
         },
 
@@ -243,8 +275,8 @@ export default {
         releaseDisk(rowItem) {
             const h = this.$createElement;
             let message = h('div', null, [
-                h('p', {class: {font16: true, mt10: true}}, `您确认要释放本磁盘吗？`),
-                h('el-alert', {props: {type: 'warning', closable: false}}, [
+                h('p', {class: {font16: true}}, `您确认要释放ID为${rowItem.id}的磁盘吗？`),
+                h('el-alert', {class: {mt20: true}, props: {type: 'warning', title: '', closable: false}}, [
                     h('p', {
                         attr: {slot: 'description'},
                         domProps: {
@@ -260,7 +292,15 @@ export default {
             //释放磁盘
             this.$confirm(message, '释放磁盘').then(() => {
                 //提交后台,释放磁盘
-                releaseDisk({disk_id: rowItem.id}).then();
+                releaseDisk({volumeId: rowItem.id}).then(res => {
+                    if (res.code === '0000') {
+                        this.$message.success('操作成功');
+                        this.getDiskList(false);
+                        setTimeout(() => {
+                            this.getDiskList(false);
+                        }, 4000);
+                    }
+                });
             });
         },
 
@@ -376,6 +416,9 @@ export default {
                     console.log('操作成功', ret);
                     this.$message.success('操作成功');
                     this.getDiskList();
+                    setTimeout(() => {
+                        this.getDiskList(false);
+                    }, 2000);
                 })
                 .catch(err => {
                     if (err) {

@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="挂载云盘" :visible.sync="isShow" width="600px" class="CustomImageDesc" @close="cancel">
-        <el-alert type="warning" :closable="false" class="font12">
+        <el-alert type="warning" :closable="false" title="" class="font12">
             重要提示：“磁盘挂载”执行成功后，您还需要登录本实例对挂载的磁盘进行“分区格式化和挂载新分区”的操作。 分区格式化/挂载数据盘操作指南: <a class="font12">Window</a>>,<a class="font12">Linux</a>>
         </el-alert>
         <div style="padding-left:20px;">
@@ -11,7 +11,7 @@
                 </zt-form-item>
                 <!-- 系统平台 -->
                 <zt-form-item label="目标实例">
-                    <el-select v-model="formData.instanceId" placeholder="请选择">
+                    <el-select v-model="formData.instanceId" :loading="remote" placeholder="请选择">
                         <el-option v-for="item in ecsInsts" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
@@ -33,6 +33,7 @@
 <script>
 import {getEcsInstList} from '@/service/ecs/list.js';
 import {mountDisk} from '@/service/ecs/disk/disk.js';
+import {sleep} from '@/utils/utils';
 
 export default {
     data() {
@@ -41,6 +42,7 @@ export default {
             resolve: null,
             reject: null,
             loading: false,
+            remote: false,
             rowItem: {},
             ecsInsts: [],
             formData:{
@@ -90,8 +92,9 @@ export default {
             };
             this.loading = true;
             mountDisk(data)
-                .then( res => {
+                .then( async res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) { 
+                        await sleep(2000);
                         this.resolve(res);
                         this.hide();
                         //this.setting();                                            
@@ -108,6 +111,7 @@ export default {
 
         //查询目标实例(可以挂载的ecs实例)
         getEcsInstAll() {
+            this.remote = true;
             getEcsInstList({status: 'active'}).then(
                 res => {
                     if (res && res.data) {
@@ -121,9 +125,10 @@ export default {
                             }
                         }
                     }
-                },
-                () => {}
-            );
+                }
+            ).finally(() => {
+                this.remote = false;
+            });
         }
     }
 };
