@@ -47,8 +47,7 @@ export default {
             default: () => {
                 return {
                     pageIndex: 1,
-                    limit: 10,
-                    totalItems: 0
+                    limit: 10
                 };
             }
         },
