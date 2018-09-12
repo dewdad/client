@@ -11,7 +11,7 @@
         </page-header>
 
         <div class="page-body">
-            <clouddisk-table :isShowSearch="true"></clouddisk-table>
+            <clouddisk-table ref="cloudDisk" :isShowSearch="true"></clouddisk-table>
         </div>
     </div>
 </template>

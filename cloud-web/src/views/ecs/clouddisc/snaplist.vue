@@ -46,6 +46,7 @@
             </zt-table>
         </div>
         <create-disk ref="CreateDisk"/>
+        <delete-dialog ref="DeleteDailog"/>
     </div>
 </template>
 <script>
@@ -120,20 +121,12 @@ export default {
             });
         },
         deleteSnap(row) {
-            this.$messageBox
-                .confirm('确定要对该快照进行删除操作吗？', '删除', {
-                    type: 'warning',
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    subMessage: row.name
-                })
-                .then(() => {
-                    deleteSnapshots(row.id).then(res => {
-                        if (res.code === '0000') {
-                            this.$message.success('操作成功');
-                            this.getSnapshotList();
-                        }
-                    });
-                });
+            this.$refs.DeleteDailog.show('快照', row.name, () => {
+                return deleteSnapshots(row.id);
+            }).then(res => {
+                this.$message.success('操作成功');
+                this.getSnapshotList();
+            });
         }
     }
 };
