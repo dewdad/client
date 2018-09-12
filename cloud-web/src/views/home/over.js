@@ -227,7 +227,7 @@ export default {
         getUsage(val1, val2) {
             console.warn(val2);
             if(val2 === 0) {
-                return true;
+                return false;
             }
             return parseFloat(val1/val2) > 0.9;
         }
