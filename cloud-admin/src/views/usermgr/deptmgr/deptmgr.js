@@ -5,6 +5,7 @@ import ClientDetail from './ClientDetail';
 import ProjectDetail from './ProjectDetail';
 import ChangeQuota from './ChangeQuota';
 import EditRente from './EditRente';
+import UserSelectMember from './UserSelectMember';
 import EditUser from './EditUser';
 import SelectMember from './SelectMember';
 import ViewUsage from './ViewUsage';
@@ -86,7 +87,8 @@ export default {
         ChangeQuota,
         SelectMember,
         EditRente,
-        EditUser
+        EditUser,
+        UserSelectMember
 
     },
     computed:{
@@ -277,9 +279,13 @@ export default {
                 }
             );
         },
-        //管理成员
+        //关联用户
         manageMember(item,brunch){
             this.$refs.SelectMember.show(item,brunch);
+        },
+        //关联租户
+        userManageMember(item,brunch){
+            this.$refs.UserSelectMember.show(item,brunch);
         },
         //租户详情
         showRentaDetail(item){
@@ -420,19 +426,19 @@ export default {
 
         currentChange1(val){
             this.searchObj1.paging.pageIndex = val;
-            this.getplatformList();
+            this.getprojectList();
         },
         handleSizeChange1 (val) {
             this.searchObj1.paging.limit = val;
-            this.getplatformList();
+            this.getprojectList();
         },
         currentChange2(val){
             this.searchObj2.paging.pageIndex = val;
-            this.getplatformList();
+            this.findeRole();
         },
         handleSizeChange2 (val) {
             this.searchObj2.paging.limit = val;
-            this.getplatformList();
+            this.findeRole();
         }
     },
     mounted(){

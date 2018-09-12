@@ -143,7 +143,7 @@
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item @click.native="changeRentQuota(scope.row,brunch)">修改配额</el-dropdown-item>
-                                                <el-dropdown-item @click.native="manageMember(scope.row,brunch)">管理成员</el-dropdown-item>
+                                                <el-dropdown-item @click.native="manageMember(scope.row,brunch)">关联用户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>
                                             </el-dropdown-menu>
@@ -246,6 +246,7 @@
                                             更多<i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
+                                                <el-dropdown-item @click.native="userManageMember(scope.row,brunch)">关联租户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="delUser(scope.row)">删除用户</el-dropdown-item>
                                             </el-dropdown-menu>
@@ -285,12 +286,14 @@
         <view-usage ref="ViewUsage"></view-usage>
         <!--修改配额-->
         <change-quota ref="ChangeQuota"></change-quota>
-        <!--管理成员-->
+        <!--关联用户-->
         <select-member ref="SelectMember"></select-member>
         <!--修改租户-->
         <edit-rente ref="EditRente"></edit-rente>
         <!--修改用户-->
         <edit-user ref="EditUser"></edit-user>
+        <!--关联租户-->
+        <user-select-member ref="UserSelectMember"></user-select-member>
     </div>
 </template>
 <script src="./deptmgr.js"></script>
