@@ -36,14 +36,14 @@ export default {
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'descprition', text:'描述' , width: '10%'},
             { column: 'id', text: '租户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '5%' },
+            { column: 'start', text: '激活', width: '3%' },
             { column: 'dept', text: '部门', width: '10%' },
         ];
         let usercols = [
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'emailAddress', text:'邮箱' , width: '10%'},
             { column: 'id', text: '用户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '5%' },
+            { column: 'start', text: '激活', width: '3%' },
             { column: 'dept', text: '部门', width: '10%' },
         ];
         return {
@@ -375,13 +375,10 @@ export default {
         },
         //禁用用户
         disableUser(item,brunch){
-            let enableState = item.enabled;
             let status = item.status;
-            item.enabled = false;
             item.status = 0;
             let param = {
                 data:{
-                    enabled:false,
                     status:0,
                 },
                 id:item.id
@@ -392,7 +389,6 @@ export default {
                     this.findeRole();
                     return this.$confirm('操作成功');
                 }else{
-                    item.enabled = enableState;
                     item.status = status;
                     this.$alert('操作失败', '提示', {
                         type: 'error'

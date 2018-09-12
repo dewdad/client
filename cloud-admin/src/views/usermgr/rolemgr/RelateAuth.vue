@@ -47,6 +47,7 @@ export default {
         show(item) {
             this.roleId = item.id;
             this.isShow = true;
+            this.getMenuListByType();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -125,7 +126,7 @@ export default {
         },
         getMenuListByType(){
             let params = {
-                roleId:this.user.roleId,
+                roleId:this.roleId,
                 roleType:this.user.roleType,
             };
             $log('params', params);
@@ -168,7 +169,7 @@ export default {
 
     },
     mounted(){
-        this.getMenuListByType();
+
     }
 
 

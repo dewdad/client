@@ -36,7 +36,7 @@
         </el-row>
         <el-row class="deptContainer">
 
-            <el-col :span="5" :lg="3" class="deptTree p20">
+            <el-col :span="4"  class="deptTree p20">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText">
@@ -45,10 +45,10 @@
                     </el-form-item>
                 </el-form>
                 <div>
-                    <el-tree show-checkbox default-expand-all :highlight-current="true" expand-on-click-node node-key="id" :data="deptTreeData" :check-strictly="true" :props="defaultProps" :default-checked-keys="selectedKey" @node-click="handleNodeClick" ref="tree"></el-tree>
+                    <el-tree  default-expand-all :highlight-current="true" expand-on-click-node node-key="id" :data="deptTreeData" :check-strictly="true" :props="defaultProps" :default-checked-keys="selectedKey" @node-click="handleNodeClick" ref="tree"></el-tree>
                 </div>
             </el-col>
-            <el-col :span="19" :lg="21" class="p20">
+            <el-col :span="20"  class="p20">
                 <div class="topTitle">基本信息</div>
                 <el-row class="mt20 mb20">
                     <el-col :span="8">部门名称：{{brunch.name}}</el-col>
@@ -127,7 +127,7 @@
                             </template>
                             <!-- 操作 -->
                             <template>
-                                <el-table-column label="操作" align="right" key="op" min-width="120" class-name="option-snaplist">
+                                <el-table-column label="操作"  key="op" align="right" min-width="200" style="width:25%" class-name="option-snaplist">
                                     <template slot-scope="scope">
                                         <a @click="viewUsage(scope.row,brunch)" class="btn-linker">查看使用量</a>
                                         <b class="link-division-symbol"></b>
@@ -224,7 +224,7 @@
                             </template>
                             <!-- 操作 -->
                             <template>
-                                <el-table-column label="操作" key="op" align="right" min-width="120" class-name="option-snaplist">
+                                <el-table-column label="操作" key="op" align="right" min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
                                         <a @click="EditUser(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
@@ -280,7 +280,7 @@
     </div>
 </template>
 <script src="./deptmgr.js"></script>
-<style scoped lang="scss">
+<style  lang="scss">
 .topTitle {
     width: 100%;
     border-bottom: 1px solid #e8e8e8 !important;
@@ -289,17 +289,21 @@
     color: #656565;
 }
 .deptContainer {
-    & > .el-col-19 {
+    & > .el-col-20 {
         border-left: 1px solid #dee7f1;
     }
     .p20 {
         padding: 20px;
     }
     .deptTree {
-        /*background-color:#f4f8f9;*/
-
         min-height: 300px;
     }
     border: 1px solid #dee7f1;
+}
+.el-tree-node__c:hover{
+    background-color:#f5f7fa !important;
+}
+.is-checked{
+    background-color:#f5f7fa !important;
 }
 </style>
