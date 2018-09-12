@@ -36,11 +36,8 @@ export default new Router({
                     name: 'app.overview',
                     meta: {
                         title: '概览'
-                    },
-                    //redirect: '/user/auth',
-                    // component: () => import('@/views/dashboard/Dashboard')
-                    // component: () => import('@/views/dashboard/Overview')
-                    component: () => import('@/views/dashboard/DepartOverview')
+                    },                    
+                    component: () => import('@/views/dashboard/Index') //部门管理员
                 },
                 {
                     path: 'usrmgr',
