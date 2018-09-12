@@ -1,8 +1,8 @@
 <template>
     <div class="page-main overflow-box">
         <!-- 外层 -->
-        <el-row :gutter="20" >
-            <el-col :span="24">
+        <el-row :gutter="20" style="height: 100%;">
+            <el-col :span="24" class="el-col-box" style="height: 100%;">
                 <!-- 上部分 -->
                 <el-row :gutter="20">
                     <!-- 弹性云主机 -->
@@ -15,7 +15,7 @@
                                 <div>
                                     <div style="height: 20px;" class="font16">弹性云主机</div>
                                     <div style="line-height:28px;height:28px;">
-                                        <span class="is-bold font25">{{ecsTotal}}</span>个
+                                        <span class="is-bold font25">{{usages.instances}}</span>个
                                         <span style="margin-top:3px;" class="pull-right color-secondary">
                                             较上月同期：
                                             <span class="color-success">+{{addAmount}}个</span>
@@ -64,7 +64,9 @@
                             <div class="cpu item back-white mr20">
                                 <div class="item__title">
                                     <span>CPU</span>
-                                    <span class="pull-right"><i class="dot color-warning"></i> 总配额：{{quota.cpu || '0'}}个</span>
+                                    <span class="pull-right">
+                                        <i class="dot" :class="{'color-warning': getUsage(usages.cpu, quota.cpu)}"></i> 总配额：{{quota.cpu || '0'}}个
+                                    </span>
                                 </div>
                                 <!-- CPU 饼图 -->
                                 <div class="item__data">
@@ -73,9 +75,9 @@
                                         <div v-else style="line-height:154px;" class="color-secondary font18 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
-                                        <div class="color-warning font30 icon-box">
+                                        <div class="font30 icon-box" :class="{'color-warning': getUsage(usages.cpu, quota.cpu)}">
                                             {{usages.cpu || '0'}}
-                                            <span class="icon">
+                                            <span class="icon" v-if="getUsage(usages.cpu, quota.cpu)">
                                                 <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
                                                     <i class="iconfont icon-wuuiconsuotanhao font14"></i>
                                                 </el-tooltip>
@@ -92,7 +94,7 @@
                             <div class="mem item back-white">
                                 <div class="item__title">
                                     <span>内存</span>
-                                    <span class="pull-right"><i class="dot"></i> 总配额：{{quota.ram || '0'}}GB</span>
+                                    <span class="pull-right"><i class="dot" :class="{'color-warning': getUsage(usages.ram, quota.ram)}"></i> 总配额：{{quota.ram || '0'}}GB</span>
                                 </div>
                                 <!-- 内存 饼图 -->
                                 <div class="item__data">
@@ -103,6 +105,11 @@
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font30 icon-box">
                                             {{usages.ram || '0'}}
+                                            <span class="icon" v-if="getUsage(usages.ram, quota.ram)">
+                                                <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
+                                                    <i class="iconfont icon-wuuiconsuotanhao font14"></i>
+                                                </el-tooltip>
+                                            </span>
                                         </div>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
@@ -135,10 +142,10 @@
                                         <div v-else style="line-height:94px;" class="color-secondary font16 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height: 47px; border-bottom: 1px solid #ebf3f7;">
-                                        <div class="font18 pos-relative">
+                                        <div class="font18 pos-relative" :class="{'color-warning': getUsage(usages.ram, quota.ram)}">
                                             {{usages.volumeSize || '0'}}
                                         </div>
-                                        <span class="color-secondary font12">已使用</span>
+                                        <span class="color-secondary font12" >已使用</span>
                                     </div>
                                     <div class="text-r pt10" style="height: 47px;">
                                         <div class="font18">96</div>
@@ -152,23 +159,23 @@
                 <!-- 已申请资源 -->
                 <el-row class="mt20">
                     <el-col :span="24">
-                        <div class="info-box">
-                            <div class="info-box__item">
+                        <div class="resource-box">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-wangluo-gailan font20 color-secondary"></i>
                                 <span class="ml10">网络</span>
                                 <span class="pull-right"><span>{{usages.network || '0'}}</span>/{{quota.network || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-anquanzu-gailan font20 color-secondary"></i>
                                 <span class="ml10">安全组</span>
                                 <span class="pull-right"><span>{{usages.securityGroup || '0'}}</span>/{{quota.securityGroup || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-luyouqi-gailan font20 color-secondary"></i>
                                 <span class="ml10">路由器 </span>
                                 <span class="pull-right"><span>{{usages.routers || '0'}}</span>/{{quota.routers || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-fudongIP-gailan font20 color-secondary"></i>
                                 <span class="ml10">浮动IP</span>
                                 <span class="pull-right"><span>{{usages.floatingIps || '0'}}</span>/{{quota.floatingIps || '0'}}</span>
@@ -334,6 +341,14 @@ export default {
         // 根据时间筛选ecs使用量
         selEcsFn() {
             this.selectUsageByDateFn();
+        },
+        // 即将达到上限标准
+        getUsage(val1, val2) {
+            console.warn(val2);
+            if(val2 === 0) {
+                return false;
+            }
+            return parseFloat(val1 / val2) > 0.9;
         }
     },
     mounted() {
@@ -351,138 +366,145 @@ export default {
 <style lang="scss">
 .overflow-box{
     background: #ebeef3;
-}
-// 弹性云主机
-.cloud-host{
-    background: #fff;
-    border-radius: 5px;
-    &::after{
-        content: '';
-        display: block;
-        clear: both;
+    .el-col-box{
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
     }
-    &__data{
-        height: 37px;
-        border-left: 2px solid #d3d8de;
-        margin: 30px 30px 0 30px;
-        padding-left: 10px;
-    }
-    &__title{
-        padding: 20px;
-        border-bottom: 1px solid #ebf3f7;
-        &__icon{
-            width: 48px; 
-            height: 48px;
-            background-color: #0d7ef2;
-            border-radius: 4px;
-            line-height: 55px;
-            margin-right: 15px;
-            text-align: center;
-            i{
-                color: #fff;
-                font-size: 24px;
-            }
-        }
+    // 弹性云主机
+    .cloud-host{
+        background: #fff;
+        border-radius: 5px;
         &::after{
             content: '';
             display: block;
             clear: both;
         }
-    }
-    .el-input__inner{
-        border-radius: 0;
-    }
-}
-// CPU、内存、磁盘
-.cpu_net-box{
-    display: flex;
-    .item{
-        min-height: 294px;
-        flex: 1;
-        border-radius: 4px;
-        &__title{
-            padding: 20px 30px;
-            border-bottom: 1px solid #ebf3f7;
-            height: 60px;
-        }
         &__data{
-            padding: 40px 54px;
+            height: 37px;
+            border-left: 2px solid #d3d8de;
+            margin: 30px 30px 0 30px;
+            padding-left: 10px;
+        }
+        &__title{
+            padding: 20px;
+            border-bottom: 1px solid #ebf3f7;
+            &__icon{
+                width: 48px; 
+                height: 48px;
+                background-color: #0d7ef2;
+                border-radius: 4px;
+                line-height: 55px;
+                margin-right: 15px;
+                text-align: center;
+                i{
+                    color: #fff;
+                    font-size: 24px;
+                }
+            }
             &::after{
                 content: '';
                 display: block;
                 clear: both;
             }
-            .icon-box{
-                position: relative;
+        }
+        .el-input__inner{
+            border-radius: 0;
+        }
+    }
+    // CPU、内存、磁盘
+    .cpu_net-box{
+        display: flex;
+        .item{
+            min-height: 294px;
+            flex: 1;
+            border-radius: 4px;
+            &__title{
+                padding: 20px 30px;
+                border-bottom: 1px solid #ebf3f7;
+                height: 60px;
             }
-            .icon{
-                position: absolute;
-                right: -18px;
-                top: -18px;
-                color: #ff4400;
-                cursor: pointer;
+            &__data{
+                padding: 40px 54px;
+                &::after{
+                    content: '';
+                    display: block;
+                    clear: both;
+                }
+                .icon-box{
+                    position: relative;
+                }
+                .icon{
+                    position: absolute;
+                    right: -18px;
+                    top: -18px;
+                    color: #ff4400;
+                    cursor: pointer;
+                }
             }
         }
     }
-}
-// 磁盘
-.disk{
-    border-radius: 4px;
-    &__title{
-        border-bottom: 1px solid #ebf3f7;
-        padding: 20px 30px;
+    // 磁盘
+    .disk{
+        border-radius: 4px;
+        &__title{
+            border-bottom: 1px solid #ebf3f7;
+            padding: 20px 30px;
+        }
+        &__data{
+            display: flex;
+            padding: 28px 0;
+            align-items: center;
+            &__item{
+                flex: 1;
+                padding-left: 89px;
+            }
+            &__pie{
+                flex: 1;
+                border-left: 1px solid #ebf3f7;
+                .text-r{
+                    margin-right: 89px;
+                    box-sizing: border-box;
+                }
+            }
+        }
     }
-    &__data{
+    .back-white{
+        background-color: #fff;
+    }
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #36ab46;
+        margin-right: 5px;
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+        &.color-warning {
+            background-color: #ff4400;
+        }
+    }
+    .back-gray{
+        background-color: #8da3c6;
+    }
+
+    // 已申请资源
+    .resource-box {
+        background-color: #fff;
+        padding: 39px 60px;
         display: flex;
-        padding: 28px 0;
-        align-items: center;
         &__item{
             flex: 1;
-            padding-left: 89px;
-        }
-        &__pie{
-            flex: 1;
-            border-left: 1px solid #ebf3f7;
-            .text-r{
-                margin-right: 89px;
-                box-sizing: border-box;
+            padding: 0 30px;
+            border-right: 1px solid #ebf3f7;
+            i{
+                vertical-align: middle;
             }
         }
     }
 }
-.back-white{
-    background-color: #fff;
-}
-.dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #36ab46;
-    margin-right: 5px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    &.color-warning {
-        background-color: #ff4400;
-    }
-}
-.back-gray{
-    background-color: #8da3c6;
-}
-// 已申请资源
-.info-box {
-    background-color: #fff;
-    padding: 39px 60px;
-    display: flex;
-    &__item{
-        flex: 1;
-        padding: 0 30px;
-        border-right: 1px solid #ebf3f7;
-        i{
-            vertical-align: middle;
-        }
-    }
-}
-
 </style>
