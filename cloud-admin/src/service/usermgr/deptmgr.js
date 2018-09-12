@@ -39,7 +39,7 @@ export async function createDept(data) {
  */
 export async function editDept(data) {
     console.log('data',data);
-    let url = DEPT.editDept +data.parentId;
+    let url = DEPT.editDept +data.id;
     let response = await http.put(url,data);
     return response;
 }

@@ -5,7 +5,7 @@
                 <el-input placeholder="输入部门名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="描述：" prop="description" :label-width="formLabelWidth">
-                <el-input placeholder="输入描述" v-model="form.newPwd"></el-input>
+                <el-input placeholder="输入描述" v-model="form.description"></el-input>
             </el-form-item>
 
         <div v-if="user.roleType == 1">
@@ -146,7 +146,8 @@ export default {
                 'quota.backupSize': [
                     { required: true, message: '必填项', trigger: 'blur,submit' }
                 ]
-            }
+            },
+            item:{}
         };
     },
     computed:{
@@ -161,11 +162,16 @@ export default {
             this.item = item;
             if(optype === 2){
                 console.log('item',item);
-                this.form.parentId = item.id;
+                this.form.id = item.id;
                 this.form.name = item.name;
                 this.form.description = item.description;
+            }else{
+                this.form.id = '';
+                this.form.name = '';
+                this.form.description = '';
             }
             this.optype = optype;
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -205,7 +211,7 @@ export default {
             });
         },
         create(){
-            this.form.parentId = this.user.deptId;
+            this.form.parentId = '';
             createDept(this.form)
                 .then(res => {
                     console.log('reds',res);
@@ -253,6 +259,9 @@ export default {
                     });
                 });
         },
+    },
+    mounted(){
+
     }
 };
 </script>
