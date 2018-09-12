@@ -7,7 +7,7 @@
                     <i class='iconfont icon-chenggong color-success font14'></i> 验证码已发送至您绑定的手机号码，请注意查收
                 </el-alert>
                 <div class='text-center'>
-                    <h3 class="font14">为保障您的账号安全，媒体云需要校验您的短信验证码</h3>
+                    <h3 class="font14">为保障您的账号安全，证通云需要校验您的短信验证码</h3>
                 </div>
 
                 <validate-mobile btn-text="确定" label="手机号码" :auto-send="true" btn-type='primary' @success="checkSuccess"></validate-mobile>

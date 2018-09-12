@@ -22,7 +22,7 @@ const ZT_CONFIG = {
 
     /** 远程登录 */
     REMOTE_LOGIN_VNCPWD: '9999', //远程登录前端生成随机密码后设置字段vncPassword值
-    WEB_SITE_URL: 'www.peopledailycloud.com', //媒体云公网地址
+    WEB_SITE_URL: 'www.peopledailycloud.com', //证通云公网地址
     REMOTE_LOGIN_URL_ALIAS: 'http://175.6.40.20:40068', //远程登录显示url地址
 
     /**绑定解绑连接IP、绑定解绑公网IP 判断floatip是连接ip还是公网ip的前缀*/

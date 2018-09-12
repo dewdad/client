@@ -1,243 +1,288 @@
 <template>
-    <div class="createDisc">
-        <!-- 计费方式 -->
-        <div class="billMethod backWhite mb10">
-            <el-row>
-                <el-col :span="3">
-                    <span class="font14 ml20 mr30">
-                        <i class="iconfont font16 icon-jifeifangshi mr5"></i>
-                        计费方式
-                    </span>
-                </el-col>
-                <el-col :span="20">
-                    <el-button size="small" type="primary">包年包月</el-button>
-                    <el-button size="small" type="info">按量付费</el-button>
-                    <i class="ml10 font16 iconfont icon-wenhao"></i>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- 地域 -->
-        <div class="region backWhite mb10">
-            <el-row>
-                <el-col :span="3">
-                    <span class="font14 ml20 mr30">
-                        <i class="iconfont font16 icon-quyu mr5"></i>
-                        地域
-                    </span>
-                </el-col>
-                <el-col :span="20">
-                    <div class="clearFLoat">
-                        <div class="place mr10">
-                            <p><el-button class="selPlace" size="small" type="primary">北京1</el-button></p> 
-                            <el-select class="selPlace" v-model="value" size="small" placeholder="请选择">
-                                <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <div class="place mr10">
-                            <p><el-button class="selPlace" disabled size="small">北京1</el-button></p> 
-                            <el-select class="selPlace" disabled v-model="value" size="small" placeholder="暂不可用">
-                            </el-select>
+    <div class="inst-create create-ecs">
+        <div class="create-form" style="padding-top:30px">
+            <!-- 云盘名称 -->
+            <el-card class="box-card create-form-item create-form-item__name" shadow="hover">
+                <div class="create-form-item__label">
+                    <label>
+                        <zt-icon icon="icon-chuangjianyunzhuji-shilimingcheng"></zt-icon>
+                        云盘名称
+                    </label>
+                </div>
+                <div class="create-form-item__content">
+                    <div style="width: 300px">
+                        <zt-form ref="instNameForm" :show-message="true" inline-message size="small" :model="form" :rules="rules" label-width="0" style="width:300px;">
+                            <zt-form-item id="instname" label="" class="hide-star" prop="diskName">
+                                <el-input v-model="form.diskName" placeholder="请输入云盘名称" size="small"></el-input>
+                                <span class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span>
+                            </zt-form-item>
+                            <zt-form-item label="" class="mb0 hide-star" prop="desc">
+                                <el-input type="textarea" v-model="form.desc" maxlength="300" autosize placeholder="磁盘描述" :clearable="true"></el-input>
+                                <span class="input-help">{{$t('ecs.create.instdesc.tips')}}</span>
+                            </zt-form-item>
+                        </zt-form>
+                    </div>
+                </div>
+            </el-card>
+            <!-- 云盘名称 end -->
+            <!-- 云盘 -->
+            <el-card class="box-card create-form-item" shadow="hover">
+                <div class="create-form-item__label">
+                    <label>
+                        <zt-icon icon="icon-yunzhujichuangjian-cunchu"></zt-icon>
+                        云盘
+                    </label>
+                </div>
+                <div class="create-form-item__content">
+                    <div class="storage">
+                        <ul>
+                            <li class="is-open">
+                                <div class="content">
+                                    <div class="font12">
+                                        <el-select style="width:170px" v-model="sysDisk.type" placeholder="请选存储类型" popper-class="el-popper--small" key-value="value" size="small" class="mr10">
+                                            <el-option v-for="type in STORAGE_TYPES" :key="type.value" :label="type.label" :value="type">
+                                            </el-option>
+                                        </el-select>
+                                        <zt-input-number style="width:170px" v-model="sysDisk.size" :tooltip="'容量范围: 20G - 32768G'" size="small" :precision="0" :step="10" suffix="G" controls-position="right" :min="20" :max="32768"></zt-input-number>
+                                        <span class="ml10" v-if="sysDisk.type.value === 'SSD'">1960 IOPS</span>
+                                        <span class="ml10" v-if="sysDisk.type.value === 'SATA'">1120 IOPS</span>
+                                    </div>
+                                    <div class="mt10 font12 color999">
+                                        {{$t('ecs.create.storage.sysDiskTxt')}}
+                                        <a class="font12">详细说明</a>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </el-card>
+            <!-- 申请量 -->
+            <el-card class="box-card create-form-item" shadow="hover">
+                <div class="create-form-item__label">
+                    <label>
+                        <zt-icon icon="icon-shenqingshuliang"></zt-icon>
+                        申请量
+                    </label>
+                </div>
+                <div class="create-form-item__content">
+                    <zt-input-number style="width:170px" v-model="numberApply" :tooltip="'容量范围: 20G - 32768G'" size="small" :precision="0" :step="1" suffix="块" controls-position="right" :min="1" :max="250"></zt-input-number>
+                    <span class="input-help">最多可开通 250 块云盘，已开通 {{numberApply}} 块</span>
+
+                    <!-- 当前配置 -->
+                    <div style="padding:20px;background-color:#F9FAFD;" class="mt20">
+                        <div class="configure  font12">
+                            <p class="mb10">
+                                <span class="color666">当前配置</span>
+                            </p>
+                            <el-row :gutter="15">
+                                <el-col :span="6">
+                                    <span class="color999">云盘名称：</span>
+                                    <span class="">{{form.diskName}}</span>
+                                </el-col>
+                                <el-col :span="6">
+                                    <span class="color999">云盘：</span>
+                                    <span class="">{{sysDisk.type.label}} {{sysDisk.size}}GB</span>
+                                </el-col>
+                                <el-col :span="6">
+                                    <span class="color999">申请数量：</span>
+                                    <span class="">{{numberApply}}</span>
+                                </el-col>
+                            </el-row>
                         </div>
                     </div>
-                    <div class="font12 mt10 color999">不同区域云产品之间内网不互通；选择最靠近您客户的区域，可降低访问时延、提高下载速度</div>
-                </el-col>
-            </el-row>
+
+                </div>
+            </el-card>
+            <!-- 申请量 end -->
         </div>
-        <!-- 云盘名称 -->
-        <div class="diskName backWhite mb10">
-            <el-row>
-                <el-col :span="3">
-                    <span class="font14 ml20 mr30">
-                        <i class="iconfont font16 icon-head_file_people mr5"></i>
-                        云盘名称
-                    </span>
-                </el-col>
-                <el-col :span="4"><el-input size="small" autocomplete="on" placeholder="请输入内容"></el-input></el-col>
-            </el-row>
-            
-        </div>
-        <!-- 云盘 -->
-        <div class="disk backWhite mb10">
-            <el-row>
-                <el-col :span="3">
-                    <span class="font14 ml20 mr30">
-                        <i class="iconfont font16 icon-yunpan mr5"></i>
-                        云盘
-                    </span>
-                </el-col>
-                <el-col :span="18">
-                    <el-select v-model="diskValue" size="small" placeholder="请选择">
-                        <el-option
-                            v-for="item in diskData"
-                            :key="item.diskValue"
-                            :label="item.label"
-                            :value="item.diskValue">
-                        </el-option>
-                    </el-select>
-                    <el-popover placement="top" transition="scale-in" title="" width="180" trigger="hover" content="容量范围：20 - 32768">
-                        <el-input-number slot="reference" class="ml10 inputNumber" v-model="number" controls-position="right" :step="10" size="small" :min="10" :max="50">
-                        </el-input-number>
-                    </el-popover>
-                    <span class="capacity color999">GB</span>
-                    <span>1000 IOPS</span>
-                    <span class="ml10 font12 finger-cursor color-primary">用快照创建磁盘</span>
-                    <div class="font12 mt10 color999">如何选择高效云盘 / SSD云盘<span class="finger-cursor color-primary">详细说明</span></div>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- 申请量 -->
-        <div class="quantity backWhite mb10">
-            <el-row>
-                <el-col :span="3">
-                    <span class="font14 ml20 mr30">
-                        <i class="iconfont font16 icon-shenqingshuliang mr5"></i>
-                        申请量
-                    </span>
-                </el-col>
-                <el-col :span="20">
-                    <el-input-number class="inputNumber" v-model="numberApply" label="块" controls-position="right" :step="1" size="small" :min="1" :max="50">
-                    
-                    </el-input-number>
-                    <span class="quantityUnit color999">块</span>
-                    <div class="color999 mt10 font12">最多开通250块云盘，已开通0块</div>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- 当前配置 -->
-        <div class="backWhite">
-            <div class="configure mt20 font12">
-                <p class="mb10"><span class="color666">当前配置</span></p>
-                <el-row :gutter="15">
-                    <el-col :span="6">
-                        <span class="color999">区域：</span>
-                        <span class="">北京1/资源池A</span>
-                    </el-col>
-                    <el-col :span="6">
-                        <span class="color999">云盘名称：</span>
-                        <span class="">高效云盘 20GB</span>
-                    </el-col>
-                    <el-col :span="6">
-                        <span class="color999">云盘：</span>
-                        <span class="">高效云盘 20GB</span>
-                    </el-col>
-                    <el-col :span="6">
-                        <span class="color999">申请数量：</span>
-                        <span class="">{{numberApply}}</span>
-                    </el-col>
-                </el-row>
-            </div>
-        </div>
-        
-        <!-- 配置费用 -->
-        <div class="Cost">
-            <div class="pull-left">
-                <span class="color999">{{ $t('ecs.changeconfig.cost') }} : </span>
-                <span ng-if="!isComputing" style="color:#FF6600;font-size:24px" class="ng-binding ng-scope">¥&nbsp;8,700.00</span>
-            </div>
-            <div class="pull-right">
-                <button type="button" class="mr20 zt-next font12">立即创建</button>
-                <button class="btn ng-cancle font12">{{ $t('common.cancel') }}</button>
-            </div>
+        <div class="create-footer">
+            <el-button type="warning" :plain="creating" @click="createInst" :loading="creating">{{creating ? '正在为您创建...' : '立即创建'}}</el-button>
+            <el-button type="info" @click="$router.go(-1)">取消</el-button>
         </div>
     </div>
 </template>
 
 <script>
-let diskData = [{
-    diskValue: 'a',
-    label: '资源地A'
-}];
+import {addClass, removeClass} from '@/utils/utils';
+import ZtInputNumber from '@/components/ZTInput-number/index.js';
+import {STORAGE_TYPES} from '@/constants/dicts/ecs';
+import {INST_NAME} from '@/constants/regexp';
+import {createDisk} from '@/service/ecs/disk/disk';
 export default {
     data() {
         return {
-            options: [{
-                value: 'a',
-                label: '资源地A'
-            }],
-            value: '',
-            diskValue: '',
-            diskData,
+            creating: false,
+            form: {
+                diskName: '',
+                desc: ''
+            },
+            STORAGE_TYPES,
+            sysDisk: {
+                type: STORAGE_TYPES[0],
+                size: 20
+            },
             number: 10,
-            numberApply: 1
+            numberApply: 1,
+            rules: {
+                diskName: [
+                    {
+                        required: true,
+                        message: '请输入云盘名称',
+                        trigger: ['submit']
+                    },
+                    {
+                        min: 2,
+                        max: 64,
+                        show: true,
+                        tipsMessage: this.$t('valid.name.length'),
+                        message: '名称格式不正确',
+                        // message: '名称输入有误',
+                        trigger: ['submit', 'blur']
+                    },
+                    {
+                        pattern: INST_NAME,
+                        show: true,
+                        tipsMessage: this.$t('valid.name.regex'),
+                        message: '名称格式不正确',
+                        // message: '名称输入有误',
+                        trigger: ['submit', 'blur']
+                    }
+                ]
+            }
         };
+    },
+    components: {
+        ZtInputNumber
+    },
+    methods: {
+        createInst() {
+            this.$refs.instNameForm.validate(valid => {
+                if (valid) {
+                    let data = {
+                        name: this.form.diskName,
+                        createNum: this.numberApply,
+                        volumeType: this.sysDisk.type.value,
+                        size: this.sysDisk.size,
+                        description: '',
+                        ecsId: '',
+                        snapshotId: ''
+                    };
+                    this.creating = true;
+                    createDisk(data)
+                        .then(res => {
+                            if (res.code === '0000') {
+                                this.$message.success('创建成功');
+                                this.$router.push({name: 'app.ecs.clouddisc-list'});
+                            }
+                        })
+                        .catch(err => {
+                            $log(err);
+                        })
+                        .finally(() => {
+                            this.creating = false;
+                        });
+                }
+            });
+        }
+    },
+    destroyed() {
+        removeClass(document.body, 'create');
+    },
+    mounted() {
+        addClass(document.body, 'create');
     }
 };
 </script>
 
 <style scoped lang="scss">
-.createDisc{
-    background-color: #F0F2F5;
-    padding: 15px 20px;
-    .region{
-        .clearFLoat::after{
-            content: '';
-            display: block;
-            clear: both;
-        }
-        .place{
-            float: left;
-        }
-        p{
-            margin: 0;
-        }
-        .selPlace{
-            width: 150px;
-        }
+.storage {
+    .el-select,
+    .el-input,
+    .el-input-number {
+        width: 170px !important;
     }
-    .configure{
-        padding: 20px;
-        background-color: #F1F6F9;
-        margin: 20px;
-        margin-bottom: 60px;
+    li:not(:last-child) {
+        margin-bottom: 10px;
     }
-    .disk{
-        .capacity{
-            position: relative;
-            left: -55px;
-        }
-    }
-    .quantityUnit{
+    .head {
         position: relative;
-        left: -50px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 12px;
+        display: flex;
+        .el-icon-arrow-right {
+            position: absolute;
+            left: -17px;
+            top: 0px;
+            font-size: 12px;
+            color: #364556;
+            line-height: 28px;
+            transition: transform 0.3s;
+        }
+        .head-inner {
+            label,
+            span {
+                margin-right: 50px;
+            }
+            width: 100%;
+            padding: 0 2px;
+            &:hover {
+                background: #eceff8;
+                // border-bottom: solid 1px #0d7ef2;
+            }
+        }
     }
-    .inputNumber{
-        width: 23%;
-        text-align: left !important;
+    .devname {
+        margin-left: 76px;
     }
-}
-.Cost {
-    position: fixed;
-    width: auto;
-    bottom: 0;
-    left: 300px;
-    right: 0;
-    padding: 20px 40px;
-    box-shadow: 0 -3px 3px #ebecec;
-    background-color: #fff;
-    z-index: 90;
-    button {
-        width: 120px;
-        height: 36px;
-        box-sizing: border-box;
+    .numbers {
+        margin-left: 40px;
+        margin-right: 35px;
+        .el-input-number {
+            width: 120px !important;
+        }
     }
-    button:first-child {
-        border: 0;
-        margin-right: 30px;
-        color: #fff;
-        background: #ff8a00;
+    .heop-tips {
+        margin-left: 40px;
     }
-    button:last-child {
-        color: #333;
+    .is-open {
+        .head .head-inner {
+            background: #eceff8;
+            border-bottom: solid 1px #0d7ef2;
+        }
+        .el-icon-arrow-right {
+            transform: rotate(90deg);
+        }
+        .content {
+            display: block;
+        }
     }
-}
-.backWhite{
-    background-color: #ffffff;
-    padding: 15px;
+    .el-button.el-button--primary {
+        width: 32px;
+        height: 32px;
+        padding: 0px;
+    }
+    .el-button.el-button--text {
+        height: 32px;
+        padding: 0px 10px 0 0;
+        line-height: 32px;
+        .el-icon-plus {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            background: #0d7ef2;
+            color: #fff;
+            padding: 0px;
+        }
+        &.is-disabled {
+            .el-icon-plus {
+                background: #ccd1db;
+            }
+        }
+    }
 }
 </style>
 

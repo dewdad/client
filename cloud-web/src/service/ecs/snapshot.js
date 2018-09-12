@@ -1,13 +1,8 @@
 /*
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
-<<<<<<< HEAD
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 19:17:21
-=======
- * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-04 19:33:28
->>>>>>> 0fe36529d3c3d3f44c0d73bf711b7ed2daa198a3
+ * @Last Modified time: 2018-09-12 15:45:22
  * ecs模块 快照接口
  */
 
@@ -29,7 +24,6 @@ export async function createSnapshot(data) {
  * @param {*} data
  */
 export async function getSnapshotList(data) {
-    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     let res = await http.get(API_ECS.snapshot.getSnapshotList, {
         params: data
     });
