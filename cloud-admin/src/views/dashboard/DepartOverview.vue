@@ -4,10 +4,10 @@
         <div class="selDepart mb20">
             <div class="finger-cursor" @click="selDepartBox">
                 <span class="el-dropdown-link font18">
-                    VDC部门1<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
+                    {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
                 </span>
             </div>
-            <el-tree v-show="departShow"
+            <el-tree v-show="false"
             :data="departData" 
             :expand-on-click-node="false" 
             :props="defaultProps"
@@ -27,10 +27,13 @@
                                 </div>
                                 <div class="box-right">
                                     <div class="title pull-left">
-                                        <div class="lh30"><span class="font30">25</span>/100个</div>
+                                        <div class="lh30"><span class="font30">{{usages.instances || '0'}}</span>/{{quota.instances || '0'}}个</div>
                                         <span class="color-secondary">弹性云主机</span>
                                     </div>
-                                    <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#0d7ef2"></el-progress>
+                                    <div class="usageBox">
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.instances/quota.instances) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.instances/quota.instances) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                    </div>
                                 </div>
                             </div>
                         </el-col>
@@ -41,10 +44,13 @@
                                 </div>
                                 <div class="box-right">
                                     <div class="title pull-left">
-                                        <div class="lh30"><span class="font30">25</span>/100个</div>
+                                        <div class="lh30"><span class="font30">{{usages.cpu || '0'}}</span>/{{quota.cpu || '0'}}个</div>
                                         <span class="color-secondary">CPU </span>
                                     </div>
-                                    <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#7460ee"></el-progress>
+                                    <div class="usageBox">
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.cpu/quota.cpu) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                    </div>
                                 </div>
                             </div>
                         </el-col>
@@ -55,10 +61,13 @@
                                 </div>
                                 <div class="box-right">
                                     <div class="title pull-left">
-                                        <div class="lh30"><span class="font30">25</span>/100个</div>
+                                        <div class="lh30"><span class="font30">{{usages.ram || '0'}}</span>/{{quota.ram || '0'}}个</div>
                                         <span class="color-secondary">内存</span>
                                     </div>
-                                    <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="80" class="pull-right" color="#18bcc9"></el-progress>
+                                    <div class="usageBox">
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.ram/quota.ram) || '0'}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                    </div>
                                 </div>
                             </div>
                         </el-col>
@@ -75,21 +84,22 @@
                                 <div class="box-right">
                                     <div class="pull-left box-right__number">
                                         <div class="title mb15">
-                                            <div class="lh30" style="height: 30px;"><span class="font30">25</span>/100个</div>
+                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.volumes || '0'}}</span>/{{quota.volumes || '0'}}个</div>
                                             <span class="color-secondary">磁盘数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="4" color="#f77e28"></el-progress>
-                                            <span class="color-secondary font12">已使用：50%</span>
+                                            <el-progress :percentage="parseInt(usages.volumes/quota.volumes) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseFloat(parseInt(usages.volumes)/parseInt(quota.volumes)) || '0'}}%</span>
                                         </div>
                                     </div>
                                     <div class="pull-left box-right__capacity" style="width: 49%">
                                         <div class="title mb15">
-                                            <div class="lh30" style="height: 30px;"><span class="font30">205604</span>/205604GB</div>
-                                            <span class="color-secondary">磁盘数量</span>
+                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.volumeSize || '0'}}</span>/{{quota.volumeSize || '0'}}GB</div>
+                                            <span class="color-secondary">磁盘容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="4" color="#f77e28"></el-progress>
+                                            <el-progress :percentage="parseInt(usages.volumeSize/quota.volumeSize) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.volumeSize/quota.volumeSize) || '0'}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -101,21 +111,22 @@
                                 <div class="box-right">
                                     <div class="pull-left box-right__number">
                                         <div class="title mb15">
-                                            <div class="lh30" style="height: 30px;"><span class="font30">25</span>/100个</div>
+                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.snapshot || '0'}}</span>/{{quota.snapshot || '0'}}个</div>
                                             <span class="color-secondary">快照数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="4" color="#0d7ef2"></el-progress>
-                                            <span class="color-secondary font12">已使用：50%</span>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
                                     <div class="pull-left box-right__capacity" style="width: 49%">
                                         <div class="title mb15">
-                                            <div class="lh30" style="height: 30px;"><span class="font30">205604</span>/205604GB</div>
-                                            <span class="color-secondary">快照数量</span>
+                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.snapshot || '0'}}</span>/{{quota.snapshot || '0'}}GB</div>
+                                            <span class="color-secondary">快照容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="50" :show-text="false" :stroke-width="4" color="#0d7ef2"></el-progress>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -130,28 +141,28 @@
                                             <i class="iconfont icon-wangluo-gailan"></i>
                                             <span class="ml10">网络</span>
                                         </div>
-                                        <span class="pull-right statistics font12"><span class="font30">25</span>/100个</span>
+                                        <span class="pull-right statistics font12"><span class="font30">{{usages.network || '0'}}</span>/{{quota.network || '0'}}个</span>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-anquanzu-gailan"></i>
                                             <span class="ml10">安全组</span>
                                         </div>
-                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">{{usages.securityGroup || '0'}}</span>/{{quota.securityGroup || '0'}}个</div>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-luyouqi-gailan"></i>
                                             <span class="ml10">路由器</span>
                                         </div>
-                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">{{usages.routers || '0'}}</span>/{{quota.routers || '0'}}个</div>
                                     </li>
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-fudongIP-gailan"></i>
                                             <span class="ml10">浮动IP</span>
                                         </div>
-                                        <div class="pull-right statistics font12"><span class="font30">25</span>/100个</div>
+                                        <div class="pull-right statistics font12"><span class="font30">{{usages.floatingIps || '0'}}</span>/{{quota.floatingIps || '0'}}个</div>
                                     </li>
                                 </ul>
                             </div>
@@ -167,32 +178,20 @@
                                     <span class="mr40 font16 lh32">租户</span>
                                     <el-input
                                         style="width:180px"
-                                        placeholder="请输入内容"
-                                        prefix-icon="el-icon-search"
+                                        placeholder="请输入租户名称"
                                         size="small"
                                         class="pull-right"
-                                        v-model="searchVal">
+                                        v-model="searchVal"
+                                        >
+                                        <el-button slot="prepend" @click="searchTenant" size="mini" icon="el-icon-search"></el-button>
                                     </el-input>
                                 </div>
                                 <!-- 租户列表 -->
                                 <ul class="floor-tenant__box__ul">
-                                    <li class="floor-tenant__box__li">
+                                    <li class="floor-tenant__box__li" :class="{'be-selected': item.projectId === selTenantId }" v-for="(item, index) in tenantList" :key="index">
                                         <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>租户a</span>
+                                        <span @click="selTenant(item.projectId)">{{item.projectName}}</span>
                                     </li>
-                                    <li class="floor-tenant__box__li">
-                                        <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>租户a</span>
-                                    </li>
-                                    <li class="floor-tenant__box__li">
-                                        <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>租户a</span>
-                                    </li>
-                                    <li class="floor-tenant__box__li">
-                                        <i class="iconfont icon-zuhu mr10"></i>
-                                        <span>租户a</span>
-                                    </li>
-
                                 </ul>
                             </div>
                         </el-col>
@@ -202,13 +201,13 @@
                                     <span class="mr40 font16">租户资源</span>
                                 </div>
                                 <div class="floor-tenant__resource__list">
-                                    <div class="resource-list" v-for="(item, index) in resourceArr" :key="index">
+                                    <div class="resource-list"  v-for="(item, index) in resourceArr" :key="index">
                                         <div class="resource-list__father">
                                             <div class="resource-title">
                                                 <i :class="item.class"></i>
                                                 <span class="ml10">{{item.name}}</span>
                                             </div>
-                                            <div class="pull-right statistics"><span>25</span>/100</div>
+                                            <div class="pull-right statistics" v-if="tenantResource[0]"><span>{{tenantResource[0] && tenantResource[0][item.field] || '0'}}</span>/{{tenantResource[0][item.totalField] || '0'}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -220,79 +219,7 @@
         </el-row>
     </div>
 </template>
-<script>
-import EchartsLine from '@/components/charts/EchartsLine';
-import EchartsPie from '@/components/charts/EchartsPie';
-let resourceArr = [
-    {class: 'iconfont icon-yunzhuji-gailan', name: '弹性主机'},
-    {class: 'iconfont icon-CPU-gailan', name: 'CPU'},
-    {class: 'iconfont icon-neicun-gailan', name: '内存'},
-    {class: 'iconfont icon-cipan-gailan', name: '磁盘数量'},
-    {class: 'iconfont icon-cipan-gailan', name: '磁盘内存'},
-    {class: 'iconfont icon-kuaizhao-gailan', name: '快照数量'},
-    {class: 'iconfont icon-kuaizhao-gailan', name: '快照容量'},
-    {class: 'iconfont icon-wangluo-gailan', name: '网络'},
-    {class: 'iconfont icon-anquanzu-gailan', name: '安全组'},
-    {class: 'iconfont icon-luyouqi-gailan', name: '路由器'},
-    {class: 'iconfont icon-fudongIP-gailan', name: '浮动IP'}
-];
-export default {
-    data() {
-        return {
-            resourceArr,
-            searchVal: '',
-            departData: [
-                {
-                    label: '一级部门1',
-                    children: [{
-                        label: '二级部门1-1',
-                        children: [{
-                            label: '三级部门1-1-1'
-                        }]
-                    }]
-                },
-                {
-                    label: '一级部门2',
-                    children: [{
-                        label: '二级部门2-1',
-                        children: [{
-                            label: '三级部门2-1-1'
-                        }]
-                    }]
-                },
-                {
-                    label: '一级部门3',
-                    children: [{
-                        label: '二级部门3-1',
-                        children: [{
-                            label: '三级部门3-1-1s'
-                        }]
-                    }]
-                }
-            ],
-            departShow: false,
-            defaultProps: {
-                children: 'children',
-                label: 'label'
-            }
-        };
-    },
-    methods:{
-        // 选择部门
-        selDepart() {
-            this.departShow = false;
-        },
-        // 打开部门菜单
-        selDepartBox(){
-            this.departShow = !this.departShow;
-        }
-    },
-    components: {
-        EchartsLine,
-        EchartsPie
-    },
-};
-</script>
+<script src="./overview/depart.js"></script>
 
 <style lang="scss">
 .overflow-box{
@@ -301,7 +228,6 @@ export default {
         color: #333 !important;
     }
 }
-// 
 .floor-one{
     &__box{
         background-color: #fff;
@@ -314,12 +240,26 @@ export default {
         .box-right{
             margin-left: 80px;
             padding: 46px 30px;
-
+            position: relative;
+            .usageBox{
+                // &::after{
+                //     content: '';
+                //     display: block;
+                //     clear: both;
+                // }
+                &:hover span.usage{
+                    display: block;
+                }
+            }
+            span.usage{
+                position: absolute;
+                top: 62px;
+                right: 85px;
+                display: none;
+            }
         }
     }
 }
-
-// 
 .floor-two{
     &__box{
         background-color: #fff;
@@ -338,6 +278,26 @@ export default {
             }
             .usageRate{
                 width: 200px;
+                cursor: pointer;
+                &:hover{
+                    .el-progress-bar__inner{
+                        height: 5px;
+                        top: -1px;
+                    }
+                    span{
+                        display: block;
+                    }
+                }
+                .el-progress-bar__outer{
+                    overflow: visible;
+                }
+                .el-progress-bar__inner{
+                    border-radius: 0;
+                }
+                span{
+                    margin-top: 5px;
+                    display: none;
+                }
             }
         }
     }
@@ -351,6 +311,25 @@ export default {
             padding: 14px 30px;
             .el-input__inner{
                 border-radius: 0;
+                border-left: 0;
+                padding-left: 0;
+                &:focus{
+                    border-color: #dcdfe6;
+                }
+                &:hover{
+                    border-color: #dcdfe6;
+                }
+            }
+            .el-button--mini, .el-button--mini.is-round{
+                margin: 0;
+                padding: 7px 10px;
+            }
+            .el-input-group__prepend{
+                background-color: #fff;
+                padding: 0;
+            }
+            .border-primary{
+                border-color: #409EFF;
             }
         }
         &__ul{
@@ -363,8 +342,11 @@ export default {
             line-height: 40px;
             padding-left: 30px;
             &:hover{
+                background-color: rgba(236, 239, 248, 0.5);
+            }
+            &.be-selected{
                 color: #0d7ef2;
-                background-color: #eceff8;
+                background-color: rgba(236, 239, 248, 0.5);
                 i{
                     color: #0d7ef2;
                 }
@@ -495,5 +477,17 @@ export default {
             color: #0d7ef2;
         }
     }
+}
+
+::-webkit-scrollbar{
+    display:block;
+    width: 6px;
+    height: 6px;
+    background-color: #fff;
+}
+::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color:#c2c2c2;
 }
 </style>

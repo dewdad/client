@@ -112,7 +112,7 @@ export async function selectAllUsers(data) {
  */
 export async function delRenter(data) {
     console.log('data',data);
-    var url = DEPT.delRenter+'?req_param='+data;
+    var url = DEPT.delRenter+'/'+data;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
 }
@@ -140,7 +140,7 @@ export async function editUser(data) {
     return response;
 }
 /**
- *编辑用户
+ *重置密码
  * @param {*}
  */
 export async function resetPwd(data) {
@@ -154,7 +154,8 @@ export async function resetPwd(data) {
         userId:data.userId,
         userName:data.username
     };
-    let response = await http.put(DEPT.resetPwd, postdata);
+    let url = DEPT.resetPwd+data.userId+'/resetPassword';
+    let response = await http.put(url, postdata);
     return response;
 }
 /**
@@ -210,7 +211,7 @@ export async function changeQuota(data) {
  */
 export async function delUser(data) {
     console.log('data',data);
-    var url = DEPT.delUser+'?req_param='+data;
+    var url = DEPT.delUser+'/'+data;
     let response = await http.delete(url);
     return response.data.code === '0000'&&response.data;
 }

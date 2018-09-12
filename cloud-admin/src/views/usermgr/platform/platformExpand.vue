@@ -1,19 +1,19 @@
 <template>
     <div class="page-main">
         <page-header>
-            平台权限
+            平台扩展
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
-                <el-form :inline="true" size="small">
+                <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
                         <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="addPlatAuth({},1)">添加平台权限</el-button>
+                        <el-button type="primary" @click="createExpand({},stateParams.id,1)"><span class="icon-zt_plus"></span>  添加平台扩展信息</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="searchPlatAuth"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getExpandList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -22,18 +22,18 @@
             <el-col :span="24">
                 <el-table :data="tableData"  header-row-class-name="data-list">
                     <template v-for="col in cols">
-                        <!-- 角色id -->
-                        <template v-if="col.column=='name'">
+                        <!-- 参数名 -->
+                        <template v-if="col.column=='paramName'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                    <span class="font12 mr10">{{scope.row.paramName}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='roleVal'">
+                        <template v-if="col.column=='paramVal'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleVal}}</span>
+                                    <span class="font12 mr10">{{scope.row.paramVal}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -44,7 +44,7 @@
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='createTime'">
+                        <template v-if="col.column=='time'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10">{{scope.row.createTime | date }}</span>
@@ -56,10 +56,9 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="addPlatAuth(scope.row,2)" class="btn-linker" >编辑</a>
+                                <a  @click="createExpand(scope.row,stateParams.id,2)" class="btn-linker" >编辑</a>
                                 <b class="link-division-symbol"></b>
-                                <a  @click="delPlatAuth(scope.row)" class="btn-linker" >删除</a>
-
+                                <a  @click="delExpand(scope.row)" class="btn-linker" >删除</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -78,16 +77,15 @@
                 </div>
             </el-col>
         </el-row>
-        <add-plat-auth ref="AddPlatAuth"></add-plat-auth>
+        <create-expand-platform ref="CreateExpandPlatform"></create-expand-platform>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import AddPlatAuth from './AddPlatAuth';
-
-import {searchPlatAuth,delPlatAuth} from '@/service/platform.js';
+import CreateExpandPlatform from './CreateExpandPlatform';
+import {getExpandList,delExpand} from '@/service/platform.js';
 export default {
-    name: 'app',
+    name: 'platformExpand',
 
     data() {
         let stateParams = this.$route.params || {};
@@ -100,10 +98,10 @@ export default {
             },
         };
         let cols = [
-            { column: 'name', text:'权限名称' , width: '15%'},
-            { column: 'roleVal', text:'角色' , width: '15%'},
-            { column: 'description', text: '描述', width: '15%' },
-            { column: 'createTime', text: '创建时间', width: '15%' },
+            { column: 'paramName', text:'参数名' , width: '10%'},
+            { column: 'paramVal', text:'值', width: '15%'},
+            { column: 'description', text: '描述', width: '20%' },
+            { column: 'time', text: '创建时间', width: '10%' }
         ];
         // let fields = [
         //     { field: 'name', label: '角色名称',inputval:'', tagType: 'INPUT' },
@@ -114,26 +112,34 @@ export default {
         //     selField:fields[0]
         // };
         return {
+            stateParams,
             cols,
             searchObj,
-            platId:stateParams.id,
-
+            formInline: {
+                data:'',
+                searchText:''
+            },
+            type:'name',
             tableData: []
 
         };
     },
     components: {
         PageHeader,
-        AddPlatAuth
+        CreateExpandPlatform
 
     },
     methods: {
-        searchPlatAuth(){
+        goBack(){
+            window.history.back();
+        },
+        getExpandList(){
             let params = {
-                paging:this.searchObj.paging
+                paging:this.searchObj.paging,
+                platformResourceId:this.stateParams.id
             };
             $log('params', params);
-            searchPlatAuth(params).then(ret => {
+            getExpandList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.data){
@@ -143,16 +149,19 @@ export default {
 
             });
         },
+        addPlatAuth(item){
+
+        },
         /**
-         * 删除平台
+         * 删除扩展信息
          */
-        delPlatAuth(item) {
+        delExpand(item) {
             this.$confirm('确定要进行删除操作吗？', '删除', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.delAuth(item);
+                this.del(item);
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -160,13 +169,12 @@ export default {
                 });
             });
         },
-        //创建平台
-        addPlatAuth(item,optype){
-            let id = this.platId;
-            this.$refs.AddPlatAuth.show(item,optype,id)
+        //创建扩展信息
+        createExpand(item,id,optype){
+            this.$refs.CreateExpandPlatform.show(item,id,optype)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    this.searchPlatAuth();
+                    this.getExpandList();
                     return this.$confirm('操作成功');
                 })
                 .catch(err => {
@@ -177,26 +185,23 @@ export default {
                     }
                 });
         },
-        delAuth(item){
-            delPlatAuth(item).then(ret=>{
-                this.searchPlatAuth();
+        del(item){
+            delExpand(item).then(ret=>{
+                this.getExpandList();
             });
         },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
-            this.searchPlatAuth();
+            this.getExpandList();
         },
         handleSizeChange (val) {
             this.searchObj.paging.limit = val;
-            this.searchPlatAuth();
-        },
-        goBack(){
-            window.history.back();
+            this.getExpandList();
         },
         onSubmit() {}
     },
     mounted(){
-        this.searchPlatAuth();
+        this.getExpandList();
     }
 };
 </script>

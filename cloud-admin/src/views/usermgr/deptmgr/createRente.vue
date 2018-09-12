@@ -26,9 +26,9 @@
                 </el-form-item>
 
                 <!-- 是否激活 -->
-                <el-form-item label="是否激活" prop="enabled"  >
-                    <el-radio v-model="form.enabled" label='1'>是</el-radio>
-                    <el-radio v-model="form.enabled" label='2'>否</el-radio>
+                <el-form-item label="是否激活" prop="status"  >
+                    <el-radio v-model="form.status" label='1'>是</el-radio>
+                    <el-radio v-model="form.status" label='0'>否</el-radio>
                 </el-form-item>
                 <div class="mb20 font16">
                     <i class="icon-new-配额"></i>
@@ -79,31 +79,31 @@
                 <el-form-item label="备份大小(GB)：" prop="quota.backupSize" required>
                     <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.backupSize"></el-input-number>
                 </el-form-item>
-                <div class="mb20 font16">
-                    <i class="icon-new-配额"></i>
-                    <span class="pl6">成员</span>
-                </div>
-                <el-form-item label="选择成员："   >
-                    <!--<el-button class="primary icon-zt_plus" style="cursor:pointer;padding:8px 12px;border:1px dashed #bbb;border-radius:3px;">  选择成员</el-button>-->
-                </el-form-item>
-                <el-row>
-                    <div class="mb10" v-if="selectedUser.length>0">已选择：{{selectedUser[0].name}} 等 <span class="text-success font16 ">{{selectedUser.length}}</span> 位成员</div>
-                    <el-col :span="12" style="padding:10px;border:1px solid #BBB;height:400px;overflow-y: auto">
-                        <div class="mb10">所有用户：</div>
-                        <div class="item" v-for="(user,index) in allUsers" :key="user.id" v-if="allUsers.length>0">
-                            <span>{{user.name}}</span>
-                            <el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="chooseCur(index)">+</el-button>
-                        </div>
-                    </el-col>
-                    <el-col :span="12" style="padding:10px;border:1px solid #BBB;border-left:0;height:400px;overflow-y: auto">
-                        <div class="mb10">已选择用户：</div>
-                        <div class="item" v-for="(user,index) in selectedUser" :key="user.id" v-if="selectedUser.length>0">
-                            <span>{{user.name}}</span>
-                            <el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="delCur(index)">-</el-button>
-                        </div>
-                    </el-col>
-                </el-row>
-                <div class="mt10">
+                <!--<div class="mb20 font16">-->
+                    <!--<i class="icon-new-配额"></i>-->
+                    <!--<span class="pl6">成员</span>-->
+                <!--</div>-->
+                <!--<el-form-item label="选择成员："   >-->
+                    <!--&lt;!&ndash;<el-button class="primary icon-zt_plus" style="cursor:pointer;padding:8px 12px;border:1px dashed #bbb;border-radius:3px;">  选择成员</el-button>&ndash;&gt;-->
+                <!--</el-form-item>-->
+                <!--<el-row>-->
+                    <!--<div class="mb10" v-if="selectedUser.length>0">已选择：{{selectedUser[0].name}} 等 <span class="text-success font16 ">{{selectedUser.length}}</span> 位成员</div>-->
+                    <!--<el-col :span="12" style="padding:10px;border:1px solid #BBB;height:400px;overflow-y: auto">-->
+                        <!--<div class="mb10">所有用户：</div>-->
+                        <!--<div class="item" v-for="(user,index) in allUsers" :key="user.id" v-if="allUsers.length>0">-->
+                            <!--<span>{{user.name}}</span>-->
+                            <!--<el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="chooseCur(index)">+</el-button>-->
+                        <!--</div>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="12" style="padding:10px;border:1px solid #BBB;border-left:0;height:400px;overflow-y: auto">-->
+                        <!--<div class="mb10">已选择用户：</div>-->
+                        <!--<div class="item" v-for="(user,index) in selectedUser" :key="user.id" v-if="selectedUser.length>0">-->
+                            <!--<span>{{user.name}}</span>-->
+                            <!--<el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="delCur(index)">-</el-button>-->
+                        <!--</div>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
+                <div class="mt10" style="margin-left:115px;">
                     <el-button type="default" size="small" class="font12" @click="goBack">取 消</el-button>
                     <el-button type="primary" size="small" class="font12" @click="submitForm">提 交</el-button>
                 </div>
@@ -129,7 +129,7 @@ export default {
                 name: '',
                 domainId: '',
                 description: '',
-                enabled: '1',
+                status: '1',
                 quota:{
                     cpu:20,
                     instances:10,
@@ -208,16 +208,12 @@ export default {
         //保存（提交）
         submitForm() {
             let param = {
-                grantUsers:this.selectedUser,
                 quota:this.form.quota,
-                tenantinfo:{
-                    enabled:this.form.enabled == '1' ? true : false,
-                    status:this.form.enabled == '1' ? 1 : 0,
-                    deptId:this.stateParams.item.id,
-                    name:this.form.name,
-                    description:this.form.description,
-                },
-                revokeUsers:[]
+                status:this.form.status == '1' ? '1' : '0',
+                deptId:this.stateParams.item.id,
+                extendId:this.stateParams.item.extendId,
+                name:this.form.name,
+                description:this.form.description,
             };
             this.$refs.form.validate((valid) => {
                 if (valid) {

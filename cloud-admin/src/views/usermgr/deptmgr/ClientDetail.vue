@@ -1,15 +1,18 @@
 <template>
     <el-dialog title="用户详情" :visible.sync="isShow" width="600px"  v-dialogDrag>
         <div class="detailbox">
-            <p> 域ID: {{item.id}}</p>
-            <p> 域名: {{item.serviceDesc}}</p>
-            <p>  用户名: {{ item.result==0?'未知':(item.result==1?'成功':'失败') }}</p>
-            <p>  描述: {{item.operUserId}}</p>
-            <p>  ID: {{item.operUserName}}</p>
-            <p> 邮箱: {{item.operStartTime | date}} -- {{item.operEndTime | date}}</p>
-            <p>  激活: {{item.domainId}}</p>
-            <p>  角色名称: {{item.domainName}}</p>
-            <p>  角色类型: {{item.projectId}}</p>
+            <p>  用户名: {{item.name }}</p>
+            <p>  描述: {{item.description}}</p>
+            <p>  ID: {{item.id}}</p>
+            <p> 邮箱: {{item.email }}</p>
+            <p>  激活: {{ item.status==1?'是':'否' }}</p>
+            <p>  角色名称: {{item.roleName}}</p>
+            <p >  角色类型:
+                <span v-if="item.roleType == 1">超级管理员</span>
+                <span v-if="item.roleType == 2">部门管理员</span>
+                <span v-if="item.roleType == 3">子部门管理员</span>
+                <span v-if="item.roleType == 4">用户</span>
+            </p>
         </div>
     </el-dialog>
 </template>
@@ -29,6 +32,7 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
+            console.log('item',item);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

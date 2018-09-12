@@ -5,24 +5,30 @@
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
-                <el-form :inline="true"  size="small">
+                <el-form :inline="true" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createDept(null,1)"><span class="icon-zt_plus"></span>  新建部门</el-button>
+                        <el-button type="primary" @click="createDept(null,1)">
+                            <span class="icon-zt_plus"></span> 新建部门</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="delDept(brunch)"><span class="fa fa-trash"></span>  删除</el-button>
+                        <el-button type="success" @click="enableDept(brunch,2)">
+                            <span class="icon-zt_enablement"></span> 启用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="viewDept()"><span class="icon-zt_view"></span>  查看配额</el-button>
+                        <el-button type="warning" @click="disableDept(brunch,2)">
+                            <span class="icon-zt_disable"></span> 禁用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="enableDept(brunch,2)"><span class="icon-zt_enablement"></span>  启用</el-button>
+                        <el-button type="danger" @click="delDept(brunch)">
+                            <span class="fa fa-trash"></span> 删除</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="disableDept(brunch,2)"><span class="icon-zt_disable"></span>  禁用</el-button>
+                        <el-button @click="viewDept()">
+                            <span class="icon-zt_view"></span> 查看配额</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="createDept(brunch,2)"><span class="icon-zt_edit"></span>  编辑</el-button>
+                        <el-button @click="createDept(brunch,2)">
+                            <span class="icon-zt_edit"></span> 编辑</el-button>
                     </el-form-item>
 
                 </el-form>
@@ -30,42 +36,31 @@
         </el-row>
         <el-row class="deptContainer">
 
-            <el-col :span="5" class="deptTree p20" >
+            <el-col :span="5" :lg="3" class="deptTree p20">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <el-form-item  style="width:102px;">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" style="width:115px;"></el-input>
-                    </el-form-item>
                     <el-form-item>
-                        <el-button class="ml10" size="small" type="primary" @click="deptTree" >搜索</el-button>
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText">
+                            <el-button slot="append" icon="el-icon-search" @click="deptTree"></el-button>
+                        </el-input>
                     </el-form-item>
                 </el-form>
                 <div>
-                    <el-tree
-                            show-checkbox
-                            default-expand-all
-                            :highlight-current="true"
-                            expand-on-click-node
-                            node-key="id"
-                            :data="deptTreeData"
-                            :check-strictly="true"
-                            :props="defaultProps"
-                            :default-checked-keys="selectedKey"
-                            @node-click="handleNodeClick"
-                    ></el-tree>
+                    <el-tree show-checkbox default-expand-all :highlight-current="true" expand-on-click-node node-key="id" :data="deptTreeData" :check-strictly="true" :props="defaultProps" :default-checked-keys="selectedKey" @node-click="handleNodeClick" ref="tree"></el-tree>
                 </div>
             </el-col>
-            <el-col :span="19" class="p20">
+            <el-col :span="19" :lg="21" class="p20">
                 <div class="topTitle">基本信息</div>
                 <el-row class="mt20 mb20">
                     <el-col :span="8">部门名称：{{brunch.name}}</el-col>
                     <el-col :span="8">描述：{{brunch.description}}</el-col>
                     <el-col :span="8">状态：{{brunch.status?'启用':'禁用'}}</el-col>
                 </el-row>
-                <el-tabs v-model="activeName" >
+                <el-tabs v-model="activeName">
                     <el-tab-pane label="租户管理" name="first">
                         <el-form :inline="true" :model="rentForm" size="small">
                             <el-form-item>
-                                <el-button type="primary" @click="createRenter()"><span class="icon-zt_plus"></span>  新增租户</el-button>
+                                <el-button type="primary" @click="createRenter()">
+                                    <span class="icon-zt_plus"></span> 新增租户</el-button>
                             </el-form-item>
                             <el-form-item>
                                 <el-select placeholder="请选择" v-model="rentForm.type" @change="rentForm.searchText=''">
@@ -75,7 +70,7 @@
                             </el-form-item>
                             <el-form-item label="关键字">
                                 <el-input placeholder="搜索关键字" v-model="rentForm.searchText" v-if="rentForm.type !== 'enabled'"></el-input>
-                                <el-select clearable v-model="rentForm.searchText"  placeholder="请选择" v-if="rentForm.type === 'enabled'">
+                                <el-select clearable v-model="rentForm.searchText" placeholder="请选择" v-if="rentForm.type === 'enabled'">
                                     <el-option label="是" value="1"></el-option>
                                     <el-option label="否" value="0"></el-option>
                                 </el-select>
@@ -84,14 +79,14 @@
                                 <el-button type="primary" @click="getprojectList">查询</el-button>
                             </el-form-item>
                             <el-form-item class="pull-right">
-                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getprojectList"></el-button>
+                                <el-button class=" search-refresh-btn icon-new-刷新" @click="getprojectList"></el-button>
                             </el-form-item>
                         </el-form>
-                        <el-table :data="tableData1"  header-row-class-name="data-list">
+                        <el-table :data="tableData1" header-row-class-name="data-list">
                             <template v-for="col in rentcols">
                                 <!-- 用户名 -->
                                 <template v-if="col.column=='username'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <a class="font12 mr10" @click="showRentaDetail(scope.row)">{{scope.row.name}}</a>
                                         </template>
@@ -107,7 +102,7 @@
                                 </template>
                                 <!--租户ID-->
                                 <template v-if="col.column=='id'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.id }}</span>
                                         </template>
@@ -115,15 +110,15 @@
                                 </template>
                                 <!--激活-->
                                 <template v-if="col.column=='start'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
+                                            <span class="font12 mr10">{{scope.row.status =='1'?'是':'否' }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
                                 <!--部门-->
                                 <template v-if="col.column=='dept'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.deptId }}</span>
                                         </template>
@@ -131,14 +126,15 @@
                                 </template>
                             </template>
                             <!-- 操作 -->
-                            <template >
-                                <el-table-column label="操作" style="width:25%" key="op" min-width="200" class-name="option-snaplist">
+                            <template>
+                                <el-table-column label="操作" align="right" key="op" min-width="120" class-name="option-snaplist">
                                     <template slot-scope="scope">
-                                        <a  @click="viewUsage(scope.row,brunch)" class="btn-linker" >查看使用量</a>
+                                        <a @click="viewUsage(scope.row,brunch)" class="btn-linker">查看使用量</a>
                                         <b class="link-division-symbol"></b>
                                         <el-dropdown>
                                             <span class="btn-linker">
-                                            更多<i class="el-icon-arrow-down el-icon--right"></i>
+                                                更多
+                                                <i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item @click.native="changeRentQuota(scope.row,brunch)">修改配额</el-dropdown-item>
@@ -153,31 +149,25 @@
                         </el-table>
                         <!--分页-->
                         <div class="pagination">
-                            <el-pagination background
-                                           @current-change="currentChange1"
-                                           @size-change="handleSizeChange1"
-                                           :current-page="searchObj1.paging.pageIndex"
-                                           :page-sizes="[10, 20, 50, 100]"
-                                           :page-size="searchObj1.paging.limit"
-                                           layout="sizes, prev, pager, next"
-                                           :total="searchObj1.paging.totalItems">
+                            <el-pagination background @current-change="currentChange1" @size-change="handleSizeChange1" :current-page="searchObj1.paging.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj1.paging.limit" layout="sizes, prev, pager, next" :total="searchObj1.paging.totalItems">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="用户管理" name="second">
                         <el-form :inline="true" :model="userForm" size="small">
                             <el-form-item>
-                                <el-button type="primary" @click="createUser()"><span class="icon-zt_plus"></span>  新增用户</el-button>
+                                <el-button type="primary" @click="createUser()">
+                                    <span class="icon-zt_plus"></span> 新增用户</el-button>
                             </el-form-item>
                             <el-form-item>
                                 <el-select placeholder="请选择" v-model="userForm.type" @change="userForm.searchText=''">
-                                    <el-option label="租户名" value="name"></el-option>
+                                    <el-option label="用户名" value="name"></el-option>
                                     <el-option label="激活" value="enabled"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="关键字">
                                 <el-input placeholder="搜索关键字" v-model="userForm.searchText" v-if="userForm.type !== 'enabled'"></el-input>
-                                <el-select clearable v-model="userForm.searchText"  placeholder="请选择" v-if="userForm.type === 'enabled'">
+                                <el-select clearable v-model="userForm.searchText" placeholder="请选择" v-if="userForm.type === 'enabled'">
                                     <el-option label="是" value="1"></el-option>
                                     <el-option label="否" value="0"></el-option>
                                 </el-select>
@@ -186,16 +176,16 @@
                                 <el-button type="primary" @click="findeRole">查询</el-button>
                             </el-form-item>
                             <el-form-item class="pull-right">
-                                <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="findeRole"></el-button>
+                                <el-button class=" search-refresh-btn icon-new-刷新" @click="findeRole"></el-button>
                             </el-form-item>
                         </el-form>
-                        <el-table :data="tableData2"  header-row-class-name="data-list">
+                        <el-table :data="tableData2" header-row-class-name="data-list">
                             <template v-for="col in usercols">
                                 <!-- 用户名 -->
                                 <template v-if="col.column=='username'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.name}}</span>
+                                            <a class="font12 mr10" @click="showUserDetail(scope.row)">{{scope.row.name}}</a>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -209,7 +199,7 @@
                                 </template>
                                 <!--租户ID-->
                                 <template v-if="col.column=='id'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="200" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.id }}</span>
                                         </template>
@@ -217,15 +207,15 @@
                                 </template>
                                 <!--激活-->
                                 <template v-if="col.column=='start'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.status?'是':'否' }}</span>
+                                            <span class="font12 mr10">{{scope.row.status =='1'?'是':'否' }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
                                 <!--部门-->
                                 <template v-if="col.column=='dept'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.createTime }}</span>
                                         </template>
@@ -234,15 +224,16 @@
                             </template>
                             <!-- 操作 -->
                             <template>
-                                <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                                <el-table-column label="操作" key="op" align="right" min-width="120" class-name="option-snaplist">
                                     <template slot-scope="scope">
-                                        <a  @click="EditUser(scope.row,brunch)" class="btn-linker" >编辑</a>
+                                        <a @click="EditUser(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
-                                        <a  @click="resetPwd(scope.row,brunch)" class="btn-linker" >重置密码</a>
+                                        <a @click="resetPwd(scope.row,brunch)" class="btn-linker">重置密码</a>
                                         <b class="link-division-symbol"></b>
                                         <el-dropdown>
                                             <span class="btn-linker">
-                                            更多<i class="el-icon-arrow-down el-icon--right"></i>
+                                                更多
+                                                <i class="el-icon-arrow-down el-icon--right"></i>
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
@@ -255,14 +246,7 @@
                         </el-table>
                         <!--分页-->
                         <div class="pagination">
-                            <el-pagination background
-                                           @current-change="currentChange2"
-                                           @size-change="handleSizeChange2"
-                                           :current-page="searchObj2.paging.pageIndex"
-                                           :page-sizes="[10, 20, 50, 100]"
-                                           :page-size="searchObj2.paging.limit"
-                                           layout="sizes, prev, pager, next"
-                                           :total="searchObj2.paging.totalItems">
+                            <el-pagination background @current-change="currentChange2" @size-change="handleSizeChange2" :current-page="searchObj2.paging.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj2.paging.limit" layout="sizes, prev, pager, next" :total="searchObj2.paging.totalItems">
                             </el-pagination>
                         </div>
                     </el-tab-pane>
@@ -294,25 +278,25 @@
 </template>
 <script src="./deptmgr.js"></script>
 <style scoped lang="scss">
-    .topTitle{
-        width: 100%;
-        border-bottom: 1px solid #e8e8e8 !important;
-        padding: 9px !important;
-        font-size: 14px;
-        color:#656565;
+.topTitle {
+    width: 100%;
+    border-bottom: 1px solid #e8e8e8 !important;
+    padding: 9px !important;
+    font-size: 14px;
+    color: #656565;
+}
+.deptContainer {
+    & > .el-col-19 {
+        border-left: 1px solid #dee7f1;
     }
-    .deptContainer{
-        &>.el-col-19{
-            border-left: 1px solid #dee7f1;
-        }
-        .p20{
-            padding:20px;
-        }
-        .deptTree{
-            /*background-color:#f4f8f9;*/
+    .p20 {
+        padding: 20px;
+    }
+    .deptTree {
+        /*background-color:#f4f8f9;*/
 
-            min-height:300px;
-        }
-        border: 1px solid #dee7f1;
+        min-height: 300px;
     }
+    border: 1px solid #dee7f1;
+}
 </style>

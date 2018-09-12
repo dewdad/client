@@ -2,7 +2,7 @@
     <div class="page-main">
         <page-header>
             <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
-            <span>关联操作</span>             
+            <span class="ml20">关联操作</span>
         </page-header>
         <div class="page-body">
             <!-- <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box> -->

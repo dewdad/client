@@ -39,8 +39,8 @@ export default new Router({
                     },
                     //redirect: '/user/auth',
                     // component: () => import('@/views/dashboard/Dashboard')
-                    component: () => import('@/views/dashboard/Overview')
-                    // component: () => import('@/views/dashboard/DepartOverview')
+                    // component: () => import('@/views/dashboard/Overview')
+                    component: () => import('@/views/dashboard/DepartOverview')
                 },
                 {
                     path: 'usrmgr',
@@ -128,6 +128,14 @@ export default new Router({
                                 title: '平台角色'
                             },
                             component: () => import('@/views/usermgr/platform/roletype')
+                        } ,
+                        {
+                            path: 'platformExpand/:id',
+                            name: 'app.platform.platformExpand',
+                            meta: {
+                                title: '平台扩展'
+                            },
+                            component: () => import('@/views/usermgr/platform/platformExpand')
                         } ,
                         {
                             path: 'bindPlatAuth/:val',

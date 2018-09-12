@@ -12,7 +12,7 @@
                 <label v-else class="mr10 "><span class="color-secondary">读写权限：</span> 私有 </label>
                 <label class="mr20 "><a class="font12" @click="dialogVisible = true">修改</a></label>
                 <label class="mr20 "><span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm')}}</label>
-                <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')"  type="info" size="small" icon="el-icon-delete" @click="deleteBucket">
+                <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')"  type="info" size="small"  @click="deleteBucket">
                     删除空间
                 </el-button>
                 <el-tooltip content="刷新" placement="left">
@@ -116,18 +116,20 @@ export default {
         // 监听路由参数变化 view参数变化时动态显示不同的组件
         $route: function() {
             this.init();
-            this.getBucket();
         },
         dialogVisible: function () {
             this.rwAuthForm.privacy = this.permission === 'Read' ? false : true;
         }
     },
     async created() {
-        this.bucketId = this.$route.params.bucketId;
-        this.getBucketBasic();
-        this.getBucket();
+        this.init();
     },
     methods: {
+        init() {
+            this.bucketId = this.$route.params.bucketId;
+            this.getBucketBasic();
+            this.getBucket();
+        },
         async getBucket() {
             this.loading = true;
             return getBucket(this.bucketId)

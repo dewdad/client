@@ -74,7 +74,6 @@ export default {
             this.domainName = brunch.name;
             this.form.domainId = brunch.id;
             console.log('item......',item);
-            this.getQuotaList();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -102,16 +101,11 @@ export default {
             let param = {
                 id:this.item.id,
                 data:{
-                    grantUsers:[],
-                    quota:{},
-                    tenantinfo:{
-                        enabled:this.form.enabled == '1' ? true : false,
-                        status:this.form.enabled == '1' ? 1 : 0,
-                        deptId:this.brunch.id,
-                        name:this.form.name,
-                        description:this.form.description,
-                    },
-                    revokeUsers:[]
+                    status:this.form.enabled == '1' ? 1 : 0,
+                    deptId:this.brunch.id,
+                    extendId:this.brunch.extendId,
+                    name:this.form.name,
+                    description:this.form.description,
                 }
             };
             editRente(param).then(ret => {
