@@ -39,13 +39,7 @@ export default {
             this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
-        setting() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    typeof this.resolve(this.form) === 'function' && this.resolve(this.form);
-                }, 1000);
-            });
-        },
+
 
     }
 };

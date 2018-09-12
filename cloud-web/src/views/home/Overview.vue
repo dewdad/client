@@ -171,7 +171,7 @@
                                             <div class="products-inner img-text-center">
                                                 <i class="iconfont icon-wangluo-gailan"></i>
                                                 <span class="font14 products-name">网络</span>
-                                                <div class="products-count pull-right">0</div>
+                                                <div class="products-count pull-right">{{tenantData.NETWORK || '0'}}</div>
                                             </div>
                                         </div>
                                     </el-col>
@@ -180,7 +180,7 @@
                                             <div class="products-inner img-text-center">
                                                 <i class="iconfont icon-anquanzu-gailan"></i>
                                                 <span class="font12 products-name">安全组</span>
-                                                <div class="products-count pull-right">0</div>
+                                                <div class="products-count pull-right">{{tenantData.qSecutityGroup || '0'}}</div>
                                             </div>
                                         </div>
                                     </el-col>
@@ -189,7 +189,7 @@
                                             <div class="products-inner img-text-center">
                                                 <i class="iconfont icon-luyouqi-gailan"></i>
                                                 <span class="font12 products-name">路由器</span>
-                                                <div class="products-count">0</div>
+                                                <div class="products-count">{{tenantData.ROUTER || '0'}}</div>
                                             </div>
                                         </div>
                                     </el-col>
@@ -198,7 +198,7 @@
                                             <div class="products-inner img-text-center" style="border-right: 0;">
                                                 <i class="iconfont icon-fudongIP-gailan"></i>
                                                 <span class="font12 products-name">浮动IP</span>
-                                                <div class="products-count">0</div>
+                                                <div class="products-count">{{tenantData.FLOATINGIP || '0'}}</div>
                                             </div>
                                         </div>
                                     </el-col>

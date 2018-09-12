@@ -69,7 +69,8 @@
                                 <!-- CPU 饼图 -->
                                 <div class="item__data">
                                     <div style="width:154px;height:154px;float:left;background: #fff;">
-                                        <echarts-pie></echarts-pie>
+                                        <echarts-pie v-if="seriesDataCpu.length > 0" :seriesData="seriesDataCpu"></echarts-pie>
+                                        <div v-else style="line-height:154px;" class="color-secondary font18 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="color-warning font30 icon-box">
@@ -83,7 +84,7 @@
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
                                     <div class="text-r mt10">
-                                        <div class="font30 lh30">9</div>
+                                        <div class="font30 lh30">{{parseInt(quota.cpu-usages.cpu) || '0'}}</div>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
                                 </div>
@@ -96,7 +97,8 @@
                                 <!-- 内存 饼图 -->
                                 <div class="item__data">
                                     <div style="width:154px;height:154px;float:left;background: #fff;">
-                                        <echarts-pie :mouldColor="['#ffad00', '#ebf3f7']" ></echarts-pie>
+                                        <echarts-pie v-if="seriesDataRam.length > 0" :seriesData="seriesDataRam" :mouldColor="['#ffad00', '#ebf3f7']" ></echarts-pie>
+                                        <div v-else style="line-height:154px;" class="color-secondary font18 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font30 icon-box">
@@ -105,7 +107,7 @@
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
                                     <div class="text-r mt10">
-                                        <span class="font30 lh30">96</span>
+                                        <span class="font30 lh30">{{parseInt(quota.ram-usages.ram) || '0'}}</span>
                                         <br>
                                         <span class="color-secondary font14">可用</span>
                                     </div>
@@ -129,7 +131,8 @@
                                 </div>
                                 <div class="disk__data__item disk__data__pie">
                                     <div style="width:94px;height:94px;float:left;background: #fff;">
-                                        <echarts-pie :mouldColor="['#18bcc9', '#ebf3f7']"></echarts-pie>
+                                        <echarts-pie v-if="seriesDataVolume.length > 0" :seriesData="seriesDataVolume" :mouldColor="['#18bcc9', '#ebf3f7']"></echarts-pie>
+                                        <div v-else style="line-height:94px;" class="color-secondary font16 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height: 47px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font18 pos-relative">
@@ -205,6 +208,74 @@ export default {
             addAmount: '', // 较上月增加量
             ecsTotal: ''
         };
+    },
+    computed: {
+        seriesDataCpu() {
+            let data = [
+                {
+                    name: 'CPU',
+                    data:[
+                        {value: this.usages.cpu, name:'已使用'},
+                        {
+                            value:parseInt(this.quota.cpu - this.usages.cpu) || 0,
+                            name:'可用',
+                            itemStyle: {
+                                normal:{color:'#ebf3f7'},
+                                emphasis:{color:'#ebf3f7'}
+                            }
+                        }
+                    ],
+                }
+            ];
+            if (this.quota.cpu === 0 || this.quota.cpu === '0' || !this.quota.cpu) {
+                data = [];
+            }
+            return data;
+        },
+        seriesDataRam() {
+            let data = [
+                {
+                    name: '内存',
+                    data:[
+                        {value: this.usages.ram, name:'已使用'},
+                        {
+                            value:parseInt(this.quota.ram - this.usages.ram) || 0,
+                            name:'可用',
+                            itemStyle: {
+                                normal:{color:'#ebf3f7'},
+                                emphasis:{color:'#ebf3f7'}
+                            }
+                        }
+                    ],
+                }
+            ];
+            if (this.quota.ram === 0 || this.quota.ram === '0' || !this.quota.ram) {
+                data = [];
+            }
+            return data;
+        },
+        seriesDataVolume() {
+            let data = [
+                {
+                    name: '磁盘',
+                    data:[
+                        {value: this.usages.volumeSize, name:'已使用'},
+                        {
+                            value:parseInt(this.quota.volumeSize - this.usages.volumeSize) || 0,
+                            name:'可用',
+                            itemStyle: {
+                                normal:{color:'#ebf3f7'},
+                                emphasis:{color:'#ebf3f7'}
+                            }
+                        }
+                    ],
+                }
+            ];
+            if (this.quota.volumeSize === 0 || this.quota.volumeSize === '0' || !this.quota.volumeSize) {
+                data = [];
+            }
+            return data;
+        }
     },
     methods: {
         // 概览数据

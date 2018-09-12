@@ -256,22 +256,23 @@ export const API_UserAccount = {
     validatePassword: USER_CONTROLLER + '/user/validatePassword',
     checkImageCode: '/user/checkImageCode/{code}',
     checkMobileCode: '/user/checkImageCode',
-    pwdForget: USER_CONTROLLER + '/user/resetPassword',
+    pwdForget: USER_CONTROLLER + '/user/{userId}/resetPassword', //忘记密码 
+    pwdReset: USER_CONTROLLER + '/user/{userId}/resetPassword', //put 重置密码
+    pwdChange: USER_CONTROLLER + '/user/{userId}/password', //put 修改密码
+    activeMail: USER_CONTROLLER + '/user/activeMail',
     bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
     // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码
-    pwdReset: USER_CONTROLLER + '/user/changePwd',
-    activeMail: USER_CONTROLLER + '/user/activeMail',
     validateEmailCode: USER_CONTROLLER + '/user/validateEmailCode',
     uploadFile: USER_CONTROLLER + '/file/upload',
     getUploadFile: USER_CONTROLLER + '/file',
     // userAuthApply: USER_CONTROLLER + '/userAuth/apply ',
     // userAuthResult: USER_CONTROLLER + '/userAuth/{user_id}',
     // userAuthMoneyConfirm: USER_CONTROLLER + '/userAuth/confirm ',
-    getUserInfo: USER_CONTROLLER + '/user/{user_id}/info',
-    getUserInfoDetail: USER_CONTROLLER + '/user/detail/{user_id}',
-    getUserDetail: USER_CONTROLLER + '/user/{user_id}',
-    saveUserInfo: USER_CONTROLLER + '/user/info',
-    updateUserInfo: USER_CONTROLLER + '/user/info/{id}',
+    //getUserInfo: USER_CONTROLLER + '/user/{user_id}/info',
+    //getUserInfoDetail: USER_CONTROLLER + '/user/{user_id}', 
+    getUserDetail: USER_CONTROLLER + '/user/{user_id}', //get 用户详情
+    saveUserInfo: USER_CONTROLLER + '/user/{user_id}', //put 更新用户
+    updateUserInfo: USER_CONTROLLER + '/user{user_id}', //put 更新用户详情
     bindMobile: USER_CONTROLLER + '/user/bindPhone'
 };
 
