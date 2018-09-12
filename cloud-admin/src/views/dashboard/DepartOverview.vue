@@ -135,7 +135,7 @@
                         <!-- 网络、安全组等 -->
                         <el-col :span="8">
                             <div class="info-box">
-                                <ul>
+                                <ul style="width: 100%">
                                     <li class="info-box__li">
                                         <div class="title">
                                             <i class="iconfont icon-wangluo-gailan"></i>
