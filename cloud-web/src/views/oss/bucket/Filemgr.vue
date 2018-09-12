@@ -109,7 +109,7 @@
             </el-col>
         </el-row>
         <upload-file ref="uploadFile" :bucketId="bucketId" :path="currentPath" :bucketName="headerInfo.name" @success="search(currentPath)"></upload-file>
-        <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId"></create-folder>
+        <create-folder ref="createFolder" :path="currentPath" :bucketId="bucketId" @success="search"></create-folder>
         <preview ref="preview" :bucketId="bucketId" :file-list="previewFiles"></preview>
         <delete-file-dialog ref="DeleteFileDialog" :bucketId="bucketId"></delete-file-dialog>
     </div>
@@ -299,7 +299,7 @@ export default {
         removeFileOne(file, type, index) {
             let files = [file];
             this.$refs.DeleteFileDialog.show(files, type).then(res => {
-                this.fileList.splice(index, 1);
+                this.search();
             });
             // let tips = '您确定要删除所选文件吗？';
             // tips += `<br/>${fileName}`;

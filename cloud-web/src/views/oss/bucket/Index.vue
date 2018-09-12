@@ -4,15 +4,21 @@
             <img src="@/assets/images/control/oss_icon.svg" height="50" alt="">
             <div slot="content">
                 <div class="font18">{{get(headerInfo, 'bucket')}}</div>
-             </div>
+            </div>
             <div slot="right" class="font12">
-                <label v-if="permission === 'Read'" class=" mr10 color-danger"><span class="color-secondary">读写权限：</span> <el-popover  placement="top" title="" width="220" trigger="hover" content="尊敬的客户您好，公共读（public-read）权限可以不通过身份验证直接读取您 Bucket中的数据，安全风险高，为确保您的数据安全，不推荐此配置，建议您选择私有（private）。">
-                                <i class="iconfont icon-wuuiconsuotanhao" slot="reference"></i>
-                            </el-popover> 公共读 </label>
-                <label v-else class="mr10 "><span class="color-secondary">读写权限：</span> 私有 </label>
-                <label class="mr20 "><a class="font12" @click="dialogVisible = true">修改</a></label>
-                <label class="mr20 "><span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm')}}</label>
-                <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')"  type="info" size="small"  @click="deleteBucket">
+                <label v-if="permission === 'Read'" class=" mr10 color-danger">
+                    <span class="color-secondary">读写权限：</span>
+                    <el-popover placement="top" title="" width="220" trigger="hover" content="尊敬的客户您好，公共读（public-read）权限可以不通过身份验证直接读取您 Bucket中的数据，安全风险高，为确保您的数据安全，不推荐此配置，建议您选择私有（private）。">
+                        <i class="iconfont icon-wuuiconsuotanhao" slot="reference"></i>
+                    </el-popover> 公共读 </label>
+                <label v-else class="mr10 ">
+                    <span class="color-secondary">读写权限：</span> 私有 </label>
+                <label class="mr20 ">
+                    <a class="font12" @click="dialogVisible = true">修改</a>
+                </label>
+                <label class="mr20 ">
+                    <span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm')}}</label>
+                <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')" type="info" size="small" @click="deleteBucket">
                     删除空间
                 </el-button>
                 <el-tooltip content="刷新" placement="left">
@@ -48,13 +54,13 @@
             <zt-form label-width="90px" :model="rwAuthForm">
                 <zt-form-item label="读写权限" prop="privacy" :rules="[{required: true, message: '请选择读写权限'}]">
                     <el-radio-group v-model="rwAuthForm.privacy" class="primary" size="small">
-                                <el-radio-button :label="true" border>私有</el-radio-button>
-                                <el-radio-button :label="false" border>公共读</el-radio-button>
-                            </el-radio-group>
-                            <span v-if="!rwAuthForm.privacy" class="input-help color-danger">公共读：对文件写操作需要进行身份验证；可以对文件进行匿名读。</span>
-                            <span  v-if="rwAuthForm.privacy" class="input-help">私有：对文件的所有访问操作需要进行身份验证。</span> 
+                        <el-radio-button :label="true" border>私有</el-radio-button>
+                        <el-radio-button :label="false" border>公共读</el-radio-button>
+                    </el-radio-group>
+                    <span v-if="!rwAuthForm.privacy" class="input-help color-danger">公共读：对文件写操作需要进行身份验证；可以对文件进行匿名读。</span>
+                    <span v-if="rwAuthForm.privacy" class="input-help">私有：对文件的所有访问操作需要进行身份验证。</span>
                 </zt-form-item>
-               
+
             </zt-form>
             <span slot="footer" class="dialog-footer">
                 <el-button size="small" type="info" :disabled="updating" @click="dialogVisible = false">取消</el-button>
@@ -117,7 +123,7 @@ export default {
         $route: function() {
             this.init();
         },
-        dialogVisible: function () {
+        dialogVisible: function() {
             this.rwAuthForm.privacy = this.permission === 'Read' ? false : true;
         }
     },
@@ -134,7 +140,6 @@ export default {
             this.loading = true;
             return getBucket(this.bucketId)
                 .then(res => {
-                    this.loading = false;
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         this.headerInfo = res.data;
                         console.log('headerInfo', this.headerInfo);
@@ -148,6 +153,8 @@ export default {
                     }
                 })
                 .catch(() => {
+                    // this.loading = false;
+                }).finally(() =>{
                     this.loading = false;
                 });
         },
@@ -200,15 +207,17 @@ export default {
         },
         editPermission() {
             this.updating = true;
-            setBucketPrivacy(this.bucketId, this.rwAuthForm.privacy).then(res => {
-                if (res.code === '0000') {
-                    this.permission = this.rwAuthForm.privacy ? 'private' : 'Read';
-                    this.dialogVisible = false;
-                    this.$message.success('操作成功');
-                }
-            }).finally(() => {
-                this.updating = false;
-            });
+            setBucketPrivacy(this.bucketId, this.rwAuthForm.privacy)
+                .then(res => {
+                    if (res.code === '0000') {
+                        this.permission = this.rwAuthForm.privacy ? 'private' : 'Read';
+                        this.dialogVisible = false;
+                        this.$message.success('操作成功');
+                    }
+                })
+                .finally(() => {
+                    this.updating = false;
+                });
         }
     }
 };
