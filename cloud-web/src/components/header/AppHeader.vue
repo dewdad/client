@@ -28,6 +28,11 @@
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
                                     <div class="pop-box__popover__popMain lh-normal font14">
+                                        <p @click.stop="$router.push({'name': 'accountMg.myAccount'})">
+                                            {{$t('header.avatarMenu.myAccount')}}
+                                        </p>
+                                    </div>
+                                    <div class="pop-box__popover__popMain lh-normal font14">
                                         <p @click.stop="$router.push({'name': 'accountMg.info'})">
                                             {{$t('header.avatarMenu.basicInfo')}}
                                         </p>

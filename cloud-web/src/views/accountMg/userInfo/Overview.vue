@@ -48,7 +48,7 @@
                         </el-table-column>
                         <el-table-column label="角色类型" width="318">
                             <template slot-scope="scope">
-                                <span class="font12">{{scope.row.roleType}}</span>
+                                <span class="font12">{{scope.row.roleType | showTextByKey(DICT_USER.ROLE_TYPE,'roleType','roleName') }}</span>
                             </template>
                         </el-table-column>                       
                         <el-table-column label="描述">
@@ -99,8 +99,9 @@
 </template>
 <script>
 import {mapGetters} from 'vuex';
-import { getUserInfoDetail,getProjectByUserId } from '@/service/user';
+import { getUserDetail,getProjectByUserId } from '@/service/user';
 import ChangePwdDialog from '@/components/dialog/ChangePwdDialog';
+import { DICT_USER } from '@/constants/dicts/user';
 export default {   
     components: {
         ChangePwdDialog,       
@@ -116,6 +117,7 @@ export default {
         };   
         return {
             searchObj,
+            DICT_USER,
             fullscreenLoading: false,
             userDetailInfo:{
                 isEditEmail: false,
@@ -139,7 +141,7 @@ export default {
         // 获取基本资料详情
         getUserInfoDetail() {
             // this.fullscreenLoading = true;
-            getUserInfoDetail({uid: this.userInfo.id})
+            getUserDetail({uid: this.userInfo.id})
                 .then( res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         $log(res); 
@@ -186,7 +188,8 @@ export default {
             this.$refs.changePwdDialog
                 .show()
                 .then( res => {
-                    
+                    this.$message.success($t('common.successOpt'));   
+                    this.getUserInfoDetail();                 
                 });
         },
 

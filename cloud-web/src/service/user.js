@@ -29,11 +29,12 @@ export function validateEmailCode({code}) {
  * @param {*} user_id 需要验证的用户ID
  */
 export async function getUserDetail(data) {
-    let response = await http.get(replaceParamVal(API_UserAccount.getUserDetail, [data.uid]));
+    let url = replaceParamVal(API_UserAccount.getUserDetail, [data.uid]);
+    let response = await http.get(url);
     return response.data;
 }
 /**
- * 获取用户详情
+ * 更新用户详情
  * @param {*} user_id 需要验证的用户ID
  */
 export async function saveUserInfo(data) {
@@ -41,14 +42,14 @@ export async function saveUserInfo(data) {
     return response.data;
 }
 /**
-/**
- * 获取用户基本资料详情
- * @param {*} user_id 需要验证的用户ID
- */
-export async function getUserInfoDetail(data) {
-    let response = await http.get(replaceParamVal(API_UserAccount.getUserInfoDetail, [data.uid]));
-    return response.data;
-}
+// /**
+//  * 获取用户基本资料详情
+//  * @param {*} user_id 需要验证的用户ID
+//  */
+// export async function getUserInfoDetail(data) {
+//     let response = await http.get(replaceParamVal(API_UserAccount.getUserInfoDetail, [data.uid]));
+//     return response.data;
+// }
 
 /**
 /**
@@ -147,19 +148,18 @@ export async function pwdForget(data) {
 }
  */  
 export async function pwdChange(data) {
-    let { newPwd,oldPwd,confirmPwd,userId,userName } = data;    
+    $log('data',data);
+    let { newPwd,oldPwd,userId } = data;
+    if(!userId) return;    
     let postdata = {
         newPwd:await RSA.encrypt(newPwd),
-        oldPwd:await RSA.encrypt(oldPwd),
-        confirmPwd:await RSA.encrypt(confirmPwd),
-        userId,
-        userName
+        oldPwd:await RSA.encrypt(oldPwd), 
     };
-    let response = await http.put(API_UserAccount.pwdReset, postdata);
+    let url = replaceParamVal(API_UserAccount.pwdChange, [userId]); 
+    let response = await http.put(url, postdata);
+    $log('response',response);
     return response.data;
 }
-
-
 
 // 用户认证
 /**
