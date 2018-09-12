@@ -90,7 +90,7 @@
                                     <!-- 磁盘数量 -->
                                     <tr>
                                         <td>{{ $t('common.diskNumber') }}：</td>
-                                        <td>{{ (instDetailTop.diskCount) }}块</td>
+                                        <td>{{ (instDetailTop.diskCount) || 0 }}块</td>
                                     </tr>
                                     <!-- 操作系统 -->
                                     <tr>
@@ -181,7 +181,7 @@
                             </div>
                         </div>
                         <!-- CPU使用率 -->
-                        <div class="panel-body zt-panel-body">
+                        <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.cpuPercentUsed') }}</span>
                             <echarts-line v-if="xData_cpu.length > 0" 
                                 :legendData="legendData_cpu" 
@@ -198,7 +198,7 @@
                             <div v-else class="content"><span class="text color-secondary">暂无数据</span></div>
                         </div>
                         <!-- 内存使用率 -->
-                        <div class="panel-body zt-panel-body">
+                        <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.memoryPercentUsed') }}</span>
                             <echarts-line v-if="xData_mem.length > 0" 
                                 :legendData="legendData_mem" 
@@ -214,7 +214,7 @@
                             <div v-else class="content"><span class="text color-secondary">暂无数据</span></div>
                         </div>
                         <!-- 网络流量 -->
-                        <div class="panel-body zt-panel-body">
+                        <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.outerNetwork') }}</span>
                             <echarts-line v-if="xData_net.length > 0" 
                                 :legendData="legendData_net" 

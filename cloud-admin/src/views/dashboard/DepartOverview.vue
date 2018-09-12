@@ -1,24 +1,24 @@
 <template>
     <div class="page-main overflow-box">
-        <!-- 头部(部门选择) -->
-        <div class="selDepart mb20">
-            <div class="finger-cursor" @click="selDepartBox">
-                <span class="el-dropdown-link font18">
-                    {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
-                </span>
-            </div>
-            <el-tree v-show="false"
-            :data="departData" 
-            :expand-on-click-node="false" 
-            :props="defaultProps"
-            @node-click="selDepart"></el-tree>
-            <span class="color-secondary font12">您可以通过切换部门查看相应配额使用情况</span>
-        </div>
         <!-- 外层 -->
-        <el-row :gutter="20" >
-            <el-col :span="24">
+        <el-row :gutter="20">
+            <el-col :span="24" style="height: 100%;">
+                <!-- 头部(部门选择) -->
+                <div class="selDepart mb20">
+                    <div class="finger-cursor" @click="selDepartBox">
+                        <span class="el-dropdown-link font18">
+                            {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
+                        </span>
+                    </div>
+                    <el-tree v-show="false"
+                    :data="departData" 
+                    :expand-on-click-node="false" 
+                    :props="defaultProps"
+                    @node-click="selDepart"></el-tree>
+                    <span class="color-secondary font12">您可以通过切换部门查看相应配额使用情况</span>
+                </div>
                 <!-- 弹性云主机、CPU、内存 -->
-                <div class="floor-one">
+                <div class="floor-one" >
                     <el-row :gutter="20">
                         <el-col :span="8"> 
                             <div class="floor-one__box">
@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="usageBox">
                                         <span class="color-secondary font12 usage">已使用：{{parseInt(usages.instances/quota.instances) || '0'}}%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.instances/quota.instances) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.instances/quota.instances) || 0" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="usageBox">
                                         <span class="color-secondary font12 usage">已使用：{{parseInt(usages.cpu/quota.cpu) || '0'}}%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || 0" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -65,8 +65,8 @@
                                         <span class="color-secondary">内存</span>
                                     </div>
                                     <div class="usageBox">
-                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.ram/quota.ram) || '0'}}%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || '0'" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <span class="color-secondary font12 usage">已使用：{{parseInt(usages.ram/quota.ram) || 0}}%</span>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || 0" class="pull-right" color="#0d7ef2"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -88,18 +88,18 @@
                                             <span class="color-secondary">磁盘数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="parseInt(usages.volumes/quota.volumes) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <el-progress :percentage="parseInt(usages.volumes/quota.volumes) || 0" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
                                             <span class="color-secondary font12">已使用：{{parseFloat(parseInt(usages.volumes)/parseInt(quota.volumes)) || '0'}}%</span>
                                         </div>
                                     </div>
                                     <div class="pull-left box-right__capacity" style="width: 49%">
                                         <div class="title mb15">
-                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.volumeSize || '0'}}</span>/{{quota.volumeSize || '0'}}GB</div>
+                                            <div class="lh30" style="height: 30px;"><span class="font30">{{usages.volumeSize || 0}}</span>/{{quota.volumeSize || '0'}}GB</div>
                                             <span class="color-secondary">磁盘容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="parseInt(usages.volumeSize/quota.volumeSize) || '0'" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
-                                            <span class="color-secondary font12">已使用：{{parseInt(usages.volumeSize/quota.volumeSize) || '0'}}%</span>
+                                            <el-progress :percentage="parseInt(usages.volumeSize/quota.volumeSize) || 0" :show-text="false" :stroke-width="3" color="#f77e28"></el-progress>
+                                            <span class="color-secondary font12">已使用：{{parseInt(usages.volumeSize/quota.volumeSize) || 0}}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                                             <span class="color-secondary">快照数量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || 0" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
                                             <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                             <span class="color-secondary">快照容量</span>
                                         </div>
                                         <div class="usageRate">
-                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || '0'" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
+                                            <el-progress :percentage="parseInt(usages.snapshot/quota.snapshot) || 0" :show-text="false" :stroke-width="3" color="#0d7ef2"></el-progress>
                                             <span class="color-secondary font12">已使用：{{parseInt(usages.snapshot/quota.snapshot) || '0'}}%</span>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@
                 </div>
                 <!-- 租户 -->
                 <div class="floor-tenant mt20">
-                    <el-row :gutter="20">
+                    <el-row :gutter="20" style="min-height: 336px;">
                         <el-col :span="8">
                             <div class="floor-tenant__box">
                                 <div class="title demo-input-suffix">
@@ -224,6 +224,8 @@
 <style lang="scss">
 .overflow-box{
     background: #ebeef3;
+    height: 100%;
+    overflow: auto;
     .el-dropdown-link{
         color: #333 !important;
     }
