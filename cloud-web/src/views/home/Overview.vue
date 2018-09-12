@@ -126,6 +126,7 @@
                             </div>
                             <div class="info-box-content" id="echartsLine">
                                 <echarts-line 
+                                v-if="seriesData.length > 0"
                                 :isMarkPoint="false" 
                                 :gridVal="gridVal" 
                                 :legendData="legendData"  
@@ -136,6 +137,7 @@
                                 :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
                                 :dotStyle="['b0e9c4', 'b0e9c4']" 
                                 :idString="'mychart'"></echarts-line>
+                                <div v-else class="color-secondary font20 text-c no-data">暂无数据</div>
                             </div>
                         </div>
                     </el-col>

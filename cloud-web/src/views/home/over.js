@@ -171,12 +171,12 @@ export default {
                     switch(dataType){
                         case 'cpu':{  
                             this.seriesData_cpu = datas;
-                            this.xData_cpu = datas[0].xData;
+                            this.xData = datas[0].xData;
                             break;
                         }
                         case 'mem':{  
                             this.seriesData_mem = datas;
-                            this.xData_mem = datas[0].xData;                                
+                            this.xData = datas[0].xData;                                
                             break;
                         }
                         default:{}
