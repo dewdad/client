@@ -10,7 +10,7 @@
                                 <i class="iconfont icon-chaolianjie font9"></i>
                             </el-col>
                             <el-col :span="20">
-                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content" >【系统通知】媒体云1.0版本已发布完成</span>
+                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content" >【系统通知】证通云1.0版本已发布完成</span>
                                 <div class="timelinedate">2017-11-30</div>
                             </el-col>
                             <el-col :span="3">
@@ -24,7 +24,7 @@
                                 <i class="iconfont icon-chaolianjie font9"></i>
                             </el-col>
                             <el-col :span="20">
-                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content">【新功能】媒体云项目组正在加班赶工ing</span>
+                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content">【新功能】证通云项目组正在加班赶工ing</span>
                                 <div class="timelinedate">2017-11-30</div>
                             </el-col>
                             <el-col :span="3">
@@ -38,7 +38,7 @@
                                 <i class="iconfont icon-chaolianjie font9"></i>
                             </el-col>
                             <el-col :span="20">
-                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content">【活动推荐】人民日报媒体云将在5月13日展开内部演示及项目研讨会</span>
+                                <span class="font12 color666 finger-cursor text-ellipsis link-item__content">【活动推荐】人民日报证通云将在5月13日展开内部演示及项目研讨会</span>
                                 <div class="timelinedate">2018-05-16</div>
                             </el-col>
                             <el-col :span="3">

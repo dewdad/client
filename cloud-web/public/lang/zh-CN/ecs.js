@@ -42,18 +42,18 @@ export default {
             pictureProcessingDesc: '提供多种图片处理模式，至少包括图片的缩放、缩率、剪裁、旋转、渐进显示、格式转换、文字水印、图片水印、计算平均色调，并可以提供图片格式、大小、色彩、EXIF等模型信息',
             videoProcessingDesc: '支持音视频实时转码功能；提供多种音视频处理模式，至少包括音视频的多码率自适应转码、截取、切片、水印、拼接、抽帧、采样；并且支持音视频元信息提取等功能',
             siteMoveDesc:
-                '利用媒体云提供的镜像存储功能，可以非常简单地将源站的数据被动地同步到媒体云存储中，所谓被动同步即——只有在资源被访问时，媒体云才会回源站获取一次，此后对该资源的访问都不会再发生回源动作，是直接从媒体云这里拿到数据。',
+                '利用证通云提供的镜像存储功能，可以非常简单地将源站的数据被动地同步到证通云存储中，所谓被动同步即——只有在资源被访问时，证通云才会回源站获取一次，此后对该资源的访问都不会再发生回源动作，是直接从证通云这里拿到数据。',
             highAvailabilityDesc:
                 '支持系统跨机房部署，当发生不可预知的离线事故时，仍可对外提供服务。系统采用高可用架构设计，任何一个节点出现故障，不影响数据的正常访问，整集群无单点故障。免人工干预的磁盘、主机自动故障检测和告警，在线更换磁盘，主机自动进行数据修复工作。',
-            websiteTrusteeshipDesc: '媒体云对象存储无缝集合各类第三方扩展插件，如 WordPress、Discuz、Emlog 等，并支持一键将各类插件里的静态资源托管到媒体云对象存储。',
+            websiteTrusteeshipDesc: '证通云对象存储无缝集合各类第三方扩展插件，如 WordPress、Discuz、Emlog 等，并支持一键将各类插件里的静态资源托管到证通云对象存储。',
             antiStealingLinkDesc: '下载有一种常见的场景，即公开资源的防盗链，例如禁止特定来源域名的访问，禁止非浏览器发起的访问等。可以通过 HTTP 协议支持的 Referer 机制，来进行相应的来源识别和管理。'
         },
         keypairs: {},
         noHost: {
-            descTitle: '媒体云 · 弹性云主机重磅来袭',
+            descTitle: '证通云 · 弹性云主机重磅来袭',
             descTip: '您当前未创建实例',
             createNow: '立即创建',
-            advantageTitle: '媒体云弹性云主机优势',
+            advantageTitle: '证通云弹性云主机优势',
             rubberSheet: '弹性伸缩',
             rubberSheetDesc: '提供多种实例配置规格，实例随时升降配，高效匹配业务要求',
             dilatation: '灵活扩容',
@@ -188,7 +188,7 @@ export default {
         cost: '配置费用'
     },
     overviewTips: '总概览及存储空间概览基础数据都非实时数据，数据延迟2～3个小时。',
-    skeymgrTips: 'Access Key ID和Access Key Secret是您访问人民日报媒体云API的密钥，具有该账户的完全的权限，请您妥善保管，且至少要保留一条有效的密钥。',
+    skeymgrTips: 'Access Key ID和Access Key Secret是您访问人民日报证通云API的密钥，具有该账户的完全的权限，请您妥善保管，且至少要保留一条有效的密钥。',
     create: {
         stepOne: '基础配置',
         stepTwo: '网络配置',
@@ -202,7 +202,7 @@ export default {
         basicConfig: '基础配置',
         netAndSafe: '网络和安全',
         priceColumn: '规格参考价格(元/月)',
-        imageTips: `是由人民日报媒体云提供公共基础镜像，仅包括初始系统环境。请根据您的实际情况自助配置应用环境或相关软件配置。`,
+        imageTips: `是由人民日报证通云提供公共基础镜像，仅包括初始系统环境。请根据您的实际情况自助配置应用环境或相关软件配置。`,
         passwordtext: '密码',
         loginPassword: '登录密码',
         confirmPassword: '确认密码',
@@ -240,7 +240,7 @@ export default {
             customTcp: '自定义TCP端口',
             customUdp: '自定义UDP端口',
             rule: '所选安全组规则',
-            moreinfo: '媒体云安全组对实例访问外部网络不做限制'
+            moreinfo: '证通云安全组对实例访问外部网络不做限制'
         },
         flavor: {
             descTxt: '<ul><li>实例规格族</li><li>场景配置选型</li></ul>'

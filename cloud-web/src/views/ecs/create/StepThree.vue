@@ -75,7 +75,7 @@
             </div>
             <div :class="{'create-form-item__content':true, 'is-error':isError}">
                 <el-checkbox v-model="argee">
-                    <span :class="{'color-primary': !isError}">《媒体云服务条款》</span>
+                    <span :class="{'color-primary': !isError}">《证通云服务条款》</span>
                 </el-checkbox>
             </div>
         </el-card> -->

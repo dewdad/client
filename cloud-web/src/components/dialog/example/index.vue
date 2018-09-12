@@ -3,7 +3,7 @@
         <el-dialog title="提示" :visible="isShow" @close="closeDialog">
             <span v-if="user.authStatus == 0">检测到您当前的账号尚未实名认证，使用云服务器需要先进行实名认证</span>
             <span v-if="user.authStatus == 1">实名认证信息审核中！<br>您的实名认证资料正在审核中,预计审核时间为2-3个工作日,请耐心等候。</span>
-            <span v-if="user.authStatus == 3">您当前账号实名认证未通过！<br>为了使您方便快捷的申请媒体云资源，建议您重新进行实名认证。</span>
+            <span v-if="user.authStatus == 3">您当前账号实名认证未通过！<br>为了使您方便快捷的申请证通云资源，建议您重新进行实名认证。</span>
             <span v-if="user.authStatus == 4">实名认证信息审核通过！<br>请输入确认金额完成实名认证。</span>
             <span slot="footer" class="dialog-footer">
                 <router-link :to='{name: "app.accountmgr.creditet"}' v-if="user.authStatus === 4" target="_blank">去确认金额></router-link>
