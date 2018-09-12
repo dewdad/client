@@ -1,8 +1,8 @@
 <template>
     <div class="page-main overflow-box">
         <!-- 外层 -->
-        <el-row :gutter="20" >
-            <el-col :span="24">
+        <el-row :gutter="20" style="height: 100%;">
+            <el-col :span="24" class="el-col-box" style="height: 100%;">
                 <!-- 上部分 -->
                 <el-row :gutter="20">
                     <!-- 弹性云主机 -->
@@ -64,7 +64,9 @@
                             <div class="cpu item back-white mr20">
                                 <div class="item__title">
                                     <span>CPU</span>
-                                    <span class="pull-right"><i class="dot color-warning"></i> 总配额：{{quota.cpu || '0'}}个</span>
+                                    <span class="pull-right">
+                                        <i class="dot" :class="{'color-warning': getUsage(usages.cpu, quota.cpu)}"></i> 总配额：{{quota.cpu || '0'}}个
+                                    </span>
                                 </div>
                                 <!-- CPU 饼图 -->
                                 <div class="item__data">
@@ -73,9 +75,9 @@
                                         <div v-else style="line-height:154px;" class="color-secondary font18 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
-                                        <div class="color-warning font30 icon-box">
+                                        <div class="font30 icon-box" :class="{'color-warning': getUsage(usages.cpu, quota.cpu)}">
                                             {{usages.cpu || '0'}}
-                                            <span class="icon">
+                                            <span class="icon" v-if="getUsage(usages.cpu, quota.cpu)">
                                                 <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
                                                     <i class="iconfont icon-wuuiconsuotanhao font14"></i>
                                                 </el-tooltip>
@@ -92,7 +94,7 @@
                             <div class="mem item back-white">
                                 <div class="item__title">
                                     <span>内存</span>
-                                    <span class="pull-right"><i class="dot"></i> 总配额：{{quota.ram || '0'}}GB</span>
+                                    <span class="pull-right"><i class="dot" :class="{'color-warning': getUsage(usages.ram, quota.ram)}"></i> 总配额：{{quota.ram || '0'}}GB</span>
                                 </div>
                                 <!-- 内存 饼图 -->
                                 <div class="item__data">
@@ -103,6 +105,11 @@
                                     <div class="text-r" style="height:77px; border-bottom: 1px solid #ebf3f7;">
                                         <div class="font30 icon-box">
                                             {{usages.ram || '0'}}
+                                            <span class="icon" v-if="getUsage(usages.ram, quota.ram)">
+                                                <el-tooltip class="item" effect="light" content="即将达到上限" placement="right">
+                                                    <i class="iconfont icon-wuuiconsuotanhao font14"></i>
+                                                </el-tooltip>
+                                            </span>
                                         </div>
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
@@ -135,10 +142,10 @@
                                         <div v-else style="line-height:94px;" class="color-secondary font16 text-c">暂无数据</div>
                                     </div>
                                     <div class="text-r" style="height: 47px; border-bottom: 1px solid #ebf3f7;">
-                                        <div class="font18 pos-relative">
+                                        <div class="font18 pos-relative" :class="{'color-warning': getUsage(usages.ram, quota.ram)}">
                                             {{usages.volumeSize || '0'}}
                                         </div>
-                                        <span class="color-secondary font12">已使用</span>
+                                        <span class="color-secondary font12" >已使用</span>
                                     </div>
                                     <div class="text-r pt10" style="height: 47px;">
                                         <div class="font18">96</div>
@@ -334,6 +341,14 @@ export default {
         // 根据时间筛选ecs使用量
         selEcsFn() {
             this.selectUsageByDateFn();
+        },
+        // 即将达到上限标准
+        getUsage(val1, val2) {
+            console.warn(val2);
+            if(val2 === 0) {
+                return false;
+            }
+            return parseFloat(val1 / val2) > 0.9;
         }
     },
     mounted() {
@@ -351,6 +366,13 @@ export default {
 <style lang="scss">
 .overflow-box{
     background: #ebeef3;
+    .el-col-box{
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
 }
 // 弹性云主机
 .cloud-host{
