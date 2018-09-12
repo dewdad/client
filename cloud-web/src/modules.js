@@ -15,6 +15,7 @@ import ZtScroller from '@/components/scroller/index.vue';
 import ZTAffix from '@/components/ZTAffix';
 import ZTTable from '@/components/ZTTable';
 import ZtTable from '@/components/table/ZtTable';
+import DeleteDailog from '@/components/dialog/DeleteDailog';
 // import ZTTableColumn from '@/components/ZTTable/src/table-column';
 export default {
     'label-dropdown': LabelDropdown,
@@ -33,5 +34,6 @@ export default {
     'el-table': ZTTable,
     'zt-table': ZtTable,
     // 'zt-table-column': ZTTableColumn,
-    'zt-status': ZtStatus
+    'zt-status': ZtStatus,
+    'delete-dialog': DeleteDailog
 };
