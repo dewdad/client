@@ -26,39 +26,7 @@ export default {
                 legend: {
                     show: ''
                 },
-                series: [
-                    {
-                        name:'访问来源',
-                        type:'pie',
-                        radius: ['70%', '100%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            normal: {
-                                show: false,
-                                position: 'center'
-                            },
-                            emphasis: {
-                                show: false,
-                                textStyle: {
-                                    fontSize: '30',
-                                    fontWeight: 'bold'
-                                }
-                            }
-                        },
-                        data:[
-                            {value:1548, name:'搜索引擎'},
-                            {
-                                value:535, 
-                                name:'直接访问',
-                                itemStyle: {
-                                    normal:{color:'#ebf3f7'},
-                                    emphasis:{color:'#ebf3f7'}
-                                }
-                            }
-                        ],
-                        animation: false
-                    }
-                ],
+                series: [],
                 color: this.mouldColor
             },
             idString: 'myCharts',
@@ -140,7 +108,7 @@ export default {
             for (let o in this.seriesData) {
                 $log(o);
                 let obj = {
-                    name:'访问来源',
+                    name: this.seriesData[o].name,
                     type:'pie',
                     radius: ['80%', '100%'],
                     avoidLabelOverlap: false,
@@ -157,10 +125,7 @@ export default {
                             }
                         }
                     },
-                    data:[
-                        {value:1548, name:'搜索引擎'},
-                        {value:535, name:'直接访问'}
-                    ],
+                    data:this.seriesData[o].data,
                     animation: false
                 };
                 this.seriesArray.push(obj);
@@ -169,7 +134,7 @@ export default {
         }
     },
     async mounted () {
-        // await this.arrangeSeries();
+        await this.arrangeSeries();
         this.myChartContainer();
         let myChart = this.$echarts.init(document.getElementById(this.idString));
         myChart.setOption(this.option);
