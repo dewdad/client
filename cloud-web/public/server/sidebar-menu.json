@@ -776,6 +776,12 @@
         "hidden": true,
         "submenu": [
             {
+                "text": "我的账号",
+                "sref": "accountMg.myAccount",
+                "evn": "pro",
+                "psref": "app.accountMg"
+            },
+            {
                 "text": "基本资料",
                 "sref": "accountMg.info",
                 "evn": "pro",

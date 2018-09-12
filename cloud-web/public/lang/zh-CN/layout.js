@@ -12,7 +12,7 @@ export default {
             "phoneStatusNo": "您未绑定手机号码",
             "emailStatus": "您已绑定邮箱",
             "emailStatusNo": "您未绑定邮箱",
-            "securitySet": '安全设置',
+            "myAccount": '我的账号',
             "basicInfo": '基本资料',
             "certification": '实名认证',
             "contactManager": '联系人管理',

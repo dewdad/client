@@ -96,6 +96,7 @@ export default {
         },
         
         confirm() {
+            console.log('confirm');
             if(!this.form.userId) return; 
             this.$refs.form.validate( (valid) => {
                 if (valid) {
@@ -105,15 +106,11 @@ export default {
                             this.loading = false;
                             if(res && res.code === this.CODE.SUCCESS_CODE){
                                 this.resolve();
-                                this.hide();                                
-                                
-                            }else{
-                                this.$alert('修改失败', '提示', {
-                                    type: 'error'
-                                });                                                            
+                                this.hide(); 
                             }
                         })
                         .catch(err => {
+                            $log(err);
                             this.loading = false;                            
                         });
                 } else {
