@@ -159,23 +159,23 @@
                 <!-- 已申请资源 -->
                 <el-row class="mt20">
                     <el-col :span="24">
-                        <div class="info-box">
-                            <div class="info-box__item">
+                        <div class="resource-box">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-wangluo-gailan font20 color-secondary"></i>
                                 <span class="ml10">网络</span>
                                 <span class="pull-right"><span>{{usages.network || '0'}}</span>/{{quota.network || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-anquanzu-gailan font20 color-secondary"></i>
                                 <span class="ml10">安全组</span>
                                 <span class="pull-right"><span>{{usages.securityGroup || '0'}}</span>/{{quota.securityGroup || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-luyouqi-gailan font20 color-secondary"></i>
                                 <span class="ml10">路由器 </span>
                                 <span class="pull-right"><span>{{usages.routers || '0'}}</span>/{{quota.routers || '0'}}</span>
                             </div>
-                            <div class="info-box__item">
+                            <div class="resource-box__item">
                                 <i class="iconfont icon-fudongIP-gailan font20 color-secondary"></i>
                                 <span class="ml10">浮动IP</span>
                                 <span class="pull-right"><span>{{usages.floatingIps || '0'}}</span>/{{quota.floatingIps || '0'}}</span>
@@ -373,138 +373,138 @@ export default {
         -ms-flex-direction: column;
         flex-direction: column;
     }
-}
-// 弹性云主机
-.cloud-host{
-    background: #fff;
-    border-radius: 5px;
-    &::after{
-        content: '';
-        display: block;
-        clear: both;
-    }
-    &__data{
-        height: 37px;
-        border-left: 2px solid #d3d8de;
-        margin: 30px 30px 0 30px;
-        padding-left: 10px;
-    }
-    &__title{
-        padding: 20px;
-        border-bottom: 1px solid #ebf3f7;
-        &__icon{
-            width: 48px; 
-            height: 48px;
-            background-color: #0d7ef2;
-            border-radius: 4px;
-            line-height: 55px;
-            margin-right: 15px;
-            text-align: center;
-            i{
-                color: #fff;
-                font-size: 24px;
-            }
-        }
+    // 弹性云主机
+    .cloud-host{
+        background: #fff;
+        border-radius: 5px;
         &::after{
             content: '';
             display: block;
             clear: both;
         }
-    }
-    .el-input__inner{
-        border-radius: 0;
-    }
-}
-// CPU、内存、磁盘
-.cpu_net-box{
-    display: flex;
-    .item{
-        min-height: 294px;
-        flex: 1;
-        border-radius: 4px;
-        &__title{
-            padding: 20px 30px;
-            border-bottom: 1px solid #ebf3f7;
-            height: 60px;
-        }
         &__data{
-            padding: 40px 54px;
+            height: 37px;
+            border-left: 2px solid #d3d8de;
+            margin: 30px 30px 0 30px;
+            padding-left: 10px;
+        }
+        &__title{
+            padding: 20px;
+            border-bottom: 1px solid #ebf3f7;
+            &__icon{
+                width: 48px; 
+                height: 48px;
+                background-color: #0d7ef2;
+                border-radius: 4px;
+                line-height: 55px;
+                margin-right: 15px;
+                text-align: center;
+                i{
+                    color: #fff;
+                    font-size: 24px;
+                }
+            }
             &::after{
                 content: '';
                 display: block;
                 clear: both;
             }
-            .icon-box{
-                position: relative;
+        }
+        .el-input__inner{
+            border-radius: 0;
+        }
+    }
+    // CPU、内存、磁盘
+    .cpu_net-box{
+        display: flex;
+        .item{
+            min-height: 294px;
+            flex: 1;
+            border-radius: 4px;
+            &__title{
+                padding: 20px 30px;
+                border-bottom: 1px solid #ebf3f7;
+                height: 60px;
             }
-            .icon{
-                position: absolute;
-                right: -18px;
-                top: -18px;
-                color: #ff4400;
-                cursor: pointer;
+            &__data{
+                padding: 40px 54px;
+                &::after{
+                    content: '';
+                    display: block;
+                    clear: both;
+                }
+                .icon-box{
+                    position: relative;
+                }
+                .icon{
+                    position: absolute;
+                    right: -18px;
+                    top: -18px;
+                    color: #ff4400;
+                    cursor: pointer;
+                }
             }
         }
     }
-}
-// 磁盘
-.disk{
-    border-radius: 4px;
-    &__title{
-        border-bottom: 1px solid #ebf3f7;
-        padding: 20px 30px;
+    // 磁盘
+    .disk{
+        border-radius: 4px;
+        &__title{
+            border-bottom: 1px solid #ebf3f7;
+            padding: 20px 30px;
+        }
+        &__data{
+            display: flex;
+            padding: 28px 0;
+            align-items: center;
+            &__item{
+                flex: 1;
+                padding-left: 89px;
+            }
+            &__pie{
+                flex: 1;
+                border-left: 1px solid #ebf3f7;
+                .text-r{
+                    margin-right: 89px;
+                    box-sizing: border-box;
+                }
+            }
+        }
     }
-    &__data{
+    .back-white{
+        background-color: #fff;
+    }
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #36ab46;
+        margin-right: 5px;
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+        &.color-warning {
+            background-color: #ff4400;
+        }
+    }
+    .back-gray{
+        background-color: #8da3c6;
+    }
+
+    // 已申请资源
+    .resource-box {
+        background-color: #fff;
+        padding: 39px 60px;
         display: flex;
-        padding: 28px 0;
-        align-items: center;
         &__item{
             flex: 1;
-            padding-left: 89px;
-        }
-        &__pie{
-            flex: 1;
-            border-left: 1px solid #ebf3f7;
-            .text-r{
-                margin-right: 89px;
-                box-sizing: border-box;
+            padding: 0 30px;
+            border-right: 1px solid #ebf3f7;
+            i{
+                vertical-align: middle;
             }
         }
     }
 }
-.back-white{
-    background-color: #fff;
-}
-.dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #36ab46;
-    margin-right: 5px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    &.color-warning {
-        background-color: #ff4400;
-    }
-}
-.back-gray{
-    background-color: #8da3c6;
-}
-// 已申请资源
-.info-box {
-    background-color: #fff;
-    padding: 39px 60px;
-    display: flex;
-    &__item{
-        flex: 1;
-        padding: 0 30px;
-        border-right: 1px solid #ebf3f7;
-        i{
-            vertical-align: middle;
-        }
-    }
-}
-
 </style>
