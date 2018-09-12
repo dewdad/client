@@ -56,7 +56,7 @@
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-cipan-gailan" />
                                             </div>
-                                            <div class="number mt20 color-warning" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}">
+                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}">
                                                 <ICountUp :startVal="0" :endVal="tenantData.VOLUMES || 0" :duration="2" />
                                                 <i v-if="getUsage(tenantData.VOLUMES, tenantData.qVolumes)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
