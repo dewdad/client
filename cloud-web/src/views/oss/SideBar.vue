@@ -69,18 +69,14 @@
                     </el-dropdown>
                 </span>
             </li>
-            <router-link v-for="bucket in bucketList" :key="bucket.name" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">
-                <div>
-                    {{bucket.name}}
-                </div>
-            </router-link>
-            <create-bucket ref="createBucketDailog"></create-bucket>
+            <router-link v-for="bucket in buckets" :key="bucket.id" tag="li" :class="{'el-menu-item': true, 'oss-menu-item': true,'router-link-active': bucket.name === $route.params.bucketId} " :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': bucket.name}}">{{bucket.name}}</router-link>
         </ul>
+        <create-bucket ref="createBucketDailog"></create-bucket>
     </li>
 </template>
 <script>
 import Clickoutside from '@/utils/clickoutside.js';
-import {getDom} from '@/utils/utils';
+import {getDom, cloneDeep} from '@/utils/utils';
 import {getBucketListByUid} from '@/service/oss/index';
 import CreateBucket from './bucket/Create';
 import {mapState} from 'vuex';
@@ -116,14 +112,6 @@ export default {
                 });
             }
         },
-        searchKeyords: function(newval) {
-            // oldBucketList为空时将bucketList赋给oldBucketList
-            this.oldBucketList = this.oldBucketList.length ? this.oldBucketList : this.bucketList;
-            // 从oldBucketList数据中搜索匹配数据
-            this.bucketList = this.oldBucketList.filter(arr => {
-                return arr.name.includes(newval);
-            });
-        },
         refreshBucket: function() {
             // refreshBucket改变时重新加载bucket
             this.getBucketListByUid();
@@ -132,7 +120,14 @@ export default {
     computed: {
         ...mapState({
             refreshBucket: state => state.oss.refreshBucket
-        })
+        }),
+        buckets: function() {
+            let arr = cloneDeep(this.bucketList).filter(item => {
+                return item.name.includes(this.searchKeyords);
+            });
+            $log(arr);
+            return arr;
+        }
     },
     created() {
         this.getBucketListByUid();
@@ -179,7 +174,7 @@ export default {
             getBucketListByUid()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.bucketList = res.data || [];
+                        this.bucketList = cloneDeep(res.data) || [];
                         if (this.bucketList.length === 0) {
                             this.$router.push({name: 'app.oss.empty'});
                         } else {

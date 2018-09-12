@@ -128,11 +128,21 @@ export default {
         ...mapState({
             createEcsFormData: state => state.createEcsFormData
         }),
+        osType: function() {
+            try {
+                return this.createEcsFormData.mirror.osType ? this.createEcsFormData.mirror.osType : '';
+            } catch (err) {
+                $log(err);
+                return '';
+            }
+        },
+        isWindows: function() {
+            return this.osType.toLowerCase().includes('windows') ? true : false;
+        },
         sizeRange: function() {
-            let minSize = this.createEcsFormData.mirror && this.createEcsFormData.mirror.imageObj !== '' ? (this.createEcsFormData.mirror.imageObj.size / 1073741824).toFixed(0) : '20';
-            let size = minSize.indexOf(',') !== -1 ? minSize.split(',') : [minSize, 500];
+            let minSize = this.isWindows ? 50 : 20;
             $log(minSize);
-            return size;
+            return [minSize, 500];
         },
         sysDiskMinSize: function() {
             return parseInt(this.sizeRange[0]);
