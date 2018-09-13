@@ -96,7 +96,6 @@ export const API_ECS = {
         createBackup: '/compute/disk/createBackup',
         getDiskList: '/compute/disk/list',
         getAllDisk: '/compute/disk/listAll',
-        setDiskSnapshotPolicy: ECS_CTRL + '/disk/snapshot-policy',
         updateDisk: '/compute/disk/{disk_id}',
         diskRollback: ECS_CTRL + '/disk/{disk_id}/rollback/{snapshot_id}', //回滚磁盘
         mountDisk: '/compute/disk/mountVolume', //挂载云盘

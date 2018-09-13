@@ -29,7 +29,7 @@
                                 <ul style="line-height:1.5;" class="left">
                                     <!-- ngIf: !item.toCpu -->
                                     <li class="">
-                                        <span class="">创建时间： {{scope.row.execTime}}</span>
+                                        <span class="">创建时间：{{scope.row.execTime}}</span>
                                     </li>
                                     <li class="">
                                         <span class="">重复日期：{{scope.row.repeatDate|getWeekString }}</span>
@@ -45,25 +45,23 @@
                     <template v-if="col.column=='countDisk'">
                         <el-table-column :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
-                                <el-tag>
-                                    <router-link :to="{name:'app.ecs.clouddisc-list',params:{policyId:scope.row.pid} }">{{scope.row.countDisk}}</router-link>
-                                </el-tag>
+                                <el-tag><router-link style="padding:0px" :to="{name:'app.ecs.clouddisc-list',params:{policyId:scope.row.pid} }">{{scope.row.countDisk}}</router-link></el-tag>
                             </template>
                         </el-table-column>
                     </template>
                 </template>
                 <!-- 操作 -->
                 <template>
-                    <el-table-column label="操作" key="op" width="250">
+                    <el-table-column label="操作" key="op" class-name="option-column" width="250">
                         <template slot-scope="scope">
                             <!-- 修改策略 -->
-                            <span @click="AmendStrategy(scope.row,2)" class="color-primary finger-cursor">修改策略</span>
+                            <a @click="AmendStrategy(scope.row,2)" class="color-primary finger-cursor">修改策略</a>
                             <b class="link-division-symbol"></b>
                             <!-- 设置磁盘 -->
-                            <span @click="setDisk(scope.row)" class="color-primary finger-cursor">设置磁盘</span>
+                            <a @click="setDisk(scope.row)" class="color-primary finger-cursor">设置磁盘</a>
                             <b class="link-division-symbol"></b>
                             <!-- 删除策略 -->
-                            <span @click="deleteStrategy(scope.row)" class="color-primary finger-cursor">删除策略</span>
+                            <a @click="deleteStrategy(scope.row)" class="color-primary finger-cursor">删除策略</a>
                         </template>
                     </el-table-column>
                 </template>
@@ -112,7 +110,7 @@ export default {
             for (const iterator of arr) {
                 newString.push(week[iterator]);
             }
-            return newString.join(',');
+            return newString.join('，');
         }
     },
     created() {

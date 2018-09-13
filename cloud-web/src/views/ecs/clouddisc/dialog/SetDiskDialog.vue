@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="设置自动快照策略" :visible.sync="isShow" width="1200px" class="SetDiskDialog">
+    <el-dialog title="设置自动快照策略" :visible.sync="isShow" width="1200px" class="SetDiskDialog" @close="cancel">
         <div class="setDisk">
             <el-row :gutter="20">
                 <el-col :span="12">
@@ -74,7 +74,7 @@
                                     <el-table-column label="操作" key="op" width="50">
                                         <template slot-scope="scope">
                                             <!-- 选择 -->
-                                            <span @click="selDisk(scope.row)" class="color-primary finger-cursor">选择</span>
+                                            <span @click="selDisk(scope.row.id)" class="color-primary finger-cursor">选择</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -90,11 +90,11 @@
                                 <span class="ml10">已设置快照磁盘</span>
                             </div>
                             <div class="right">
-                                <el-select v-model="searchObjExtra.selFieldL.field" size="small" placeholder="请选择">
+                                <el-select v-model="searchObjExtra.selFieldR.field" size="small" placeholder="请选择">
                                     <el-option v-for="item in searchObjExtra.fields" :key="item.field" :label="item.label" :value="item.field">
                                     </el-option>
                                 </el-select>
-                                <el-input class="ml10 noSetInput" v-model="searchObjExtra.selFieldL.inputval" size="small"></el-input>
+                                <el-input class="ml10 noSetInput" v-model="searchObjExtra.selFieldR.inputval" size="small"></el-input>
                             </div>
                         </div>
                         <!-- 列表 -->
@@ -154,7 +154,7 @@
                                     <el-table-column label="操作" key="op" width="50">
                                         <template slot-scope="scope">
                                             <!-- 选择 -->
-                                            <span @click="cancelDisk(scope.row)" class="color-primary finger-cursor">取消</span>
+                                            <span @click="cancelDisk(scope.row.id)" class="color-primary finger-cursor">取消</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -165,8 +165,8 @@
             </el-row>
         </div>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" size="small" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" size="small" @click="confirm">确 定</el-button>
+            <el-button type="info" size="small" @click="isShow = false" :disbled="setting">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm" :loading="setting">确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -191,7 +191,7 @@ export default {
             }
         ];
 
-        let fields = [{field: 'diskName', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
+        let fields = [{field: 'name', label: '磁盘名称', inputval: ''}, {field: 'id', label: '磁盘ID', inputval: ''}];
         let searchObjExtra = {
             fields,
             selFieldL: {
@@ -208,27 +208,34 @@ export default {
             resolve: null,
             reject: null,
             loading: false,
+            setting: false,
             searchObjExtra,
             cols,
             rowItem: {},
-            tableData: [],
-            alreadyTableData: []
+            tableData: []
         };
     },
     props: {},
     computed: {
         unsetDisk: function() {
             let data = this.tableData;
-           
             return data.filter(item => {
                 $log(item);
-                return !item.hasOwnProperty('policy_id');
+                if (this.searchObjExtra.selFieldL.inputval !== '') {
+                    return (!item.hasOwnProperty('policy_id') || item.policy_id === null) && item[this.searchObjExtra.selFieldL.field].includes(this.searchObjExtra.selFieldL.inputval);
+                } else {
+                    return !item.hasOwnProperty('policy_id') || item.policy_id === null;
+                }
             });
         },
         alreadyDisk: function() {
             let data = this.tableData;
             return data.filter(item => {
-                return item.hasOwnProperty('policy_id') && item.policy_id !== '';
+                if (this.searchObjExtra.selFieldR.inputval !== '') {
+                    return item.hasOwnProperty('policy_id') && item.policy_id && item[this.searchObjExtra.selFieldR.field].includes(this.searchObjExtra.selFieldR.inputval);
+                } else {
+                    return item.hasOwnProperty('policy_id') && item.policy_id;
+                }
             });
         }
     },
@@ -249,46 +256,45 @@ export default {
             this.alreadyTableData = [];
         },
         cancel() {
-            this.hide();
             typeof this.reject() === 'function' && this.reject();
-        },
-        setting() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    typeof this.resolve(this.form) === 'function' && this.resolve(this.form);
-                }, 1000);
-            });
         },
         confirm() {
             if (!this.rowItem.pid) return;
             let ids = [];
-            this.alreadyTableData.forEach(item => {
+            this.alreadyDisk.forEach(item => {
                 ids.push(item.id);
             });
+            if (ids.length === 0) {
+                this.$alert('请选择磁盘', '提示', {
+                    type: 'warning'
+                });
+                return;
+            }
             let data = {
-                disk_ids: ids,
-                policy_id: this.rowItem.pid,
-                source_page: 'true'
+                diskIds: ids,
+                policyId: this.rowItem.pid,
+                sourcePage: 'policy-page'
             };
+            this.setting = true;
             setDiskSnapshotPolicy(data)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         this.resolve(ids.length);
                         this.hide();
-                        //this.setting();
                     }
                 })
                 .catch(err => {
-                    this.$alert(err, '提示', {
-                        type: 'error'
-                    });
+                    $log(err);
+                })
+                .finally(() => {
+                    this.setting = false;
                 });
         },
 
         filterHandler(value, row, column) {
             const property = column['property'];
             $log(column);
-            return row[property] === value;
+            return row[property] === value || value === '';
         },
 
         getDiskList() {
@@ -309,6 +315,9 @@ export default {
                         }
                     }
                 })
+                .catch(err => {
+                    $log(err);
+                })
                 .finally(() => {
                     this.loading = false;
                 });
@@ -328,16 +337,22 @@ export default {
         /**
          * 选择快照磁盘
          */
-        selDisk(rowItem) {
-            rowItem['policy_id'] = this.rowItem.pid;
+        selDisk(id) {
+            let index = this.tableData.findIndex(item => {
+                return item.id === id;
+            });
+            if (index !== -1) this.$set(this.tableData[index], 'policy_id', this.rowItem.pid);
         },
         /**
          * 取消快照磁盘
          */
 
-        cancelDisk(rowItem) {
-            rowItem['policy_id'] = null;
-        },
+        cancelDisk(id) {
+            let index = this.tableData.findIndex(item => {
+                return item.id === id;
+            });
+            if (index !== -1) this.$set(this.tableData[index], 'policy_id', null);
+        }
     }
 };
 </script>
