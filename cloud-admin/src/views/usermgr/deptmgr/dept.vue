@@ -45,7 +45,17 @@
                     </el-form-item>
                 </el-form>
                 <div>
-                    <el-tree  default-expand-all :highlight-current="true" expand-on-click-node node-key="id" :data="deptTreeData" :check-strictly="true" :props="defaultProps" :default-checked-keys="selectedKey" @node-click="handleNodeClick" ref="tree"></el-tree>
+                    <el-tree
+                            default-expand-all
+                            :highlight-current="true"
+                            expand-on-click-node node-key="id"
+                            :data="deptTreeData"
+                            :check-strictly="true"
+                            :props="defaultProps"
+                            :default-checked-keys="selectedKey"
+                            @node-click="handleNodeClick"
+                            ref="tree"
+                    ></el-tree>
                 </div>
             </el-col>
             <el-col :span="20"  class="p20">
@@ -65,12 +75,12 @@
                             <el-form-item>
                                 <el-select placeholder="请选择" v-model="rentForm.type" @change="rentForm.searchText=''">
                                     <el-option label="租户名" value="name"></el-option>
-                                    <el-option label="激活" value="enabled"></el-option>
+                                    <el-option label="激活" value="status"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="关键字">
-                                <el-input placeholder="搜索关键字" v-model="rentForm.searchText" v-if="rentForm.type !== 'enabled'"></el-input>
-                                <el-select clearable v-model="rentForm.searchText" placeholder="请选择" v-if="rentForm.type === 'enabled'">
+                                <el-input placeholder="搜索关键字" v-model="rentForm.searchText" v-if="rentForm.type !== 'status'"></el-input>
+                                <el-select clearable v-model="rentForm.searchText" placeholder="请选择" v-if="rentForm.type === 'status'">
                                     <el-option label="是" value="1"></el-option>
                                     <el-option label="否" value="0"></el-option>
                                 </el-select>
@@ -162,12 +172,12 @@
                             <el-form-item>
                                 <el-select placeholder="请选择" v-model="userForm.type" @change="userForm.searchText=''">
                                     <el-option label="用户名" value="name"></el-option>
-                                    <el-option label="激活" value="enabled"></el-option>
+                                    <el-option label="激活" value="status"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="关键字">
-                                <el-input placeholder="搜索关键字" v-model="userForm.searchText" v-if="userForm.type !== 'enabled'"></el-input>
-                                <el-select clearable v-model="userForm.searchText" placeholder="请选择" v-if="userForm.type === 'enabled'">
+                                <el-input placeholder="搜索关键字" v-model="userForm.searchText" v-if="userForm.type !== 'status'"></el-input>
+                                <el-select clearable v-model="userForm.searchText" placeholder="请选择" v-if="userForm.type === 'status'">
                                     <el-option label="是" value="1"></el-option>
                                     <el-option label="否" value="0"></el-option>
                                 </el-select>
@@ -305,5 +315,8 @@
 }
 .is-checked{
     background-color:#f5f7fa !important;
+}
+.is-checked .el-tree-node__children{
+    background-color:transparent !important;
 }
 </style>

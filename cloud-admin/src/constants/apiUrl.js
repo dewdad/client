@@ -73,7 +73,7 @@ export const RoleMgr = {
     editRole: USER_RSA + '/role/',//编辑角色
     delRole: USER_RSA + '/role/',//删除角色
     getAllrelateList: MENU + '/getMenuListByType',//关联用户
-    getMenuListByType: USER_RSA + '/menu/getMenuListByType',//获取权限列表
+    getMenuTreeByRoleId: USER_RSA + '/menu/getMenuTreeByRoleId',//获取权限列表
     subAuth: USER_RSA + '/role/updatePermissionByRoleId',//关联权限
 };
 //平台管理

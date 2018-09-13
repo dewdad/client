@@ -18,7 +18,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {getMenuListByType,subAuth} from '@/service/usermgr/rolemgr.js';
+import {getMenuTreeByRoleId,subAuth} from '@/service/usermgr/rolemgr.js';
 export default {
     data() {
         return{
@@ -47,7 +47,7 @@ export default {
         show(item) {
             this.roleId = item.id;
             this.isShow = true;
-            this.getMenuListByType();
+            this.getMenuTreeByRoleId();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -124,13 +124,12 @@ export default {
                 }, 1000);
             });
         },
-        getMenuListByType(){
+        getMenuTreeByRoleId(){
             let params = {
                 roleId:this.roleId,
-                roleType:this.user.roleType,
             };
             $log('params', params);
-            getMenuListByType(params).then(ret => {
+            getMenuTreeByRoleId(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData){
