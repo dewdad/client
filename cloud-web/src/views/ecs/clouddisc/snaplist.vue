@@ -4,7 +4,7 @@
             云盘快照
             <div slot="right">
                 <el-button type="info" size="small" @click="getSnapshotList">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>
@@ -55,13 +55,50 @@ import CreateDisk from './dialog/CreateDisk';
 let statusArr = [
     {text: '全部', state: true, value: ''},
     {
-        text: '成功',
-        state: false,
+        text: '可用',
         value: 'available',
         className: 'color-success',
         icon: 'icon-chenggong',
         type: 'font'
-    }
+    },
+    {
+        text: '错误',
+        value: 'error',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '备份中',
+        value: 'backing-up',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '删除时出错',
+        value: 'error_deleting',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '删除中',
+        value: 'deleting',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '创建中',
+        value: 'downloading',
+        className: 'color-progress-primary',
+        type: 'progress'
+    },
+    {
+        text: '创建中',
+        value: 'creating',
+        className: 'color-progress-primary',
+        type: 'progress'
+    },
 ];
 export default {
     data() {

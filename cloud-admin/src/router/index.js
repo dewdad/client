@@ -187,6 +187,13 @@ export default new Router({
                                 title: '创建用户'
                             },
                             component: () => import('@/views/usermgr/deptmgr/createUser')
+                        },{
+                            path: 'myorder',
+                            name: 'app.workorder.myorder',
+                            meta: {
+                                title: '我的工单'
+                            },
+                            component: () => import('@/views/workorder/myorder/myorder')
                         }
                     ]
                 }

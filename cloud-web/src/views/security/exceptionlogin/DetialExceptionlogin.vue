@@ -4,7 +4,7 @@
         <div slot="content"  class="pull-right">
             <!-- <el-button type="primary" size="small">设置暴力破解</el-button> -->
             <el-button type="info" size="small" @click="search">
-                <i class="iconfont icon-refresh_people"></i>
+                <i class="iconfont icon-icon-refresh"></i>
             </el-button>
         </div>
     </page-header>

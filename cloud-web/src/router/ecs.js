@@ -25,6 +25,7 @@ const SafegrpList = () => import('@/views/ecs/netsecurity/SafegrpList.vue');
 const SafegrpRule = () => import('@/views/ecs/netsecurity/SafegrpRule.vue');
 const Keypair = () => import('@/views/ecs/netsecurity/Keypair.vue');
 const Lablemgr = () => import('@/views/ecs/lablemgr/Lablemgr.vue');
+const Autosnapstrategy = () => import('@/views/ecs/clouddisc/autosnapstrategy.vue');
 
 export default [
     {
@@ -75,6 +76,11 @@ export default [
                 meta: {
                     parentName: 'aa'
                 }
+            },
+            {
+                path: 'autosnapstrategy',
+                name: 'app.ecs.autosnapstrategy',
+                component: Autosnapstrategy
             },
             {
                 path: 'backuplist',

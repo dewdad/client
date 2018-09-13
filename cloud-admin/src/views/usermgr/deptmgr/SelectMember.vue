@@ -17,13 +17,13 @@
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">关 闭</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">关 闭</el-button>
         </span>
     </el-dialog>
 </template>
 <script>
 import { mapState } from 'vuex';
-import {selectAllUsers,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
+import {findeRole,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
         return{
@@ -48,8 +48,6 @@ export default {
             this.isShow = true;
             this.item = item;
             this.brunch = brunch;
-            console.log('item????',item);
-            console.log('item????,,,,',brunch);
             this.searchByProjectId();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -66,32 +64,37 @@ export default {
             searchByProjectId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
                 let resData = ret.data;
+                this.listUser();
                 if(resData){
-                    this.selectAllProject();
                     this.selectedUser = resData || [];
                 }
             });
         },
         //查询所有用户
-        selectAllProject(){
+        listUser(){
             let param = {
                 limit:9999,
-                domainId:this.brunch.id
+                deptId:this.brunch.id
             };
-            selectAllUsers(param).then(ret => {
+            console.log('param',param);
+            findeRole(param).then(ret => {
                 $log('list', ret);
-                let resData = ret.data;
+                let resData = ret.data.data;
                 if(resData){
-                    let allArr = [];
-                    for(let i = 0;i < resData.data.length;i++){
-                        for(let j = 0;j < this.selectedUser.length;j++){
-                            if(this.selectedUser[j].id !== resData.data[i].id){
-                                allArr.push(resData.data[i]);
+                    let selectedUser = this.selectedUser;
+                    for(let i = 0;i < resData.length;i++){
+                        if(selectedUser.length > 0){
+                            let curId = resData[i].id;
+                            console.log('curId',curId);
+                            for(let x = 0;x < selectedUser.length ; x++){
+                                if(selectedUser[x].id === curId){
+                                    resData.splice(i,1);
+                                }
                             }
                         }
                     }
-                    console.log('allArr',allArr);
-                    this.allUsers = allArr || [];
+                    console.log('allArr',resData);
+                    this.allUsers = resData || [];
                 }
 
             });
@@ -129,7 +132,7 @@ export default {
                         }
                     }
                     this.selectedUser.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
@@ -157,7 +160,7 @@ export default {
                         }
                     }
                     this.allUsers.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'

@@ -6,7 +6,7 @@
             <div slot="right">
                 <el-button @click="modifySafeGrp({id: '', name: '', description: ''})" type="primary" size="small">创建安全组</el-button>
                 <el-button type="info" size="small" @click="getGroupListFn">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

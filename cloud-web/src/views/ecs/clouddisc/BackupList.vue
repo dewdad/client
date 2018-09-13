@@ -4,7 +4,7 @@
             云盘备份
             <div slot="right">
                 <el-button type="info" size="small" @click="getBackupList(false)">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>
@@ -86,14 +86,22 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            }
+            },
+            task: null
         };
     },
     components: {
         Recovery
     },
+    destroyed() {
+        clearInterval(this.task);
+    },
     mounted() {
         this.getBackupList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getBackupList(false);
+        }, 30000);
     },
     methods: {
         getBackupList(params) {

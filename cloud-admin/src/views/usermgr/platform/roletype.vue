@@ -7,7 +7,7 @@
             <el-col :span="24">
                 <el-form :inline="true"  size="small">
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="roleTypeList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="roleTypeList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>

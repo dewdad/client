@@ -4,8 +4,10 @@
             <el-col :span="24">
                 <el-form :inline="true"  size="small">
                     <el-form-item>
-                        <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
-                    </el-form-item>
+                        <el-button class=" fa fa-angle-left mr10" @click="goBack" size="small">&nbsp;返回</el-button>
+                        <span class="font16" v-if="stateParams.opType == 1"> 增加配置</span>
+                        <span class="font16" v-if="stateParams.opType != 1"> 编辑配置</span>
+                     </el-form-item>
 
                 </el-form>
             </el-col>
@@ -25,7 +27,7 @@
                 </el-form>
                 <el-form ref="valueListForm" :inline="false"  :show-message="false" inline-message size="small" :model="valueListForm"  label-width="80px">
                     <el-form-item label="值：" prop="value">
-                        <el-button type="primary" class="font12 ml20" @click="addValue">添加值</el-button>
+                        <el-button type="primary" class="font12 " @click="addValue">添加值</el-button>
                     </el-form-item>
                     <div v-for="(item,index) in valueListForm.itemlist" :key="index">
                         <el-form-item label="编码：" prop="code" style="display: inline-block;">
@@ -43,7 +45,7 @@
                         <el-button type="primary" class="font12 ml20" @click="deleteCurrent(index)" size="small">删 除</el-button>
                     </div>
                     <el-form-item>
-                        <el-button type="primary" class="font12 ml20" @click="submitForm">提  交</el-button>
+                        <el-button type="primary" class="font12 " @click="submitForm">提  交</el-button>
                         <el-button type="default" class="font12 ml20" @click="cancel">取 消</el-button>
                     </el-form-item>
                 </el-form>
@@ -188,7 +190,7 @@ export default {
                     console.log('res',res);
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$confirm('操作成功');
+                        return this.$alert('操作成功','提示');
 
                     }else{
                         this.$alert('添加失败', '提示', {
@@ -208,7 +210,7 @@ export default {
                 .then(res => {
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$confirm('操作成功');
+                        return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('修改失败', '提示', {
                             type: 'error'

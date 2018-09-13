@@ -59,10 +59,10 @@ export async function delRole(data) {
  *获取权限列表
  * @param {*}
  */
-export async function getMenuListByType(data) {
+export async function getMenuTreeByRoleId(data) {
     console.log('data',data);
-    console.log('RoleMgr.getMgrUser',RoleMgr.getMenuListByType);
-    let url = RoleMgr.getMenuListByType;
+    console.log('RoleMgr.getMgrUser',RoleMgr.getMenuTreeByRoleId);
+    let url = RoleMgr.getMenuTreeByRoleId;
     let response = await http.get(url,{
         params: data
     });

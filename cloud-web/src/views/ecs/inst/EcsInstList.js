@@ -243,7 +243,8 @@ export default {
             // 分页
             pageIndex: 1,
             limit: 10,
-            totalItems: 0
+            totalItems: 0,
+            task: null
         };
     },
     computed: {},
@@ -276,8 +277,15 @@ export default {
         Retrieval,
         flavorConfirm
     },
-    destroyed() {},
-    created() {},
+    destroyed() {
+        clearInterval(this.task);
+    },
+    created() {
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getEcsInstList({show: false});
+        }, 30000);
+    },
     watch: {
         options: {
             deep: true,
@@ -865,7 +873,7 @@ export default {
                                         ret.hide();
                                         this.$message.success($t('common.successOpt'));
                                         this.getEcsInstList({show: false});
-                                    }, 1000);
+                                    }, 3000);
                                 },
                                 () => {
                                     ret.loading = false;

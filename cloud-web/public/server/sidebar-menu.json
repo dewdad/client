@@ -35,6 +35,11 @@
                         "text": "云盘备份",
                         "sref": "app.ecs.backuplist",
                         "psref": "app.ecs.storage"
+                    },
+                    {
+                        "text": "自动快照策略",
+                        "sref": "app.ecs.autosnapstrategy",
+                        "psref": "app.ecs.storage"
                     }
                 ]
             },
@@ -101,16 +106,6 @@
                     {
                         "text": "本实例磁盘",
                         "sref": "app.ecs.inst.disk",
-                        "psref": "ecs.inst"
-                    },
-                    {
-                        "text": "本实例快照",
-                        "sref": "app.ecs.inst.snap",
-                        "psref": "ecs.inst"
-                    },
-                    {
-                        "text": "本实例安全组",
-                        "sref": "app.ecs.inst.securitygrp",
                         "psref": "ecs.inst"
                     }
                 ]

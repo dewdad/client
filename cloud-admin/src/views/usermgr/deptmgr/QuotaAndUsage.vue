@@ -83,7 +83,7 @@
     </el-dialog>
 </template>
 <script>
-
+import {searchQuota} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'app',
 
@@ -136,7 +136,8 @@ export default {
                     backup: '',
                     backupSize: ''
                 }
-            }
+            },
+            item:{}
 
         };
     },
@@ -146,6 +147,8 @@ export default {
     methods: {
         show(item) {
             this.isShow = true;
+            this.item = item;
+            this.searchQuota();
             if(item.usage && item.quota){
                 this.dept.usage = item.usage;
                 this.dept.quota = item.quota;
@@ -156,6 +159,17 @@ export default {
                 this.resolve = resolve;
             });
 
+        },
+        //通过租户id查找用户
+        searchQuota(){
+            searchQuota(this.item.id).then(ret => {
+                $log('list....searchByProjectId', ret);
+                let resData = ret.data;
+                if((resData && resData.quota) || (resData && resData.usage)){
+                    this.dept.quota = resData.quota || [];
+                    this.dept.usage = resData.usage || [];
+                }
+            });
         },
         hide() {
             this.isShow = false;
