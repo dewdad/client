@@ -105,7 +105,7 @@ export default {
         // y轴单位
         yUnit: {
             type: String,
-            default: '%'
+            default: ''
         },
         // 折线颜色
         lineStyle: {
