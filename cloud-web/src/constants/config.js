@@ -1,8 +1,8 @@
 /*
  * @Author: sunersheng 
  * @Date: 2018-08-03 10:45:15 
- * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-03 15:27:56
+ * @Last Modified by: sunersheng
+ * @Last Modified time: 2018-09-13 16:31:42
  * 返回码
  */
 
@@ -13,7 +13,7 @@ const ZT_CONFIG = {
     INPUT_MAXLENGTH: 100, //一些输入框允许最大输入长度（比如：名称）
     MOBLIE_NUMBER_MAX: 11, //手机号码最大位数
     IMAGE_ACCEPT: 'jpg,jpeg,png', //支持的文件格式
-    IMAGE_SIZE_MAX: 10, //最大限制大小，单位默认M
+    IMAGE_SIZE_MAX: 8, //最大限制大小，单位默认M
     IMAGE_TOTAL_LIMIT: 9, //上传材料证明（限9张）
     BUSINESS_LICENSE_NO_LENGTH: 18, //统一社会信用代码位数：18位
     COMPANY_ACCOUNT_LENGTH: 30, //公司对公账户位数
@@ -27,7 +27,13 @@ const ZT_CONFIG = {
 
     /**绑定解绑连接IP、绑定解绑公网IP 判断floatip是连接ip还是公网ip的前缀*/
     FLOAT_IP_IS_PUBLIC_IP: '43.',
-    FLOAT_IP_IS_CONNECT_IP: '10.3'
+    FLOAT_IP_IS_CONNECT_IP: '10.3',
+
+    //工单管理 ticketSystem
+    TS_IMAGE_ACCEPT: 'jpg,jpeg,png,bmp,gif,txt,rar,zip,doc,xls,docx,xlsx,pdf,ini,conf,eml',
+    TS_IMAGE_SIZE_MAX: 8, //最大限制大小，单位默认M
+    TS_IMAGE_TOTAL_LIMIT: 3, //附件数限制
+    TS_TICKET_AUTO_CLOSED_DAY: 30, //30天后工单自动关闭
 };
 
 export default ZT_CONFIG;

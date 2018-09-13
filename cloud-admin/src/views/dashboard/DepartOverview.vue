@@ -5,12 +5,12 @@
             <el-col :span="24" style="height: 100%;">
                 <!-- 头部(部门选择) -->
                 <div class="selDepart mb20">
-                    <div class="finger-cursor" @click="selDepartBox">
-                        <span class="el-dropdown-link font18">
+                    <div class="finger-cursor">
+                        <span class="el-dropdown-link font18" @click="selDepartBox">
                             {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
                         </span>
                     </div>
-                    <el-tree v-show="false"
+                    <el-tree v-show="departShow"
                     :data="departData" 
                     :expand-on-click-node="false" 
                     :props="defaultProps"
@@ -40,7 +40,7 @@
                         <el-col :span="8">
                             <div class="floor-one__box">
                                 <div class="box-left">
-                                    <i class="iconfont icon-CPU-gailan color-primary"></i>
+                                    <i class="iconfont icon-CPU-gailan" style="color: #7460ee;"></i>
                                 </div>
                                 <div class="box-right">
                                     <div class="title pull-left">
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="usageBox">
                                         <span class="color-secondary font12 usage">已使用：{{parseInt(usages.cpu/quota.cpu) || '0'}}%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || 0" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.cpu/quota.cpu) || 0" class="pull-right" color="#7460ee"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                         <el-col :span="8">
                             <div class="floor-one__box">
                                 <div class="box-left">
-                                    <i class="iconfont icon-neicun-gailan color-primary"></i>
+                                    <i class="iconfont icon-neicun-gailan" style="color: #18bcc9;"></i>
                                 </div>
                                 <div class="box-right">
                                     <div class="title pull-left">
@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="usageBox">
                                         <span class="color-secondary font12 usage">已使用：{{parseInt(usages.ram/quota.ram) || 0}}%</span>
-                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || 0" class="pull-right" color="#0d7ef2"></el-progress>
+                                        <el-progress type="circle" :width="48" :show-text="false" :stroke-width="4" :percentage="parseInt(usages.ram/quota.ram) || 0" class="pull-right" color="#18bcc9"></el-progress>
                                     </div>
                                 </div>
                             </div>
@@ -171,8 +171,8 @@
                 </div>
                 <!-- 租户 -->
                 <div class="floor-tenant mt20">
-                    <el-row :gutter="20" style="min-height: 336px;">
-                        <el-col :span="8">
+                    <el-row style="min-height: 336px;">
+                        <el-col :span="8" style="padding-right: 12px;">
                             <div class="floor-tenant__box">
                                 <div class="title demo-input-suffix">
                                     <span class="mr40 font16 lh32">租户</span>
@@ -304,6 +304,9 @@
         }
     }
     .floor-tenant{
+        .el-row{
+            background-color: #f6f8fb;
+        }
         &__box{
             background-color: #fff;
             padding-bottom: 30px;
