@@ -160,9 +160,9 @@ export default {
             };
             return getDiskList(params).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    let resData = res.result;
-                    if (resData && resData.records) {
-                        this.rowItem = resData.records[0] || {};
+                    let resData = res.data;
+                    if (resData && resData.data) {
+                        this.rowItem = resData.data[0] || {};
                     }
                 }
             });

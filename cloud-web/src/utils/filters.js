@@ -195,3 +195,14 @@ Vue.filter('getScrollWidth', (string, ele) => {
         return 0;
     }
 });
+
+Vue.filter('getWeekString', string => {
+    if (string === '') return '';
+    let week = ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+    let newString = [];
+    let arr = string.split(',');
+    for (const iterator of arr) {
+        newString.push(week[iterator]);
+    }
+    return newString.join('，');
+});

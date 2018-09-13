@@ -1,60 +1,54 @@
 <template>
-    <div class="page-main">
+    <div class="page-main" v-loading="loading">
         <ecs-disk-detail-header :rowItem='rowItem' @refresh="getDiskInfoById"></ecs-disk-detail-header>
         <div class="page-body">
             <!-- 基本信息 -->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="iconfont icon-user_profile_people mr10"></i>基本信息
-                    <div class="text-right panel-heading__right">
+                    <!-- <div class="text-right panel-heading__right">
                         <a class="mr10 finger-cursor" @click="modifyDiskDescrip">修改磁盘描述</a>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="panel-body zt-panel-body-info">
                     <table class="table zt-table-info">
                         <tbody>
                             <tr>
-                                <td>磁盘ID：
+                                <td>磁盘ID：</td>
+                                <td>
                                     <span>{{rowItem.id}}</span>
                                 </td>
-                                <td>磁盘属性：
-                                    <span v-if="rowItem.isBoot==='1'">系统盘</span>
-                                    <span v-if="rowItem.isBoot==='0'">数据盘</span>
+                                <td>磁盘属性：</td>
+                                <td>
+                                    <span v-if="rowItem.bootable===true">系统盘</span>
+                                    <span v-if="rowItem.bootable===false">数据盘</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>磁盘种类：
-                                    <span v-if="rowItem.type=='SATA'">高效云盘</span>
-                                    <span v-if="rowItem.type=='SSD'">SSD云盘</span>
+                                <td>磁盘状态：</td>
+                                <td>
+                                    <zt-status :status="statusArr" :value="rowItem.status" class="text-nowrap status-column"></zt-status>
                                 </td>
-                                <td>区域：
-                                    <span v-if="rowItem.zone=='az1.dc1'">北京1</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>磁盘状态：
-                                    <span class="color090">{{rowItem.diskStatus}}</span>
-                                </td>
-                                <td>创建时间：
-                                    <span>{{rowItem.createDate}}</span>
+                                <td>创建时间：</td>
+                                <td>
+                                    <span>{{rowItem.created_at|date}}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>磁盘名称：
-                                    <span>{{rowItem.name}}</span>
+                                <td>磁盘名称：</td>
+                                <td>
+                                    <span v-if="rowItem.attachments && rowItem.attachments.length && rowItem.attachments[0].device === '/dev/vda'">{{rowItem.name || rowItem.attachments[0].hostname + '-系统盘'}}</span>
+                                    <span v-else>{{rowItem.name}}</span>
                                 </td>
-                                <td>本磁盘快照：
-                                    <span>共{{rowItem.countSnapshot || '0'}}个快照
-                                        <router-link :to="{name:'app.ecs.snapshot.detail',params:{id:rowItem.id,item:rowItem}}" class="font12 ml5">查看详情</router-link>
-                                    </span>
+                                <td>磁盘描述：</td>
+                                <td>
+                                    <span>{{rowItem.description || '-'}}</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td>磁盘容量：
-                                    <span>{{rowItem.diskSize}}GB</span>
-                                </td>
-                                <td>磁盘描述：
-                                    <span>{{rowItem.remark || '-'}}</span>
+                                <td>磁盘容量：</td>
+                                <td colspan="3">
+                                    <span>{{rowItem.size}}GB</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -65,32 +59,31 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="iconfont icon-user_profile_people mr10"></i>磁盘挂载信息
-                    <div class="text-right panel-heading__right">
+                    <!-- <div class="text-right panel-heading__right">
                         <a class="mr10 finger-cursor" @click="modifyDiskProp">修改属性</a>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="panel-body zt-panel-body-info">
                     <table class="table zt-table-info">
                         <tbody class="">
                             <tr>
                                 <td>所挂载的实例：
-                                    <router-link v-if="!!rowItem.instanceId" :to="{name:'app.ecs.inst.detail',params:{id:rowItem.instanceId}}"></router-link>
-                                    <span v-else>{{rowItem.instanceId || '(未设置)' }}</span>
-                                    <span>/</span>
-                                    <span>{{rowItem.instanceName || '(未设置)' }}</span>
+                                    <router-link v-if="rowItem.attachments && rowItem.attachments.length" :to="{name:'app.ecs.inst.detail',params:{id:rowItem.attachments[0].serverId}}">{{rowItem.attachments[0].serverId}}/{{rowItem.attachments[0].hostname}}</router-link>
+                                    <span v-else>(未设置)</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>设备名：
-                                    <span>{{ rowItem.mount || "-"}}</span>
+                                    <span v-if="rowItem.attachments && rowItem.attachments.length">{{ rowItem.attachments[0].device }}</span>
+                                    <span v-else>-</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>           
+            </div>
         </div>
-        
+
         <!-- 对话框 修改磁盘描述 -->
         <modify-disk-descrip-dialog ref="ModifyDiskDescripDialog" />
         <!-- 对话框 修改属性 -->
@@ -102,17 +95,20 @@
 import EcsDiskDetailHeader from './detailHeader';
 import ModifyDiskDescripDialog from './../../inst/ecsDialog/ModifyDiskDescripDialog';
 import ModifyDiskPropDialog from './../../inst/ecsDialog/ModifyDiskPropDialog';
-
 import {getDiskList} from '@/service/ecs/disk/disk.js';
+import {DISK_STATUS} from '@/constants/dicts/ecs';
+let statusArr = [{text: '全部', state: true, value: ''}, ...DISK_STATUS];
 export default {
     components: {
-        EcsDiskDetailHeader,        
+        EcsDiskDetailHeader,
         ModifyDiskDescripDialog,
         ModifyDiskPropDialog
     },
     data() {
         let stateParams = this.$route.params || {};
         return {
+            statusArr,
+            loading: false,
             stateParams,
             diskId: stateParams.id,
             rowItem: stateParams.item || {}
@@ -136,16 +132,19 @@ export default {
                 },
                 id: this.stateParams.id //传入磁盘id
             };
+            this.loading = true;
             getDiskList(params).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    let resData = res.result;
-                    if (resData && resData.records) {
-                        this.rowItem = resData.records[0] || {};
+                    let resData = res.data;
+                    if (resData && resData.data) {
+                        this.rowItem = resData.data[0] || {};
                     }
                 }
+            }).finally(() => {
+                this.loading = false;
             });
         },
-        
+
         /**
          * 修改磁盘描述
          */
@@ -180,8 +179,7 @@ export default {
                     }
                 });
         }
-    },
-    
+    }
 };
 </script>
  
