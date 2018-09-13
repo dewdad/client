@@ -18,12 +18,6 @@ let statusArr = [
         type: 'progress'
     },
     {
-        text: '创建中',
-        value: 'creating',
-        className: 'color-primary',
-        type: 'progress'
-    },
-    {
         text: '使用中',
         state: false,
         value: 'in-use',
@@ -81,6 +75,13 @@ let statusArr = [
         type: 'progress'
     },
     {
+        text: '备份失败',
+        value: 'error_backing-up',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
         text: '恢复错误',
         value: 'error_restoring',
         className: 'color-danger',
@@ -92,13 +93,6 @@ let statusArr = [
         value: 'restoring-backup',
         className: 'color-progress-warning',
         type: 'progress'
-    },
-    {
-        text: '备份失败',
-        value: 'error_backing-up',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
     },
     {
         text: '上传中',

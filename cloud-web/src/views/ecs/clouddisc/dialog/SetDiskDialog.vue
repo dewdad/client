@@ -159,8 +159,8 @@
             </div>
         </div>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="font12" @click="confirm">确 定</el-button>
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="info" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm">确 定</el-button>
         </span>
     </el-dialog>
 </template>

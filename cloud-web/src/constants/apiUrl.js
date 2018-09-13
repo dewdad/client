@@ -114,10 +114,10 @@ export const API_ECS = {
         createDisk: '/compute/disk'
     },
     policy: {
-        getPolicy: ECS_CTRL + '/policy/list',
-        createPolicy: ECS_CTRL + '/policy',
-        modifyPolicy: ECS_CTRL + '/policy/{policy_id}',
-        deletePolicy: ECS_CTRL + '/policy/{policy_id}'
+        getPolicy: '/compute/policy/listPolicy',
+        createPolicy: '/compute/policy',
+        modifyPolicy: '/compute/policy/{policy_id}',
+        udpateSnapshot: '/compute/policy/snapshot-policy'
     },
     images: {
         createImage: '/compute/server/createImage/{instanceId}',
