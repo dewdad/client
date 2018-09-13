@@ -122,7 +122,7 @@ export default {
                     this.confirmBtn = false;
                     this.hide();
                     this.setting();
-                    this.$confirm('操作成功');
+                    this.$confirm('操作成功','提示');
                     return;
                 }else{
                     this.$alert('操作失败', '提示', {

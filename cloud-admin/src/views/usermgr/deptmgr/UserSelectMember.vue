@@ -84,15 +84,21 @@ export default {
             projectList(param).then(ret => {
                 $log('list', ret);
                 let resData = ret.data;
-                if(resData){
+                if(resData && resData.data){
                     let allArr = [];
                     for(let i = 0;i < resData.data.length;i++){
-                        for(let j = 0;j < this.selectedProject.length;j++){
-                            if(this.selectedProject[j].id !== resData.data[i].id){
-                                allArr.push(resData.data[i]);
+                        if(this.selectedProject.length > 0){
+                            for(let j = 0;j < this.selectedProject.length;j++){
+                                if(this.selectedProject[j].id !== resData.data[i].id){
+                                    allArr.push(resData.data[i]);
+                                }
                             }
+                        }else{
+                            allArr.push(resData.data[i]);
                         }
+
                     }
+                    console.log('allArr',allArr);
                     this.allProject = allArr || [];
                 }
 
@@ -131,7 +137,7 @@ export default {
                         }
                     }
                     this.selectedProject.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
@@ -159,7 +165,7 @@ export default {
                         }
                     }
                     this.allProject.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'

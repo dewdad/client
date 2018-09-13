@@ -23,7 +23,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {selectAllUsers,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
+import {listProjectByDomain,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
         return{
@@ -48,8 +48,6 @@ export default {
             this.isShow = true;
             this.item = item;
             this.brunch = brunch;
-            console.log('item????',item);
-            console.log('item????,,,,',brunch);
             this.searchByProjectId();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -66,28 +64,33 @@ export default {
             searchByProjectId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
                 let resData = ret.data;
+                this.listProject();
                 if(resData){
-                    this.selectAllProject();
                     this.selectedUser = resData || [];
                 }
             });
         },
         //查询所有用户
-        selectAllProject(){
+        listProject(){
             let param = {
                 limit:9999,
-                domainId:this.brunch.id
+                domain:this.brunch.id
             };
-            selectAllUsers(param).then(ret => {
+            console.log('param',param);
+            listProjectByDomain(param).then(ret => {
                 $log('list', ret);
                 let resData = ret.data;
-                if(resData){
+                if(resData && resData.data){
                     let allArr = [];
                     for(let i = 0;i < resData.data.length;i++){
-                        for(let j = 0;j < this.selectedUser.length;j++){
-                            if(this.selectedUser[j].id !== resData.data[i].id){
-                                allArr.push(resData.data[i]);
+                        if(this.selectedUser.length > 0){
+                            for(let j = 0;j < this.selectedUser.length;j++){
+                                if(this.selectedUser[j].id !== resData.data[i].id){
+                                    allArr.push(resData.data[i]);
+                                }
                             }
+                        }else{
+                            allArr.push(resData.data[i]);
                         }
                     }
                     console.log('allArr',allArr);
@@ -129,7 +132,7 @@ export default {
                         }
                     }
                     this.selectedUser.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
@@ -157,7 +160,7 @@ export default {
                         }
                     }
                     this.allUsers.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'

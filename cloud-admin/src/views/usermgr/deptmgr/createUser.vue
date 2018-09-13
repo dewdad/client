@@ -68,6 +68,14 @@ export default {
                 callback();
             }
         };
+        // let compairPassword = function(rule, value, callback){
+        //     let pasd = this.$refs.form.password || 0;
+        //     if (pasd !== value) {
+        //         callback(new Error('请确保两次输入的密码一致'));
+        //     } else {
+        //         callback();
+        //     }
+        // };
         return {
             opType: 1,
             domainName:'',
@@ -92,7 +100,8 @@ export default {
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
                 'confirpwd':[
-                    { required: true,message: '必填项',trigger: ['blur']}
+                    { required: true,message: '必填项',trigger: ['blur']},
+                    // { validator: compairPassword, trigger: 'blur' }
                 ],
                 'roleId':[
                     { required: true,message: '必填项',trigger: ['change']}
@@ -124,7 +133,7 @@ export default {
                     createUser(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$confirm('操作成功');
+                            return this.$confirm('操作成功','提示');
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'
