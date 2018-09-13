@@ -99,7 +99,6 @@ export const API_ECS = {
         createBackup: '/compute/disk/createBackup',
         getDiskList: '/compute/disk/list',
         getAllDisk: '/compute/disk/listAll',
-        setDiskSnapshotPolicy: ECS_CTRL + '/disk/snapshot-policy',
         updateDisk: '/compute/disk/{disk_id}',
         diskRollback: ECS_CTRL + '/disk/{disk_id}/rollback/{snapshot_id}', //回滚磁盘
         mountDisk: '/compute/disk/mountVolume', //挂载云盘
@@ -117,10 +116,10 @@ export const API_ECS = {
         createDisk: '/compute/disk'
     },
     policy: {
-        getPolicy: ECS_CTRL + '/policy/list',
-        createPolicy: ECS_CTRL + '/policy',
-        modifyPolicy: ECS_CTRL + '/policy/{policy_id}',
-        deletePolicy: ECS_CTRL + '/policy/{policy_id}'
+        getPolicy: '/compute/policy/listPolicy',
+        createPolicy: '/compute/policy',
+        modifyPolicy: '/compute/policy/{policy_id}',
+        udpateSnapshot: '/compute/policy/snapshot-policy'
     },
     images: {
         createImage: '/compute/server/createImage/{instanceId}',

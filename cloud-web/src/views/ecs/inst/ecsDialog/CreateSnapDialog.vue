@@ -19,7 +19,7 @@
                 <span class="input-help">快照名称为2-128个字符，快照名不能以auto开头。</span>
             </zt-form-item>
             <!-- 备份描述 -->
-            <zt-form-item label="备份描述" >
+            <zt-form-item label="快照描述" >
                 <el-input size="small" v-model="ruleForm.description"></el-input>
             </zt-form-item>
         </zt-form>

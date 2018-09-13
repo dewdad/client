@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <div style="padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #e8e8e8;">
-            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
+            <el-button  icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span class="pull-right font16">用户{{opType ===1 ? '创建' : '编辑'}}</span>
         </div>
         <div class="page-body">
@@ -60,7 +60,22 @@ export default {
     },
     data() {
         let stateParams = this.$route.params || {};
-
+        let validateEmail = function(rule, value, callback){
+            let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (!reg.test(value)) {
+                callback(new Error('请输入正确的邮箱格式'));
+            } else {
+                callback();
+            }
+        };
+        // let compairPassword = function(rule, value, callback){
+        //     let pasd = this.$refs.form.password || 0;
+        //     if (pasd !== value) {
+        //         callback(new Error('请确保两次输入的密码一致'));
+        //     } else {
+        //         callback();
+        //     }
+        // };
         return {
             opType: 1,
             domainName:'',
@@ -85,10 +100,14 @@ export default {
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
                 'confirpwd':[
-                    { required: true,message: '必填项',trigger: ['blur']}
+                    { required: true,message: '必填项',trigger: ['blur']},
+                    // { validator: compairPassword, trigger: 'blur' }
                 ],
                 'roleId':[
                     { required: true,message: '必填项',trigger: ['change']}
+                ],
+                'email':[
+                    { validator: validateEmail, trigger: 'blur' }
                 ]
             },
         };
@@ -114,7 +133,7 @@ export default {
                     createUser(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$confirm('操作成功');
+                            return this.$alert('操作成功','提示');
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'

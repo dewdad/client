@@ -1,11 +1,11 @@
 <template>
     <div class="page-main">
         <div style="padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #e8e8e8;">
-            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
+            <el-button  icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span class="pull-right font16">租户{{opType ===1 ? '创建' : '编辑'}}</span>
         </div>
         <div class="page-body">
-            <el-form class="base-info" ref="form" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="115px" style="width:633px;" :rules="rules" inline-message>
+            <el-form class="base-info" ref="form" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="180px" style="width:633px;" :rules="rules" inline-message>
                 <div class="mb20 font16">
                     <i class="el-icon-tickets"></i>
                     <span class="pl6">基本信息</span>
@@ -31,7 +31,7 @@
                     <el-radio v-model="form.status" label='0'>否</el-radio>
                 </el-form-item>
                 <div class="mb20 font16">
-                    <i class="icon-new-配额"></i>
+                    <i class="el-icon-tickets"></i>
                     <span class="pl6">配额</span>
                 </div>
                 <el-form-item label="VCPU数量：" prop="quota.cpu"  >
@@ -220,7 +220,7 @@ export default {
                     createRenter(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$confirm('操作成功');
+                            return this.$alert('操作成功','提示');
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'

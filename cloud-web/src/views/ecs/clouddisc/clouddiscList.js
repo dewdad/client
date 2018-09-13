@@ -29,5 +29,9 @@ export default {
     created() {
         //this.getDiskList();
     },
-    methods: {}
+    methods: {
+        refresh() {
+            this.$refs.cloudDisk.getDiskList();
+        }
+    }
 };

@@ -117,6 +117,7 @@ export default {
                         .then(res => {
                             if (res.code === '0000') {
                                 this.$message.success('操作成功');
+                                window.open(API_URL + res.data) ;
                                 this.resolve(data);
                                 this.hide();
                             }

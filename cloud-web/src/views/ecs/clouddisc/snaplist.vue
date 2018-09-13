@@ -4,7 +4,7 @@
             云盘快照
             <div slot="right">
                 <el-button type="info" size="small" @click="getSnapshotList">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>
@@ -46,6 +46,7 @@
             </zt-table>
         </div>
         <create-disk ref="CreateDisk"/>
+        <delete-dialog ref="DeleteDailog"/>
     </div>
 </template>
 <script>
@@ -54,13 +55,50 @@ import CreateDisk from './dialog/CreateDisk';
 let statusArr = [
     {text: '全部', state: true, value: ''},
     {
-        text: '成功',
-        state: false,
+        text: '可用',
         value: 'available',
         className: 'color-success',
         icon: 'icon-chenggong',
         type: 'font'
-    }
+    },
+    {
+        text: '错误',
+        value: 'error',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '备份中',
+        value: 'backing-up',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '删除时出错',
+        value: 'error_deleting',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '删除中',
+        value: 'deleting',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '创建中',
+        value: 'downloading',
+        className: 'color-progress-primary',
+        type: 'progress'
+    },
+    {
+        text: '创建中',
+        value: 'creating',
+        className: 'color-progress-primary',
+        type: 'progress'
+    },
 ];
 export default {
     data() {
@@ -120,20 +158,12 @@ export default {
             });
         },
         deleteSnap(row) {
-            this.$messageBox
-                .confirm('确定要对该快照进行删除操作吗？', '删除', {
-                    type: 'warning',
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    subMessage: row.name
-                })
-                .then(() => {
-                    deleteSnapshots(row.id).then(res => {
-                        if (res.code === '0000') {
-                            this.$message.success('操作成功');
-                            this.getSnapshotList();
-                        }
-                    });
-                });
+            this.$refs.DeleteDailog.show('快照', row.name, () => {
+                return deleteSnapshots(row.id);
+            }).then(res => {
+                this.$message.success('操作成功');
+                this.getSnapshotList();
+            });
         }
     }
 };

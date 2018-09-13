@@ -7,7 +7,7 @@
             </zt-form-item>
             <!-- 磁盘大小 -->
             <zt-form-item label="磁盘大小" prop="size">
-               <el-input-number size="small" style="width: 100%" :min="50" :step="1" precision="0" controls-position="right" v-model="ruleForm.size"></el-input-number>
+               <el-input-number size="small" style="width: 100%" :min="50" :step="1" :precision="0" controls-position="right" v-model="ruleForm.size"></el-input-number>
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">

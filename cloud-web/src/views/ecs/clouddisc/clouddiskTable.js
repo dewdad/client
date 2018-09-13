@@ -12,11 +12,24 @@ import {getDiskList, resizeDisk, unmoutDisk, releaseDisk} from '@/service/ecs/di
 let statusArr = [
     {text: '全部', state: true, value: ''},
     {
+        text: '创建中',
+        value: 'creating',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
         text: '使用中',
         state: false,
         value: 'in-use',
         className: 'color-success',
         icon: 'zticon-running_people'
+    },
+    {
+        text: '创建错误',
+        value: 'error',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
     },
     {
         text: '待挂载',
@@ -25,8 +38,96 @@ let statusArr = [
         icon: 'zticon-recentcreation_peop'
     },
     {
-        text: '恢复失败',
-        value: 'error-restoring',
+        text: '连接中',
+        value: 'attaching',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '挂载中',
+        value: 'in-user',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '分离中',
+        value: 'detaching',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除中',
+        value: 'deleting',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除错误',
+        value: 'error_deleting',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '备份中',
+        value: 'backing-up',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '备份失败',
+        value: 'error_backing-up',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复错误',
+        value: 'error_restoring',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复中',
+        value: 'restoring-backup',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '上传中',
+        value: 'uploading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '下载中',
+        value: 'downloading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容中',
+        value: 'extending',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容错误',
+        value: 'error_extending',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '回滚中',
+        value: 'rollbacking',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '回滚错误',
+        value: 'error_rollbacking',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -128,11 +229,19 @@ export default {
             retrievalData: [],
             selectLabelList: [],
             showId: '',
-            status: ''
+            status: '',
+            task: null
         };
+    },
+    destroyed() {
+        clearInterval(this.task);
     },
     created() {
         this.getDiskList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getDiskList(false);
+        }, 30000);
     },
     methods: {
         filterHandler(filters) {
@@ -153,7 +262,7 @@ export default {
             this.getDiskList();
         },
         //获取云盘列表数据
-        getDiskList() {
+        getDiskList(loading = true) {
             let params = {
                 paging: this.searchObj.paging,
                 fileds: {
@@ -161,8 +270,13 @@ export default {
                 },
                 status: this.status
             };
-            this.loading = true;
-            this.tableData = [];
+            if (this.instanceId !== '') {
+                params['serverId'] = this.instanceId;
+            }
+            if (loading) {
+                this.loading = true;
+                this.tableData = [];
+            }
             getDiskList(params)
                 .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
@@ -198,10 +312,10 @@ export default {
         },
 
         //卸载
-        unmountDisk(rowItem) {
+        unmoutDisk(rowItem) {
             let msg = {};
-            switch (rowItem.isBoot) {
-                case '1': {
+            switch (rowItem.bootable) {
+                case true: {
                     msg.diskType = '系统盘';
                     msg.alertInfo = `
                     1、云硬盘卸载前，请保证该云硬盘在操作系统内的逻辑磁盘已通过unmount等命令进行卸载操作。<br/>
@@ -209,7 +323,7 @@ export default {
                     `;
                     break;
                 }
-                case '0': {
+                case false: {
                     msg.diskType = '数据盘';
                     msg.alertInfo = `
                     1、云服务器卸载系统盘后，将无法登录及使用。<br/>
@@ -221,9 +335,9 @@ export default {
                 }
             }
             const h = this.$createElement;
-            let message = h('div', null, [
-                h('p', {class: {font16: true, mt10: true}}, `您确认要卸载此${msg.diskType}吗？`),
-                h('el-alert', {props: {type: 'warning', closable: false}}, [
+            let message = h('div', {style: {width: '500px'}}, [
+                h('p', {class: {font16: true}}, `您确认要卸载此${msg.diskType}吗？`),
+                h('el-alert', {class: {mt20: true}, props: {type: 'warning', closable: false, title: ''}}, [
                     h('p', {
                         attr: {slot: 'description'},
                         domProps: {
@@ -233,9 +347,21 @@ export default {
                 ])
             ]);
             //卸载磁盘
-            this.$confirm(message, '卸载磁盘').then(() => {
+            this.$confirm(message, '卸载云盘').then(() => {
                 //提交后台,卸载磁盘
-                unmoutDisk({disk_id: rowItem.id}).then();
+                unmoutDisk({volumeId: rowItem.id, instanceId: rowItem.attachments[0].serverId})
+                    .then(res => {
+                        if (res.code === '0000') {
+                            this.$message.success('操作成功');
+                            this.getDiskList(false);
+                            setTimeout(() => {
+                                this.getDiskList(false);
+                            }, 4000);
+                        }
+                    })
+                    .catch(err => {
+                        $log(err);
+                    });
             });
         },
 
@@ -243,8 +369,8 @@ export default {
         releaseDisk(rowItem) {
             const h = this.$createElement;
             let message = h('div', null, [
-                h('p', {class: {font16: true, mt10: true}}, `您确认要释放本磁盘吗？`),
-                h('el-alert', {props: {type: 'warning', closable: false}}, [
+                h('p', {class: {font16: true}}, `您确认要释放ID为${rowItem.id}的磁盘吗？`),
+                h('el-alert', {class: {mt20: true}, props: {type: 'warning', title: '', closable: false}}, [
                     h('p', {
                         attr: {slot: 'description'},
                         domProps: {
@@ -260,7 +386,15 @@ export default {
             //释放磁盘
             this.$confirm(message, '释放磁盘').then(() => {
                 //提交后台,释放磁盘
-                releaseDisk({disk_id: rowItem.id}).then();
+                releaseDisk({volumeId: rowItem.id}).then(res => {
+                    if (res.code === '0000') {
+                        this.$message.success('操作成功');
+                        this.getDiskList(false);
+                        setTimeout(() => {
+                            this.getDiskList(false);
+                        }, 4000);
+                    }
+                });
             });
         },
 
@@ -376,6 +510,9 @@ export default {
                     console.log('操作成功', ret);
                     this.$message.success('操作成功');
                     this.getDiskList();
+                    setTimeout(() => {
+                        this.getDiskList(false);
+                    }, 2000);
                 })
                 .catch(err => {
                     if (err) {

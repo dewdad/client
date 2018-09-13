@@ -8,6 +8,7 @@ export default {
     data() {
         return {
             legendData: ['CPU使用率', '内存使用率'],
+            legendWarnData: ['监控警告'],
             xData: [],
             xWarnData: [],
             seriesData_cpu:[],

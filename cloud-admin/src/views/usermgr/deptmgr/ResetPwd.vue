@@ -16,8 +16,8 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="confirm" :loading="confirmBtn">确 定</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" size="small" @click="confirm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -102,7 +102,7 @@ export default {
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;
-                                return this.$confirm('操作成功');
+                                return this.$alert('操作成功','提示');
                             }else{
                                 this.$alert('修改失败', '提示', {
                                     type: 'error'

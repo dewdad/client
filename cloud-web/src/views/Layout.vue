@@ -43,6 +43,7 @@
             <page-error v-if="pageLoadError"></page-error>
         </template>
         <real-name-verify v-if="showVerifyDialog" name="dialogVisible"></real-name-verify>
+        
     </el-container>
 </template>
 
@@ -63,6 +64,11 @@ export default {
             moduleName: '',
             isCollapse: true,
             openDelay: 300
+        };
+    },
+    provide() {
+        return {
+            layout: this
         };
     },
     components: {

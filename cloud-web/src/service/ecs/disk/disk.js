@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-12 15:42:57
+ * @Last Modified time: 2018-09-13 19:25:58
  * ecs模块-云盘
  */
 
@@ -32,9 +32,9 @@ export async function getDiskList(data) {
     return res && res.data;
 }
 
-export async function setDiskSnapshotPolicy({disk_ids, policy_id, source_page}) {
-    let url = API_ECS.disk.setDiskSnapshotPolicy;
-    let res = await http.post(url, {disk_ids, policy_id, source_page});
+export async function setDiskSnapshotPolicy({diskIds, policyId, sourcePage}) {
+    let url = API_ECS.policy.udpateSnapshot;
+    let res = await http.post(url, {diskIds, policyId, sourcePage});
     return res && res.data;
 }
 
@@ -69,25 +69,21 @@ export async function resizeDisk({disk_id, size}) {
  * 挂载云盘
  * @param {*} disk_id 云盘id
  * @param {*} instanceId 实例ID
- * @param {*} imageRef 镜像ID
- * @param {*} autoDelSnapshot 是否随磁盘删除快照
  */
-export async function mountDisk({disk_id, instanceId, imageRef, autoDelSnapshot}) {
-    let url = replaceParamVal(API_ECS.disk.mountDisk, [disk_id]);
-    let res = await http.post(url, {instanceId, imageRef, autoDelSnapshot});
+export async function mountDisk({volumeId, instanceId}) {
+    let res = await http.put(API_ECS.disk.mountDisk, {instanceId, volumeId});
     return res && res.data;
 }
 
 //卸载云盘
-export async function unmoutDisk({disk_id}) {
-    let url = replaceParamVal(API_ECS.disk.unmoutDisk, [disk_id]);
-    let res = await http.delete(url);
+export async function unmoutDisk({volumeId, instanceId}) {
+    let res = await http.put(API_ECS.disk.unmoutDisk, {volumeId, instanceId});
     return res && res.data;
 }
 
 //释放、删除云盘
-export async function releaseDisk({disk_id}) {
-    let url = replaceParamVal(API_ECS.disk.releaseDisk, [disk_id]);
+export async function releaseDisk({volumeId}) {
+    let url = replaceParamVal(API_ECS.disk.releaseDisk, [volumeId]);
     let res = await http.delete(url);
     return res && res.data;
 }
@@ -134,9 +130,15 @@ export async function deleteBackup(id) {
  * @param {*} data
  * @returns
  */
-export async function getAllDisk(data) {
-    let url = API_ECS.disk.getAllDisk;
-    let res = await http.get(url);
+export async function getAllDisk() {
+    let url = API_ECS.disk.getDiskList;
+    // data['paging']['offset'] = (data.paging.pageIndex - 1) * data.paging.limit + 1;
+    let res = await http.get(url, {
+        params: {
+            pageIndex: 1,
+            limit: 9999
+        }
+    });
     return res && res.data;
 }
 

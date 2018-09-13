@@ -2,86 +2,77 @@
     <div class="page-main">
         <page-header>
             自动快照策略
-            <el-button class="ml30" type="primary" size="small">北京1</el-button>
-            <el-button disabled size="small">北京2(即将开放)</el-button>
             <div slot="right">
                 <el-button type="primary" size="small" @click="AmendStrategy({},1)">创建策略</el-button>
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people" @click="getPolicy"></i>
+                    <i class="iconfont icon-icon-refresh" @click="getPolicy"></i>
                 </el-button>
             </div>
         </page-header>
         <div class="page-body mt10">
             <!-- 列表 -->
-            <div id="table">
-                <el-table class="font12" :data="tableData" header-row-class-name="data-list" style="width: 100%">
-                    <template v-for="col in cols">
-                        <!-- 自动快照策略名称 -->
-                        <template v-if="col.column=='nettype'">
-                            <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    {{scope.row.pname}}
-                                </template>
-
-                            </el-table-column>
-                        </template>
-                        <!-- 自动快照策略详情 -->
-                        <template v-if="col.column=='isBoot'">
-                            <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <ul style="line-height:1.5;" class="left">
-                                        <!-- ngIf: !item.toCpu -->
-                                        <li class="">
-                                            <span class="">创建时间： {{scope.row.execTime}}</span>
-                                        </li>
-                                        <li class="">
-                                            <span class="">重复日期：{{scope.row.repeatDate }}</span>
-                                        </li>
-                                        <li class="">
-                                            <span class="">保留时间：{{scope.row.saveDays=='-1' ? '不限' : (scope.row.saveDays+'天') }}</span>
-                                        </li>
-                                    </ul>
-                                </template>
-                            </el-table-column>
-                        </template>
-                        <!-- 关联磁盘数 -->
-                        <template v-if="col.column=='countDisk'">
-                            <el-table-column :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <el-tag>
-                                        <router-link :to="{name:'app.ecs.clouddisc-list',params:{policyId:scope.row.pid} }">{{scope.row.countDisk}}</router-link>
-                                    </el-tag>
-                                </template>
-                            </el-table-column>
-                        </template>
-                    </template>
-                    <!-- 操作 -->
-                    <template>
-                        <el-table-column label="操作" key="op" width="250">
+            <zt-table :data="tableData" @search="getPolicy" :paging="searchObj.paging">
+                <template v-for="col in cols">
+                    <!-- 自动快照策略名称 -->
+                    <template v-if="col.column=='nettype'">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
-                                <!-- 修改策略 -->
-                                <span @click="AmendStrategy(scope.row,2)" class="color-primary finger-cursor">修改策略</span>
-                                <b class="link-division-symbol"></b>
-                                <!-- 设置磁盘 -->
-                                <span @click="setDisk(scope.row)" class="color-primary finger-cursor">设置磁盘</span>
-                                <b class="link-division-symbol"></b>
-                                <!-- 删除策略 -->
-                                <span @click="deleteStrategy(scope.row)" class="color-primary finger-cursor">删除策略</span>
+                                {{scope.row.pname}}
+                            </template>
+
+                        </el-table-column>
+                    </template>
+                    <!-- 自动快照策略详情 -->
+                    <template v-if="col.column=='isBoot'">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
+                            <template slot-scope="scope">
+                                <ul style="line-height:1.5;" class="left">
+                                    <!-- ngIf: !item.toCpu -->
+                                    <li class="">
+                                        <span class="">创建时间：{{scope.row.execTime}}</span>
+                                    </li>
+                                    <li class="">
+                                        <span class="">重复日期：{{scope.row.repeatDate|getWeekString }}</span>
+                                    </li>
+                                    <li class="">
+                                        <span class="">保留时间：{{scope.row.saveDays=='-1' ? '不限' : (scope.row.saveDays+'天') }}</span>
+                                    </li>
+                                </ul>
                             </template>
                         </el-table-column>
                     </template>
-                </el-table>
-            </div>
-        </div>
-        <div class="pagination">
-            <el-pagination background :current-page="searchObj.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.limit" layout="sizes, prev, pager, next" :total="searchObj.totalItems">
-            </el-pagination>
+                    <!-- 关联磁盘数 -->
+                    <template v-if="col.column=='countDisk'">
+                        <el-table-column :prop="col.column" :label="col.text" :key="col.column">
+                            <template slot-scope="scope">
+                                <el-tag><router-link style="padding:0px" :to="{name:'app.ecs.clouddisc-list',params:{policyId:scope.row.pid} }">{{scope.row.countDisk}}</router-link></el-tag>
+                            </template>
+                        </el-table-column>
+                    </template>
+                </template>
+                <!-- 操作 -->
+                <template>
+                    <el-table-column label="操作" key="op" class-name="option-column" width="250">
+                        <template slot-scope="scope">
+                            <!-- 修改策略 -->
+                            <a @click="AmendStrategy(scope.row,2)" class="color-primary finger-cursor">修改策略</a>
+                            <b class="link-division-symbol"></b>
+                            <!-- 设置磁盘 -->
+                            <a @click="setDisk(scope.row)" class="color-primary finger-cursor">设置磁盘</a>
+                            <b class="link-division-symbol"></b>
+                            <!-- 删除策略 -->
+                            <a @click="deleteStrategy(scope.row)" class="color-primary finger-cursor">删除策略</a>
+                        </template>
+                    </el-table-column>
+                </template>
+            </zt-table>
         </div>
 
         <!-- 对话框 修改策略 -->
         <amend-strategy-dialog ref="AmendStrategyDialog" />
         <!-- 对话框 设置磁盘 -->
         <set-disk-dialog ref="SetDiskDialog" />
+        <delete-dialog ref="DeleteDailog" />
     </div>
 </template>
 <script>
@@ -110,29 +101,35 @@ export default {
             searchObj
         };
     },
+    filters: {
+        getWeekString: function(string) {
+            if (string === '') return '';
+            let week = ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+            let newString = [];
+            let arr = string.split(',');
+            for (const iterator of arr) {
+                newString.push(week[iterator]);
+            }
+            return newString.join('，');
+        }
+    },
     created() {
         this.getPolicy();
     },
     methods: {
         //获取自动快照策略
-        getPolicy() {
-            let data = {
-                limit: 100,
-                pageIndex: 1
-            };
-            getPolicy(data)
+        getPolicy(parpms) {
+            parpms = parpms || this.searchObj.paging;
+            getPolicy(parpms)
                 .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                         console.log('getPolicy', res);
-                        let resData = res.result;
-                        if (resData && resData.records) {
-                            this.tableData = resData.records || [];
-                            console.log('getPolicy tableData', this.tableData);
-                        }
+                        this.tableData = res.data.records || [];
+                        this.searchObj.paging.totalItems = res.data.total || 0;
                     }
                 })
                 .catch(err => {
-                    console.log('getPolicy err', err);                    
+                    console.log('getPolicy err', err);
                 });
         },
 
@@ -159,8 +156,8 @@ export default {
          * 删除策略
          */
 
-        deleteStrategy(rowItem) {
-            if (rowItem && rowItem.countDisk > 0) {
+        deleteStrategy(row) {
+            if (row && row.countDisk > 0) {
                 this.$confirm('请先删除关联磁盘', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -169,21 +166,11 @@ export default {
 
                 return;
             } else {
-                const h = this.$createElement;
-                let message = h('div', null, [h('p', {class: {font16: true, mt10: true}}, '您确定要删除自动快照策略:' + rowItem.pname + '吗？')]);
-                //删除确认
-                this.$confirm(message, '删除').then(() => {
-                    //提交后台,删除镜像
-                    deletePolicy(rowItem.pid)
-                        .then(res => {
-                            if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                                this.$message.success('删除成功');
-                                this.getPolicy(); //查询刷新数据；
-                            }
-                        })
-                        .catch(err => {
-                            console.log('deletePolicy err', err); 
-                        });
+                this.$refs.DeleteDailog.show('快照策略', row.pname, () => {
+                    return deletePolicy(row.pid);
+                }).then(res => {
+                    this.$message.success('操作成功');
+                    this.getPolicy();
                 });
             }
         },

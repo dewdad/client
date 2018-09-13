@@ -6,7 +6,7 @@
                 申请浮动IP
             </el-button>
             <el-button type="info" size="small" @click="fetchData">
-                <i class="iconfont icon-refresh_people"></i>
+                <i class="iconfont icon-icon-refresh"></i>
             </el-button>
         </div>
     </page-header>

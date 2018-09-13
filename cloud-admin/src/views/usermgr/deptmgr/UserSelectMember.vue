@@ -17,7 +17,7 @@
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">关 闭</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">关 闭</el-button>
         </span>
     </el-dialog>
 </template>
@@ -83,19 +83,23 @@ export default {
             $log('params', param);
             projectList(param).then(ret => {
                 $log('list', ret);
-                let resData = ret.data;
+                let resData = ret.data.data;
                 if(resData){
-                    let allArr = [];
-                    for(let i = 0;i < resData.data.length;i++){
-                        for(let j = 0;j < this.selectedProject.length;j++){
-                            if(this.selectedProject[j].id !== resData.data[i].id){
-                                allArr.push(resData.data[i]);
+                    let selectedProject = this.selectedProject;
+                    for(let i = 0;i < resData.length;i++){
+                        if(selectedProject.length > 0){
+                            let curId = resData[i].id;
+                            console.log('curId',curId);
+                            for(let x = 0 ;x < selectedProject.length ; x++){
+                                if(selectedProject[x].id === curId){
+                                    resData.splice(i,1);
+                                }
                             }
                         }
                     }
-                    this.allProject = allArr || [];
+                    console.log('allArr',resData);
+                    this.allProject = resData || [];
                 }
-
             });
         },
         hide() {
@@ -131,7 +135,7 @@ export default {
                         }
                     }
                     this.selectedProject.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
@@ -159,7 +163,7 @@ export default {
                         }
                     }
                     this.allProject.push(item[0]);
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'

@@ -16,7 +16,7 @@
                     设置自动快照策略
                 </el-button>
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people" @click="refresh"></i>
+                    <i class="iconfont icon-icon-refresh" @click="refresh"></i>
                 </el-button>
             </div>            
         </div>

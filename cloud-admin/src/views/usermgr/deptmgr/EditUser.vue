@@ -2,7 +2,7 @@
     <el-dialog title="修改用户" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules" label-width="120px">
             <!-- 名称 -->
-            <el-form-item label="部门" prop="domainId"  >
+            <el-form-item label="部门" prop="deptId"  >
                 <el-input   :value="domainName" disabled></el-input>
             </el-form-item>
 
@@ -21,8 +21,8 @@
 
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="submitForm" :loading="confirmBtn">确 定</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" size="small" @click="submitForm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -31,6 +31,14 @@ import { mapState } from 'vuex';
 import {editUser} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
+        let validateEmail = function(rule, value, callback){
+            let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (!reg.test(value)) {
+                callback(new Error('请输入正确的邮箱格式'));
+            } else {
+                callback();
+            }
+        };
         return{
             isShow: false,
             resolve: null,
@@ -41,7 +49,7 @@ export default {
             domainName:'',
             form:{
                 name: '',
-                domainId: '',
+                deptId: '',
                 description: '',
                 email: '',
 
@@ -50,6 +58,9 @@ export default {
                 'name':[
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
+                'email':[
+                    { validator: validateEmail, trigger: 'blur' }
+                ]
 
             }
         };
@@ -70,7 +81,7 @@ export default {
             this.form.email = item.email;
             this.brunch = brunch;
             this.domainName = brunch.name;
-            this.form.domainId = brunch.id;
+            this.form.deptId = brunch.id;
             console.log('item......',item);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -111,7 +122,7 @@ export default {
                     this.confirmBtn = false;
                     this.hide();
                     this.setting();
-                    this.$confirm('操作成功');
+                    this.$alert('操作成功','提示');
                     return;
                 }else{
                     this.$alert('操作失败', '提示', {

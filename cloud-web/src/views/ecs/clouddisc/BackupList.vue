@@ -3,8 +3,8 @@
         <page-header>
             云盘备份
             <div slot="right">
-                <el-button type="info" size="small" @click="getBackupList">
-                    <i class="iconfont icon-refresh_people"></i>
+                <el-button type="info" size="small" @click="getBackupList(false)">
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>
@@ -46,6 +46,7 @@
             </zt-table>
         </div>
         <recovery ref="Recovery"/>
+        <delete-dialog ref="DeleteDailog"/>
     </div>
 </template>
 <script>
@@ -85,14 +86,22 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            }
+            },
+            task: null
         };
     },
     components: {
         Recovery
     },
+    destroyed() {
+        clearInterval(this.task);
+    },
     mounted() {
         this.getBackupList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getBackupList(false);
+        }, 30000);
     },
     methods: {
         getBackupList(params) {
@@ -123,22 +132,12 @@ export default {
             });
         },
         deleteBackup(row) {
-            this.$messageBox
-                .confirm('确定要对该云盘备份进行删除操作吗？', '删除', {
-                    type: 'warning',
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    subMessage: row.name
-                })
-                .then(() => {
-                    deleteBackup(row.id).then(res => {
-                        if (res.code === '0000') {
-                            this.$message.success('操作成功');
-                            this.getBackupList();
-                        }
-                    });
-                }).catch(err => {
-                    $log(err);
-                });
+            this.$refs.DeleteDailog.show('备份', row.name, () => {
+                return deleteBackup(row.id);
+            }).then(res => {
+                this.$message.success('操作成功');
+                this.getBackupList();
+            });
         }
     }
 };

@@ -24,7 +24,7 @@
                         <el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getRoleList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="getRoleList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -156,7 +156,7 @@ export default {
         relateAuth(item){
             this.$refs.RelateAuth.show(item)
                 .then(ret => {
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {
@@ -170,7 +170,7 @@ export default {
             this.$refs.CreateRole.show(item,optype)
                 .then(ret => {
                     this.getRoleList();
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

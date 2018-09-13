@@ -12,7 +12,7 @@ import ViewUsage from './ViewUsage';
 import ResetPwd from './ResetPwd';
 import { mapState } from 'vuex';
 
-import {deptTree,delDept,ableDept,projectList,delRenter,findeRole,delUser,editUser} from '@/service/usermgr/deptmgr.js';
+import {deptTree,delDept,ableDept,projectList,delRenter,findeRole,delUser,editUser,editRente} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'deptmgr',
     data() {
@@ -35,16 +35,14 @@ export default {
         let rentcols = [
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'descprition', text:'描述' , width: '10%'},
-            { column: 'id', text: '租户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '3%' },
-            { column: 'dept', text: '部门', width: '10%' },
+            { column: 'createtime', text: '创建时间', width: '10%' },
+            { column: 'start', text: '激活', width: '3%' }
         ];
         let usercols = [
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'emailAddress', text:'邮箱' , width: '10%'},
-            { column: 'id', text: '用户ID', width: '10%' },
-            { column: 'start', text: '激活', width: '3%' },
-            { column: 'dept', text: '部门', width: '10%' },
+            { column: 'createtime', text: '创建时间', width: '10%' },
+            { column: 'start', text: '激活', width: '3%' }
         ];
         return {
             rentcols,
@@ -177,7 +175,7 @@ export default {
                 delRenter(item.id).then(ret=>{
                     if(ret.code === '0000'){
                         this.getprojectList();
-                        return this.$confirm('操作成功');
+                        return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -201,7 +199,7 @@ export default {
                 delUser(item.id).then(ret=>{
                     if(ret.code === '0000'){
                         this.findeRole();
-                        return this.$confirm('操作成功');
+                        return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -258,7 +256,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {
@@ -340,7 +338,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.enabled = enableState;
                     item.status = status;
@@ -362,7 +360,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.enabled = enableState;
                     item.status = status;
@@ -387,7 +385,79 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
-                    return this.$confirm('操作成功');
+                    return this.$alert('操作成功','提示');
+                }else{
+                    item.status = status;
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
+        },
+        //启用用户
+        ableUser(item,brunch){
+            let status = item.status;
+            item.status = 1;
+            let param = {
+                data:{
+                    status:1,
+                },
+                id:item.id
+            };
+            editUser(param).then(ret => {
+                if(ret.data.code === '0000'){
+                    console.log('操作成功', ret);
+                    this.findeRole();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    item.status = status;
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
+        },
+        //启用租户
+        ableProject(item,brunch){
+            let status = item.status;
+            item.status = 1;
+            let param = {
+                id:item.id,
+                data:{
+                    status:1,
+                }
+            };
+            editRente(param).then(ret => {
+                if(ret.data.code === '0000'){
+                    console.log('操作成功', ret);
+                    this.findeRole();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    item.status = status;
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
+        },
+        //启用租户
+        disableProject(item,brunch){
+            let status = item.status;
+            item.status = 0;
+            let param = {
+                id:item.id,
+                data:{
+                    status:0,
+                }
+            };
+            editRente(param).then(ret => {
+                if(ret.data.code === '0000'){
+                    console.log('操作成功', ret);
+                    this.findeRole();
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.status = status;
                     this.$alert('操作失败', '提示', {
@@ -407,9 +477,15 @@ export default {
                 type: 'warning'
             }).then(() => {
                 delDept(item).then(ret=>{
-                    // 清空被删除的部门分支
-                    this.$store.commit('user/DEPTBRUNCH', {});
-                    this.deptTree();
+                    console.log('ret....',ret);
+                    if(!ret){
+
+                    }else{
+                        // 清空被删除的部门分支
+                        this.$store.commit('user/DEPTBRUNCH', {});
+                        this.deptTree();
+                        return this.$alert('操作成功','提示');
+                    }
                 });
             }).catch(() => {
                 this.$message({
