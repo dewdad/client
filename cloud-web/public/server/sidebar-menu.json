@@ -758,12 +758,6 @@
         "alert": "new",
         "hidden": true,
         "submenu": [
-            {
-                "text": "基本资料",
-                "sref": "accountMg.info",
-                "evn": "pro",
-                "psref": "app.accountMg"
-            }
         ]
     }
 ]

@@ -84,7 +84,6 @@ export default {
             if(!this.form.id) return; 
             
             this.$refs.form.validate( (valid) => {
-                alert(2);
                 if (valid) {
                     this.loading = true;                    
                     updateUserInfoDetail(this.form)
@@ -101,7 +100,6 @@ export default {
                         });
                 } else {
                     console.log('error submit!!');
-                    alert(2);
                     return false;
                 }
             });

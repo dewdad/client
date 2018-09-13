@@ -69,7 +69,7 @@
                     <div class="user-info__email modular mb20">
                         <zt-card class="h100">
                             <template slot="icon">
-                                <i v-if="userInfo.email" class="iconfont icon-youxiang color-success"></i>
+                                <i v-if="userDetailInfo.email" class="iconfont icon-youxiang color-success"></i>
                                 <i v-else class="iconfont icon-youxiang color-email"></i>
                             </template>
                             <template slot="content">
@@ -79,7 +79,7 @@
                                 </div>
                             </template>
                             <div class="settingRight " slot="right">
-                                <div v-if="userInfo.email">
+                                <div v-if="userDetailInfo.email">
                                     <i class="iconfont icon-chenggong  color-success mr10"></i>
                                     <span class="color-success mr10">{{ $t('management.alreadyBind') }}</span>
                                     |
