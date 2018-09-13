@@ -21,6 +21,9 @@ const IMAGE_CTRL = 'services-image';
 // 镜像
 // const NEWIMAGE_CTRL = 'image-controller';
 
+// 工单管理
+const TICKET_CTRL = '/resources';
+
 // 登录模块
 export const API_LOGIN = {
     login: USER_CONTROLLER + '/auth/token',
@@ -403,4 +406,10 @@ export const API_OVERVIEW = {
     getOrderCount: '/resources/order/getOrderCount', // 概览-工单数量
     getMonitorWarn: '/monitor/alarm/countAlarm/{days}',
     getUserUsagesAndQuota: '/identity/project/getUserUsagesAndQuota'
+};
+
+//工单管理
+export const API_TICKET = {
+    createTicket: TICKET_CTRL + '/order/create', //post 创建工单
+    getOrderList: TICKET_CTRL + '/order/getOrderList', //GET 分页查询我的工单列表
 };
