@@ -8,18 +8,20 @@
                             <div class="info-box-content">
                                 <el-row :gutter="0">
                                     <el-col>
-                                        <div class="data--inner">
-                                            <div class="text-right img-text-center color999">
-                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qInstances)}"></i> {{tenantData.qInstances || 0}}</div>
-                                            <div style="margin-top:20px;">
-                                                <i class="iconfont icon-yunzhuji-gailan" />
+                                        <router-link :to="{ name: 'app.ecs.list'}">
+                                            <div class="data--inner">
+                                                <div class="text-right img-text-center color999">
+                                                    <i class="dot" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qInstances)}"></i> {{tenantData.qInstances || 0}}</div>
+                                                <div style="margin-top:20px;">
+                                                    <i class="iconfont icon-yunzhuji-gailan" />
+                                                </div>
+                                                <div class="number mt20" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qInstances)}">
+                                                    <ICountUp :startVal="0" :endVal="tenantData.INSTANCES || 0" :duration="2" />
+                                                    <i v-show="getUsage(tenantData.INSTANCES, tenantData.qInstances)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                                </div>
+                                                <div class="font14 color999">弹性云主机</div>
                                             </div>
-                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qInstances)}">
-                                                <ICountUp :startVal="0" :endVal="tenantData.INSTANCES || 0" :duration="2" />
-                                                <i v-show="getUsage(tenantData.INSTANCES, tenantData.qInstances)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
-                                            </div>
-                                            <div class="font14 color999">弹性云主机</div>
-                                        </div>
+                                        </router-link>
                                     </el-col>
                                     <el-col>
                                         <div class="data--inner">
@@ -50,32 +52,36 @@
                                         </div>
                                     </el-col>
                                     <el-col>
-                                        <div class="data--inner">
-                                            <div class="text-right img-text-center color999">
-                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}"></i>{{tenantData.qVolumes || 0}}</div>
-                                            <div style="margin-top:20px;">
-                                                <i class="iconfont icon-cipan-gailan" />
+                                        <router-link :to="{ name: 'app.ecs.clouddisc-list'}">
+                                            <div class="data--inner">
+                                                <div class="text-right img-text-center color999">
+                                                    <i class="dot" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}"></i>{{tenantData.qVolumes || 0}}</div>
+                                                <div style="margin-top:20px;">
+                                                    <i class="iconfont icon-cipan-gailan" />
+                                                </div>
+                                                <div class="number mt20" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}">
+                                                    <ICountUp :startVal="0" :endVal="tenantData.VOLUMES || 0" :duration="2" />
+                                                    <i v-if="getUsage(tenantData.VOLUMES, tenantData.qVolumes)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                                </div>
+                                                <div class="font14 color999">磁盘</div>
                                             </div>
-                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.VOLUMES, tenantData.qVolumes)}">
-                                                <ICountUp :startVal="0" :endVal="tenantData.VOLUMES || 0" :duration="2" />
-                                                <i v-if="getUsage(tenantData.VOLUMES, tenantData.qVolumes)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
-                                            </div>
-                                            <div class="font14 color999">磁盘</div>
-                                        </div>
+                                        </router-link>
                                     </el-col>
                                     <el-col>
-                                        <div class="data--inner">
-                                            <div class="text-right img-text-center color999">
-                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)}"></i>{{tenantData.qSnapshot || 0}}</div>
-                                            <div style="margin-top:20px;">
-                                                <i class="iconfont icon-kuaizhao-gailan" />
+                                        <router-link :to="{ name: 'app.ecs.snaplist'}">
+                                            <div class="data--inner">
+                                                <div class="text-right img-text-center color999">
+                                                    <i class="dot" :class="{'color-warning': getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)}"></i>{{tenantData.qSnapshot || 0}}</div>
+                                                <div style="margin-top:20px;">
+                                                    <i class="iconfont icon-kuaizhao-gailan" />
+                                                </div>
+                                                <div class="number mt20" :class="{'color-warning': getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)}">
+                                                    <ICountUp :startVal="0" :endVal="tenantData.SNAPSHOTS  || 0" :duration="2" />
+                                                    <i v-show="getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                                </div>
+                                                <div class="font14 color999">快照</div>
                                             </div>
-                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)}">
-                                                <ICountUp :startVal="0" :endVal="tenantData.SNAPSHOTS  || 0" :duration="2" />
-                                                <i v-show="getUsage(tenantData.SNAPSHOTS, tenantData.qSnapshot)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
-                                            </div>
-                                            <div class="font14 color999">快照</div>
-                                        </div>
+                                        </router-link>
                                     </el-col>
                                 </el-row>
                             </div>
@@ -86,18 +92,24 @@
                         <div class="info-box todo">
                             <div class="info-box-head">待办工单</div>
                             <div class="info-box-content">
-                                <div class="todo-task">
-                                    我的工单
-                                    <span class="pull-right">{{allOrder.myorderCount}}</span>
-                                </div>
-                                <div class="todo-task mt10">
-                                    未处理工单
-                                    <span class="pull-right">{{allOrder.todoOrderCount}}</span>
-                                </div>
-                                <div class="todo-task mt10">
-                                    已处理工单
-                                    <span class="pull-right">{{allOrder.doneOrderCount}}</span>
-                                </div>
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                    <div class="todo-task">
+                                        我的工单
+                                        <span class="pull-right">{{allOrder.myorderCount}}</span>
+                                    </div>
+                                </router-link>
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                    <div class="todo-task mt10">
+                                        未处理工单
+                                        <span class="pull-right">{{allOrder.todoOrderCount}}</span>
+                                    </div>
+                                </router-link>
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                    <div class="todo-task mt10">
+                                        已处理工单
+                                        <span class="pull-right">{{allOrder.doneOrderCount}}</span>
+                                    </div>
+                                </router-link>
                             </div>
                         </div>
                     </el-col>
@@ -181,38 +193,46 @@
                                 <el-row :gutter="10">
                                     <el-col :span="6">
                                         <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-wangluo-gailan"></i>
-                                                <span class="font14 products-name">网络</span>
-                                                <div class="products-count pull-right">{{tenantData.NETWORK || '0'}}</div>
-                                            </div>
+                                            <router-link :to="{ name: 'app.vpc.pn'}">                                            
+                                                <div class="products-inner img-text-center">
+                                                    <i class="iconfont icon-wangluo-gailan"></i>
+                                                    <span class="font14 products-name">网络</span>
+                                                    <div class="products-count pull-right">{{tenantData.NETWORK || '0'}}</div>
+                                                </div>
+                                            </router-link>
                                         </div>
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-anquanzu-gailan"></i>
-                                                <span class="font12 products-name">安全组</span>
-                                                <div class="products-count pull-right">{{tenantData.qSecutityGroup || '0'}}</div>
-                                            </div>
+                                            <router-link :to="{ name: 'app.ecs.netsecurity.safegrp'}">  
+                                                <div class="products-inner img-text-center">
+                                                    <i class="iconfont icon-anquanzu-gailan"></i>
+                                                    <span class="font12 products-name">安全组</span>
+                                                    <div class="products-count pull-right">{{tenantData.qSecutityGroup || '0'}}</div>
+                                                </div>
+                                            </router-link>
                                         </div>
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <div class="products-inner img-text-center">
-                                                <i class="iconfont icon-luyouqi-gailan"></i>
-                                                <span class="font12 products-name">路由器</span>
-                                                <div class="products-count">{{tenantData.ROUTER || '0'}}</div>
-                                            </div>
+                                            <router-link :to="{ name: 'app.vpc.pn-routeManage'}">  
+                                                <div class="products-inner img-text-center">
+                                                    <i class="iconfont icon-luyouqi-gailan"></i>
+                                                    <span class="font12 products-name">路由器</span>
+                                                    <div class="products-count">{{tenantData.ROUTER || '0'}}</div>
+                                                </div>
+                                            </router-link>
                                         </div>
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <div class="products-inner img-text-center" style="border-right: 0;">
-                                                <i class="iconfont icon-fudongIP-gailan"></i>
-                                                <span class="font12 products-name">浮动IP</span>
-                                                <div class="products-count">{{tenantData.FLOATINGIP || '0'}}</div>
-                                            </div>
+                                            <router-link :to="{ name: 'app.vpc.pn-flexip'}">  
+                                                <div class="products-inner img-text-center" style="border-right: 0;">
+                                                    <i class="iconfont icon-fudongIP-gailan"></i>
+                                                    <span class="font12 products-name">浮动IP</span>
+                                                    <div class="products-count">{{tenantData.FLOATINGIP || '0'}}</div>
+                                                </div>
+                                            </router-link>
                                         </div>
                                     </el-col>
                                 </el-row>
@@ -327,6 +347,10 @@
 }
 
 .info-box-content {
+    a{
+        text-decoration: none;
+        color: #333333;
+    }
     flex:1;
     .todo-task:hover{
         background-color: #e1e6ed;
@@ -415,6 +439,10 @@
     right: 0px;
     margin-top: -10px;
     cursor: pointer;
+    a{
+        text-decoration: none;
+        color: #333333;
+    }
     &:hover{
         i, span{
             color:#0d7ff2 !important;
