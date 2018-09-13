@@ -227,13 +227,14 @@ export default {
     },
     methods: {
         myChartContainer () {
-            let myChartDom = document.getElementById(this.idString);
-            let charts = document.getElementsByClassName('chartsBar');
-            console.warn(charts[0].offsetWidth);
-            myChartDom.style.width = charts[0].offsetWidth + 'px';
+            // let myChartDom = document.getElementById(this.idString);
+            // let charts = document.getElementsByClassName('chartsBar');
+            // console.warn(charts[0].offsetWidth);
+            // myChartDom.style.width = charts[0].offsetWidth + 'px';
         },
         // 重新画图resize(宽度变化)
         againCanvas() {
+            console.warn(this.idString);
             let myChart = echarts.init(document.getElementById(this.idString));
             this.myChartContainer();
             myChart.resize();
@@ -294,7 +295,7 @@ export default {
             return index;
         }
     },
-    destoryed() {
+    destroyed() {
         off(window, 'resize', this.againCanvas);
     },
     async mounted () {

@@ -1,5 +1,5 @@
 <template>
-    <div class="page-body user-info">
+    <div class="page-body user-info" style="padding-top: 0;">
         <div class="flex-box" style="height:100%;">
             <div class="title font16 mb20 is-bold">我的账号</div>
             <el-row :gutter="20" >
@@ -322,6 +322,9 @@ export default {
     }
     .modular{
         background: #fff;
+        &:hover{
+            box-shadow: 0px 0px 15px 0px rgba(66, 103, 178, 0.15);
+        }
     }
     .zt-card{
         padding: 0 30px;
