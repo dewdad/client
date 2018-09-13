@@ -161,7 +161,7 @@
                             </h5>
                             <div class="info-box-content">
                                 <echarts-bar v-if="xWarnData.length > 0" 
-                                    :legendData="legendData" :isMarkPoint="false" 
+                                    :legendData="legendWarnData" :isMarkPoint="false" 
                                     :gridVal="gridVal2" :seriesData="seriesWarnData" 
                                     :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" 
                                     :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
