@@ -14,7 +14,7 @@
                         <el-button type="primary icon-zt_plus" @click="addPlatAuth({},1)"> 添加平台权限</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="searchPlatAuth"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="searchPlatAuth"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -168,7 +168,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.searchPlatAuth();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

@@ -22,7 +22,7 @@
                         <el-button class="ml10" size="small" type="primary" @click="getConfigList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getConfigList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="getConfigList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>

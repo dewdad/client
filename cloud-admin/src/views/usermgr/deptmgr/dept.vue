@@ -89,7 +89,7 @@
                             </el-form-item>
 
                             <el-form-item class="pull-right">
-                                <el-button class=" search-refresh-btn icon-new-刷新 primary" @click="getprojectList"></el-button>
+                                <el-button class=" search-refresh-btn icon-zt_refresh " type="primary" @click="getprojectList"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData1" header-row-class-name="data-list">
@@ -181,7 +181,7 @@
                             </el-form-item>
 
                             <el-form-item class="pull-right">
-                                <el-button class=" search-refresh-btn icon-new-刷新 primary" @click="findeRole"></el-button>
+                                <el-button class=" search-refresh-btn icon-zt_refresh " type="primary"  @click="findeRole"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData2" header-row-class-name="data-list">
@@ -298,11 +298,11 @@
     }
     border: 1px solid #dee7f1;
 }
-.el-tree-node__c:hover,.el-tree-node__content:hover,.el-tree-node__content:visited{
-    background-color:#ddd !important;
+.el-tree-node__c:hover,.el-tree-node__content:hover,.el-tree-node__content:visited,.el-tree-node:focus>.el-tree-node__content{
+    background-color:#eee !important;
 }
 .el-tree .is-checked{
-    background-color:#ddd !important;
+    background-color:#eee !important;
 }
 .is-checked .el-tree-node__children{
     background-color:#fff !important;
@@ -310,4 +310,7 @@
     .deptTree .el-form-item.el-form-item--small{
         margin-right:0 !important;
     }
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+    background-color:#eee !important;
+}
 </style>

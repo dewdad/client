@@ -103,10 +103,18 @@ export default {
         addRole(){
             createRole(this.form)
                 .then(res => {
-                    this.resolve(this.form);
-                    this.hide();
-                    this.setting();
-                    this.confirmBtn = false;
+                    if(res.data.code === '0000'){
+                        this.resolve(this.form);
+                        this.hide();
+                        this.setting();
+                        this.confirmBtn = false;
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                        this.confirmBtn = false;
+                        return;
+                    }
                 })
                 .catch(err => {
                     this.confirmBtn = false;
@@ -118,10 +126,18 @@ export default {
         editRole(){
             editRole(this.form)
                 .then(res => {
-                    this.resolve(this.form);
-                    this.hide();
-                    this.setting();
-                    this.confirmBtn = false;
+                    if(res.data.code === '0000'){
+                        this.resolve(this.form);
+                        this.hide();
+                        this.setting();
+                        this.confirmBtn = false;
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                        this.confirmBtn = false;
+                        return;
+                    }
                 })
                 .catch(err => {
                     this.confirmBtn = false;

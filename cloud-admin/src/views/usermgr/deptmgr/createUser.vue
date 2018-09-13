@@ -133,7 +133,7 @@ export default {
                     createUser(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$confirm('操作成功','提示');
+                            return this.$alert('操作成功','提示');
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'

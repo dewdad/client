@@ -11,7 +11,7 @@
                         <el-button type="primary" @click="createExpand({},stateParams.id,1)"><span class="icon-zt_plus"></span>  添加平台扩展信息</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getExpandList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="getExpandList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -173,7 +173,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.getExpandList();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

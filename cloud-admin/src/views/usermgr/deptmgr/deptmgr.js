@@ -175,7 +175,7 @@ export default {
                 delRenter(item.id).then(ret=>{
                     if(ret.code === '0000'){
                         this.getprojectList();
-                        return this.$confirm('操作成功','提示');
+                        return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -199,7 +199,7 @@ export default {
                 delUser(item.id).then(ret=>{
                     if(ret.code === '0000'){
                         this.findeRole();
-                        return this.$confirm('操作成功','提示');
+                        return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -256,7 +256,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {
@@ -338,7 +338,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.enabled = enableState;
                     item.status = status;
@@ -360,7 +360,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.deptTree();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.enabled = enableState;
                     item.status = status;
@@ -385,7 +385,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.status = status;
                     this.$alert('操作失败', '提示', {
@@ -409,7 +409,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.status = status;
                     this.$alert('操作失败', '提示', {
@@ -433,7 +433,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.status = status;
                     this.$alert('操作失败', '提示', {
@@ -457,7 +457,7 @@ export default {
                 if(ret.data.code === '0000'){
                     console.log('操作成功', ret);
                     this.findeRole();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     item.status = status;
                     this.$alert('操作失败', '提示', {
@@ -484,7 +484,7 @@ export default {
                         // 清空被删除的部门分支
                         this.$store.commit('user/DEPTBRUNCH', {});
                         this.deptTree();
-                        return this.$confirm('操作成功','提示');
+                        return this.$alert('操作成功','提示');
                     }
                 });
             }).catch(() => {

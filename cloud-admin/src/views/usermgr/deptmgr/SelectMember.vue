@@ -132,7 +132,7 @@ export default {
                         }
                     }
                     this.selectedUser.push(item[0]);
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
@@ -160,7 +160,7 @@ export default {
                         }
                     }
                     this.allUsers.push(item[0]);
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
