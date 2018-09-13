@@ -40,15 +40,15 @@
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.RAM, tenantData.qRam)}"></i> {{tenantData.qRam || 0}}</div>
+                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.RAM, tenantData.qRam)}"></i> {{ramVal}}GB</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-neicun-gailan" />
                                             </div>
                                             <div class="number mt20" :class="{'color-warning': getUsage(tenantData.RAM, tenantData.qRam)}">
-                                                <ICountUp :startVal="0" :endVal="tenantData.RAM || 0" :duration="2" />
+                                                <ICountUp :startVal="0" :endVal="ramUsage" :duration="2" />
                                                 <i v-show="getUsage(tenantData.RAM, tenantData.qRam)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
-                                            <div class="font14 color999">内存</div>
+                                            <div class="font14 color999">内存(GB)</div>
                                         </div>
                                     </el-col>
                                     <el-col>
