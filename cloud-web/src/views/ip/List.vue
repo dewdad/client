@@ -6,7 +6,7 @@
             <div slot="right">
                 <a type="primary" class="el-button el-button--small el-button--primary" @click="toCreat" target="_blank">申请弹性公网IP</a>
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

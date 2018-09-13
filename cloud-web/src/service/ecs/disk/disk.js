@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-12 17:18:47
+ * @Last Modified time: 2018-09-13 19:25:58
  * ecs模块-云盘
  */
 
@@ -32,9 +32,9 @@ export async function getDiskList(data) {
     return res && res.data;
 }
 
-export async function setDiskSnapshotPolicy({disk_ids, policy_id, source_page}) {
-    let url = API_ECS.disk.setDiskSnapshotPolicy;
-    let res = await http.post(url, {disk_ids, policy_id, source_page});
+export async function setDiskSnapshotPolicy({diskIds, policyId, sourcePage}) {
+    let url = API_ECS.policy.udpateSnapshot;
+    let res = await http.post(url, {diskIds, policyId, sourcePage});
     return res && res.data;
 }
 

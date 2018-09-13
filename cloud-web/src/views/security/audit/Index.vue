@@ -4,7 +4,7 @@
     <page-header v-if="!serverId" class="mb10">操作审计
         <div slot="content"  class="pull-right">
             <el-button type="info" size="small" @click="fetchData">
-                <i class="iconfont icon-refresh_people"></i>
+                <i class="iconfont icon-icon-refresh"></i>
             </el-button>
         </div>
     </page-header>

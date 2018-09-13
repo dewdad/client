@@ -11,7 +11,7 @@
                 </el-tooltip>
                 <el-tooltip content="刷新" placement="left">
                     <el-button type="info" size="small" @click="getData">
-                        <i class="iconfont icon-refresh_people"></i>
+                        <i class="iconfont icon-icon-refresh"></i>
                     </el-button>
                 </el-tooltip>
             </template>
