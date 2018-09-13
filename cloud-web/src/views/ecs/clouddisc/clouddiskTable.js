@@ -276,6 +276,9 @@ export default {
                 },
                 status: this.status
             };
+            if (this.instanceId !== '') {
+                params['serverId'] = this.instanceId;
+            }
             if (loading) {
                 this.loading = true;
                 this.tableData = [];

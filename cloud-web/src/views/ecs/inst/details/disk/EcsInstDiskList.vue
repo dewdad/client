@@ -17,7 +17,7 @@
                 </el-col>
             </el-row>
 
-            <clouddisk-table :isShowSearch="false"></clouddisk-table>
+            <clouddisk-table :isShowSearch="false" :instanceId="instanceId"></clouddisk-table>
         </div> 
 
         <ecs-inst-mount-clouddisk ref="ecsInstMountClouddisk"></ecs-inst-mount-clouddisk>       
