@@ -9,7 +9,8 @@ export default {
         return {
             legendData: ['CPU使用率', '内存使用率'],
             legendWarnData: ['监控警告'],
-            xData: [],
+            xData_cpu: [],
+            xData_mem: [],
             xWarnData: [],
             seriesData_cpu:[],
             seriesData_mem:[],
@@ -65,6 +66,16 @@ export default {
             let num = 0;
             num = this.seriesWarnData[0] && this.seriesWarnData[0].seriesData &&  eval(this.seriesWarnData[0].seriesData.join("+")) || 0;
             return num;
+        },
+        // 内存配额
+        ramVal() {
+            return parseFloat((this.tenantData.qRam / 1024).toFixed(2)) || 0 ;
+        },
+        ramUsage() {
+            return parseFloat((this.tenantData.RAM / 1024).toFixed(2)) || 0 ;
+        },
+        xData() {
+            return this.xData_cpu.length >= this.xData_mem.length ? this.xData_cpu : this.xData_mem;
         }
     },
     components: {
@@ -172,12 +183,12 @@ export default {
                     switch(dataType){
                         case 'cpu':{  
                             this.seriesData_cpu = datas;
-                            this.xData = datas[0].xData;
+                            this.xData_cpu = datas[0].xData;
                             break;
                         }
                         case 'mem':{  
                             this.seriesData_mem = datas;
-                            this.xData = datas[0].xData;                                
+                            this.xData_mem = datas[0].xData;                                
                             break;
                         }
                         default:{}
@@ -226,7 +237,6 @@ export default {
         },
         // 
         getUsage(val1, val2) {
-            console.warn(val2);
             if(val2 === 0) {
                 return false;
             }

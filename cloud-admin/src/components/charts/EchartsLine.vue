@@ -343,7 +343,7 @@ export default {
             return index;
         }
     },
-    destoryed() {
+    destroyed() {
         off(window, 'resize', this.againCanvas);
     },
     created() {

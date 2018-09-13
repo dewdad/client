@@ -5,12 +5,11 @@ import {getAdminOverview, getTenantIntro} from '@/service/overview.js';
 
 let resourceArr = [
     {class: 'iconfont icon-yunzhuji-gailan', name: '弹性主机', field: 'INSTANCES', totalField: 'qInstances'},
-    {class: 'iconfont icon-CPU-gailan', name: 'CPU', field: '', totalField: 'qCpu'},
+    {class: 'iconfont icon-CPU-gailan', name: 'CPU', field: 'CORES', totalField: 'qCpu'},
     {class: 'iconfont icon-neicun-gailan', name: '内存', field: 'RAM', totalField: 'qRam'},
     {class: 'iconfont icon-cipan-gailan', name: '磁盘数量', field: 'VOLUMES', totalField: 'qVolumes'},
     {class: 'iconfont icon-cipan-gailan', name: '磁盘内存', field: '', totalField: 'qVolumeSize'},
     {class: 'iconfont icon-kuaizhao-gailan', name: '快照数量', field: 'SNAPSHOTS', totalField: 'qSnapshot'},
-    {class: 'iconfont icon-kuaizhao-gailan', name: '快照容量', field: 'SNAPSHOTS', totalField: 'qSnapshot'},
     {class: 'iconfont icon-wangluo-gailan', name: '网络', field: 'NETWORK', totalField: 'qNetwork'},
     {class: 'iconfont icon-anquanzu-gailan', name: '安全组', field: 'SECURITY_GROUP', totalField: 'qSecutityGroup'},
     {class: 'iconfont icon-luyouqi-gailan', name: '路由器', field: 'ROUTER', totalField: 'qRouters'},

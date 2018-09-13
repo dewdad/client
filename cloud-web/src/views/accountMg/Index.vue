@@ -22,4 +22,7 @@ export default {
 };
 </script>
 <style scoped>
+.accountMg{
+    background: #ebeef3;
+}
 </style>
