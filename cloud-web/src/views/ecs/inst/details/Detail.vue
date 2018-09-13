@@ -90,7 +90,7 @@
                                     <!-- 磁盘数量 -->
                                     <tr>
                                         <td>{{ $t('common.diskNumber') }}：</td>
-                                        <td>{{ (instDetailTop.diskCount) || 0 }}块</td>
+                                        <td>{{ (ecsInst['os-extended-volumes:volumes_attached'].length) || 0 }}块</td>
                                     </tr>
                                     <!-- 操作系统 -->
                                     <tr>
