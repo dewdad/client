@@ -36,15 +36,13 @@ export default {
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'descprition', text:'描述' , width: '10%'},
             { column: 'createtime', text: '创建时间', width: '10%' },
-            { column: 'start', text: '激活', width: '3%' },
-            { column: 'dept', text: '部门', width: '10%' },
+            { column: 'start', text: '激活', width: '3%' }
         ];
         let usercols = [
             { column: 'username', text:'用户名' , width: '10%'},
             { column: 'emailAddress', text:'邮箱' , width: '10%'},
             { column: 'createtime', text: '创建时间', width: '10%' },
-            { column: 'start', text: '激活', width: '3%' },
-            { column: 'dept', text: '部门', width: '10%' },
+            { column: 'start', text: '激活', width: '3%' }
         ];
         return {
             rentcols,
@@ -479,9 +477,15 @@ export default {
                 type: 'warning'
             }).then(() => {
                 delDept(item).then(ret=>{
-                    // 清空被删除的部门分支
-                    this.$store.commit('user/DEPTBRUNCH', {});
-                    this.deptTree();
+                    console.log('ret....',ret);
+                    if(!ret){
+
+                    }else{
+                        // 清空被删除的部门分支
+                        this.$store.commit('user/DEPTBRUNCH', {});
+                        this.deptTree();
+                        return this.$confirm('操作成功','提示');
+                    }
                 });
             }).catch(() => {
                 this.$message({

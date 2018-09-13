@@ -1,14 +1,10 @@
 <template>
     <div class="page-main">
         <page-header>
-            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>          
+            <el-button  icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span class="ml20">菜单{{opType ===1 ? '创建' : '编辑'}}</span>
         </page-header>
         <div class="page-body">
-            <div class="mb20 font16">
-                <i class="el-icon-tickets"></i>
-                <span class="pl6">基本信息</span>
-            </div>
             <el-form class="base-info" ref="createMenu" label-position="right" v-loading.lock="fullscreenLoading" size="small" :model="menu" label-width="115px" style="width:433px;" :rules="rules" inline-message>
                 <!-- 基本信息 -->   
 

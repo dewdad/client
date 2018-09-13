@@ -1,14 +1,12 @@
 <template>
     <div class="page-main">
         <page-header>
+            <el-button class=" fa fa-angle-left font12 mr10"   @click="goBack" size="small">&nbsp;返回</el-button>
             平台扩展
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <el-form-item>
-                        <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
-                    </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="createExpand({},stateParams.id,1)"><span class="icon-zt_plus"></span>  添加平台扩展信息</el-button>
                     </el-form-item>

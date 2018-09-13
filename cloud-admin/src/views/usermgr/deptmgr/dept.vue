@@ -11,15 +11,15 @@
                             <span class="icon-zt_plus"></span> 新建部门</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="success" @click="enableDept(brunch,2)">
+                        <el-button  @click="enableDept(brunch,2)">
                             <span class="icon-zt_enablement"></span> 启用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="warning" @click="disableDept(brunch,2)">
+                        <el-button  @click="disableDept(brunch,2)">
                             <span class="icon-zt_disable"></span> 禁用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="danger" @click="delDept(brunch)">
+                        <el-button  @click="delDept(brunch)">
                             <span class="fa fa-trash"></span> 删除</el-button>
                     </el-form-item>
                     <el-form-item>
@@ -30,14 +30,12 @@
                         <el-button @click="createDept(brunch,2)">
                             <span class="icon-zt_edit"></span> 编辑</el-button>
                     </el-form-item>
-
                 </el-form>
             </el-col>
         </el-row>
         <el-row class="deptContainer">
-
             <el-col :span="4"  class="deptTree p20">
-                <el-form :inline="true" :model="formInline" size="small">
+                <el-form :inline="true" :model="formInline" size="small" style="margin-right:0;">
                     <el-form-item>
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText">
                             <el-button slot="append" icon="el-icon-search" @click="deptTree"></el-button>
@@ -87,10 +85,11 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="getprojectList">查询</el-button>
+                                <el-button class="ml10" size="small" type="primary" @click="getprojectList" icon="el-icon-search">搜索</el-button>
                             </el-form-item>
+
                             <el-form-item class="pull-right">
-                                <el-button class=" search-refresh-btn icon-new-刷新" @click="getprojectList"></el-button>
+                                <el-button class=" search-refresh-btn icon-new-刷新 primary" @click="getprojectList"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData1" header-row-class-name="data-list">
@@ -127,18 +126,10 @@
                                         </template>
                                     </el-table-column>
                                 </template>
-                                <!--部门-->
-                                <template v-if="col.column=='dept'">
-                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
-                                        <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.deptId }}</span>
-                                        </template>
-                                    </el-table-column>
-                                </template>
                             </template>
                             <!-- 操作 -->
                             <template>
-                                <el-table-column label="操作"  key="op" align="right" min-width="200" style="width:25%" class-name="option-snaplist">
+                                <el-table-column label="操作"  key="op"  min-width="200" style="width:25%" class-name="option-snaplist">
                                     <template slot-scope="scope">
                                         <a @click="viewUsage(scope.row,brunch)" class="btn-linker">查看使用量</a>
                                         <b class="link-division-symbol"></b>
@@ -186,10 +177,11 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="findeRole">查询</el-button>
+                                <el-button class="ml10" size="small" type="primary" @click="findeRole" icon="el-icon-search">搜索</el-button>
                             </el-form-item>
+
                             <el-form-item class="pull-right">
-                                <el-button class=" search-refresh-btn icon-new-刷新" @click="findeRole"></el-button>
+                                <el-button class=" search-refresh-btn icon-new-刷新 primary" @click="findeRole"></el-button>
                             </el-form-item>
                         </el-form>
                         <el-table :data="tableData2" header-row-class-name="data-list">
@@ -226,18 +218,10 @@
                                         </template>
                                     </el-table-column>
                                 </template>
-                                <!--部门-->
-                                <template v-if="col.column=='dept'">
-                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
-                                        <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.createTime }}</span>
-                                        </template>
-                                    </el-table-column>
-                                </template>
                             </template>
                             <!-- 操作 -->
                             <template>
-                                <el-table-column label="操作" key="op" align="right" min-width="200" class-name="option-snaplist">
+                                <el-table-column label="操作" key="op"  min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
                                         <a @click="EditUser(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
@@ -323,4 +307,7 @@
 .is-checked .el-tree-node__children{
     background-color:#fff !important;
 }
+    .deptTree .el-form-item.el-form-item--small{
+        margin-right:0 !important;
+    }
 </style>

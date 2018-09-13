@@ -1,13 +1,13 @@
 <template>
     <div class="page-main">
         <page-header>
-            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
+            <el-button icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span class="ml20">关联操作</span>
         </page-header>
         <div class="page-body">
             <!-- <search-box :searchObjExtra="searchObjExtra" @select="search"></search-box> -->
             <el-row :gutter="20" class="mb10">
-                <el-col :span="8" ><el-button type="primary" size="small" @click="editMenuHandle(null,1)">新建</el-button></el-col>
+                <el-col :span="8" ><el-button type="primary icon-zt_plus" size="small" @click="editMenuHandle(null,1)">  新建</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">                       
                         <el-select class="ml10 width152" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">

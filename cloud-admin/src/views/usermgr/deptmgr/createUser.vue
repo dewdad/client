@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <div style="padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #e8e8e8;">
-            <el-button type="primary" icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
+            <el-button  icon="el-icon-arrow-left" @click="goBack" size="small">返回</el-button>
             <span class="pull-right font16">用户{{opType ===1 ? '创建' : '编辑'}}</span>
         </div>
         <div class="page-body">

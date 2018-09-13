@@ -17,13 +17,13 @@
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">关 闭</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">关 闭</el-button>
         </span>
     </el-dialog>
 </template>
 <script>
 import { mapState } from 'vuex';
-import {listProjectByDomain,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
+import {findeRole,searchByProjectId,relateUser,delRelateUser} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
         return{
@@ -64,37 +64,37 @@ export default {
             searchByProjectId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
                 let resData = ret.data;
-                this.listProject();
+                this.listUser();
                 if(resData){
                     this.selectedUser = resData || [];
                 }
             });
         },
         //查询所有用户
-        listProject(){
+        listUser(){
             let param = {
                 limit:9999,
-                domain:this.brunch.id
+                deptId:this.brunch.id
             };
             console.log('param',param);
-            listProjectByDomain(param).then(ret => {
+            findeRole(param).then(ret => {
                 $log('list', ret);
-                let resData = ret.data;
-                if(resData && resData.data){
-                    let allArr = [];
-                    for(let i = 0;i < resData.data.length;i++){
-                        if(this.selectedUser.length > 0){
-                            for(let j = 0;j < this.selectedUser.length;j++){
-                                if(this.selectedUser[j].id !== resData.data[i].id){
-                                    allArr.push(resData.data[i]);
+                let resData = ret.data.data;
+                if(resData){
+                    let selectedUser = this.selectedUser;
+                    for(let i = 0;i < resData.length;i++){
+                        if(selectedUser.length > 0){
+                            let curId = resData[i].id;
+                            console.log('curId',curId);
+                            for(let x = 0;x < selectedUser.length ; x++){
+                                if(selectedUser[x].id === curId){
+                                    resData.splice(i,1);
                                 }
                             }
-                        }else{
-                            allArr.push(resData.data[i]);
                         }
                     }
-                    console.log('allArr',allArr);
-                    this.allUsers = allArr || [];
+                    console.log('allArr',resData);
+                    this.allUsers = resData || [];
                 }
 
             });

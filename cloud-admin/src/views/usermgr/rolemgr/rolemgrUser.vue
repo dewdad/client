@@ -1,11 +1,9 @@
 <template>
     <div class="page-main">
         <page-header>
+            <el-button class=" fa fa-angle-left font12 mr10"   @click="goBack" size="small">&nbsp;返回</el-button>
             关联用户
         </page-header>
-        <div class="header-top mt20">
-            <el-button type="primary" class=" fa fa-angle-left" @click="goBack" size="small">&nbsp;返回</el-button>
-        </div>
         <el-row>
             <el-col :span="24">
                 <el-table :data="tableData"  header-row-class-name="data-list">

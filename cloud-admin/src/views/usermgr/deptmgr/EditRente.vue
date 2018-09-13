@@ -23,8 +23,8 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="submitForm" :loading="confirmBtn">确 定</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" size="small" @click="submitForm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
 </template>

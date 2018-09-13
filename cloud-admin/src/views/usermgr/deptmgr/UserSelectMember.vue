@@ -17,7 +17,7 @@
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-            <el-button type="info" class="font12" @click="isShow = false">关 闭</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">关 闭</el-button>
         </span>
     </el-dialog>
 </template>
@@ -83,25 +83,23 @@ export default {
             $log('params', param);
             projectList(param).then(ret => {
                 $log('list', ret);
-                let resData = ret.data;
-                if(resData && resData.data){
-                    let allArr = [];
-                    for(let i = 0;i < resData.data.length;i++){
-                        if(this.selectedProject.length > 0){
-                            for(let j = 0;j < this.selectedProject.length;j++){
-                                if(this.selectedProject[j].id !== resData.data[i].id){
-                                    allArr.push(resData.data[i]);
+                let resData = ret.data.data;
+                if(resData){
+                    let selectedProject = this.selectedProject;
+                    for(let i = 0;i < resData.length;i++){
+                        if(selectedProject.length > 0){
+                            let curId = resData[i].id;
+                            console.log('curId',curId);
+                            for(let x = 0 ;x < selectedProject.length ; x++){
+                                if(selectedProject[x].id === curId){
+                                    resData.splice(i,1);
                                 }
                             }
-                        }else{
-                            allArr.push(resData.data[i]);
                         }
-
                     }
-                    console.log('allArr',allArr);
-                    this.allProject = allArr || [];
+                    console.log('allArr',resData);
+                    this.allProject = resData || [];
                 }
-
             });
         },
         hide() {
