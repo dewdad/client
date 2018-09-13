@@ -98,8 +98,8 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-import RelateAuth from './RelateAuth';
-import CreateRole from './CreateRole';
+// import RelateAuth from './RelateAuth';
+// import CreateRole from './CreateRole';
 import {getRoleList,delRole} from '@/service/usermgr/rolemgr.js';
 export default {
     name: 'app',
@@ -133,8 +133,7 @@ export default {
     },
     components: {
         PageHeader,
-        RelateAuth,
-        CreateRole
+
     },
     methods: {
         getRoleList(){

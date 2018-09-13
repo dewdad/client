@@ -180,7 +180,7 @@ export default {
                             console.log('reds',res);
                             if(res.code === '0000'){
                                 this.resolve(this.form.quota);
-                                this.$confirm('操作成功');
+                                this.$confirm('操作成功','提示');
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;

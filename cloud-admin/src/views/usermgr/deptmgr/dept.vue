@@ -23,7 +23,7 @@
                             <span class="fa fa-trash"></span> 删除</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="viewDept()">
+                        <el-button @click="viewDept(brunch)">
                             <span class="icon-zt_view"></span> 查看配额</el-button>
                     </el-form-item>
                     <el-form-item>
@@ -64,6 +64,7 @@
                     <el-col :span="8">部门名称：{{brunch.name}}</el-col>
                     <el-col :span="8">描述：{{brunch.description}}</el-col>
                     <el-col :span="8">状态：{{brunch.status?'启用':'禁用'}}</el-col>
+                    <el-col :span="16" class="mt20">部门ID：{{brunch.id}}</el-col>
                 </el-row>
                 <el-tabs v-model="activeName">
                     <el-tab-pane label="租户管理" name="first">
@@ -110,11 +111,11 @@
                                         </template>
                                     </el-table-column>
                                 </template>
-                                <!--租户ID-->
-                                <template v-if="col.column=='id'">
+                                <!--创建时间-->
+                                <template v-if="col.column=='createtime'">
                                     <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.id }}</span>
+                                            <span class="font12 mr10">{{scope.row.createTime | date }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -149,6 +150,8 @@
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item @click.native="changeRentQuota(scope.row,brunch)">修改配额</el-dropdown-item>
                                                 <el-dropdown-item @click.native="manageMember(scope.row,brunch)">关联用户</el-dropdown-item>
+                                                <el-dropdown-item v-if="scope.row.status == 1" @click.native="disableProject(scope.row,brunch)">禁用租户</el-dropdown-item>
+                                                <el-dropdown-item v-if="scope.row.status == 0" @click.native="ableProject(scope.row,brunch)">启用租户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>
                                             </el-dropdown-menu>
@@ -207,11 +210,11 @@
                                         </template>
                                     </el-table-column>
                                 </template>
-                                <!--租户ID-->
-                                <template v-if="col.column=='id'">
+                                <!--创建时间-->
+                                <template v-if="col.column=='createtime'">
                                     <el-table-column min-width="200" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
-                                            <span class="font12 mr10">{{scope.row.id }}</span>
+                                            <span class="font12 mr10">{{scope.row.createTime | date }}</span>
                                         </template>
                                     </el-table-column>
                                 </template>
@@ -247,7 +250,8 @@
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item @click.native="userManageMember(scope.row,brunch)">关联租户</el-dropdown-item>
-                                                <el-dropdown-item @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
+                                                <el-dropdown-item v-if="scope.row.status == 1" @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
+                                                <el-dropdown-item v-if="scope.row.status == 0" @click.native="ableUser(scope.row)">启用用户</el-dropdown-item>
                                                 <el-dropdown-item @click.native="delUser(scope.row)">删除用户</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
@@ -310,11 +314,11 @@
     }
     border: 1px solid #dee7f1;
 }
-.el-tree-node__c:hover{
-    background-color:#f5f7fa !important;
+.el-tree-node__c:hover,.el-tree-node__content:hover,.el-tree-node__content:visited{
+    background-color:#ddd !important;
 }
-.is-checked{
-    background-color:#f5f7fa !important;
+.el-tree .is-checked{
+    background-color:#ddd !important;
 }
 .is-checked .el-tree-node__children{
     background-color:#fff !important;
