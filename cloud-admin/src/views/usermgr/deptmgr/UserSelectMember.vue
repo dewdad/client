@@ -83,22 +83,27 @@ export default {
             $log('params', param);
             projectList(param).then(ret => {
                 $log('list', ret);
-                let resData = ret.data.data;
-                if(resData){
+                if(ret.data && ret.data.data){
+                    let resData = ret.data.data;
                     let selectedProject = this.selectedProject;
-                    for(let i = 0;i < resData.length;i++){
-                        if(selectedProject.length > 0){
-                            let curId = resData[i].id;
-                            console.log('curId',curId);
-                            for(let x = 0 ;x < selectedProject.length ; x++){
-                                if(selectedProject[x].id === curId){
-                                    resData.splice(i,1);
-                                }
+                    let result = [];
+                    for(let i = 0; i < resData.length; i++){
+                        let obj = resData[i];
+                        let num = obj.id;
+                        let isExist = false;
+                        for(let j = 0; j < selectedProject.length; j++){
+                            let aj = selectedProject[j];
+                            let n = aj.id;
+                            if(n === num){
+                                isExist = true;
+                                break;
                             }
                         }
+                        if(!isExist){
+                            result.push(obj);
+                        }
                     }
-                    console.log('allArr',resData);
-                    this.allProject = resData || [];
+                    this.allProject = result || [];
                 }
             });
         },
