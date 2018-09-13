@@ -8,7 +8,7 @@
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
                         <el-button type="primary" @click="createSysconfig({},1)"><span class="icon-zt_plus"></span>  新增配置</el-button>
-                        <el-button type="primary" @click="reloadCache()">刷新缓存</el-button>
+                        <el-button  @click="reloadCache()">刷新缓存</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
@@ -19,10 +19,10 @@
                         <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="getConfigList">查询</el-button>
+                        <el-button class="ml10" size="small" type="primary" @click="getConfigList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="getConfigList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="getConfigList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -165,7 +165,9 @@ export default {
                 $log('data', ret);
                 if(ret.data.code == '0000'){
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功','提示');
+                    return this.$confirm('操作成功','提示',{
+                        confirmButtonText: '确定',
+                    });
 
                 }else{
                     this.$alert('操作失败', '提示', {

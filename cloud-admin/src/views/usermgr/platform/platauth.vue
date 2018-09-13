@@ -1,19 +1,20 @@
 <template>
     <div class="page-main">
         <page-header>
+            <el-button class=" fa fa-angle-left font12 mr10"   @click="goBack" size="small">&nbsp;返回</el-button>
             平台权限
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" size="small">
                     <el-form-item>
-                        <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
+
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="addPlatAuth({},1)">添加平台权限</el-button>
+                        <el-button type="primary icon-zt_plus" @click="addPlatAuth({},1)"> 添加平台权限</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-new-刷新" @click="searchPlatAuth"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="searchPlatAuth"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -167,7 +168,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.searchPlatAuth();
-                    return this.$confirm('操作成功','提示');
+                    return this.$alert('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

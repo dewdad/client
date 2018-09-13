@@ -4,7 +4,7 @@
             <el-col :span="24">
                 <el-form :inline="true"  size="small">
                     <el-form-item>
-                        <el-button class=" fa fa-angle-left" type="primary" @click="goBack" size="small">&nbsp;返回</el-button>
+                        <el-button class=" fa fa-angle-left"  @click="goBack" size="small">&nbsp;返回</el-button>
                     </el-form-item>
 
                 </el-form>
@@ -102,7 +102,7 @@ export default {
             };
             bindAuth(param).then(ret => {
                 console.log('操作成功', ret);
-                return this.$confirm('操作成功','提示');
+                return this.$alert('操作成功','提示');
             })
                 .catch(err => {
                     if (err) {

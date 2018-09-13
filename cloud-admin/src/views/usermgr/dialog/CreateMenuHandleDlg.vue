@@ -35,8 +35,9 @@
         </el-form>
 
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="font12" @click="confirm" :loading="loading">保存</el-button>
-            <el-button type="info" class="font12" @click="cancel">取消</el-button>
+
+            <el-button type="info" class="font12" size="small" @click="cancel">取消</el-button>
+            <el-button type="primary" class="font12" size="small" @click="confirm" :loading="loading">保存</el-button>
         </span>
     </el-dialog>
 </template>
