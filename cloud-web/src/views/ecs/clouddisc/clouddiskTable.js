@@ -12,11 +12,24 @@ import {getDiskList, resizeDisk, unmoutDisk, releaseDisk} from '@/service/ecs/di
 let statusArr = [
     {text: '全部', state: true, value: ''},
     {
+        text: '创建中',
+        value: 'creating',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
         text: '使用中',
         state: false,
         value: 'in-use',
         className: 'color-success',
         icon: 'zticon-running_people'
+    },
+    {
+        text: '创建错误',
+        value: 'error',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
     },
     {
         text: '待挂载',
@@ -43,8 +56,78 @@ let statusArr = [
         type: 'progress'
     },
     {
-        text: '恢复失败',
-        value: 'error-restoring',
+        text: '删除中',
+        value: 'deleting',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除错误',
+        value: 'error_deleting',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '备份中',
+        value: 'backing-up',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '备份失败',
+        value: 'error_backing-up',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复错误',
+        value: 'error_restoring',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复中',
+        value: 'restoring-backup',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '上传中',
+        value: 'uploading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '下载中',
+        value: 'downloading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容中',
+        value: 'extending',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容错误',
+        value: 'error_extending',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '回滚中',
+        value: 'rollbacking',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '回滚错误',
+        value: 'error_rollbacking',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -146,11 +229,19 @@ export default {
             retrievalData: [],
             selectLabelList: [],
             showId: '',
-            status: ''
+            status: '',
+            task: null
         };
+    },
+    destroyed() {
+        clearInterval(this.task);
     },
     created() {
         this.getDiskList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getDiskList(false);
+        }, 30000);
     },
     methods: {
         filterHandler(filters) {
@@ -179,6 +270,9 @@ export default {
                 },
                 status: this.status
             };
+            if (this.instanceId !== '') {
+                params['serverId'] = this.instanceId;
+            }
             if (loading) {
                 this.loading = true;
                 this.tableData = [];

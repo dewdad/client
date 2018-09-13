@@ -86,14 +86,22 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            }
+            },
+            task: null
         };
     },
     components: {
         Recovery
     },
+    destroyed() {
+        clearInterval(this.task);
+    },
     mounted() {
         this.getBackupList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getBackupList(false);
+        }, 30000);
     },
     methods: {
         getBackupList(params) {

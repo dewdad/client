@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         refresh() {
-            this.$refs.cloudDisk.search();
+            this.$refs.cloudDisk.getDiskList();
         }
     }
 };
