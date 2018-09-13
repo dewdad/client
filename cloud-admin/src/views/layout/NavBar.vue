@@ -53,7 +53,7 @@ export default {
             this.$refs.ChangePwdDialog.show()
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

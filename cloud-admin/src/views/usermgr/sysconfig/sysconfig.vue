@@ -165,7 +165,7 @@ export default {
                 $log('data', ret);
                 if(ret.data.code == '0000'){
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
 
                 }else{
                     this.$alert('操作失败', '提示', {

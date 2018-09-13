@@ -78,7 +78,7 @@ export async function editRente(data) {
  * @param {*}
  */
 export async function searchQuota(data) {
-    let url = DEPT.searchQuota;
+    let url = DEPT.searchQuota+data;
     let response = await http.get(url,{
         params: data
     });
@@ -101,6 +101,17 @@ export async function projectList(data) {
  */
 export async function selectAllUsers(data) {
     let url = DEPT.selectAllUsers;
+    let response = await http.get(url,{
+        params: data
+    });
+    return response.data;
+}
+/**
+ *根据部门ID查询租户集合
+ * @param {*}
+ */
+export async function listProjectByDomain(data) {
+    let url = DEPT.listProjectByDomain;
     let response = await http.get(url,{
         params: data
     });

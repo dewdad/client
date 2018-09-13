@@ -175,7 +175,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.getExpandList();
-                    return this.$confirm('操作成功');
+                    return this.$confirm('操作成功','提示');
                 })
                 .catch(err => {
                     if (err) {

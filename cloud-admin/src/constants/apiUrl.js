@@ -63,6 +63,7 @@ export const DEPT = {
     delRelateUser: USER_RSA + '/project/',//取消关联用户
     relateProject: USER_RSA + '/user/',//关联租户
     delRelateProject: USER_RSA + '/user/',//取消关联租户
+    listProjectByDomain: USER_RSA + '/project/listProjectByDomain',//根据部门id查询租户
     searchProjectByuserId: USER_RSA + '/project/getProjectByUserId',//通过用户id查找租户集合
 };
 // 角色管理

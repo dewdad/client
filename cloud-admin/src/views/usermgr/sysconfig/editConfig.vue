@@ -188,7 +188,7 @@ export default {
                     console.log('res',res);
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$confirm('操作成功');
+                        return this.$confirm('操作成功','提示');
 
                     }else{
                         this.$alert('添加失败', '提示', {
@@ -208,7 +208,7 @@ export default {
                 .then(res => {
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$confirm('操作成功');
+                        return this.$confirm('操作成功','提示');
                     }else{
                         this.$alert('修改失败', '提示', {
                             type: 'error'
