@@ -140,7 +140,7 @@ export default {
         myChart.setOption(this.option);
         on(window, 'resize', this.againCanvas);
     },
-    destoryed() {
+    destroyed() {
         off(window, 'resize', this.againCanvas);
     },
     created() {
