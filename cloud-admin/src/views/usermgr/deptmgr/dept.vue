@@ -317,6 +317,6 @@
     background-color:#f5f7fa !important;
 }
 .is-checked .el-tree-node__children{
-    background-color:transparent !important;
+    background-color:#fff !important;
 }
 </style>
