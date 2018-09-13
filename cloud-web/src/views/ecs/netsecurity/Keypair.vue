@@ -42,6 +42,7 @@
         </el-dialog>
         <!-- 对话框 创建密钥对-->
         <create-keypair ref="CreateKeypair" />
+        <delete-dialog ref="DeleteDailog"/>
     </div>
 </template>
 <script>
@@ -96,16 +97,12 @@ export default {
          */
 
         deleteExample(params) {
-            this.$messageBox
-                .confirm('确定要对该密钥对进行删除操作吗？', '删除', {
-                    type: 'warning',
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    subMessage: params
-                })
-                .then(() => {
-                    this.deleteKeypairsFn(params);
-                })
-                .catch(() => {});
+            this.$refs.DeleteDailog.show('密钥对', params, () => {
+                return this.deleteKeypairsFn(params);
+            }).then(res => {
+                this.$message.success('操作成功');
+                this.getKeypairFn();
+            });
         },
         /**
          * 创建密钥对
