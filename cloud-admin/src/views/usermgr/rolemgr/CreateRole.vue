@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="创建角色" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+    <el-dialog :title="optype == 1?'创建角色':'编辑角色'" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
             <el-form-item label="角色名称 " prop="roleName" :label-width="formLabelWidth">
                 <el-input placeholder="输入角色名称" v-model="form.roleName"></el-input>
@@ -14,8 +14,8 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" class="font12" @click="confirm" :loading="confirmBtn">确 定</el-button>
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
+            <el-button type="primary" class="font12" size="small" @click="confirm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -103,10 +103,18 @@ export default {
         addRole(){
             createRole(this.form)
                 .then(res => {
-                    this.resolve(this.form);
-                    this.hide();
-                    this.setting();
-                    this.confirmBtn = false;
+                    if(res.data.code === '0000'){
+                        this.resolve(this.form);
+                        this.hide();
+                        this.setting();
+                        this.confirmBtn = false;
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                        this.confirmBtn = false;
+                        return;
+                    }
                 })
                 .catch(err => {
                     this.confirmBtn = false;
@@ -118,10 +126,18 @@ export default {
         editRole(){
             editRole(this.form)
                 .then(res => {
-                    this.resolve(this.form);
-                    this.hide();
-                    this.setting();
-                    this.confirmBtn = false;
+                    if(res.data.code === '0000'){
+                        this.resolve(this.form);
+                        this.hide();
+                        this.setting();
+                        this.confirmBtn = false;
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                        this.confirmBtn = false;
+                        return;
+                    }
                 })
                 .catch(err => {
                     this.confirmBtn = false;
