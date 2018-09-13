@@ -8,7 +8,7 @@
                 <el-button type="primary" size="small" @click="create">创建对等链接</el-button>
                 <el-tooltip content="刷新" placement="left">
                     <el-button type="info" size="small" @click="getList">
-                        <i class="iconfont icon-refresh_people"></i>
+                        <i class="iconfont icon-icon-refresh"></i>
                     </el-button>
                 </el-tooltip>
             </div>

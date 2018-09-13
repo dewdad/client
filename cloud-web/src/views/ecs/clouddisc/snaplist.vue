@@ -4,7 +4,7 @@
             云盘快照
             <div slot="right">
                 <el-button type="info" size="small" @click="getSnapshotList">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

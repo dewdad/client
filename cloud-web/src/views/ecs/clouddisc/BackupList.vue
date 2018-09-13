@@ -4,7 +4,7 @@
             云盘备份
             <div slot="right">
                 <el-button type="info" size="small" @click="getBackupList(false)">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

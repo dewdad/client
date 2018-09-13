@@ -32,7 +32,7 @@
                             <div class="flex text-nowrap flex-align-center table-row-list-item hoverToShowContent">
                                 <!-- hoverToShow -->
                                 <span class="text-ellipsis" v-tooltip="{content: scope.row.name, fold: true}">{{scope.row.name}}</span>
-                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 box-border amendInfo finger-cursor" style="padding: 1px" @click="editinstname(scope.row)"></i>
+                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 amendInfo finger-cursor" style="padding: 1px" @click="editinstname(scope.row)"></i>
                                 <copy-text class="ml5 flex finger-cursor hoverToShow" :bindText="scope.row.name" position="right"></copy-text>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                         <zt-dropdown size="small" trigger="click" :placement="getPlacement(scope.$index)">
                             <span class="el-dropdown-link">
                                 {{$t('common.more')}}
-                                <i class="el-icon-caret-bottom el-icon--right"></i>
+                                <i class="el-icon-arrow-down"></i>
                             </span>
                             <zt-dropdown-menu slot="dropdown" :placement="getPlacement(scope.$index)">
                                 <zt-dropdown-item v-tooltip.left="dropdownActive(scope.row.status, item.activedStatus) ? item.tip : ''" v-for="item in ECS_DROPDOWN" :key="item.text" :disabled="!item.children && dropdownActive(scope.row.status, item.activedStatus)">
