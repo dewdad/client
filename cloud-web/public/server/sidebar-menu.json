@@ -35,6 +35,11 @@
                         "text": "云盘备份",
                         "sref": "app.ecs.backuplist",
                         "psref": "app.ecs.storage"
+                    },
+                    {
+                        "text": "自动快照策略",
+                        "sref": "app.ecs.autosnapstrategy",
+                        "psref": "app.ecs.storage"
                     }
                 ]
             },
