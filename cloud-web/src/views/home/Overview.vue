@@ -208,7 +208,7 @@
                                                 <div class="products-inner img-text-center">
                                                     <i class="iconfont icon-anquanzu-gailan"></i>
                                                     <span class="font12 products-name">安全组</span>
-                                                    <div class="products-count pull-right">{{tenantData.qSecutityGroup || '0'}}</div>
+                                                    <div class="products-count pull-right">{{tenantData.SECURITY_GROUP || '0'}}</div>
                                                 </div>
                                             </router-link>
                                         </div>

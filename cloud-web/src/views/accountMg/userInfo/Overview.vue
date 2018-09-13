@@ -1,9 +1,9 @@
 <template>
     <div class="page-body user-info">
-        <div>
-            <div class="title"></div>
-            <el-row :gutter="20">
-                <el-col :span="8">
+        <div class="flex-box" style="height:100%;">
+            <div class="title font16 mb20 is-bold">我的账号</div>
+            <el-row :gutter="20" >
+                <el-col :span="8" class="flex-box">
                     <!-- 头像信息 -->
                     <div class="user-info__header modular mb20" >
                         <img src="@/assets/images/my-bg.svg">
@@ -19,32 +19,32 @@
                             <li >
                                <i class="iconfont icon-bumen-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">部门名称：</span>
-                               <span class="font12 ml10">{{projectTableData[0] && projectTableData[0].name}}</span>
+                               <span class="font12 content ml10">{{projectTableData[0] && projectTableData[0].name}}</span>
                             </li>
                             <li >
                                <i class="iconfont icon-bumenID-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">部门ID：</span>
-                               <span class="font12  ml10">{{userDetailInfo && userDetailInfo.deptId}}</span>
+                               <span class="font12 content  ml10">{{userDetailInfo && userDetailInfo.deptId}}</span>
                             </li>
                             <li >
                                <i class="iconfont icon-jiaosemingcheng-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">角色名称：</span>
-                               <span class="font12 ml10">{{userDetailInfo.roleName}}</span>
+                               <span class="font12 content ml10">{{userDetailInfo.roleName}}</span>
                             </li>
                             <li >
                                <i class="iconfont icon-zuhu-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">角色类型：</span>
-                               <span class="font12 ml10">{{userDetailInfo.roleType | showTextByKey(DICT_USER.ROLE_TYPE,'roleType','roleName') }}</span>
+                               <span class="font12 content ml10">{{userDetailInfo.roleType | showTextByKey(DICT_USER.ROLE_TYPE,'roleType','roleName') }}</span>
                             </li>
                             <li >
                                <i class="iconfont icon-chuangjianshijian-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">创建时间：</span>
-                               <span class="font12 ml10">{{userInfo.createTime | date}}</span>
+                               <span class="font12 content ml10">{{userInfo.createTime | date}}</span>
                             </li>
                         </ul>
                     </div>
                 </el-col>
-                <el-col :span="16">
+                <el-col :span="16" class="flex-box">
                     <!-- 登录密码 -->
                     <div class="user-info__password modular mb20">
                         <zt-card class="h100">
@@ -129,11 +129,11 @@
                     </div>
                 </el-col>
             </el-row>
-            <!-- 修改密码 -->
-            <change-pwd-dialog ref="changePwdDialog" />
-            <!-- 绑定或修改邮箱 -->
-            <change-email-dialog ref="changeEmailDialog" />
         </div>
+        <!-- 修改密码 -->
+        <change-pwd-dialog ref="changePwdDialog" />
+        <!-- 绑定或修改邮箱 -->
+        <change-email-dialog ref="changeEmailDialog" />
     </div>
 </template>
 <script>
@@ -255,6 +255,11 @@ export default {
 </script>
 <style  lang='scss'>
 .user-info {
+    .el-row{
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+    }
     &__header{
         height: 316px;
         &__img{
@@ -264,15 +269,28 @@ export default {
     }
     &__password{
         height: 90px;
-        padding-top: 20px;
+        // padding-top: 20px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        display: flex;
+        align-items: center;
     }
     &__email{
         height: 90px;
-        padding-top: 20px;
+        // padding-top: 20px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        display: flex;
+        align-items: center;
     }
     &__personal{
         min-height: 208px;
         padding: 30px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
         ul{
             padding-left:30px;
             li{
@@ -283,6 +301,9 @@ export default {
                 .title{
                     width: 60px;
                 }
+                .content{
+                    width:208px;
+                }
                 i{
                     color: #94a8c9;
                 }
@@ -292,6 +313,9 @@ export default {
     &__tenant{
         min-height: 324px;
         padding: 20px 30px;
+        -webkit-box-flex: 3;
+        -ms-flex: 3;
+        flex: 3;
         .el-table {
             max-height: 190px;
         }
@@ -309,6 +333,14 @@ export default {
     }
     .color-email{
         color: #8ea4d1;
+    }
+    .flex-box{
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        height: 100%;
     }
 }
 </style>
