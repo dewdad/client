@@ -274,7 +274,7 @@ export const API_UserAccount = {
     //getUserInfoDetail: USER_CONTROLLER + '/user/{user_id}',
     getUserDetail: USER_CONTROLLER + '/user/{user_id}', //get 用户详情
     saveUserInfo: USER_CONTROLLER + '/user/{user_id}', //put 更新用户
-    updateUserInfo: USER_CONTROLLER + '/user{user_id}', //put 更新用户详情
+    updateUserInfo: USER_CONTROLLER + '/user/{user_id}', //put 更新用户详情
     bindMobile: USER_CONTROLLER + '/user/bindPhone'
 };
 

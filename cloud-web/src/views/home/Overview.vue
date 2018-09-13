@@ -126,7 +126,7 @@
                                         <el-radio border name="7天" label="7d">7天</el-radio>
                                         <el-radio border name="30天" label="30d">30天</el-radio>
                                     </el-radio-group>
-                                    <el-select v-model="instance" placeholder="请选择" size="mini">
+                                    <el-select v-model="instance" @change="dataChangeType" placeholder="请选择" size="mini">
                                         <el-option 
                                         :value="item.id" 
                                         :label="item.name" 
