@@ -3497,7 +3497,9 @@ function createTooltip(el, value) {
 	var targetClasses = typeof value.targetClasses !== 'undefined' ? value.targetClasses : directive.options.defaultTargetClass;
 	el._tooltipTargetClasses = targetClasses;
 	addClasses(el, targetClasses);
-
+  if (fold) {
+    addClasses(el, 'text-ellipsis');
+  }
 	return tooltip;
 }
 
