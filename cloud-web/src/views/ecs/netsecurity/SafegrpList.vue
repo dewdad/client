@@ -7,7 +7,7 @@
             <div slot="right">
                 <el-button @click="addInstToGroupFn(ecsList)" type="primary" size="small">添加实例</el-button>                
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

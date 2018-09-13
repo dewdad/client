@@ -34,7 +34,8 @@
                                         </el-popover> -->
                             </li>
                             <li>
-                                <span class="font12 mr10">{{scope.row.name}}</span>
+                                <span v-if="scope.row.attachments.length && scope.row.attachments[0].device === '/dev/vda'" class="font12 mr10">{{scope.row.name || scope.row.attachments[0].hostname + '-系统盘'}}</span>
+                                <span v-else class="font12 mr10">{{scope.row.name}}</span>
                                 <i v-if="scope.row.id === showId" class="amendInfo finger-cursor iconfont icon-edit_people" @click="editinstname(scope.row)"></i>
                             </li>
                         </ul>

@@ -6,7 +6,7 @@
             <div slot="right">
                 <a type="primary" class="el-button el-button--small el-button--primary" target="_blank">创建实例</a>
                 <el-button type="info" size="small" v-tooltip.bottom="{content:'刷新', theme: 'is-light'}">
-                    <i class="iconfont icon-refresh_people"></i>
+                    <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
         </page-header>

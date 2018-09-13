@@ -4,7 +4,7 @@
             {{$t('ecs.image.list.title')}}
             <div slot="right">
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people" @click="getEcsImageList"></i>
+                    <i class="iconfont icon-icon-refresh" @click="getEcsImageList"></i>
                 </el-button>
             </div>
         </page-header>

@@ -5,7 +5,7 @@
             <div slot="right">
                 <el-button type="primary" size="small" @click="AmendStrategy({},1)">创建策略</el-button>
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-refresh_people" @click="getPolicy"></i>
+                    <i class="iconfont icon-icon-refresh" @click="getPolicy"></i>
                 </el-button>
             </div>
         </page-header>
@@ -32,7 +32,7 @@
                                         <span class="">创建时间： {{scope.row.execTime}}</span>
                                     </li>
                                     <li class="">
-                                        <span class="">重复日期：{{scope.row.repeatDate }}</span>
+                                        <span class="">重复日期：{{scope.row.repeatDate|getWeekString }}</span>
                                     </li>
                                     <li class="">
                                         <span class="">保留时间：{{scope.row.saveDays=='-1' ? '不限' : (scope.row.saveDays+'天') }}</span>
@@ -102,6 +102,18 @@ export default {
             tableData: [],
             searchObj
         };
+    },
+    filters: {
+        getWeekString: function(string) {
+            if (string === '') return '';
+            let week = ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+            let newString = [];
+            let arr = string.split(',');
+            for (const iterator of arr) {
+                newString.push(week[iterator]);
+            }
+            return newString.join(',');
+        }
     },
     created() {
         this.getPolicy();
