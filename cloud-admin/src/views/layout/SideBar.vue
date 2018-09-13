@@ -13,7 +13,6 @@
                 <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
-
         <div class="sidebar-submenu" v-if="submenus.length">          
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
@@ -91,7 +90,6 @@ export default {
             }
             return routerName;
         },
-
         //处理激活的一二级菜单；
         parseActivemenu(menuList){        
             if(menuList && menuList.length){

@@ -60,7 +60,14 @@ export default {
     },
     data() {
         let stateParams = this.$route.params || {};
-
+        let validateEmail = function(rule, value, callback){
+            let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (!reg.test(value)) {
+                callback(new Error('请输入正确的邮箱格式'));
+            } else {
+                callback();
+            }
+        };
         return {
             opType: 1,
             domainName:'',
@@ -89,6 +96,9 @@ export default {
                 ],
                 'roleId':[
                     { required: true,message: '必填项',trigger: ['change']}
+                ],
+                'email':[
+                    { validator: validateEmail, trigger: 'blur' }
                 ]
             },
         };
