@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="设置自动快照策略" :visible.sync="isShow" width="45%" class="SetAutoSnapDialog">
+    <el-dialog title="设置自动快照策略" :visible.sync="isShow" width="600px" class="SetAutoSnapDialog" @close="cancel">
         <!-- tip提示 -->
         <el-alert  title="" type="warning" :closable="false">
             <span class="font12">为了保证快照创建成功，正在创建快照时，您不能修改ECS实例状态，比如停止或重启ECS实例，请耐心等待。</span>
@@ -18,8 +18,8 @@
                 策略名称
             </span>
             <div class="right ml20">
-                <el-select v-model="selectedPolicy" :disabled="!snapState" size="small" placeholder="请选择">
-                    <el-option v-for="item in policyOptions" :key="item.value" :label="item.label" :value="item">
+                <el-select v-model="selectedPolicy" :disabled="!snapState" value-key="pid" size="small" placeholder="请选择">
+                    <el-option v-for="item in policyOptions" :key="item.pid" :label="item.pname" :value="item">
                     </el-option>
                 </el-select>
             </div>
@@ -37,7 +37,7 @@
                 重复日期
             </span>
             <div class="right ml20">
-                <span>{{selectedPolicy.repeatDate}}</span>
+                <span>{{selectedPolicy.repeatDate|getWeekString}}</span>
             </div>
         </div>
         <div class="enterPwd mt20 font12" :class="{'color999': !snapState}">
@@ -50,8 +50,8 @@
         </div>
 
         <span slot="footer" class="dialog-footer">           
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
+            <el-button type="info" size="small" @click="isShow = false"  :disabled="loading">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -62,6 +62,7 @@ export default {
     data() {
         return {
             isShow: false,
+            loading: false,
             resolve: null,
             reject: null,
             selectedPolicy: {},
@@ -88,31 +89,29 @@ export default {
             this.rowItem = {};
         },
         cancel() {
-            this.hide();
             typeof this.reject() === 'function' && this.reject();
-        },
-        setting() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    typeof this.resolve(this.form) === 'function' && this.resolve(this.form);
-                }, 1000);
-            });
         },
         //确定提交
         confirm() {
             if (!this.selectedPolicy.pid) return;
             let data = {
-                disk_ids: [],
-                policy_id: this.selectedPolicy.pid
+                diskIds: [this.rowItem.id],
+                policyId: this.selectedPolicy.pid,
+                sourcePage: 'disk-page'
             };
+            this.loading = true;
             setDiskSnapshotPolicy(data)
                 .then(res => {
-                    this.resolve(data);
-                    this.hide();
+                    if (res.code === '0000') {
+                        this.resolve(data);
+                        this.hide();
+                    }
                     //this.setting();                  
                 })
                 .catch(err => {
                     console.log('setDiskSnapshotPolicy', err);
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         //查询策略(策略名称下拉列表)
@@ -125,10 +124,9 @@ export default {
                 .then(res => {
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                         console.log('getPolicy', res);
-                        let resData = res.result;
+                        let resData = res.data;
                         if (resData && resData.records) {
-                            this.policyOptions = res.records || [];
-
+                            this.policyOptions = resData.records || [];
                             let selItem = this.policyOptions.find(item => item.pid === this.rowItem.policyId);
                             this.selectedPolicy = selItem || this.policyOptions[0] || {};
                         }

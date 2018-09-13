@@ -4,7 +4,8 @@
             <img src="@/assets/images/ecs/disk_icon.svg" width="50" alt="" class="ecs-detail-img">
         </div>
         <div class="page-header__content">
-            <div class="font16"> {{ rowItem.name || "-"}}</div>            
+            <span class="font16" v-if="rowItem && rowItem.attachments && rowItem.attachments.length && rowItem.attachments[0].device === '/dev/vda'" >{{rowItem.name || rowItem.attachments[0].hostname + '-系统盘'}}</span>
+            <span v-else class="font16 ">{{rowItem.name}}</span>
         </div>
         <div class="page-header__buttons">
             <div class="right">
@@ -69,7 +70,7 @@ export default {
                 .show(this.rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$message.success('操作成功');
                 })
                 .catch(err => {
                     if (err) {
