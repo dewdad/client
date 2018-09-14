@@ -47,7 +47,7 @@ export default {
                 .show(this.rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$message.success('操作成功');
                 })
                 .catch(err => {
                     if (err) {
@@ -65,7 +65,7 @@ export default {
                 .show(this.rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$message.success('操作成功');
                 })
                 .catch(err => {
                     if (err) {
