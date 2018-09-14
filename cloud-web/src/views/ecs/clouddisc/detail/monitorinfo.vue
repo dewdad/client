@@ -13,44 +13,52 @@
                 </div>
 
                 <!-- IOPS -->
-                <div class="IOPS mb20" style="height: 280px;">
+                <div class="IOPS mb20" >
                     <div class="title">
                         <b class="leftBlueBox mr5"></b>IOPS(个)
                     </div>
-                    <echarts-line 
-                        v-if="seriesData_iops.length > 0"
-                        :isMarkPoint="false"
-                        :legendData="legendData_iops"  
-                        :seriesData="seriesData" 
-                        :xAxisData="xData" 
-                        legendIcon="rect"
-                        :markPointSymbolSize="['150','55']" 
-                        :mouldColor="['#18bcc9', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
-                        :dotStyle="['b0e9c4', 'b0e9c4']" >
-                    </echarts-line>
-                    <div v-else class="color-secondary font24 text-c no-data">暂无数据</div>
+                    <div style="height: 280px;" v-loading="loading_iops">
+                        <echarts-line 
+                            v-if="seriesData_iops.length > 0"
+                            :isMarkPoint="false"
+                            :legendData="legendData_iops"  
+                            :seriesData="seriesData_iops" 
+                            :xAxisData="xData_iops" 
+                            legendIcon="rect"
+                            yUnit="b/s"
+                            :gridVal="gridVal"
+                            :markPointSymbolSize="['150','55']" 
+                            :mouldColor="['#0d7ef2', '#ffad00', '#61a0a8', '#c4ccd3']"
+                            :dotStyle="['b0e9c4', 'b0e9c4']" >
+                        </echarts-line>
+                        <div v-else-if="!loading_iops" class="color-secondary font24 text-c no-data">暂无数据</div>
+                    </div>
                 </div>
                 <!-- 分割线 -->
                 <div class="mt20 mb20">
                     <hr>
                 </div>
                 <!-- 吞吐量 -->
-                <div class="IOPS mb20" style="height: 280px;">
+                <div class="IOPS mb20">
                     <div class="title">
                         <b class="leftBlueBox mr5"></b>吞吐量(MBps)
                     </div>
-                    <echarts-line 
-                        v-if="seriesData_nbps.length > 0"
-                        :isMarkPoint="false"
-                        :legendData="legendData_nbps"  
-                        :seriesData="seriesData" 
-                        :xAxisData="xData" 
-                        legendIcon="rect"
-                        :markPointSymbolSize="['150','55']" 
-                        :mouldColor="['#0d7ef2', '#ffad00', '#61a0a8', '#c4ccd3']" 
-                        :dotStyle="['b0e9c4', 'b0e9c4']">
-                    </echarts-line>
-                    <div v-else class="color-secondary font24 text-c no-data">暂无数据</div>
+                    <div style="height: 280px;" v-loading="loading_mbps">
+                        <echarts-line 
+                            v-if="seriesData_mbps.length > 0"
+                            :isMarkPoint="false"
+                            :legendData="legendData_mbps"  
+                            :seriesData="seriesData_mbps" 
+                            :xAxisData="xData_mbps" 
+                            legendIcon="rect"
+                            yUnit="b/s"
+                            :gridVal="gridVal"
+                            :markPointSymbolSize="['150','55']" 
+                            :mouldColor="['#0d7ef2', '#ffad00', '#61a0a8', '#c4ccd3']" 
+                            :dotStyle="['b0e9c4', 'b0e9c4']">
+                        </echarts-line>
+                        <div v-else-if="!loading_mbps" class="color-secondary font24 text-c no-data">暂无数据</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,12 +78,13 @@ export default {
             dateRange: '',
             stateParams: {},
             rowItem: {},
-            legendData_iops:['IOPS'],
-            legendData_nbps:['吞吐量'],
+            legendData_iops:['读', '写', '总'],
+            legendData_mbps:['读', '写', '总'],
             seriesData: [{
                 seriesData: [1, 2, 2, 3]
             }],
-            xData: [1, 2, 2, 3],
+            xData_iops: [],
+            xData_mbps: [],
             pickerOptions2: {
                 shortcuts: [
                     {
@@ -109,9 +118,17 @@ export default {
             },
             monitorDate: '',
             seriesData_iops: [],
-            seriesData_nbps: [],
+            seriesData_mbps: [],
             startTime: '',
-            endTime: ''
+            endTime: '',
+            loading_iops: true,
+            loading_mbps: true,
+            gridVal: {
+                bottom: '60',
+                right: '70',
+                left: '80',
+                top: '50'
+            }
         };
     },
     components: {
@@ -162,7 +179,13 @@ export default {
         },
         //查询图表数据
         searchCharts: function(dataType) {
-            // if (!this.rowItem.instanceId) return;
+            this.loading_iops = true;
+            this.loading_mbps = true;
+            if (!this.serverId){
+                this.loading_iops = false;
+                this.loading_mbps = false;
+                return;
+            } 
             let now = new Date();
             let st = new Date(now);
             st.setHours(st.getHours() - 2);
@@ -173,7 +196,7 @@ export default {
                 endTime: this.endTime || filters['date'](now, 'YYYY-MM-DD HH:mm:ss'),
                 dataType: dataType, //'iops','mbps'
                 instanceType: 'disk',
-                instanceId: this.$route.params.id,
+                instanceId: this.serverId,
                 mount: '/dev/vdc'
             };
             moniterEchartMetricData(data).then(res => {
@@ -182,11 +205,15 @@ export default {
                     console.warn(datas);
                     switch (dataType) {
                         case 'iops': {
+                            this.loading_iops = false;
                             this.seriesData_iops = datas;
+                            this.xData_iops = datas[0].xData;
                             break;
                         }
                         case 'mbps': {
+                            this.loading_mbps = false;
                             this.seriesData_mbps = datas;
+                            this.xData_mbps = datas[0].xData;
                             break;
                         }
                         default: {
@@ -202,7 +229,12 @@ export default {
             this.searchCharts('iops');
             this.searchCharts('mbps');
         }
-    },    
+    },
+    computed: {
+        serverId() {
+            return this.rowItem.attachments && this.rowItem.attachments.length > 0 && this.rowItem.attachments[0].serverId;
+        } 
+    }     
 };
 </script>
  
