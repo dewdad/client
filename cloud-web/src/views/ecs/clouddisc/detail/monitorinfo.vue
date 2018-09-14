@@ -15,7 +15,7 @@
                 <!-- IOPS -->
                 <div class="IOPS mb20" >
                     <div class="title">
-                        <b class="leftBlueBox mr5"></b>IOPS(个)
+                        <b class="leftBlueBox mr5"></b>IOPS
                     </div>
                     <div style="height: 280px;" v-loading="loading_iops">
                         <echarts-line 
@@ -41,7 +41,7 @@
                 <!-- 吞吐量 -->
                 <div class="IOPS mb20">
                     <div class="title">
-                        <b class="leftBlueBox mr5"></b>吞吐量(MBps)
+                        <b class="leftBlueBox mr5"></b>吞吐量
                     </div>
                     <div style="height: 280px;" v-loading="loading_mbps">
                         <echarts-line 
