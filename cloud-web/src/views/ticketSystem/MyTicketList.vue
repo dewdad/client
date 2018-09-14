@@ -35,9 +35,9 @@
             <el-input class="workList mr10" v-model="searchObj.orderNO" size="small"></el-input>
             <el-button type="primary" size="small" icon="el-icon-search" @click="search">搜索</el-button>
         </div>
-        <!-- 列表 -->
+        <!-- 列表 -->       
         <div v-loading="loading">
-            <el-table class="font12 data-list" :data="tableDataList" header-row-class-name="data-list" style="width: 100%">
+            <el-table class="font12 data-list" :data="tableDataList" @filter-change="filterHandler" header-row-class-name="data-list" style="width: 100%">
                 <template v-for="col in cols">
                     <!-- 工单编号 -->
                     <template v-if="col.column=='name'">
@@ -69,7 +69,10 @@
                     </template>
                     <!-- 状态 -->
                     <template v-if="col.column=='status'">
-                        <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                        <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column" 
+                        :filters="col.dropdowns"
+                        :filter-multiple="false" 
+                        :filtered-value="[searchObj.status]">
                             <template slot-scope="scope">
                                 <span class="color-success">{{scope.row.status}}</span>
                             </template>
@@ -119,11 +122,11 @@ export default {
                 text: '状态',
                 width: '4%',
                 dropdowns: [
-                    {key: 0, 'text': '全部', 'state': true, value: ''},
-                    {key: 1, 'text': '待审核', 'state': false, value: '1'},
-                    {key: 2, 'text': '待处理', 'state': false, value: '0'},
-                    {key: 2, 'text': '已审核', 'state': false, value: '0'},
-                    {key: 2, 'text': '已关闭', 'state': false, value: '0'}
+                    {key:'' ,'text':'全部',value:''},
+                    {key:9,'text':'待审核',value:'9'},
+                    {key:4,'text':'待处理',value:'4'},
+                    {key:1,'text':'已处理',value:'1'},
+                    {key:2,'text':'已关闭',value:'2'}
                 ] 
             }
         ];
@@ -179,7 +182,8 @@ export default {
             },             
             moduleType:{},
             daterange:[], 
-            orderNO:'',           
+            orderNO:'', 
+            status: ''      
         };
         return {
             searchObj,
@@ -192,7 +196,7 @@ export default {
     methods: {
         //查询
         search(){
-            let { paging:{ pageIndex,limit },daterange,orderNO,moduleType } = this.searchObj;
+            let { paging:{ pageIndex,limit },daterange,orderNO,moduleType,status } = this.searchObj;
             let data = {
                 pageIndex,
                 limit,
@@ -200,6 +204,7 @@ export default {
                 endTime: daterange && daterange[1],
                 orderNO,
                 moduleType: moduleType.value, 
+                status,
             };           
             this.loading = true;
             getOrderList(data)
@@ -232,10 +237,16 @@ export default {
             console.log('handleCurrentChange:', params);
             this.search();
         },
-
-        filterHandler(value, row, column) {
-            const property = column['property'];
-            return row[property] === value;
+        filterHandler(filters) {
+            $log('filters::::',filters);          
+            let values = Object.values(filters);
+            let value = values[0][0];
+            if (value) {
+                this.searchObj.status = value;
+            } else {
+                this.searchObj.status = '';
+            }
+            this.search();
         },
         // 删除工单
         deleteWork(id){
