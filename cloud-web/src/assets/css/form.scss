@@ -120,6 +120,7 @@ input:disabled {
             .el-form-item__content {
                 display: flex;
                 flex: 1;
+                margin-left: 0px !important;
                 .el-input {
                     flex: 1;
                 }
@@ -291,15 +292,8 @@ input:disabled {
 }
 
 .el-input__prefix {
-    left: 10px;
     .el-icon-search {
         margin-left: -5px;
-    }
-}
-
-.el-input--mini {
-    .el-input__prefix {
-        top: 7px;
     }
 }
 

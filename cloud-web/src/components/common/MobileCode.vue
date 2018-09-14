@@ -90,7 +90,7 @@ export default {
         // 获取短信验证码
         async getMobileCode() {
             try {
-                if (this.isDisabled) return;
+                if (this.isDisabled || /^1(3|4|5|7|8|9)\d{9}$/.test(this.mobile) === false) return;
                 // 验证之前的钩子函数
                 if (typeof this.beforeSend === 'function') {
                     await this.beforeSend();
@@ -110,6 +110,7 @@ export default {
                                 // 调用发送失败的钩子函数
                                 this.onError(data.msg);
                             }
+                            this.codeBtnText = '发送失败,重新获取';
                             code = data && data.code;
                             throw new Error(data.msg);
                         }

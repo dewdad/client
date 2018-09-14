@@ -15,7 +15,7 @@ import User from './user';
 import Ip from './ip';
 import Ticket from './ticket';
 import VPC from './vpc';
-
+import Monitor from './monitor';
 Vue.use(Router);
 /**
  * 白名单列表
@@ -87,7 +87,8 @@ export default new Router({
                 ...AccountMg,
                 ...Ip,
                 ...Ticket,
-                ...VPC
+                ...VPC,
+                ...Monitor
             ]
         }
     ]

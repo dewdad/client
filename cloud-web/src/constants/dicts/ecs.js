@@ -1,12 +1,13 @@
 export const ESC_SEARCH_TYPE = [
-    {value: '', label: '自动识别', placehold: '选择实例属性项搜索，或者输入关键字识别搜索'},
-    {value: 'id', label: '实例ID', placehold: '输入实例ID精确查询'},
+    // {value: '', label: '自动识别', placehold: '选择实例属性项搜索，或者输入关键字识别搜索'},
+    {value: 'uuid', label: '实例ID', placehold: '输入实例ID精确查询'},
     {value: 'name', label: '实例名称', placehold: '请输入实例名称'},
-    {value: 'fixIp', label: '私有IP', placehold: '请输入私有IP'},
-    {value: 'floatingIp', label: '弹性公网IP', placehold: '请输入弹性公网IP精确查询'},
-    {value: 'imageId', label: '镜像ID', placehold: '请输入镜像ID精确查询'},
-    {value: 'groupId', label: '安全组ID', placehold: '请输入安全组ID精确查询'},
-    {value: 'vpcId', label: '私有网络ID', placehold: '请输入虚拟专有网络ID精确查询'},
+    {value: 'ip', label: '公网IP', placehold: '请输入IP'},
+    // {value: 'floatingIp', label: '弹性公网IP', placehold: '请输入弹性公网IP精确查询'},
+    {value: 'image', label: '镜像ID', placehold: '请输入镜像ID精确查询'},
+    {value: 'flavor', label: '模版ID', placehold: '请输入模版ID精确查询'},
+    // {value: 'groupId', label: '安全组ID', placehold: '请输入安全组ID精确查询'},
+    // {value: 'vpcId', label: '私有网络ID', placehold: '请输入虚拟专有网络ID精确查询'},
     // {value: 'subnetId', label: '子网ID', placehold: '请输入子网ID精确查询'},
     {value: 'status', label: '状态', placehold: '请输入状态'}
 ];
@@ -465,4 +466,154 @@ export const DISK_STATUS = [
         icon: 'icon-shibaibaocuo',
         type: 'font'
     }
+];
+
+export const DISK_BACK_STATUS = [
+    {
+        text: '创建中',
+        value: 'creating',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '使用中',
+        state: false,
+        value: 'in-use',
+        className: 'color-success',
+        icon: 'zticon-running_people'
+    },
+    {
+        text: '创建错误',
+        value: 'error',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '成功',
+        value: 'available',
+        className: 'color-success',
+        icon: 'icon-chenggong',
+        type: 'font'
+    },
+    {
+        text: '连接中',
+        value: 'attaching',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '挂载中',
+        value: 'in-user',
+        className: 'color-primary',
+        type: 'progress'
+    },
+    {
+        text: '分离中',
+        value: 'detaching',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除中',
+        value: 'deleting',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '删除错误',
+        value: 'error_deleting',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '备份中',
+        value: 'backing-up',
+        className: 'color-danger',
+        type: 'progress'
+    },
+    {
+        text: '备份失败',
+        value: 'error_backing-up',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复错误',
+        value: 'error_restoring',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '恢复中',
+        value: 'restoring-backup',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '上传中',
+        value: 'uploading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '下载中',
+        value: 'downloading',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容中',
+        value: 'extending',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '扩容错误',
+        value: 'error_extending',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    },
+    {
+        text: '回滚中',
+        value: 'rollbacking',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '回滚错误',
+        value: 'error_rollbacking',
+        className: 'color-danger',
+        icon: 'icon-shibaibaocuo',
+        type: 'font'
+    }
+];
+
+export const MONITOR_RULE_TYPES = [
+    {key: '1', value: 'get请求数', unit: 'Frequency'},
+    {key: '2', value: 'put请求数', unit: 'Frequency'},
+    {key: '3', value: '总请求数', unit: 'Frequency'},
+    {key: '4', value: '下载流量', unit: 'byte'},
+    {key: '5', value: '带宽流量', unit: 'byte'},
+    {key: 'cpu_util', value: 'cpu使用率', unit: '%'},
+    {key: 'mem_util', value: '内存使用率', unit: '%'},
+    {key: 'network_incoming_bytes_aggregate_rate', value: '带外网络流入速率', unit: 'byte/s'},
+    {key: 'network_outgoing_bytes_aggregate_rate', value: '带外网络流出速率', unit: 'byte/s'},
+    {key: 'disk_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
+    {key: 'disk_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
+    {key: 'disk_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
+    {key: 'disk_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
+    {key: 'disk_device_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
+    {key: 'disk_device_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
+    {key: 'disk_device_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
+    {key: 'disk_device_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
+    {key: 'rds001_cpu_usage', value: 'CPU利用率', unit: '该指标用于统计测量对象的CPU利用率，以比率为单位。'},
+    {key: 'rds002_mem_usage', value: '内存利用率', unit: '该指标用于统计测量对象的内存利用率，以比率为单位。'},
+    {key: 'rds003_iops', value: 'IOPS', unit: '该指标用于统计当前实例，单位时间内系统处理的I/O请求数量（平均值）。'},
+    {key: 'rds047_disk_total_size', value: '磁盘总大小', unit: '该指标用于统计测量对象的磁盘总大小。'},
+    {key: 'rds006_conn_count', value: '数据库总连接数', unit: '该指标用于统计试图连接到MySQL服务器的总连接数，以个为单位。'}
 ];
