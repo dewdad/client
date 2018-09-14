@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="申请浮动IP"
+        title="设置网关"
         :visible.sync="isShow"
         width="45%"
         class="EditRouter">
@@ -15,7 +15,7 @@
                 <el-input v-model="ruleForm.routerName"></el-input>
             </zt-form-item>
             <!-- 选择外网 -->
-            <zt-form-item label="选择外网">
+            <zt-form-item label="选择外网" prop="outerNet">
                 <el-select v-model="ruleForm.outerNet" placeholder="请选择">
                     <el-option
                     v-for="item in netOption"
@@ -70,6 +70,7 @@ export default {
             this.netOption = rowItem.outerNetData;
             this.routerId = rowItem.row.id;
             this.ruleForm.routerName = rowItem.row.name;
+            this.ruleForm.outerNet = rowItem.outerNetData[0].id;
             this.gateway = rowItem.row;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
