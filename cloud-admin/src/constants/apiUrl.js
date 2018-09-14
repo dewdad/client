@@ -5,7 +5,8 @@ const USER_RSA = '/identity';
 const PLATFORM = '/identity/platform';
 const MENU = '/menu';
 const OP_LOG = '/mq';
-const SYS = '/resources';
+const SYS = '/resources';//平台
+const ORDER = '/resources/order';//工单
 
 
 // 登录模块
@@ -133,6 +134,13 @@ export const API_MENU_MGR = {
     addMenuOp: USER_RSA + '/menu/addOp', //post 新增菜单操作
     updateMenuOp: USER_RSA + '/menu/updateOp', //put 更新菜单操作
     deleteMenuOp: USER_RSA + '/menu/{opId}', //DELETE 删除菜单操作
+};
+// 工单模块
+export const ORDER_MODULE = {
+    myorderList: ORDER + '/getOrderList',//分页查询我的工单
+    createOrder: ORDER + '/create',//创建工单
+    changePwd: ORDER + '/user/chgpwd',
+
 };
 
 
