@@ -262,12 +262,6 @@ export default {
             this.alreadyDisk.forEach(item => {
                 ids.push(item.id);
             });
-            if (ids.length === 0) {
-                this.$alert('请选择磁盘', '提示', {
-                    type: 'warning'
-                });
-                return;
-            }
             let data = {
                 diskIds: ids,
                 policyId: this.rowItem.pid,

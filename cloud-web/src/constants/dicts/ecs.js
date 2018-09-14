@@ -592,3 +592,28 @@ export const DISK_BACK_STATUS = [
         type: 'font'
     }
 ];
+
+export const MONITOR_RULE_TYPES = [
+    {key: '1', value: 'get请求数', unit: 'Frequency'},
+    {key: '2', value: 'put请求数', unit: 'Frequency'},
+    {key: '3', value: '总请求数', unit: 'Frequency'},
+    {key: '4', value: '下载流量', unit: 'byte'},
+    {key: '5', value: '带宽流量', unit: 'byte'},
+    {key: 'cpu_util', value: 'cpu使用率', unit: '%'},
+    {key: 'mem_util', value: '内存使用率', unit: '%'},
+    {key: 'network_incoming_bytes_aggregate_rate', value: '带外网络流入速率', unit: 'byte/s'},
+    {key: 'network_outgoing_bytes_aggregate_rate', value: '带外网络流出速率', unit: 'byte/s'},
+    {key: 'disk_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
+    {key: 'disk_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
+    {key: 'disk_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
+    {key: 'disk_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
+    {key: 'disk_device_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
+    {key: 'disk_device_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
+    {key: 'disk_device_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
+    {key: 'disk_device_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
+    {key: 'rds001_cpu_usage', value: 'CPU利用率', unit: '该指标用于统计测量对象的CPU利用率，以比率为单位。'},
+    {key: 'rds002_mem_usage', value: '内存利用率', unit: '该指标用于统计测量对象的内存利用率，以比率为单位。'},
+    {key: 'rds003_iops', value: 'IOPS', unit: '该指标用于统计当前实例，单位时间内系统处理的I/O请求数量（平均值）。'},
+    {key: 'rds047_disk_total_size', value: '磁盘总大小', unit: '该指标用于统计测量对象的磁盘总大小。'},
+    {key: 'rds006_conn_count', value: '数据库总连接数', unit: '该指标用于统计试图连接到MySQL服务器的总连接数，以个为单位。'}
+];

@@ -4,7 +4,7 @@
             报警规则列表
             <div slot="right">
                 <el-button type="primary" @click="$router.push({name: 'app.monitor.alarmrule.add'})" size="small">新建报警规则</el-button>
-                <el-button type="info" size="small" @click="getSnapshotList">
+                <el-button type="info" size="small" @click="getData(false)">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
@@ -12,20 +12,29 @@
         <div class="page-body mt10">
             <!-- 列表 -->
             <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
-                <el-table-column min-width="120" prop="name" label="规则名称">
+                <el-table-column min-width="120" prop="ruleName" label="规则名称">
                 </el-table-column>
-                <el-table-column min-width="180" prop="id" label="启用">
-                </el-table-column>
-                <el-table-column min-width="180" prop="volumeName" label="监控项">
+                <!-- <el-table-column min-width="180" prop="id" label="启用">
+                </el-table-column> -->
+                <el-table-column min-width="180" prop="ruleMetric" label="监控项">
+                    <template slot-scope="scope">
+                        {{scope.row.ruleMetric|showTextByKey(MONITOR_RULE_TYPES, 'key', 'value')}}
+                    </template>
                 </el-table-column>
                 <el-table-column min-width="100" prop="size" label="维度">
                     <template slot-scope="scope">
-                        {{scope.row.size}}
+                        全部云硬盘
                     </template>
                 </el-table-column>
-                <el-table-column min-width="180" prop="description" label="报警规则">
+                <el-table-column min-width="180" prop="ruleMetric" :show-overflow-tooltip="false" label="报警规则">
+                    <template slot-scope="scope">
+                        <div style="word-break: break-word;">{{scope.row|getRuleDesc}}</div>
+                    </template>
                 </el-table-column>
-                <el-table-column min-width="180" prop="description" label="通知对象">
+                <el-table-column min-width="180" prop="noticeMail" label="通知对象">
+                    <template slot-scope="scope">
+                        手机：{{scope.row.noticePhone}}<br> 邮箱：{{scope.row.noticeMail}}
+                    </template>
                 </el-table-column>
                 <el-table-column min-width="100" prop="status" label="状态">
                     <template slot-scope="scope">
@@ -35,8 +44,8 @@
                 <!-- 操作 -->
                 <el-table-column label="操作" key="op" width="150" class-name="option-column">
                     <template slot-scope="scope">
-                        <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
-                        <b class="link-division-symbol"></b>
+                        <!-- <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
+                        <b class="link-division-symbol"></b> -->
                         <a @click="deleteSnap(scope.row)" class="btn-linker">删除</a>
                     </template>
                 </el-table-column>
@@ -46,8 +55,9 @@
     </div>
 </template>
 <script>
-import {getSnapshotList, deleteSnapshots} from '@/service/ecs/snapshot.js';
-
+import {getAlarmRuleList, deleteSnapshots} from '@/service/monitor/alarmRule.js';
+import {MONITOR_RULE_TYPES} from '@/constants/dicts/ecs';
+import {showTextByKey, operatorReplace} from '@/utils/utils';
 export default {
     data() {
         let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}];
@@ -61,6 +71,7 @@ export default {
         };
         return {
             fields,
+            MONITOR_RULE_TYPES,
             tableData: [],
             loading: false,
             snaplistShow: true,
@@ -73,15 +84,32 @@ export default {
             }
         };
     },
-    components: {
+    filters: {
+        getRuleDesc: function(rule) {
+            return (
+                '监控项：' +
+                showTextByKey(MONITOR_RULE_TYPES, rule.ruleMetric, 'key', 'value') +
+                '，监控频率：' +
+                rule.alarmTime +
+                '分钟， ' +
+                '监控值：' +
+                operatorReplace(rule.comparisonOperator) +
+                rule.threshold +
+                ',连续' +
+                rule.alarmSeveralTimes +
+                '次 则报警'
+            );
+        }
     },
+    components: {},
     mounted() {
+        this.getData();
     },
     methods: {
-        getSnapshotList(params) {
+        getData(params) {
             params = params || this.searchObj.paging;
             if (params !== false) this.loading = true;
-            getSnapshotList(params)
+            getAlarmRuleList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
