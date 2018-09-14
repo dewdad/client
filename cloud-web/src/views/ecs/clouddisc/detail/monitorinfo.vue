@@ -1,91 +1,81 @@
 <template>
-    <div class="page-main">
+    <div class="page-main diskMonitorInfo">
         <ecs-disk-detail-header :rowItem='rowItem' @refresh="refresh"></ecs-disk-detail-header>
         <div class="page-body">
             <!-- 监控信息 -->
             <div class="monitor">
-                <div class="selDate mt20 mb20">
+                <div class="selDate mt10 mb20">
                     <span class="font16">监控信息</span>
-                    <div class="right font12">
-                        <span>选择日期：</span>
-                        <el-date-picker v-model="monitorDate" type="daterange" align="right" size="small" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
+                    <div class="pull-right font12">
+                        <el-date-picker v-model="monitorDate" :clearable="true" @change="selTime();" type="daterange" align="right" size="small" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions2">
                         </el-date-picker>
                     </div>
                 </div>
 
                 <!-- IOPS -->
-                <div class="IOPS mb20">
+                <div class="IOPS mb20" style="height: 280px;">
                     <div class="title">
-                        <b class="leftBlueBox mr5"></b>IOPS(个)</div>
-                    <charts-line class="chart" :legend-visible="false" :chartExtendData="iopsChartData.chartExtendData" :chart-data="iopsChartData.datas" :settings="iopsChartData.settings" height="240px"></charts-line>
+                        <b class="leftBlueBox mr5"></b>IOPS(个)
+                    </div>
+                    <echarts-line 
+                        v-if="seriesData_iops.length > 0"
+                        :isMarkPoint="false"
+                        :legendData="legendData_iops"  
+                        :seriesData="seriesData" 
+                        :xAxisData="xData" 
+                        legendIcon="rect"
+                        :markPointSymbolSize="['150','55']" 
+                        :mouldColor="['#18bcc9', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
+                        :dotStyle="['b0e9c4', 'b0e9c4']" >
+                    </echarts-line>
+                    <div v-else class="color-secondary font24 text-c no-data">暂无数据</div>
                 </div>
                 <!-- 分割线 -->
                 <div class="mt20 mb20">
                     <hr>
                 </div>
                 <!-- 吞吐量 -->
-                <div class="IOPS mb20">
+                <div class="IOPS mb20" style="height: 280px;">
                     <div class="title">
-                        <b class="leftBlueBox mr5"></b>吞吐量(MBps)</div>
-                    <charts-line :legend-visible="false" :chartExtendData="mbpsChartData.chartExtendData" :chart-data="mbpsChartData.datas" :settings="mbpsChartData.settings" height="240px"></charts-line>
+                        <b class="leftBlueBox mr5"></b>吞吐量(MBps)
+                    </div>
+                    <echarts-line 
+                        v-if="seriesData_nbps.length > 0"
+                        :isMarkPoint="false"
+                        :legendData="legendData_nbps"  
+                        :seriesData="seriesData" 
+                        :xAxisData="xData" 
+                        legendIcon="rect"
+                        :markPointSymbolSize="['150','55']" 
+                        :mouldColor="['#0d7ef2', '#ffad00', '#61a0a8', '#c4ccd3']" 
+                        :dotStyle="['b0e9c4', 'b0e9c4']">
+                    </echarts-line>
+                    <div v-else class="color-secondary font24 text-c no-data">暂无数据</div>
                 </div>
             </div>
         </div>
 
-        <!-- 对话框 创建快照 -->
-        <create-snap-dialog ref="CreateSnapDialog" />
-        <!-- 对话框 设置自动快照策略 -->
-        <set-auto-snap-dialog ref="SetAutoSnapDialog" />
     </div>
 </template>
 
 <script>
 import EcsDiskDetailHeader from './detailHeader';
-import ChartsLine from '@/components/charts/ChartsLine.vue';
+import EchartsLine from '@/components/charts/EchartsLine.vue';
 import {moniterEchartMetricData} from '@/service/ecs/overview';
-import {convertToVchartData} from '@/utils/utils';
 import {getDiskList} from '@/service/ecs/disk/disk.js';
 
 export default {    
     data() {
-        let chartExtendData = {
-            grid: {
-                // 网格配置
-                bottom: '12%', // 离容器下侧的距离（留白）。
-                left: '5%', // 离容器左侧的距离（留白）。
-                right: '5%', // 离容器右侧的距离（留白）。
-                top: '9%' // 离容器上侧的距离（留白）。
-            },
-            legend: {
-                // 图列组件的配置
-                bottom: '0'
-            },
-            yAxis: {
-                //设置类别
-                type: 'value',
-                //y轴刻度
-                axisLabel: {
-                    //设置y轴数值为%
-                    formatter: '{value} %'
-                }
-            }
-        };
-        let chartData = {
-            chartExtendData,
-            settings: {
-                labelMap: {
-                    cpu: 'IOPS'
-                },
-                dataType: {
-                    IOPS: 'percent'
-                },
-                area: true
-            },
-            datas: {}
-        };
         return {
+            dateRange: '',
             stateParams: {},
             rowItem: {},
+            legendData_iops:['IOPS'],
+            legendData_nbps:['吞吐量'],
+            seriesData: [{
+                seriesData: [1, 2, 2, 3]
+            }],
+            xData: [1, 2, 2, 3],
             pickerOptions2: {
                 shortcuts: [
                     {
@@ -118,13 +108,15 @@ export default {
                 ]
             },
             monitorDate: '',
-            iopsChartData: Object.assign({}, chartData),
-            mbpsChartData: Object.assign({}, chartData)
+            seriesData_iops: [],
+            seriesData_nbps: [],
+            startTime: '',
+            endTime: ''
         };
     },
     components: {
         EcsDiskDetailHeader,
-        ChartsLine,       
+        EchartsLine 
     },
     created() {
         this.stateParams = this.$route.params || {};
@@ -160,39 +152,41 @@ export default {
             };
             return getDiskList(params).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    let resData = res.result;
-                    if (resData && resData.records) {
-                        this.rowItem = resData.records[0] || {};
+                    let resData = res.data;
+                    console.log(resData);
+                    if (resData && resData.data) {
+                        this.rowItem = resData.data[0] || {};
                     }
                 }
             });
         },
         //查询图表数据
         searchCharts: function(dataType) {
-            if (!this.rowItem.instanceId || !this.rowItem.mount) return;
+            // if (!this.rowItem.instanceId) return;
             let now = new Date();
             let st = new Date(now);
             st.setHours(st.getHours() - 2);
             let filters = this.$options.filters;
+
             let data = {
-                startTime: filters['date'](st, 'YYYY-MM-DD HH:mm:ss'),
-                endTime: filters['date'](now, 'YYYY-MM-DD HH:mm:ss'),
+                startTime: this.startTime || filters['date'](st, 'YYYY-MM-DD HH:mm:ss'),
+                endTime: this.endTime || filters['date'](now, 'YYYY-MM-DD HH:mm:ss'),
                 dataType: dataType, //'iops','mbps'
                 instanceType: 'disk',
-                instanceId: this.stateParams.instanceId,
-                mount: this.rowItem.mount
+                instanceId: this.$route.params.id,
+                mount: '/dev/vdc'
             };
             moniterEchartMetricData(data).then(res => {
                 if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                    let datas = res.result || [];
-                    let echartDatas = convertToVchartData(datas);
+                    let datas = res.data || [];
+                    console.warn(datas);
                     switch (dataType) {
                         case 'iops': {
-                            this.iopsChartData.datas = echartDatas;
+                            this.seriesData_iops = datas;
                             break;
                         }
                         case 'mbps': {
-                            this.mbpsChartData.datas = echartDatas;
+                            this.seriesData_mbps = datas;
                             break;
                         }
                         default: {
@@ -201,12 +195,18 @@ export default {
                 }
             });
         },
-       
+        selTime() {
+            let filters = this.$options.filters;
+            this.startTime = this.monitorDate && filters['date'](this.monitorDate[0], 'YYYY-MM-DD HH:mm:ss') || '';
+            this.endTime = this.monitorDate && filters['date'](this.monitorDate[1], 'YYYY-MM-DD HH:mm:ss') || '';
+            this.searchCharts('iops');
+            this.searchCharts('mbps');
+        }
     },    
 };
 </script>
  
-<style scoped lang="scss">
+<style lang="scss">
 .diskMonitorInfo {
     padding: 0 15px;
     .head {
@@ -225,10 +225,17 @@ export default {
                 display: block;
                 clear: both;
             }
+            .el-input__inner{
+                width: 300px;
+            }
         }
-        .right {
-            float: right;
+        .no-data{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height:100%;
         }
+        
     }
     .chart {
         width: 100%;

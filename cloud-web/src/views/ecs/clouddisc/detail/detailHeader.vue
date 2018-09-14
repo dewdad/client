@@ -4,16 +4,12 @@
             <img src="@/assets/images/ecs/disk_icon.svg" width="50" alt="" class="ecs-detail-img">
         </div>
         <div class="page-header__content">
-            <div class="font16"> {{ rowItem.name || "-"}}</div>            
+            <div class="font16"> {{ diskName || "-"}}</div>            
         </div>
         <div class="page-header__buttons">
             <div class="right">
                 <el-button type="primary" @click="createSnap" size="small">
                     创建快照
-                </el-button>
-                <el-button type="info" @click="setAutoSnap" size="small">
-                    <i class="iconfont icon-shezhi"></i>
-                    设置自动快照策略
                 </el-button>
                 <el-button type="info" size="small">
                     <i class="iconfont icon-icon-refresh" @click="refresh"></i>
@@ -84,7 +80,14 @@ export default {
         refresh: function() {            
             this.$emit('refresh');
         }
-    },    
+    },
+    computed: {
+        diskName() {
+            let name = this.rowItem.image_id ? '-系统盘' : '-数据盘';
+            name = this.rowItem.attachments && this.rowItem.attachments.length > 0 && this.rowItem.attachments[0].hostname + name;
+            return this.rowItem.name || name;
+        } 
+    }    
 };
 </script>
  
