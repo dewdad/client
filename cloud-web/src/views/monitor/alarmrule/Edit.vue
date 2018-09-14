@@ -14,19 +14,26 @@
                     <span style="line-height:2; margin-right:10px;" class="font14 iconfont icon-head_workorder_peop"></span>
                     <span class="color3 font16">关联资源</span>
                 </legend>
-                <zt-form-item label="产品" prop="">
-                    <el-select>
-                        <el-option label="云服务器ECS"></el-option>
-                        <el-option label="云盘"></el-option>
+                <zt-form-item label="产品" prop="alarm.type">
+                    <el-select v-model="ruleForm.alarm.type" placeholder="请选择产品类型">
+                        <el-option label="对象存储OSS" value="1"></el-option>
+                        <el-option label="云服务器ECS" value="2"></el-option>
+                        <el-option label="云硬盘" value="3"></el-option>
                     </el-select>
                 </zt-form-item>
-                <zt-form-item label="资源" prop="">
+                <zt-form-item label="资源" prop="" placeholder="请选择资源">
                     <el-select>
                         <el-option label="全部资源"></el-option>
                         <el-option label="bucket维度"></el-option>
                     </el-select>
                 </zt-form-item>
                 <zt-form-item label="bucket" prop="">
+                    <el-select>
+                        <el-option label="全部资源"></el-option>
+                        <el-option label="bucket维度"></el-option>
+                    </el-select>
+                </zt-form-item>
+                <zt-form-item label="实例" prop="">
                     <el-select>
                         <el-option label="全部资源"></el-option>
                         <el-option label="bucket维度"></el-option>
@@ -121,7 +128,48 @@
 <script>
 export default {
     data() {
-        return {};
+        return {
+            ruleForm: {
+                'alarm': {
+                    'desc': '',
+                    'domainId': '',
+                    'id': '',
+                    'instanceIds': [],
+                    'name': '',
+                    'projectId': '',
+                    'resourceType': '',
+                    'type': '',
+                },
+                'notices': [
+                    {
+                        'alarmId': '',
+                        'id': '',
+                        'noticePerson': '',
+                        'noticeType': '',
+                        'remark': ''
+                    }
+                ],
+                'rules': [
+                    {
+                        'alarmId': '',
+                        'alarmTime': '',
+                        'comparisonOperator': '',
+                        'createTime': '2018-09-14T05:49:42.780Z',
+                        'id': '',
+                        'noticeMail': '',
+                        'noticePhone': '',
+                        'remark': '',
+                        'ruleLevel': 0,
+                        'ruleMetric': '',
+                        'ruleMetricName': '',
+                        'ruleName': '',
+                        'status': 0,
+                        'syncFlag': 0,
+                        'threshold': ''
+                    }
+                ]
+            }
+        };
     }
 };
 </script>
