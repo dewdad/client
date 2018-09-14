@@ -56,7 +56,8 @@
                             </span>
                             <zt-dropdown-menu slot="dropdown">
                                 <zt-dropdown-item @click="deleteRouter(scope.row)">删除</zt-dropdown-item>
-                                <zt-dropdown-item>清除网关</zt-dropdown-item>
+                                <zt-dropdown-item v-if="scope.row.networkId" @click="clearGatewayFn(scope.row)">清除网关</zt-dropdown-item>
+                                <zt-dropdown-item v-else @click="setGatewayFn(scope.row)">设置网关</zt-dropdown-item>
                             </zt-dropdown-menu>
                         </zt-dropdown>
                     </template>
@@ -66,13 +67,16 @@
 
         <!-- 编辑路由弹窗 -->
         <edit-router ref="EditRouter"></edit-router>
+        <!-- 设置网关 -->
+        <set-gateway ref="SetGateway"></set-gateway>
     </div>
 </template>
 <script>
 import searchBox from '@/components/search/SearchBox';
-import {getRouterList, queryNetwork, deleteRouter} from '@/service/ecs/network.js';
+import {getRouterList, queryNetwork, deleteRouter, editGateway} from '@/service/ecs/network.js';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import EditRouter from './dialog/EditRouter';
+import SetGateway from './dialog/SetGateway';
 
 let statusArr = [
     {
@@ -125,7 +129,8 @@ export default {
     },
     components: {
         searchBox,
-        EditRouter
+        EditRouter,
+        SetGateway
     },
     methods: {
         getScreenVal(params) {
@@ -158,6 +163,44 @@ export default {
                     console.error('getEcsInstList', e);
                     this.loading = false;
                 });
+        },
+        // 清除网关
+        clearGatewayFn(row) {
+            let rowData = row;
+            rowData.networkId = '';
+            rowData.networkName = '';
+            $log('clearGatewayFn', rowData);
+            let params = {
+                ...rowData
+            };
+            this.loading = true;
+            editGateway(params)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.warn(res);
+                        this.$message.success('操作成功');
+                        this.getRouterListFn();
+                    }
+                })
+                .catch(e => {
+                    console.error('editGateway', e);
+                    this.loading = false;
+                });
+        },
+        // 设置网关
+        setGatewayFn(row) {
+            let SetGateway = this.$refs.SetGateway;
+            if (SetGateway) {
+                SetGateway.show({
+                    outerNetData: this.outerNetData,
+                    row: row
+                }).then(ret => {
+                    if (ret) {
+                        this.$message.success('操作成功');
+                        this.getRouterListFn();
+                    }
+                });
+            }
         },
         // 打开编辑路由弹窗
         openRouterDialog(type, row) {
