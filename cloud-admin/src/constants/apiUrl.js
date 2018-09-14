@@ -6,7 +6,7 @@ const PLATFORM = '/identity/platform';
 const MENU = '/menu';
 const OP_LOG = '/mq';
 const SYS = '/resources';//平台
-const ORDER = '/order';//工单
+const ORDER = '/resources/order';//工单
 
 
 // 登录模块
@@ -138,7 +138,7 @@ export const API_MENU_MGR = {
 // 工单模块
 export const ORDER_MODULE = {
     myorderList: ORDER + '/getOrderList',//分页查询我的工单
-    createOrder: ORDER + '/order/create',//创建工单
+    createOrder: ORDER + '/create',//创建工单
     changePwd: ORDER + '/user/chgpwd',
 
 };

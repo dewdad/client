@@ -57,7 +57,23 @@
                         <template v-if="col.column=='phone'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.phone}}</span>
+                                    <span class="font12 mr10">{{scope.row.mobile}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <!-- 产品类型 -->
+                        <template v-if="col.column=='productType'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.productType}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <!-- 故障类型 -->
+                        <template v-if="col.column=='faultType'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.faultType}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -71,10 +87,12 @@
                         </template>
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10" v-if="scope.row.status == 2">部门管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 3">子部门管理员</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 3">已审核</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 4">已关闭</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -131,10 +149,20 @@ export default {
         };
         let cols = [
             { column: 'orderNO', text:'工单号' , width: '10%'},
-            { column: 'orderTitle', text:'标题' , width: '15%'},
+            { column: 'orderTitle', text:'问题标题' , width: '15%'},
+            { column: 'productType', text: '产品类型', width: '10%' },
+            { column: 'faultType', text: '故障类型', width: '10%' },
             { column: 'phone', text: '联系方式', width: '10%' },
             { column: 'createTime', text: '创建时间', width: '10%' },
-            { column: 'status', text: '状态', width: '10%' },
+            { column: 'status', text: '状态', width: '10%' ,
+                dropdowns: [
+                    {key: 0, 'text': '全部', 'state': true, value: ''},
+                    {key: 1, 'text': '待审核', 'state': false, value: '1'},
+                    {key: 2, 'text': '待处理', 'state': false, value: '2'},
+                    {key: 3, 'text': '已审核', 'state': false, value: '3'},
+                    {key: 4, 'text': '已关闭', 'state': false, value: '4'}
+                ]
+            },
         ];
 
         return {
@@ -165,12 +193,16 @@ export default {
             myorderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
+                if(resData && resData.records){
+                    this.tableData = resData.records || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
             });
+        },
+        filterHandler(value, row, column) {
+            const property = column['property'];
+            return row[property] === value;
         },
         relateAuth(item){
             this.$refs.RelateAuth.show(item)
