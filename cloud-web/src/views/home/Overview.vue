@@ -132,7 +132,7 @@
                                         :label="item.name" 
                                         v-for="item in instanceList" 
                                         :key="item.name"></el-option>
-                                        <i class="iconfont icon-zhuji" slot="prefix"></i>
+                                        <i class="el-input__icon iconfont icon-zhuji" slot="prefix"></i>
                                     </el-select>
                                 </span>
                             </div>
@@ -156,7 +156,7 @@
                     <el-col :span="8 ">
                         <div class="info-box monitor-warning">
                             <div class="info-box-head">监控警告
-                                <a class="pull-right font14 ">查看更多</a>
+                                <router-link :to="{name: 'app.monitor.history'}" class="pull-right font14 ">查看更多</router-link>
                             </div>
                             <h5 style="height: 37px; border-left: 2px solid #d3d8de;margin: 0 0 10px 0;padding-left: 10px;">
                                 <div class="pull-left">

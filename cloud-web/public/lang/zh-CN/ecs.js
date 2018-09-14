@@ -128,9 +128,7 @@ export default {
             helpDialog: {
                 title: '实例搜索帮助',
                 infoTitle: '自动识别',
-                info: `<p>您可以简单的输入搜索内容然后按Enter键，搜索框将会自动识别内容的属性类型，然后进行搜索。通过左侧的箭头下拉菜单，您也可以手动选择搜索的类型。</p>
-                
-                <p>自动识别支持实例ID(e-开头)、私有IP、公网IP、镜像ID(img-开头)、安全组ID(sg-开头)、私有网络ID(net-开头)。默认的识别类型为实例名称。</p>`
+                info: `<p>您可以简单的输入搜索内容然后按Enter键，搜索框将会进行搜索。通过左侧的箭头下拉菜单，您也可以手动选择搜索的类型。</p>`
             },
             vMachineIsReady: '虚拟机已经可用',
             newMediaBuildingBindconnectip: '新媒体大楼办公的用户可以使用该主机连接云主机'

@@ -1,8 +1,9 @@
 <template>
     <div class="page-main">
         <page-header>
-            云盘快照
+            报警联系人管理
             <div slot="right">
+                <el-button type="primary" @click="addContact" size="small">创建联系人</el-button>
                 <el-button type="info" size="small" @click="getSnapshotList">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
@@ -11,29 +12,11 @@
         <div class="page-body mt10">
             <!-- 列表 -->
             <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
-                <!-- 实例名称 -->
-                <el-table-column min-width="120" prop="name" label="名称">
+                <el-table-column min-width="120" prop="name" label="姓名">
                 </el-table-column>
-                <!-- 磁盘ID -->
-                <el-table-column min-width="180" prop="id" label="磁盘ID">
+                <el-table-column min-width="180" prop="id" label="手机号码">
                 </el-table-column>
-                <!-- 磁盘名称 -->
-                <el-table-column min-width="180" prop="volumeName" label="磁盘名称">
-                </el-table-column>
-                <!-- 磁盘容量 -->
-                <el-table-column min-width="100" prop="size" label="磁盘容量">
-                    <template slot-scope="scope">
-                        {{scope.row.size}}G
-                    </template>
-                </el-table-column>
-                <!-- 描述 -->
-                <el-table-column min-width="180" prop="description" label="描述">
-                </el-table-column>
-                <!-- 状态 -->
-                <el-table-column min-width="100" prop="status" label="状态">
-                    <template slot-scope="scope">
-                        <zt-status :status="statusArr" :value="scope.row.status" class="text-nowrap status-column"></zt-status>
-                    </template>
+                <el-table-column min-width="180" prop="volumeName" label="Email">
                 </el-table-column>
                 <!-- 操作 -->
                 <el-table-column label="操作" key="op" width="150" class-name="option-column">
@@ -45,64 +28,16 @@
                 </el-table-column>
             </zt-table>
         </div>
-        <create-disk ref="CreateDisk"/>
-        <delete-dialog ref="DeleteDailog"/>
+        <delete-dialog ref="DeleteDailog" />
+        <create-contact ref="CreateContact" />
     </div>
 </template>
 <script>
 import {getSnapshotList, deleteSnapshots} from '@/service/ecs/snapshot.js';
-import CreateDisk from './dialog/CreateDisk';
-let statusArr = [
-    {text: '全部', state: true, value: ''},
-    {
-        text: '可用',
-        value: 'available',
-        className: 'color-success',
-        icon: 'icon-chenggong',
-        type: 'font'
-    },
-    {
-        text: '错误',
-        value: 'error',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '备份中',
-        value: 'backing-up',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
-        text: '删除时出错',
-        value: 'error_deleting',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '删除中',
-        value: 'deleting',
-        className: 'color-danger',
-        type: 'progress'
-    },
-    {
-        text: '创建中',
-        value: 'downloading',
-        className: 'color-progress-primary',
-        type: 'progress'
-    },
-    {
-        text: '创建中',
-        value: 'creating',
-        className: 'color-progress-primary',
-        type: 'progress'
-    },
-];
+import CreateContact from './components/CreateContact';
 export default {
     data() {
-        let fields = [{field: 'name', label: '名称', inputval: '', tagType: 'INPUT'}];
+        let fields = [{field: 'name', label: '姓名', inputval: '', tagType: 'INPUT'},{field: 'mobiel', label: '手机号', inputval: '', tagType: 'INPUT'}];
         let searchObj = {
             //分页
             paging: {
@@ -115,7 +50,6 @@ export default {
             fields,
             tableData: [],
             loading: false,
-            statusArr,
             snaplistShow: true,
             searchObj,
             fieldValue: '',
@@ -123,22 +57,13 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            },
-            task: null
+            }
         };
     },
     components: {
-        CreateDisk
-    },
-    destroyed() {
-        clearInterval(this.task);
+        CreateContact
     },
     mounted() {
-        this.getSnapshotList();
-        // 每30秒查询一次
-        this.task = setInterval(() => {
-            this.getSnapshotList(false);
-        }, 30000);
     },
     methods: {
         getSnapshotList(params) {
@@ -162,8 +87,7 @@ export default {
                 });
         },
         editSnap(row) {
-            this.$refs.CreateDisk.show(row).then(() => {
-            });
+            this.$refs.CreateDisk.show(row).then(() => {});
         },
         deleteSnap(row) {
             this.$refs.DeleteDailog.show('快照', row.name, () => {
@@ -172,6 +96,9 @@ export default {
                 this.$message.success('操作成功');
                 this.getSnapshotList();
             });
+        },
+        addContact() {
+            this.$refs.CreateContact.show().then(() => {});
         }
     }
 };

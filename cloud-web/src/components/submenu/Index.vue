@@ -97,7 +97,7 @@ export default {
         }
     },
     mounted() {
-        this.activeIndex = this.$route.name;
+        this.activeIndex = (this.$route.meta && this.$route.meta.activeIndex) || this.$route.name;
     }
 };
 </script>

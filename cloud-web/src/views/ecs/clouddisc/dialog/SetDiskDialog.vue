@@ -61,10 +61,10 @@
                                 </el-table-column>
                             </template> -->
                                     <!-- 磁盘属性 -->
-                                    <template v-if="col.column=='bootable'">
-                                        <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column" :filter-multiple="false" :filters="col.dropdowns" :filter-method="filterHandler">
+                                    <template v-if="col.column=='image_id'">
+                                        <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column">
                                             <template slot-scope="scope">
-                                                {{scope.row.bootable ? '系统盘' : '数据盘' }}
+                                                {{scope.row.image_id !== '' ? '系统盘' : '数据盘' }}
                                             </template>
                                         </el-table-column>
                                     </template>
@@ -141,10 +141,10 @@
                                 </el-table-column>
                             </template> -->
                                     <!-- 磁盘属性 -->
-                                    <template v-if="col.column=='bootable'">
-                                        <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column" :filter-multiple="false" :filters="col.dropdowns" :filter-method="filterHandler">
+                                    <template v-if="col.column=='image_id'">
+                                        <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column">
                                             <template slot-scope="scope">
-                                                {{scope.row.bootable ? '系统盘' : '数据盘' }}
+                                                {{scope.row.image_id !== '' ? '系统盘' : '数据盘' }}
                                             </template>
                                         </el-table-column>
                                     </template>
@@ -181,13 +181,11 @@ export default {
                 column: 'diskType',
                 text: '磁盘种类',
                 width: '4%',
-                dropdowns: [{key: 0, text: '全部', state: true, value: ''}, {key: 1, text: 'SSD云盘', state: false, value: 'SSD'}, {key: 2, text: '高效云盘', state: false, value: 'SATA'}]
             },
             {
-                column: 'bootable',
+                column: 'image_id',
                 text: '磁盘属性',
                 width: '4%',
-                dropdowns: [{key: 0, text: '全部', state: true, value: ''}, {key: 1, text: '系统盘', state: false, value: true}, {key: 2, text: '数据盘', state: false, value: false}]
             }
         ];
 
@@ -264,12 +262,6 @@ export default {
             this.alreadyDisk.forEach(item => {
                 ids.push(item.id);
             });
-            if (ids.length === 0) {
-                this.$alert('请选择磁盘', '提示', {
-                    type: 'warning'
-                });
-                return;
-            }
             let data = {
                 diskIds: ids,
                 policyId: this.rowItem.pid,

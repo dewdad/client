@@ -370,6 +370,47 @@
         ]
     },
     {
+        "text": "云监控",
+        "heading": true,
+        "psref": "#",
+        "sref": "app.monitor",
+        "icon": "iconfont icon-yunjiankong",
+        "translate": "",
+        "arrow": "nav-dropdown-toggle",
+        "alert": "new",
+        "submenu": [
+            {
+                "text": "报警服务",
+                "sref": "#",
+                "psref": "app.monitor",
+                "aref": "app.monitor.alarmrule",
+                "submenu": [
+                    {
+                        "text": "报警规则",
+                        "sref": "app.monitor.alarmrule.list",
+                        "psref": "app.monitor",
+                        "aref": "app.monitor.alarmrule"
+                    },
+                    {
+                        "text": "报警历史",
+                        "sref": "app.monitor.history",
+                        "psref": "app.monitor"
+                    },
+                    {
+                        "text": "报警联系人",
+                        "sref": "app.monitor.contacts",
+                        "psref": "app.monitor"
+                    }
+                ]
+            },
+            {
+                "hidden": true,
+                "text": "添加报警规则",
+                "sref": "app.monitor.alarmrule.add"
+            }
+        ]
+    },
+    {
         "text": "应用容器WAC",
         "heading": true,
         "psref": "#",
@@ -493,58 +534,6 @@
                 "text": "监听详细信息",
                 "sref": "app.loadbalance.inst.listen-detail",
                 "psref": "loadbalance.linst-listen"
-            }
-        ]
-    },
-    {
-        "text": "云监控",
-        "heading": true,
-        "hidden": true,
-        "psref": "#",
-        "sref": "app.monitor",
-        "icon": "iconfont icon-yunjiankong",
-        "translate": "",
-        "arrow": "nav-dropdown-toggle",
-        "alert": "new",
-        "submenu": [
-            {
-                "text": "报警服务",
-                "sref": "#",
-                "psref": "app.monitor",
-                "aref": "app.monitor.alarmrule",
-                "submenu": [
-                    {
-                        "text": "报警规则",
-                        "sref": "app.monitor.alarmrule-list",
-                        "psref": "app.monitor",
-                        "aref": "app.monitor.alarmrule"
-                    },
-                    {
-                        "text": "报警历史",
-                        "sref": "app.monitor.alarmhistory",
-                        "psref": "app.monitor"
-                    },
-                    {
-                        "text": "报警联系人",
-                        "sref": "app.monitor.alarmcontacts",
-                        "psref": "app.monitor"
-                    }
-                ]
-            },
-            {
-                "text": "返回",
-                "sref": "app.monitor.alarmrule-list",
-                "psref": "monitor.alarmrule"
-            },
-            {
-                "text": "基本信息",
-                "sref": "app.monitor.alarmrule.info",
-                "psref": "monitor.alarmrule"
-            },
-            {
-                "text": "报警历史",
-                "sref": "app.monitor.alarmrule.history",
-                "psref": "monitor.alarmrule"
             }
         ]
     },
@@ -757,7 +746,6 @@
         "arrow": "nav-dropdown-toggle",
         "alert": "new",
         "hidden": true,
-        "submenu": [
-        ]
+        "submenu": []
     }
 ]

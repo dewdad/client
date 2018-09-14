@@ -90,7 +90,7 @@
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item :disabled="scope.row.status!=='available'" :command="{handle:'mountDataDiskFn',rowItem:scope.row}">挂载</el-dropdown-item>
-                                <el-dropdown-item :disabled="scope.row.status!=='in-use'" :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
+                                <el-dropdown-item :disabled="scope.row.status!=='in-use' || scope.row.image_id !== ''" :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
                                 <el-dropdown-item :disabled="scope.row.status==='in-use'" :command="{handle:'releaseDisk',rowItem:scope.row}">释放</el-dropdown-item>
                                 <el-dropdown-item :command="{handle:'modifyDiskDescrip',rowItem:scope.row}"> 修改磁盘描述</el-dropdown-item>
                                 <el-dropdown-item command>

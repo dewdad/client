@@ -16,10 +16,10 @@
             <!-- 输入框 -->
             <el-input :placeholder="placeholder" v-model="input" class="ecs-select-input" size="small" @focus="inputFocus = true" @blur="inputBlur" @keyup.enter.native="submit" maxlength="64">
                 <!-- 帮助提示 -->
-                <el-tooltip slot="append" class="item" effect="dark" placement="top">
+                <!-- <el-tooltip slot="append" class="item" effect="dark" placement="top">
                     <span slot="content" @click="$emit('help')">{{$t('ecs.inst.list.help')}}</span>
                     <i class="iconfont icon-iconfontwenhao1" @click="$emit('help')"></i>
-                </el-tooltip>
+                </el-tooltip> -->
             </el-input>
             <!-- 搜索历史 -->
             <div class="history box-shadow" v-show="inputFocus && !select && !showOptions && !input && searchHistoryDesc.length">
