@@ -318,6 +318,7 @@ export default {
             this.$refs.CreateSnapDialog.show(rowItem)
                 .then(ret => {
                     this.$message.success('操作成功');
+                    this.getDiskList(false);
                 })
                 .catch(err => {
                     if (err) {
@@ -332,7 +333,9 @@ export default {
          */
         createBack: function(rowItem) {
             this.$refs.CreateBackDialog.show(rowItem)
-                .then(ret => {})
+                .then(ret => {
+                    this.getDiskList(false);
+                })
                 .catch(err => {
                     if (err) {
                         console.log('Error', err);

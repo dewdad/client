@@ -11,7 +11,8 @@
             </zt-form-item>
             <!-- 实例ID/名称 -->
             <zt-form-item label="实例ID/名称">
-                <span>{{rowItem.name || '-'}}</span>
+                <span  v-if="rowItem && rowItem.attachments && rowItem.attachments.length && rowItem.attachments[0].device === '/dev/vda'" >{{rowItem.attachments[0].serverId}}/{{rowItem.attachments[0].hostname}}</span>
+                <span v-else>-</span>
             </zt-form-item>
             <!-- 备份名称 -->
             <zt-form-item label="备份名称" prop="snapshotName">
