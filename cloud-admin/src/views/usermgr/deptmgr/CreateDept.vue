@@ -64,7 +64,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {createDept,editDept} from '@/service/usermgr/deptmgr.js';
+import {createDept,editDept,createQuota,changeDeptQuota,searchDeptDetail} from '@/service/usermgr/deptmgr.js';
 export default {
     data() {
         return{
@@ -165,6 +165,7 @@ export default {
                 this.form.id = item.id;
                 this.form.name = item.name;
                 this.form.description = item.description;
+                this.searchDeptDetail();
             }else{
                 this.form.id = '';
                 this.form.name = '';
@@ -180,7 +181,6 @@ export default {
         },
         hide() {
             this.isShow = false;
-
         },
         cancel() {
             this.hide();
@@ -210,6 +210,16 @@ export default {
                 }
             });
         },
+        //通过部门id查找详情
+        searchDeptDetail(){
+            searchDeptDetail(this.item.id).then(ret => {
+                $log('list....detail', ret);
+                let resData = ret.data;
+                if(resData){
+                    this.form = resData || [];
+                }
+            });
+        },
         create(){
             this.form.parentId = '';
             createDept(this.form)
@@ -217,6 +227,29 @@ export default {
                     console.log('reds',res);
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
+                        this.form.quota.deptId = res.data.data.id;
+                        createQuota(this.form.quota)
+                            .then(res => {
+                                console.log('reds',res);
+                                if(res.data.code === '0000'){
+                                    this.resolve(this.form.quota);
+                                    this.hide();
+                                    this.setting();
+                                    this.confirmBtn = false;
+                                }else{
+                                    this.$alert('操作失败', '提示', {
+                                        type: 'error'
+                                    });
+                                    this.confirmBtn = false;
+                                    return;
+                                }
+                            })
+                            .catch(err => {
+                                this.confirmBtn = false;
+                                this.$alert(err, '提示', {
+                                    type: 'error'
+                                });
+                            });
                         this.hide();
                         this.setting();
                         this.confirmBtn = false;
@@ -234,6 +267,7 @@ export default {
                         type: 'error'
                     });
                 });
+
         },
         edit(){
             editDept(this.form)
@@ -241,9 +275,29 @@ export default {
                     console.log('reds',this.form);
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
-                        this.hide();
-                        this.setting();
-                        this.confirmBtn = false;
+                        this.form.quota.deptId = this.form.id;
+                        changeDeptQuota(this.form.quota)
+                            .then(res => {
+                                console.log('reds',res);
+                                if(res.data.code === '0000'){
+                                    this.resolve(this.form.quota);
+                                    this.hide();
+                                    this.setting();
+                                    this.confirmBtn = false;
+                                }else{
+                                    this.$alert('操作失败', '提示', {
+                                        type: 'error'
+                                    });
+                                    this.confirmBtn = false;
+                                    return;
+                                }
+                            })
+                            .catch(err => {
+                                this.confirmBtn = false;
+                                this.$alert(err, '提示', {
+                                    type: 'error'
+                                });
+                            });
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'

@@ -30,7 +30,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <router-link :to="{name:'app.platform.bindPlatAuth',params:{val:scope.row.val,item:scope.row,fromstate:'app.platform.role'}}" class="btn-linker">绑定平台权限</router-link>
+                                <a  @click="bindPlatAuth(scope.row)" class="btn-linker" >绑定平台权限</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -38,10 +38,12 @@
 
             </el-col>
         </el-row>
+        <bind-platauth ref="BindPlatauth"></bind-platauth>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
+import BindPlatauth from './BindPlatauth';
 import {roleTypeList} from '@/service/platform.js';
 export default {
     name: 'app',
@@ -68,7 +70,8 @@ export default {
         };
     },
     components: {
-        PageHeader
+        PageHeader,
+        BindPlatauth
     },
     methods: {
         roleTypeList(){
@@ -86,9 +89,10 @@ export default {
 
             });
         },
-
-
-
+        //绑定平台权限
+        bindPlatAuth(item){
+            this.$refs.BindPlatauth.show(item);
+        },
 
     },
     mounted(){

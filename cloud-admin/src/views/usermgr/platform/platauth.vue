@@ -131,7 +131,9 @@ export default {
     methods: {
         searchPlatAuth(){
             let params = {
-                paging:this.searchObj.paging
+                paging:this.searchObj.paging,
+                platformResourceId:this.platId
+
             };
             $log('params', params);
             searchPlatAuth(params).then(ret => {

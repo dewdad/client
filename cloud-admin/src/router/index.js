@@ -135,14 +135,6 @@ export default new Router({
                             component: () => import('@/views/usermgr/platform/platformExpand')
                         } ,
                         {
-                            path: 'bindPlatAuth/:val',
-                            name: 'app.platform.bindPlatAuth',
-                            meta: {
-                                title: '绑定平台权限'
-                            },
-                            component: () => import('@/views/usermgr/platform/bindplatauth')
-                        },
-                        {
                             path: 'oplog',
                             name: 'app.usrmgr.oplog',
                             meta: {
