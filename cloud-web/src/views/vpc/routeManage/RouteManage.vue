@@ -130,6 +130,7 @@ export default {
     methods: {
         getScreenVal(params) {
             $log(params.fileds);
+            this.searchObj.paging.pageIndex = params.pageIndex;
             this.getRouterListFn(params.fileds);
         },
         // 获得路由列表

@@ -134,7 +134,7 @@ export default {
 
                 this.listData = ret;
 
-                this.pageIndex = parseInt(ret.pages);
+                // this.pageIndex = parseInt(ret.pages);
                 this.searchObj.paging.totalItems = ret.total;
 
                 this.isLoading = false;
@@ -146,6 +146,7 @@ export default {
         // 获得搜索条件
         getScreenVal(params) {
             $log('searchVal',params);
+            this.searchObj.paging.pageIndex = params.pageIndex;
             this.floatingIpAddressVal = params.fileds.name;
             this.fetchData();
         },
@@ -181,7 +182,7 @@ export default {
         getInstList() {
             let params = {
                 pageIndex: 1,
-                limit: 10,
+                limit: 999,
                 offset: 1
             };
             getEcsInstList(params)
