@@ -11,7 +11,7 @@
             </zt-form-item>
             <!-- 实例ID/名称 -->
             <zt-form-item label="实例ID/名称">
-                <span class="text-nowrap" v-if="rowItem.attachments && rowItem.attachments.length">{{rowItem.attachments[0].serverId}}/{{rowItem.attachments[0].hostname}}</span>
+                <span v-if="rowItem && rowItem.attachments && rowItem.attachments.length && rowItem.attachments[0].device === '/dev/vda'" >{{rowItem.attachments[0].serverId}}/{{rowItem.attachments[0].hostname}}</span>
                 <span v-else>-</span>
             </zt-form-item>
             <!-- 快照名称 -->

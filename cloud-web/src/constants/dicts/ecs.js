@@ -94,13 +94,13 @@ export const ECS_STATUS = [
     {
         text: '删除中',
         value: 'deleted',
-        className: 'color-warning',
+        className: 'color-progress-warning',
         type: 'progress'
     },
     {
         text: '恢复中',
         value: 'revert_resize',
-        className: 'color-warning',
+        className: 'color-progress-warning',
         type: 'progress'
     },
     {
