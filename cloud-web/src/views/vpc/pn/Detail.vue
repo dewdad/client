@@ -35,7 +35,7 @@
                     </tr>
                     <tr>
                         <td>状态：</td>
-                        <td><zt-status :status="ECS_STATUS" :value="countData.status" ></zt-status></td>
+                        <td><zt-status :status="ECS_STATUS" :value="countData.status && countData.status.toLowerCase()" ></zt-status></td>
                         <td>租户ID：</td>
                         <td>{{countData.tenant_id}}</td>
                     </tr>
