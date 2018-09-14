@@ -58,7 +58,10 @@ export default {
             this.isShow = true;
             this.optype = optype;
             console.log('item',item);
-            if(optype !== 1) this.form.roleType = item.roleType;
+            if(optype !== 1){
+                this.form.roleType = item.roleType;
+                this.form.id = item.id;
+            }
             this.form.roleName = item.roleName;
             this.form.description = item.description;
             console.log('optype',optype);
