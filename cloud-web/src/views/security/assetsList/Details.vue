@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         handleClick(tab, event) {
-            alert(tab.name);
+            // alert(tab.name);
         }
     }
 };

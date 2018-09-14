@@ -21,7 +21,7 @@
         <!-- 对话框 创建快照 -->
         <create-snap-dialog ref="CreateSnapDialog"/>
         <!-- 对话框 设置自动快照策略 -->
-        <set-auto-snap-dialog ref="SetAutoSnapDialog"/>  
+        <!-- <set-auto-snap-dialog ref="SetAutoSnapDialog"/>   -->
 
     </div>
 </template>

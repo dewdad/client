@@ -28,9 +28,9 @@
                         <div>{{scope.row.name}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态">
+                <el-table-column label="状态" >
                     <template slot-scope="scope">
-                        <zt-status :status="ECS_STATUS" :value="scope.row.status" ></zt-status>
+                        <zt-status :status="ECS_STATUS" :value="scope.row.status.toLowerCase()" ></zt-status>
                     </template>
                 </el-table-column>
                 <el-table-column label="外部网络" :min-width="80">
