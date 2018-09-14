@@ -52,16 +52,10 @@
 <script>
 import {getBackupList, deleteBackup} from '@/service/ecs/disk/disk.js';
 import Recovery from './dialog/Recovery';
+import {DISK_BACK_STATUS} from '@/constants/dicts/ecs';
 let statusArr = [
     {text: '全部', state: true, value: ''},
-    {
-        text: '成功',
-        state: false,
-        value: 'available',
-        className: 'color-success',
-        icon: 'icon-chenggong',
-        type: 'font'
-    }
+    ...DISK_BACK_STATUS
 ];
 export default {
     data() {
@@ -106,7 +100,7 @@ export default {
     methods: {
         getBackupList(params) {
             params = params || this.searchObj.paging;
-            this.loading = true;
+            if (params !== false) this.loading = true;
             getBackupList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {

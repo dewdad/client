@@ -123,19 +123,27 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            }
+            },
+            task: null
         };
     },
     components: {
         CreateDisk
     },
+    destroyed() {
+        clearInterval(this.task);
+    },
     mounted() {
         this.getSnapshotList();
+        // 每30秒查询一次
+        this.task = setInterval(() => {
+            this.getSnapshotList(false);
+        }, 30000);
     },
     methods: {
         getSnapshotList(params) {
             params = params || this.searchObj.paging;
-            this.loading = true;
+            if (params !== false) this.loading = true;
             getSnapshotList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
