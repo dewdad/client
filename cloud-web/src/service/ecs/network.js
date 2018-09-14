@@ -112,6 +112,18 @@ export async function editRouter({...arg}) {
 }
 
 /**
+ * 设置网关或清除网关
+ * @param name 路由名称
+ * @param adminStateUp 管理状态
+ * @param networkId 外网ID
+ */
+export async function editGateway({...arg}) {
+    $log('put /editRouter ->', {...arg});
+    let ret = await http.put(API_ECS.network.editRouter, {...arg});
+    return ret && ret.data;
+}
+
+/**
  * 修改路由
  * @param name 路由名称
  * @param adminStateUp 管理状态

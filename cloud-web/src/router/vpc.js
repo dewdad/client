@@ -27,7 +27,24 @@ export default [
             {
                 path: 'pn/detail/:id',
                 name: 'app.vpc.pn-detail', // 专有网络详情
-                component: pnDetail
+                // component: pnDetail,
+                component: {
+                    render(c) {
+                        return c('router-view');
+                    }
+                },
+                redirect: '/vpc/pn/detail',
+                meta: {
+                    showBack: true,
+                    backUrl: 'app.vpc.pn'
+                },
+                children: [
+                    {
+                        path: 'detail',
+                        name: 'app.vpc.pn-detail',
+                        component: pnDetail
+                    }
+                ]
             },
             {
                 path: 'pn/subnet/:id/:name',
@@ -47,7 +64,24 @@ export default [
             {
                 path: 'pn/staticRouter/:id',
                 name: 'app.vpc.pn-staticRouter', // 添加静态路由
-                component: StaticRouter
+                // component: StaticRouter,
+                component: {
+                    render(c) {
+                        return c('router-view');
+                    }
+                },
+                redirect: '/vpc/pn/staticRouter',
+                meta: {
+                    showBack: true,
+                    backUrl: 'app.vpc.pn-routeManage'
+                },
+                children: [
+                    {
+                        path: 'staticRouter',
+                        name: 'app.vpc.pn-staticRouter',
+                        component: StaticRouter
+                    }
+                ]
             }
         ]
     }
