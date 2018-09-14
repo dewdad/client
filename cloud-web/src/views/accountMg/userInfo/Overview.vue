@@ -270,18 +270,18 @@ export default {
     &__password{
         height: 90px;
         // padding-top: 20px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
+        // -webkit-box-flex: 1;
+        // -ms-flex: 1;
+        // flex: 1;
         display: flex;
         align-items: center;
     }
     &__email{
         height: 90px;
         // padding-top: 20px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
+        // -webkit-box-flex: 1;
+        // -ms-flex: 1;
+        // flex: 1;
         display: flex;
         align-items: center;
     }
