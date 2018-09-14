@@ -13,16 +13,16 @@
             </div>
             <div class="panel-body zt-panel-body-info font12">
                 <zt-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                    <zt-form-item label="标题" prop="orderTitle">
-                        <el-input type="textarea" v-model="ruleForm.orderTitle" resize="none" rows="5" 
+                    <zt-form-item label="标题" prop="title">
+                        <el-input type="textarea" v-model="ruleForm.title" resize="none" rows="5" 
                         placeholder="问题标题，不得超过100字!">
                         </el-input>
                     </zt-form-item>
 
-                    <zt-form-item label="产品类型" prop="productType">
-                        <el-select v-model="ruleForm.productType" value-key="value" placeholder="请选择产品类型">
+                    <zt-form-item label="产品类型" prop="moduleType">
+                        <el-select v-model="ruleForm.moduleType" value-key="value" placeholder="请选择产品类型">
                             <el-option
-                            v-for="item in productTypes"
+                            v-for="item in moduleTypes"
                             :key="item.value"
                             :label="item.label"
                             :value="item">
@@ -30,10 +30,10 @@
                         </el-select>
                     </zt-form-item>
 
-                    <zt-form-item label="故障类型" prop="faultType">
-                        <el-select v-model="ruleForm.faultType" placeholder="请选择故障类型">
+                    <zt-form-item label="故障类型" prop="orderType">
+                        <el-select v-model="ruleForm.orderType" placeholder="请选择故障类型">
                             <el-option
-                            v-for="item in ruleForm.productType.faultTypes"
+                            v-for="item in ruleForm.moduleType.orderTypes"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -41,37 +41,37 @@
                         </el-select>
                     </zt-form-item>
 
-                    <zt-form-item label="优先级">
-                        <el-radio v-model="radio2" :label="3">重要</el-radio>
-                        <el-radio v-model="radio2" :label="6">一般</el-radio>
-                        <div class="prioritytip" v-show="radio2 === 3">关键业务受影响，需要紧急协助</div>
-                        <div class="prioritytip" v-show="radio2 === 6">业务咨询或普通业务受影响，需要协助</div>
+                    <zt-form-item label="优先级" prop="orderLevel">
+                        <el-radio v-model="ruleForm.orderLevel" :label="2">重要</el-radio>
+                        <el-radio v-model="ruleForm.orderLevel" :label="1">一般</el-radio>
+                        <div class="prioritytip" v-show="ruleForm.orderLevel === 2">关键业务受影响，需要紧急协助</div>
+                        <div class="prioritytip" v-show="ruleForm.orderLevel === 1">业务咨询或普通业务受影响，需要协助</div>
                     </zt-form-item>
 
-                    <zt-form-item label="问题描述" prop="problemDescribe">
-                        <el-input type="textarea" v-model="ruleForm.problemDescribe" rows="5" resize="none" 
+                    <zt-form-item label="问题描述" prop="orderDesc">
+                        <el-input type="textarea" v-model="ruleForm.orderDesc" rows="5" resize="none" 
                         placeholder="问题描述，不得超过100字，若提交密码或AccessKeys等信息，请通过“机密信息”方式添加，并在问题处理完毕后及时修改">
                         </el-input>                        
                     </zt-form-item>
 
-                    <zt-form-item label="实例ID" prop="id">
-                        <el-input v-model="ruleForm.id"></el-input>
+                    <zt-form-item label="实例ID" prop="resourceId">
+                        <el-input v-model="ruleForm.resourceId"></el-input>
                     </zt-form-item>
 
-                    <zt-form-item label="补充说明" prop="extraDesc">
-                        <el-input type="textarea" v-model="ruleForm.extraDesc" resize="none" rows="5" 
+                    <zt-form-item label="补充说明" prop="remark">
+                        <el-input type="textarea" v-model="ruleForm.remark" resize="none" rows="5" 
                         placeholder="补充说明，不得超过100字，若为弹性云服务器相关问题，请补充说明IP端口、网站地址、web目录等；若为RDS相关问题，请补充说明账号等，并尽快提交充分信息便于排查">
                         </el-input>
                     </zt-form-item>
 
-                    <zt-form-item label="机密信息" prop="orderDesc">
-                        <el-input type="textarea" v-model="ruleForm.orderDesc" resize="none" rows="5" 
+                    <zt-form-item label="机密信息" prop="secretInfo">
+                        <el-input type="textarea" v-model="ruleForm.secretInfo" resize="none" rows="5" 
                         placeholder="请在此处填写实例名、账号、密码等机密信息，提交后，机密信息将做加密处理" >
                         </el-input>
                     </zt-form-item>
 
-                    <zt-form-item label="手机号码" prop="phone">
-                        <el-input v-model="ruleForm.phone"></el-input>
+                    <zt-form-item label="手机号码" prop="mobile">
+                        <el-input v-model="ruleForm.mobile"></el-input>
                     </zt-form-item>
 
                     <zt-form-item label="邮箱" prop="email">
@@ -117,9 +117,9 @@ export default {
         'zt-upload': ZTUpload,
     },
     data() {
-        let productTypes = [
+        let moduleTypes = [
             {value: '1', label: '弹性云主机',
-                faultTypes: [
+                orderTypes: [
                     {value: 10, label: '远程连接'},
                     {value: 11, label: '镜像'},
                     {value: 12, label: '安全组配置'},
@@ -129,7 +129,7 @@ export default {
                 ]
             },
             // {value: '2', label: '云数据库RDS',
-            //     faultTypes: [
+            //     orderTypes: [
             //         {value: 20, label: '版本/规格'},
             //         {value: 21, label: '只读实例'},
             //         {value: 22, label: '监控与报警'},
@@ -139,7 +139,7 @@ export default {
             //     ]
             // },
             {value: '3', label: '对象存储OSS',
-                faultTypes: [
+                orderTypes: [
                     {value: 30, label: '文件上传/下载'},
                     {value: 31, label: '读写限制'},
                     {value: 32, label: 'SDK/API'},
@@ -150,10 +150,10 @@ export default {
                     {value: 37, label: '镜像回源'},
                 ]
             },
-            // {value: '4', label: '云数据库Redis', faultTypes: []},
-            // {value: '5', label: '弹性伸缩', faultTypes: []},
+            // {value: '4', label: '云数据库Redis', orderTypes: []},
+            // {value: '5', label: '弹性伸缩', orderTypes: []},
             {value: '6', label: '专有网络VPC',
-                faultTypes: [
+                orderTypes: [
                     {value: 60, label: 'VPC使用场景'},
                     {value: 61, label: 'VPC配置'},
                     {value: 62, label: '对等连接'},
@@ -169,47 +169,47 @@ export default {
             uploadHeaders: {
                 'X-People-Token': this.$store.state.token
             },
-            productTypes,
+            moduleTypes,
             fileList:[],
             ruleForm: {                
-                orderTitle: '', //工单标题                
-                productType: '', //产品类型
-                faultType: '', //缺陷类型
-                problemDescribe: '', //问题描述
-                id: '', //实例id
-                extraDesc: '', //补充描述
-                orderDesc: '', //工单描述
-                phone: '',
+                title: '', //工单标题                
+                moduleType: '', //产品类型
+                orderType: '', //缺陷类型
+                orderLevel: 2, //优先级
+                orderDesc: '', //问题描述
+                resourceId: '', //实例id
+                remark: '', //补充描述
+                secretInfo: '', //工单描述
+                mobile: '',
                 email: '', 
-                attachFiles:'', //附件文件
+                attach:'', //附件文件
             },
             rules: {
-                orderTitle: [
+                title: [
                     { required: true, message: '请输入标题', trigger: 'blur' }
                 ],
-                productType: [
+                moduleType: [
                     { required: true, message: '请选择产品类型', trigger: 'change' }
                 ],
-                faultType: [
+                orderType: [
                     { required: true, message: '请选择故障类型', trigger: 'change' }
                 ],
-                problemDescribe: [
+                orderDesc: [
                     { required: true, message: '请输入问题描述', trigger: 'change' }
                 ],
-                id: [
+                resourceId: [
                     {required: false, message: '', trigger: 'change' }
                 ],              
-                orderDesc: [
+                secretInfo: [
                     { required: false, message: '', trigger: 'blur' }
                 ],
-                phone: [
+                mobile: [
                     { required: true, message: '请输入正确的手机号码', trigger: 'blur' }
                 ],
                 email: [
                     { required: true, message: '请输入正确的邮箱地址', trigger: 'blur' }
                 ]
-            },           
-            radio2: 3
+            },
         };
     },
     methods: {
@@ -221,10 +221,33 @@ export default {
                         if (file.remoteFileId) {
                             fileUploadedArr.push(file.remoteFileId);
                         }
-                    });
-                    this.ruleForm.attachFiles = fileUploadedArr;
+                    }); 
+                    let { 
+                        title,
+                        moduleType,
+                        orderType,
+                        orderLevel,
+                        orderDesc,
+                        resourceId,
+                        remark,
+                        secretInfo,
+                        mobile,
+                        email } = this.ruleForm;
+                    let postData = {
+                        title,
+                        moduleType: moduleType.value,
+                        orderType,
+                        orderLevel,
+                        orderDesc,
+                        resourceId,
+                        remark,
+                        secretInfo,
+                        mobile,
+                        email,
+                        attach:fileUploadedArr.join(',')
+                    };
                     this.loading = true;
-                    createTicket(this.ruleForm)
+                    createTicket(postData)
                         .then( res => {
                             this.loading = false;
                             if (res && res.code === this.CODE.SUCCESS_CODE) {
@@ -243,6 +266,8 @@ export default {
         goBack(){
             return this.$router.push( { name:'app.ticketSystem.myTicket-list'} );
         },
+
+       
 
         //文件上传:回调函数======================start=============================
         handleChange(file, fileList) {
@@ -321,7 +346,7 @@ export default {
             background-color: #edf2fc;
             line-height: 1;
         }
-        .problemDescribe{
+        .orderDesc{
             line-height: normal;
         }
         .el-form-item__label{

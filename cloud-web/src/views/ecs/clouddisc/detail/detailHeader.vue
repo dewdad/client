@@ -12,10 +12,6 @@
                 <el-button type="primary" @click="createSnap" size="small">
                     创建快照
                 </el-button>
-                <el-button type="info" @click="setAutoSnap" size="small">
-                    <i class="iconfont icon-shezhi"></i>
-                    设置自动快照策略
-                </el-button>
                 <el-button type="info" size="small">
                     <i class="iconfont icon-icon-refresh" @click="refresh"></i>
                 </el-button>
@@ -25,7 +21,7 @@
         <!-- 对话框 创建快照 -->
         <create-snap-dialog ref="CreateSnapDialog"/>
         <!-- 对话框 设置自动快照策略 -->
-        <set-auto-snap-dialog ref="SetAutoSnapDialog"/>  
+        <!-- <set-auto-snap-dialog ref="SetAutoSnapDialog"/>   -->
 
     </div>
 </template>
@@ -52,7 +48,7 @@ export default {
                 .show(this.rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    return this.$message.success('操作成功');
                 })
                 .catch(err => {
                     if (err) {
@@ -85,7 +81,14 @@ export default {
         refresh: function() {            
             this.$emit('refresh');
         }
-    },    
+    },
+    computed: {
+        diskName() {
+            let name = this.rowItem.image_id ? '-系统盘' : '-数据盘';
+            name = this.rowItem.attachments && this.rowItem.attachments.length > 0 && this.rowItem.attachments[0].hostname + name;
+            return this.rowItem.name || name;
+        } 
+    }    
 };
 </script>
  

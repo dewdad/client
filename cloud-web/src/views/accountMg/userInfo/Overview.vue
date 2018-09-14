@@ -19,7 +19,7 @@
                             <li >
                                <i class="iconfont icon-bumen-wodezhanghao"></i> 
                                <span class="font12 title color-secondary ml10">部门名称：</span>
-                               <span class="font12 content ml10">{{projectTableData[0] && projectTableData[0].name}}</span>
+                               <span class="font12 content ml10">{{userInfo && userInfo.deptName}}</span>
                             </li>
                             <li >
                                <i class="iconfont icon-bumenID-wodezhanghao"></i> 
@@ -270,18 +270,18 @@ export default {
     &__password{
         height: 90px;
         // padding-top: 20px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
+        // -webkit-box-flex: 1;
+        // -ms-flex: 1;
+        // flex: 1;
         display: flex;
         align-items: center;
     }
     &__email{
         height: 90px;
         // padding-top: 20px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
+        // -webkit-box-flex: 1;
+        // -ms-flex: 1;
+        // flex: 1;
         display: flex;
         align-items: center;
     }

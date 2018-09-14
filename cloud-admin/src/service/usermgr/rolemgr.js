@@ -34,7 +34,7 @@ export async function createRole(data) {
     console.log('data',data);
     let url = RoleMgr.createRole ;
     let response = await http.post(url,data);
-    return response.code === '0000'&&response;
+    return response;
 }
 /**
  *编辑角色
@@ -43,7 +43,7 @@ export async function createRole(data) {
 export async function editRole(data) {
     let url = RoleMgr.editRole;
     let res = await http.put(url, data);
-    return res.data;
+    return res
 }
 /**
  *删除角色

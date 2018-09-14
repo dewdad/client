@@ -315,23 +315,28 @@
             },
             {
                 "text": "专有网络-详情",
-                "sref": "app.vpc.pn",
+                "sref": "app.vpc.pn-detail",
                 "hidden": true,
-                "psref": "app.vpc.pn-detail",
+                "heading": true,
+                "psref": "app.vpc",
                 "submenu": [
-                    {
-                        "text": "返回",
-                        "sref": "app.vpc.pn",
-                        "psref": "vpc.pn"
-                    },
                     {
                         "text": "专有网络详情",
                         "sref": "app.vpc.pn-detail",
                         "psref": "vpc.pn"
-                    },
+                    }
+                ]
+            },
+            {
+                "text": "静态路由-详情",
+                "sref": "app.vpc.pn-staticRouter",
+                "hidden": true,
+                "heading": true,
+                "psref": "app.vpc",
+                "submenu": [
                     {
-                        "text": "子网",
-                        "sref": "app.vpc.pn-subnet",
+                        "text": "静态路由",
+                        "sref": "app.vpc.pn-staticRouter",
                         "psref": "vpc.pn"
                     }
                 ]
