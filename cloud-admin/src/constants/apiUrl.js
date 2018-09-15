@@ -7,6 +7,7 @@ const MENU = '/menu';
 const OP_LOG = '/mq';
 const SYS = '/resources';//平台
 const ORDER = '/resources/order';//工单
+const ADMIN = '/compute/admin';//管理
 
 
 // 登录模块
@@ -14,6 +15,14 @@ export const API_LOGIN = {
     login: USER_CONTROLLER + '/auth/token',
     logOut: USER_CONTROLLER + '/auth/logout',
     changePwd: USER_CONTROLLER + '/user/chgpwd',
+
+};
+// 云资源管理
+export const CLOUD_RES = {
+    ecsList: ADMIN + '/server/list',
+    delEcs: ADMIN + '/server/',
+    bootEcs: ADMIN + '/serverAction/reboot/',
+    rebootEcs: ADMIN + '/admin/serverAction/reboot/',
 
 };
 // 系统配置
@@ -143,7 +152,7 @@ export const ORDER_MODULE = {
     myorderList: ORDER + '/getOrderList',//分页查询我的工单
     createOrder: ORDER + '/create',//创建工单
     delOrder: ORDER + '/delete',
-
+    transferList: ORDER + '/getUserList'
 };
 
 

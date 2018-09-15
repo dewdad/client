@@ -3,10 +3,10 @@
         <!-- 头部 -->
         <page-header>
             <b class="leftBlueBox"></b>
-            工单编号：201806281447409078
+            工单编号：{{myticketInfo && myticketInfo.orderNO}}
             <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-edit-outline">补充</el-button>                
-                <el-button type="info" size="small" icon="el-icon-delete">
+                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn">补充</el-button>                
+                <el-button type="info" size="small" icon="el-icon-delete" @click="deleteOrder()">
                     删除
                 </el-button>
             </div>
@@ -20,51 +20,52 @@
                 <table class="table zt-table-info">
                     <tbody>
                         <tr>
-                            <td class="br"><span>问题标题：</span> <span class="color333 ml30">上传文件漏洞</span></td>
-                            <td><span>优先级：</span><span class="color333 ml30">重要</span></td>
+                            <td class="br"><span>问题标题：</span> <span class="color333 ml10">{{myticketInfo && myticketInfo.title}}</span></td>
+                            <td><span>优先级：</span><span class="color333 ml10">{{ myticketInfo && myticketInfo.orderLevel === 2 ? '重要' : '一般'}}</span></td>
                         </tr>
                         <tr>
-                            <td class="br"><span>提交时间：</span> <span class="color333 ml30">2018-06-28 14:47:40</span></td>
-                            <td><span>状态：</span><span class="color333 ml30">待审核</span></td>
+                            <td class="br"><span>提交时间：</span> <span class="color333 ml10">{{myticketInfo && myticketInfo.createTime | date}}</span></td>
+                            <td><span>实例ID：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.resourceId}}</span></td>
                         </tr>
                         <tr>
-                            <td class="br"><span>受理时长：</span><span class="color090 ml30">25天20小时</span></td>
-                            <td><span>产品类型：</span><span class="color333 ml30">文件上传/下载</span></td>
+                            <td class="br"><span>状态：</span><span class="color333 ml10">待审核</span></td>
+                            <td><span>产品类型：</span><span class="color333 ml10">{{productType[0] && productType[0].label}}</span></td>
                         </tr>
                         <tr>
-                            <td class="br"><span>故障类型：</span><span class="color333 ml30">对象存储OSS</span></td>
-                            <td><span>实例ID：</span><span class="color333 ml30"></span></td>
+                            <td class="br"><span>故障类型：</span><span class="color333 ml10">{{faultType[0] && faultType[0].label}}</span></td>
+                            <td class="br"><span>机密信息：</span><span class="color333 ml10">***</span></td>
                         </tr>
                         <tr>
-                            <td class="br"><span>手机号码：</span><span class="color333 ml30">13875881590</span></td>
-                            <td><span>邮箱：</span><span class="color333 ml30">87387q6678@qq.com</span></td>
-                        </tr>
-                        <tr>
-                            <td class="br"><span>机密信息：</span><span class="color333 ml30">***</span></td>
-                            <td></td>
+                            <td class="br"><span>手机号码：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.mobile}}</span></td>
+                            <td><span>邮箱：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.email}}</span></td>
+                            
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <!-- 附件 -->
-        <div class="basicInfo panel panel-default mt20">
+        <!-- <div class="basicInfo panel panel-default mt20">
             <div class="panel-heading">
                 <i class="iconfont icon-user_profile_people mr10"></i>附件
             </div>
-        </div>
+            <div class="panel-body zt-panel-body-info">
+                <div class="ml20 mb20 mt20">
+                </div>
+            </div>
+        </div> -->
         <!-- 补充记录 -->
         <div class="basicInfo panel panel-default mt20">
             <div class="panel-heading">
                 <i class="iconfont icon-user_profile_people mr10"></i>补充记录
             </div>
             <div class="panel-body zt-panel-body-info">
-                <div class="ml20 mb20 mt20 supplementaryRecord">
+                <div class="ml20 mb20 mt20 supplementaryRecord" v-for="(item, index) in supplementList" :key="index">
                     <img src="@/assets/images/ecs/top-head.svg" width="50" alt="">
                     <ul class="font12 ml20 color999">
-                        <li>补充说明：</li>
-                        <li>2018-06-28 14:47:40</li>
-                        <li>附件：
+                        <li>补充说明：{{item.suppleContent}}</li>
+                        <li>{{item.createTime | date}}</li>
+                        <li v-if="item.attachUrl">附件：
                             <p><a class="zt-detail font12" href="https://www.meitiyun.com/people-web/file/getFile.do?fileName=Hello+World.jsp">Hello+World.jsp</a></p>
                         </li>
                     </ul>
@@ -81,11 +82,179 @@
                 </div>
             </div>
         </div>
+        <!--  -->
+        <supplement-dialog ref="SupplementDialog"></supplement-dialog>
     </div>
 </template>
 <script>
+import { getOrderList, deleteOrder, getOrderDetailByOrderNO} from '@/service/ticket.js';
+import SupplementDialog from './SupplementDialog';
 export default {
-    
+    data() {
+        let orderStatus = [
+            {key:'' ,'text':'全部',value:''},
+            {key:9,'text':'待审核',value:'9'},
+            {key:4,'text':'待处理',value:'4'},
+            {key:1,'text':'已处理',value:'1'},
+            {key:2,'text':'已关闭',value:'2'}
+        ];
+        let moduleTypes = [
+            {value: '1', label: '弹性云主机',
+                orderTypes: [
+                    {value: 10, label: '远程连接'},
+                    {value: 11, label: '镜像'},
+                    {value: 12, label: '安全组配置'},
+                    {value: 13, label: '升降配'},
+                    {value: 14, label: '磁盘扩容'},
+                    {value: 15, label: '挂载磁盘'}
+                ]
+            },
+            // {value: '2', label: '云数据库RDS',
+            //     orderTypes: [
+            //         {value: 20, label: '版本/规格'},
+            //         {value: 21, label: '只读实例'},
+            //         {value: 22, label: '监控与报警'},
+            //         {value: 23, label: '日志'},
+            //         {value: 24, label: '参数设置'},
+            //         {value: 25, label: '备份恢复'}
+            //     ]
+            // },
+            {value: '3', label: '对象存储OSS',
+                orderTypes: [
+                    {value: 30, label: '文件上传/下载'},
+                    {value: 31, label: '读写限制'},
+                    {value: 32, label: 'SDK/API'},
+                    {value: 33, label: '图片处理服务'},
+                    {value: 34, label: '域名/监控'},
+                    {value: 35, label: '静态页面'},
+                    {value: 36, label: '防盗链'},
+                    {value: 37, label: '镜像回源'}
+                ]
+            },
+            // {value: '4', label: '云数据库Redis', orderTypes: []},
+            // {value: '5', label: '弹性伸缩', orderTypes: []},
+            {value: '6', label: '专有网络VPC',
+                orderTypes: [
+                    {value: 60, label: 'VPC使用场景'},
+                    {value: 61, label: 'VPC配置'},
+                    {value: 62, label: '对等连接'},
+                    {value: 63, label: '虚拟防火墙'}
+                ]
+            },            
+        ];
+        return {
+            myticketList: [],
+            orderStatus,
+            moduleTypes,
+            supplementList: []
+        };
+    },
+    components: { 
+        SupplementDialog
+    },
+    computed: {
+        myticketInfo () {
+            return this.myticketList.filter(
+                item => item.id === this.$route.params.id
+            )[0];
+        },
+        productType () {
+            if(!this.myticketInfo) return [];
+            return this.moduleTypes.filter(
+                item => item.value == this.myticketInfo.moduleType
+            );
+        },
+        faultType() {
+            if(!this.productType[0]) return [];
+            return this.productType[0].orderTypes.filter(
+                item => item.value == this.myticketInfo.orderType
+            );
+        },
+        orderStatusVal() {
+            return this.orderStatus.filter(
+                item => item.key == this.myticketInfo.status
+            );
+        }
+    },
+    methods: {
+        //查询
+        getOrder(){
+            let data = {
+                pageIndex: 1,
+                id:this.$route.params.id
+            };           
+            this.loading = true;
+            getOrderList(data)
+                .then( res => {     
+                    this.loading = false;              
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let resData = res.data || {};
+                        if(resData.records){
+                            this.myticketList = resData.records || [];
+                            this.getOrderDetail();
+                        }                        
+                    }else {
+                        $log(res.msg);
+                    }                   
+                })
+                .catch(err => {
+                    $log('getOrderList', err);
+                    this.loading = false;
+                });
+
+        },
+        // 删除工单
+        deleteOrder(id){
+            this.$confirm('删除后，您将无法恢复和查看该工单，请谨慎操作。您确定要删除该工单吗?', '删除确认', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    let date = {
+                        req_param: this.$route.params.id
+                    };
+                    deleteOrder(date)
+                        .then( res => {
+                            if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                                this.$message.success('删除成功');
+                                this.$router.push({ name: 'app.ticketSystem.myTicket-list'});
+                            }                        
+                        })
+                        .catch( (err) => {
+                            $log(err);                          
+                        });
+                })
+                .catch( () => {
+                            
+                });
+        },
+        // 问题补充
+        supplementFn() {
+            console.warn(this.$refs['SupplementDialog']);
+            this.$refs['SupplementDialog'].show({...this.myticketInfo})
+                .then((ret) => {
+                    console.warn(ret);
+                    this.getOrderDetail();
+                });
+        },
+        // 根据工单编号查询工单详情
+        getOrderDetail() {
+            getOrderDetailByOrderNO(this.myticketInfo.orderNO)
+                .then((ret) => {
+                    console.warn(ret);
+                    if(ret && ret.code && ret.code === this.CODE.SUCCESS_CODE) {
+                        this.supplementList = ret.data.supplement;
+                    }
+                })
+                .catch((err) => {
+
+                });
+        }
+    },
+    async created(){
+        await this.getOrder();
+    }
 };
 </script>
 <style lang="scss" scoped>
@@ -97,10 +266,13 @@ export default {
      color: #999999;
      padding-left: 20px;
      span:first-child{
-        width: 100px;
+        width: 80px;
         color: #999999;
         display: inline-block;
      }
+ }
+ .zt-table-info tbody tr td:nth-of-type(2n - 1){
+     width: auto !important;
  }
  .supplementaryRecord{
      &::after{

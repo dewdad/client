@@ -171,6 +171,7 @@ export const API_ECS = {
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: '/compute/network/{vpcId}', // 获取网络详情
         getNetwork: '/compute/server/getNetwork',
+        addRoutePort: '/compute/router/router/addInterface',
         getSubnetByNetId: ECS_CTRL + '/networks/{networkId}/subnets',
         subnet: ECS_CTRL + '/network/subnet',
         subnetID: ECS_CTRL + '/network/subnet/{subnetId}'
@@ -428,5 +429,9 @@ export const API_TICKET = {
     closeOrder: TICKET_CTRL + '/order/complete',
 
     //根据工单编号查询工单详情
-    getOrderDetailByOrderNO: TICKET_CTRL + '/order/detail/{orderNO}'
+    getOrderDetailByOrderNO: TICKET_CTRL + '/order/detail/{orderNO}',
+    //  补充说明
+    supplement: 'resources/order/supplement',
+
+    completeOrder: '/resources/order/complete'
 };

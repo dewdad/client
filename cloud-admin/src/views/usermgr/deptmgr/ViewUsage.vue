@@ -152,6 +152,7 @@ export default {
                     paging:this.searchObj.paging,
                     startDate:this.start_date,
                     endDate: this.end_date,
+                    projectId:this.item.id
 
                 };
                 $log('paramsviewUsage', params);

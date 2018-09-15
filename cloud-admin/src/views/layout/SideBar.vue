@@ -2,8 +2,8 @@
     <div class="height-all">
         <div class="sidebar-menu" :class="{'sidebar-menu--collapse':isCollapse}"  @mouseenter="isCollapse = false" @mouseleave="isCollapse = true">
             <el-menu :default-active="activeMenuCode" @select="handleSelect">           
-                <template v-for="(menu) in menuList">
-                    <el-menu-item  :index="menu.menuCode" :key="menu.menuCode">                    
+                <template v-for="(menu) in menuList" >
+                    <el-menu-item  :index="menu.menuCode" :key="menu.menuCode" @click="clickMenu(menu)">
                         <em :class="menu.menuIcon"></em>
                         <span v-if="!isCollapse" slot="title">{{menu.menuName}}</span>   
                     </el-menu-item> 
@@ -16,10 +16,18 @@
         <div class="sidebar-submenu" v-if="submenus.length">          
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
-                    <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode">                    
+                    <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
                         <em :class="submenu.menuIcon"></em>
-                        <span slot="title">{{submenu.menuName}}</span>                  
+                        <span slot="title">{{submenu.menuName}}</span>
                     </el-menu-item>
+                    <el-submenu index="1-4" v-if="submenu.submenus.length&&submenu.menuName != '网络'" :key="submenu.menuCode" >
+                        <span slot="title">{{submenu.menuName}}</span>
+                        <el-menu-item :index="bottomMenu.routeHref" v-for="bottomMenu in submenu.submenus" :key="bottomMenu.menuCode">{{bottomMenu.menuName}}</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="1-3" v-if="submenu.submenus.length&&submenu.menuName != '磁盘管理'" :key="submenu.menuCode" >
+                        <span slot="title">{{submenu.menuName}}</span>
+                        <el-menu-item :index="bottomMenu.routeHref" v-for="bottomMenu in submenu.submenus" :key="bottomMenu.menuCode">{{bottomMenu.menuName}}</el-menu-item>
+                    </el-submenu>
                 </template>              
             </el-menu>
         </div>       
@@ -31,7 +39,8 @@ import { mapState } from 'vuex';
 export default {
     name: 'sidebar',
     data() {
-        return {          
+        return {
+            submenus:[],
             navList: [],
             activeRouteHref: '',
             isCollapse: true,
@@ -46,23 +55,6 @@ export default {
         menuList: function() {            
             return window.navList || [];
         },
-        submenus: function() {
-            if(window.navList.length){
-                let submenus = [];
-                this.parseActivemenu(window.navList); 
-                $log('activeMenuCode----------',this.activeMenuCode);                        
-                let menu = window.navList.find( (menu) => {
-                    return menu.menuCode === this.activeMenuCode;
-                });                
-                if(menu) {                     
-                    submenus = menu.submenus || [];
-                }
-                
-                $log('menu----------',menu);
-                return submenus;                              
-            } 
-            return [];
-        }
     },
     watch: {
         '$route': function(newVal) {            
@@ -80,7 +72,10 @@ export default {
                 this.$router.push({name: index});
             }
         },
-     
+        clickMenu(menu){
+            this.submenus = menu.submenus;
+            console.log('thismenu',menu);
+        },
         parseRouterName(){
             let routerName = '';
             if (this.$route.meta && this.$route.meta.parentName) {
@@ -101,8 +96,10 @@ export default {
                                 return submenu.routeHref === this.activeRouteHref;
                             }                           
                         });                        
-                        if(submenu) { 
-                            this.activeMenuCode = menu.menuCode; 
+                        if(submenu) {
+                            console.log('this.activeMenuCode',submenu);
+                            console.log('this.menu',menu);
+                            this.activeMenuCode = menu.menuCode;
                         }else{                         
                             this.activeMenuCode = '0000';
                         }
@@ -110,7 +107,25 @@ export default {
                 }); 
             }
         },
+        getMenus(){
+            if(window.navList.length){
+                console.log('window.navList.length',window.navList);
+                let submenus = [];
+                this.parseActivemenu(window.navList);
+                console.log('this.activeMenuCode',this.activeMenuCode);
 
+                let menu = window.navList.find( (menu) => {
+                    return menu.menuCode === this.activeMenuCode;
+                });
+                if(menu) {
+                    submenus = menu.submenus || [];
+                }
+
+                $log('menu----------',menu);
+                return this.submenus = submenus;
+            }
+            return [];
+        },
         handleSelect(active) {
             this.activeMenuCode = active;
 
@@ -127,10 +142,18 @@ export default {
         }
     },
     created(){
-        this.parseActivemenu();
+        this.getMenus();
     }
 };
 </script>
 <style  lang="scss">
-
+    .el-aside .el-menu .el-submenu .el-submenu__title{
+        color: #333;
+    }
+    .el-submenu__title:hover{
+        span{
+            color: #2d8cf0 !important;
+        }
+        background-color:#fff !important;
+    }
 </style>

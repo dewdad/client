@@ -136,7 +136,8 @@ export default {
         getEcsInstListFn(){
             let params = {
                 pageIndex: 1,
-                limit: 9999
+                limit: 9999,
+                status: 'active'
             };
             getEcsInstList(params)
                 .then(res => {
@@ -162,7 +163,7 @@ export default {
             {
                 let now = new Date();
                 let st = new Date(now);
-                st.setHours(st.getHours() - 1); 
+                st.setHours(st.getHours() - 24); 
                 this.searchObj.startDate = st;
                 this.searchObj.endDate = now;
                 this.searchObj.dateRange.push(st);
@@ -204,6 +205,12 @@ export default {
             console.log(value);
             let now ,st;
             switch(value){
+                case '1d':{ 
+                    now = new Date();
+                    st = new Date(now);   
+                    st.setHours(st.getHours() - 24);                         
+                    break;
+                }
                 case '7d':{ 
                     now = new Date();
                     st = new Date(now); 

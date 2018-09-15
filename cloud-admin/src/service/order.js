@@ -33,3 +33,14 @@ export async function delOrder(data) {
     return response.data;
 }
 
+/**
+ * 获得转交用户列表
+ * @param {*}
+ */ 
+export async function transferList(data) {
+    console.log('data',data);
+    let response = await http.get(ORDER_MODULE.transferList, {
+        params: data
+    });
+    return response.data;
+}

@@ -5,7 +5,7 @@
             <span class="pull-right font16">用户{{opType ===1 ? '创建' : '编辑'}}</span>
         </div>
         <div class="page-body">
-            <el-form class="base-info" ref="form" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="115px" style="width:633px;" :rules="rules" inline-message>
+            <el-form class="base-info" ref="userform" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="115px" style="width:633px;" :rules="rules" >
                 <!-- 名称 -->
                 <el-form-item label="部门" prop="domainId"  >
                     <el-input   :value="domainName" disabled></el-input>
@@ -28,7 +28,8 @@
                 </el-form-item>
                 <!-- 确认密码 -->
                 <el-form-item label="确认密码" prop="confirpwd"  >
-                    <el-input clearable type="password"  v-model="form.confirpwd"></el-input>
+                    <el-input clearable type="password" v-bind:class="{ borderRed: invalidPsd }" v-model="form.confirpwd" @blur="checkPwd" @change="checkPwd"></el-input>
+                    <span v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;">两次密码不一致</span>
                 </el-form-item>
                 <!-- 角色 -->
                 <el-form-item label="角色" prop="roleId"  >
@@ -68,23 +69,10 @@ export default {
                 callback();
             }
         };
-        let compairPassword = function(rule, value, callback){
-            if(!value){
-                callback();
-            }else{
-                this.$refs.form.clearValidate(['confirpwd']);
-                let pasd = this.form.password || 0;
-                if (pasd !== value) {
-                    callback(new Error('请确保两次输入的密码一致'));
-                } else {
-                    callback();
-                }
-            }
-
-        };
         return {
             opType: 1,
             domainName:'',
+            invalidPsd:false,
             form:{
                 name: '',
                 domainId: '',
@@ -107,8 +95,7 @@ export default {
 
                 ],
                 'confirpwd':[
-                    { required: true,message: '必填项',trigger: ['blur']},
-                    { validator: compairPassword, trigger: 'blur' }
+                    { required: true,message: '必填项',trigger: ['submit']}
 
                 ],
                 'roleId':[
@@ -132,16 +119,23 @@ export default {
                 email:this.form.email,
                 roleId:this.form.roleId,
             };
-            if(this.form.password !== this.form.confirpwd){
+            if(this.form.password !== this.form.confirpwd) {
+                this.invalidPsd = true;
                 return;
+            } else {
+                this.invalidPsd = false;
             }
             console.log('param...',param);
-            this.$refs.form.validate((valid) => {
+            this.$refs.userform.validate((valid) => {
                 if (valid) {
                     createUser(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$alert('操作成功','提示');
+                            this.$message({
+                                message: '保存成功',
+                                type: 'success'
+                            });
+                            this.goBack();
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'
@@ -174,6 +168,13 @@ export default {
 
             });
         },
+        checkPwd(){
+            if(this.form.password !== this.form.confirpwd) {
+                this.invalidPsd = true;
+            } else {
+                this.invalidPsd = false;
+            }
+        },
         setOrigin(){
             console.log('stateParams.......',this.stateParams);
             this.domainName = this.stateParams.item.name;
@@ -192,6 +193,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    .borderRed{
+        border-color:#f56c6c;
+    }
 .base-info {
     padding-left: 30px;
 }

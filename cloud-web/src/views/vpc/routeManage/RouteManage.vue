@@ -58,6 +58,7 @@
                                 <zt-dropdown-item @click="deleteRouter(scope.row)">删除</zt-dropdown-item>
                                 <zt-dropdown-item v-if="scope.row.networkId" @click="clearGatewayFn(scope.row)">清除网关</zt-dropdown-item>
                                 <zt-dropdown-item v-else @click="setGatewayFn(scope.row)">设置网关</zt-dropdown-item>
+                                <zt-dropdown-item @click="openRoutePort(scope.row)" >路由接口</zt-dropdown-item>
                             </zt-dropdown-menu>
                         </zt-dropdown>
                     </template>
@@ -69,6 +70,8 @@
         <edit-router ref="EditRouter"></edit-router>
         <!-- 设置网关 -->
         <set-gateway ref="SetGateway"></set-gateway>
+        <!-- 路由接口 -->
+        <route-port ref="RoutePort"></route-port>
     </div>
 </template>
 <script>
@@ -77,6 +80,7 @@ import {getRouterList, queryNetwork, deleteRouter, editGateway} from '@/service/
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import EditRouter from './dialog/EditRouter';
 import SetGateway from './dialog/SetGateway';
+import RoutePort from './dialog/RoutePort';
 
 let statusArr = [
     {
@@ -124,13 +128,15 @@ export default {
             loading: false, 
             adminStateUpArr,
             statusArr,
+            netListData: [],
             outerNetData: [] // 外网网络数据
         };
     },
     components: {
         searchBox,
         EditRouter,
-        SetGateway
+        SetGateway,
+        RoutePort
     },
     methods: {
         getScreenVal(params) {
@@ -263,10 +269,45 @@ export default {
                 });
             
         },
+        // 打开路由接口
+        openRoutePort(row) {
+            let RoutePort = this.$refs.RoutePort;
+            if (RoutePort) {
+                RoutePort.show({
+                    row: row,
+                    netListData: this.netListData
+                }).then(ret => {
+                    if (ret) {
+                        this.$message.success('操作成功');
+                        this.getRouterListFn();
+                    }
+                });
+            }
+        },
+        // 获得网络列表
+        async getNetList() {
+            try {
+                // 清空数据
+                this.isLoading = true;
+                let params = {
+                    pageIndex: 1,
+                    router_external: false
+                };
+
+                let ret = await queryNetwork(params);
+                console.warn('fetchData', ret);
+                this.netListData = ret.data;
+
+            } catch (error) {
+                console.error('fetchData', error.message);
+            }
+        },
+
     },
     created() {
         this.getRouterListFn();
         this.getOuterNet();
+        this.getNetList();
     }
 };
 </script>
