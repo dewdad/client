@@ -266,7 +266,7 @@ export default {
         },      
 
         goBack(){
-            return this.$router.push( { name:'app.ticketSystem.myTicket-list'} );
+            return this.$router.push( { name:'app.ticketSystem.myTicket'} );
         },
 
        

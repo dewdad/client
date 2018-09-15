@@ -6,7 +6,7 @@
             <div slot="right">
                 <el-button type="primary" size="small" @click="$router.push({name:'app.ticketSystem.submitticket'})">创建工单</el-button>                
                 <el-button type="info" size="small">
-                    <i class="iconfont icon-icon-refresh"></i>
+                    <i class="iconfont icon-icon-refresh" @click="search"></i>
                 </el-button>
             </div>
         </page-header>
@@ -96,7 +96,7 @@
                     <el-table-column label="操作" key="op" width="250">
                         <template slot-scope="scope">
                             <!-- 查看 -->
-                            <router-link :to="{ name: 'app.ticketSystem.myticket.info', params: { id: scope.row.id }}" class="color-primary finger-cursor" >查看</router-link>
+                            <router-link :to="{ name: 'app.ticketSystem.info', params: { id: scope.row.id }}" class="color-primary finger-cursor" >查看</router-link>
                             <b class="link-division-symbol"></b>
                             <!-- 关闭 -->
                             <span @click="closeWork(scope.row.id)" class="color-primary finger-cursor">关闭</span>
@@ -326,6 +326,10 @@ export default {
                 this.$message.success('操作成功');
             }).catch(() => {         
             });
+        },
+        // 刷新
+        refresh() {
+
         }
     },
 

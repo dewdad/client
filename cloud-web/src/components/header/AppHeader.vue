@@ -18,7 +18,7 @@
                 <el-col :span="18">
                     <el-menu mode="horizontal" @select="handleSelect" class="pull-right">
                         <!-- 工单 -->
-                        <el-menu-item index="app.ticketSystem.myTicket-list" key="app.ticketSystem.myTicket-list">
+                        <el-menu-item index="app.ticketSystem.myTicket" key="app.ticketSystem.myTicket">
                             <i class="iconfont icon-head_workorder_peop"></i>{{$t('header.nav.workOrder')}}
                         </el-menu-item>
                         <!-- 头像 -->

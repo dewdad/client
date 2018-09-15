@@ -749,9 +749,23 @@
         "submenu": [
             {
                 "text": "我的工单",
-                "sref": "app.ticketSystem.myTicket-list'",
+                "sref": "app.ticketSystem.myTicket",
                 "evn": "pro",
                 "psref": "app.ticketSystem"
+            },
+            {
+                "text": "工单详情",
+                "sref": "app.ticketSystem.info",
+                "hidden": true,
+                "heading": true,
+                "psref": "app.ticketSystem",
+                "submenu": [
+                    {
+                        "text": "工单详情",
+                        "sref": "app.ticketSystem.info",
+                        "psref": "ticketSystem"
+                    }
+                ]
             }
         ]
     }
