@@ -326,10 +326,6 @@ export default {
                 this.$message.success('操作成功');
             }).catch(() => {         
             });
-        },
-        // 刷新
-        refresh() {
-
         }
     },
 
