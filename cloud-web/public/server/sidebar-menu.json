@@ -737,15 +737,22 @@
         ]
     },
     {
-        "text": "账号管理",
+        "text": "工单系统",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "evn": "pro",
-        "sref": "app.accountMg",
+        "sref": "app.ticketSystem",
         "translate": "",
         "arrow": "nav-dropdown-toggle",
         "alert": "new",
-        "hidden": true,
-        "submenu": []
+        "submenu": [
+            {
+                "text": "我的工单",
+                "sref": "app.ticketSystem.myTicket-list'",
+                "evn": "pro",
+                "psref": "app.ticketSystem"
+            }
+        ]
     }
 ]

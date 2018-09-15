@@ -55,3 +55,14 @@ export async function getOrderDetailByOrderNO(orderNO) {
     let res = await http.get(url);
     return res && res.data;
 }
+
+
+/**
+ * 根据工单编号查询工单详情
+ * @param orderNO 工单信息，包括工单id和工单编号
+ */
+export async function supplement({...arg}) {
+    $log('post /supplement ->', {...arg});
+    let ret = await http.post(API_TICKET.supplement, {...arg});
+    return ret && ret.data;
+}

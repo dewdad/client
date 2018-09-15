@@ -10,7 +10,11 @@ export default [
         meta: {
             moduleName: '工单系统'
         },
-        component: {render (c) { return c('router-view'); }},
+        component: {
+            render (c) { 
+                return c('router-view'); 
+            }
+        },
         children: [
             {
                 path: 'myTicket-list',
@@ -23,7 +27,7 @@ export default [
                 component: Submitticket
             },
             {
-                path: 'myticket/info',
+                path: 'myticket/info/:id',
                 name: 'app.ticketSystem.myticket.info',
                 component: Info
             }

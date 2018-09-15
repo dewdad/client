@@ -96,7 +96,7 @@
                     <el-table-column label="操作" key="op" width="250">
                         <template slot-scope="scope">
                             <!-- 查看 -->
-                            <span class="color-primary finger-cursor">查看</span>
+                            <router-link :to="{ name: 'app.ticketSystem.myticket.info', params: { id: scope.row.id }}" class="color-primary finger-cursor" >查看</router-link>
                             <b class="link-division-symbol"></b>
                             <!-- 关闭 -->
                             <span @click="closeWork(scope.row.id)" class="color-primary finger-cursor">关闭</span>
@@ -116,7 +116,9 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
+
 import { getOrderList,deleteOrder } from '@/service/ticket.js';
+
 
 export default {
     components: { 
@@ -301,11 +303,8 @@ export default {
                     deleteOrder(date)
                         .then( res => {
                             if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-
-                                this.$message({
-                                    type: 'success',
-                                    message: '删除成功!'
-                                });
+                                this.$message.success('删除成功');
+                                this.search();
                             }                        
                         })
                         .catch( (err) => {
@@ -324,15 +323,8 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
+                this.$message.success('操作成功');
+            }).catch(() => {         
             });
         }
     },
