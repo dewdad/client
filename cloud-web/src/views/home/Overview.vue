@@ -92,19 +92,19 @@
                         <div class="info-box todo">
                             <div class="info-box-head">待办工单</div>
                             <div class="info-box-content">
-                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket'}">
                                     <div class="todo-task">
                                         我的工单
                                         <span class="pull-right">{{allOrder.myorderCount}}</span>
                                     </div>
                                 </router-link>
-                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket'}">
                                     <div class="todo-task mt10">
                                         未处理工单
                                         <span class="pull-right">{{allOrder.todoOrderCount}}</span>
                                     </div>
                                 </router-link>
-                                <router-link :to="{ name: 'app.ticketSystem.myTicket-list'}">
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket'}">
                                     <div class="todo-task mt10">
                                         已处理工单
                                         <span class="pull-right">{{allOrder.doneOrderCount}}</span>
