@@ -108,7 +108,14 @@
                 </template>
             </el-table>
             <div class="pagination">
-                <el-pagination background @size-change="handleSizeChange" :current-page.sync="searchObj.paging.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.paging.limit" layout="sizes, prev, pager, next" :total="searchObj.paging.totalItems">
+                <el-pagination 
+                    background 
+                    @size-change="handleSizeChange" 
+                    :current-page.sync="searchObj.paging.pageIndex"
+                    @current-change="handleCurrentChange" 
+                    :page-size="searchObj.paging.limit" 
+                    layout="sizes, prev, pager, next" 
+                    :total="searchObj.paging.totalItems">
                 </el-pagination>
             </div>
         </div>
@@ -117,7 +124,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 
-import { getOrderList,deleteOrder } from '@/service/ticket.js';
+import { getOrderList,deleteOrder,closeOrder } from '@/service/ticket.js';
 
 
 export default {
@@ -230,7 +237,7 @@ export default {
                         let resData = res.data || {};
                         if(resData.records){
                             this.tableDataList = resData.records || [];
-                            this.searchObj.paging.totalItems = data.total || 0;
+                            this.searchObj.paging.totalItems = resData.total || 0;
                         }                        
                     }else {
                         $log(res.msg);
@@ -324,6 +331,21 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$message.success('操作成功');
+                let date = {
+                    id: id,
+                    status: 1
+                };
+                closeOrder(date)
+                    .then( res => {
+                        if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                            this.$message.success('关闭成功');
+                            this.search();
+                        }                        
+                    })
+                    .catch( (err) => {
+                        $log(err);                          
+                    });
+
             }).catch(() => {         
             });
         }
