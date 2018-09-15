@@ -298,12 +298,6 @@ input:disabled {
     line-height: $--basic-input-height--small;
 }
 
-.el-input__prefix {
-    .el-icon-search {
-        margin-left: -5px;
-    }
-}
-
 .el-input-group__append,
 .el-input-group__prepend {
     border-radius: 0;
