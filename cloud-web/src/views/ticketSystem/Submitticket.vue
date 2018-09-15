@@ -118,7 +118,9 @@ export default {
     },
     data() {
         let moduleTypes = [
-            {value: '1', label: '弹性云主机',
+            {
+                value: '1', 
+                label: '弹性云主机',
                 orderTypes: [
                     {value: 10, label: '远程连接'},
                     {value: 11, label: '镜像'},
@@ -264,7 +266,7 @@ export default {
         },      
 
         goBack(){
-            return this.$router.push( { name:'app.ticketSystem.myTicket-list'} );
+            return this.$router.push( { name:'app.ticketSystem.myTicket'} );
         },
 
        

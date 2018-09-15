@@ -7,7 +7,7 @@
                 <el-input v-model="data.name"></el-input>
                 <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
-            <zt-form-item label="网段" prop="cindr">
+            <zt-form-item v-if="this.type === 'create'" label="网段" prop="cindr">
                 <ip-input v-model="data.cindr" :value="cindrVal" v-if="isShow"></ip-input>
                 <span class="input-help">
                     <span class="color-warning lh20">创建后无法修改。</span><br>
@@ -15,13 +15,13 @@
                     <span class="lh20">例如：192.168.94.0/24</span>
                 </span>
             </zt-form-item>
-            <zt-form-item label="IP版本">
+            <zt-form-item v-if="this.type === 'create'" label="IP版本">
                 <el-radio-group v-model="data.version">
                     <el-radio :label="4">IPV4</el-radio>
                     <el-radio :label="6">IPV6</el-radio>
                 </el-radio-group>
             </zt-form-item>
-            <zt-form-item label="DHCP">
+            <zt-form-item v-if="this.type === 'create'" label="DHCP">
                 <el-radio-group v-model="data.DHCPVal">
                     <el-radio :label="true">已激活</el-radio>
                     <el-radio :label="false">未激活</el-radio>
@@ -88,6 +88,7 @@ export default {
             loading: false,
             type: 'create',
             cindrVal: '',
+            gatewayVal: '',
             data: {
                 name: '默认专有网络',
                 cindr: '',

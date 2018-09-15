@@ -95,7 +95,7 @@
                                     <!-- 操作系统 -->
                                     <tr>
                                         <td>{{ $t('common.os') }}：</td>
-                                        <td>{{ ecsInst.osVersion }}</td>
+                                        <td>{{ ecsInst.image &&  ecsInst.image.name}}</td>
                                     </tr>
                                     <!-- 公网IP -->
                                     <tr v-show="!ecsInst.floatIp || ecsInst.floatIp.indexOf('10.3') === -1">

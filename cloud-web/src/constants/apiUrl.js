@@ -424,5 +424,7 @@ export const API_TICKET = {
     closeOrder: TICKET_CTRL + '/order/complete',
 
     //根据工单编号查询工单详情
-    getOrderDetailByOrderNO: TICKET_CTRL + '/order/detail/{orderNO}'
+    getOrderDetailByOrderNO: TICKET_CTRL + '/order/detail/{orderNO}',
+    //  补充说明
+    supplement: 'resources/order/supplement'
 };
