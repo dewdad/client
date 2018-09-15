@@ -230,6 +230,7 @@ input:disabled {
             margin-right: 0px;
         }
     }
+
     .el-input__suffix {
         .el-icon-circle-close {
             &:before {
@@ -264,6 +265,12 @@ input:disabled {
     }
 }
 
+.el-input__prefix {
+    .el-input__icon {
+        display: inline-block;
+    }
+}
+
 .el-input__inner,
 .el-textarea__inner {
     border-radius: 0;
@@ -289,12 +296,6 @@ input:disabled {
 .el-input--small .el-input__inner {
     height: $--basic-input-height--small;
     line-height: $--basic-input-height--small;
-}
-
-.el-input__prefix {
-    .el-icon-search {
-        margin-left: -5px;
-    }
 }
 
 .el-input-group__append,

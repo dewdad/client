@@ -45,7 +45,7 @@
                     <template v-if="col.column=='countDisk'">
                         <el-table-column :prop="col.column" :label="col.text" :key="col.column">
                             <template slot-scope="scope">
-                                <el-tag><router-link style="padding:0px" :to="{name:'app.ecs.clouddisc-list',params:{policyId:scope.row.pid} }">{{scope.row.countDisk}}</router-link></el-tag>
+                               {{scope.row.countDisk}}
                             </template>
                         </el-table-column>
                     </template>
