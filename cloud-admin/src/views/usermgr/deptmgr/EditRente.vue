@@ -17,9 +17,9 @@
             </el-form-item>
 
             <!-- 是否激活 -->
-            <el-form-item label="是否激活" prop="enabled"  >
-                <el-radio v-model="form.enabled" label='1'>是</el-radio>
-                <el-radio v-model="form.enabled" label='2'>否</el-radio>
+            <el-form-item label="是否激活" prop="status"  >
+                <el-radio v-model="form.status" label='1'>是</el-radio>
+                <el-radio v-model="form.status" label='2'>否</el-radio>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -45,7 +45,7 @@ export default {
                 name: '',
                 domainId: '',
                 description: '',
-                enabled: '1',
+                status: '1',
 
             },
             rules:{
@@ -69,7 +69,7 @@ export default {
             console.log('iiii',item);
             this.form.name = item.name;
             this.form.description = item.description;
-            this.form.enabled = item.status == 'true' ? '1' : '2';
+            this.form.status = item.status;
             this.brunch = brunch;
             this.domainName = brunch.name;
             this.form.domainId = brunch.id;
@@ -101,7 +101,7 @@ export default {
             let param = {
                 id:this.item.id,
                 data:{
-                    status:this.form.enabled == '1' ? 1 : 0,
+                    status:this.form.status,
                     deptId:this.brunch.id,
                     extendId:this.brunch.extendId,
                     name:this.form.name,

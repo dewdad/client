@@ -9,11 +9,13 @@
                 <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})"><span class="icon-zt_plus"></span>  新建一级菜单</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">
-                        <el-select class="width152" size="small" clearable v-model="searchObj.menutype" placeholder="请选择菜单类型">
-                            <el-option v-for="menutype in searchObjExtra.menutypes" :label="menutype.label" :value="menutype.value" :key="menutype.value"></el-option>
+                        <el-select class="width152" size="small" clearable v-model="searchObj.menuType" placeholder="请选择菜单类型">
+                            <el-option label="用户" value="1" ></el-option>
+                            <el-option label="管理员" value="2" ></el-option>
                         </el-select>
                         <el-select class="ml10 width152" size="small" clearable v-model="searchObj.field" @change="searchObj.searchText = '';" placeholder="请选择">
-                            <el-option v-for="field in searchObjExtra.fields" :label="field.label" :value="field.field" :key="field.field"></el-option>
+                            <el-option label="菜单编码" value="code" ></el-option>
+                            <el-option label="菜单名称" value="menuName" ></el-option>
                         </el-select>
                         <el-input class="ml10"  size="small" placeholder="" style="width:208px;" v-model="searchObj.searchText"></el-input>
                         <el-button class="ml10" size="small" type="primary" @click="search" icon="el-icon-search">搜索</el-button>  

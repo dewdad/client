@@ -30,13 +30,13 @@ export default {
                 ],
                 //查询字段
                 fields: [
-                    { label: '菜单名称', field: 'text' },
+                    { label: '菜单名称', field: 'menuName' },
                     { label: '菜单编码', field: 'code' },
                 ]
             },
             // 查询参数
             searchObj: {
-                menutype:'',
+                menuType:'',
                 field: '', //'text'菜单名称 'code'菜单编码 
                 searchText:'',  
                 //分页
@@ -54,8 +54,13 @@ export default {
     },
     methods: {
         //查询；
-        search(){            
-            getMenuList(this.searchObj)
+        search(){
+            let param = {
+                paging:this.searchObj.paging,
+                menuType:this.searchObj.menuType,
+                [this.searchObj.field]:this.searchObj.searchText
+            };
+            getMenuList(param)
                 .then( res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
