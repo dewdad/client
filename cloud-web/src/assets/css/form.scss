@@ -120,6 +120,7 @@ input:disabled {
             .el-form-item__content {
                 display: flex;
                 flex: 1;
+                margin-left: 0px !important;
                 .el-input {
                     flex: 1;
                 }
@@ -229,6 +230,7 @@ input:disabled {
             margin-right: 0px;
         }
     }
+
     .el-input__suffix {
         .el-icon-circle-close {
             &:before {
@@ -263,6 +265,12 @@ input:disabled {
     }
 }
 
+.el-input__prefix {
+    .el-input__icon {
+        display: inline-block;
+    }
+}
+
 .el-input__inner,
 .el-textarea__inner {
     border-radius: 0;
@@ -288,19 +296,6 @@ input:disabled {
 .el-input--small .el-input__inner {
     height: $--basic-input-height--small;
     line-height: $--basic-input-height--small;
-}
-
-.el-input__prefix {
-    left: 10px;
-    .el-icon-search {
-        margin-left: -5px;
-    }
-}
-
-.el-input--mini {
-    .el-input__prefix {
-        top: 7px;
-    }
 }
 
 .el-input-group__append,

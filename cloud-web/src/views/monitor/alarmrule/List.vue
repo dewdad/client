@@ -1,9 +1,10 @@
 <template>
     <div class="page-main">
         <page-header>
-            云盘快照
+            报警规则列表
             <div slot="right">
-                <el-button type="info" size="small" @click="getSnapshotList">
+                <el-button type="primary" @click="$router.push({name: 'app.monitor.alarmrule.add'})" size="small">新建报警规则</el-button>
+                <el-button type="info" size="small" @click="getData(false)">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
@@ -11,25 +12,30 @@
         <div class="page-body mt10">
             <!-- 列表 -->
             <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
-                <!-- 实例名称 -->
-                <el-table-column min-width="120" prop="name" label="名称">
+                <el-table-column min-width="120" prop="ruleName" label="规则名称">
                 </el-table-column>
-                <!-- 磁盘ID -->
-                <el-table-column min-width="180" prop="id" label="磁盘ID">
-                </el-table-column>
-                <!-- 磁盘名称 -->
-                <el-table-column min-width="180" prop="volumeName" label="磁盘名称">
-                </el-table-column>
-                <!-- 磁盘容量 -->
-                <el-table-column min-width="100" prop="size" label="磁盘容量">
+                <!-- <el-table-column min-width="180" prop="id" label="启用">
+                </el-table-column> -->
+                <el-table-column min-width="180" prop="ruleMetric" label="监控项">
                     <template slot-scope="scope">
-                        {{scope.row.size}}G
+                        {{scope.row.ruleMetric|showTextByKey(MONITOR_RULE_TYPES, 'key', 'value')}}
                     </template>
                 </el-table-column>
-                <!-- 描述 -->
-                <el-table-column min-width="180" prop="description" label="描述">
+                <el-table-column min-width="100" prop="size" label="维度">
+                    <template slot-scope="scope">
+                        全部云硬盘
+                    </template>
                 </el-table-column>
-                <!-- 状态 -->
+                <el-table-column min-width="180" prop="ruleMetric" :show-overflow-tooltip="false" label="报警规则">
+                    <template slot-scope="scope">
+                        <div style="word-break: break-word;">{{scope.row|getRuleDesc}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column min-width="180" prop="noticeMail" label="通知对象">
+                    <template slot-scope="scope">
+                        手机：{{scope.row.noticePhone}}<br> 邮箱：{{scope.row.noticeMail}}
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="100" prop="status" label="状态">
                     <template slot-scope="scope">
                         <zt-status :status="statusArr" :value="scope.row.status" class="text-nowrap status-column"></zt-status>
@@ -38,71 +44,23 @@
                 <!-- 操作 -->
                 <el-table-column label="操作" key="op" width="150" class-name="option-column">
                     <template slot-scope="scope">
-                        <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
-                        <b class="link-division-symbol"></b>
+                        <!-- <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
+                        <b class="link-division-symbol"></b> -->
                         <a @click="deleteSnap(scope.row)" class="btn-linker">删除</a>
                     </template>
                 </el-table-column>
             </zt-table>
         </div>
-        <create-disk ref="CreateDisk"/>
-        <delete-dialog ref="DeleteDailog"/>
+        <delete-dialog ref="DeleteDailog" />
     </div>
 </template>
 <script>
-import {getSnapshotList, deleteSnapshots} from '@/service/ecs/snapshot.js';
-import CreateDisk from './dialog/CreateDisk';
-let statusArr = [
-    {text: '全部', state: true, value: ''},
-    {
-        text: '可用',
-        value: 'available',
-        className: 'color-success',
-        icon: 'icon-chenggong',
-        type: 'font'
-    },
-    {
-        text: '错误',
-        value: 'error',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '备份中',
-        value: 'backing-up',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
-        text: '删除时出错',
-        value: 'error_deleting',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '删除中',
-        value: 'deleting',
-        className: 'color-danger',
-        type: 'progress'
-    },
-    {
-        text: '创建中',
-        value: 'downloading',
-        className: 'color-progress-primary',
-        type: 'progress'
-    },
-    {
-        text: '创建中',
-        value: 'creating',
-        className: 'color-progress-primary',
-        type: 'progress'
-    },
-];
+import {getAlarmRuleList, deleteSnapshots} from '@/service/monitor/alarmRule.js';
+import {MONITOR_RULE_TYPES} from '@/constants/dicts/ecs';
+import {showTextByKey, operatorReplace} from '@/utils/utils';
 export default {
     data() {
-        let fields = [{field: 'name', label: '名称', inputval: '', tagType: 'INPUT'}];
+        let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}];
         let searchObj = {
             //分页
             paging: {
@@ -113,9 +71,9 @@ export default {
         };
         return {
             fields,
+            MONITOR_RULE_TYPES,
             tableData: [],
             loading: false,
-            statusArr,
             snaplistShow: true,
             searchObj,
             fieldValue: '',
@@ -123,28 +81,35 @@ export default {
             inlineForm: {
                 field: '',
                 value: ''
-            },
-            task: null
+            }
         };
     },
-    components: {
-        CreateDisk
+    filters: {
+        getRuleDesc: function(rule) {
+            return (
+                '监控项：' +
+                showTextByKey(MONITOR_RULE_TYPES, rule.ruleMetric, 'key', 'value') +
+                '，监控频率：' +
+                rule.alarmTime +
+                '分钟， ' +
+                '监控值：' +
+                operatorReplace(rule.comparisonOperator) +
+                rule.threshold +
+                ',连续' +
+                rule.alarmSeveralTimes +
+                '次 则报警'
+            );
+        }
     },
-    destroyed() {
-        clearInterval(this.task);
-    },
+    components: {},
     mounted() {
-        this.getSnapshotList();
-        // 每30秒查询一次
-        this.task = setInterval(() => {
-            this.getSnapshotList(false);
-        }, 30000);
+        this.getData();
     },
     methods: {
-        getSnapshotList(params) {
+        getData(params) {
             params = params || this.searchObj.paging;
             if (params !== false) this.loading = true;
-            getSnapshotList(params)
+            getAlarmRuleList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
@@ -162,8 +127,7 @@ export default {
                 });
         },
         editSnap(row) {
-            this.$refs.CreateDisk.show(row).then(() => {
-            });
+            this.$refs.CreateDisk.show(row).then(() => {});
         },
         deleteSnap(row) {
             this.$refs.DeleteDailog.show('快照', row.name, () => {

@@ -24,7 +24,7 @@
                         <!-- 头像 -->
                         <el-menu-item index="app.accountMg" key="app.accountMg" class="headImg">
                             <avatar-show class="inline-block" :boxSize="30"></avatar-show>
-                            <div @click.stop="preventBubble" class="pop-box">
+                            <div class="pop-box">
                                 <div class="pop-box__popover">
                                     <!-- 第二栏 -->
                                     <div class="pop-box__popover__popMain lh-normal font14">

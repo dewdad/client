@@ -98,7 +98,7 @@ export default {
 
         deleteExample(params) {
             this.$refs.DeleteDailog.show('密钥对', params, () => {
-                return this.deleteKeypairsFn(params);
+                return deleteKeypairs(params);
             }).then(res => {
                 this.$message.success('操作成功');
                 this.getKeypairFn();
@@ -144,25 +144,6 @@ export default {
                     this.loading = false;
                 });
         },
-        /**
-         * 删除密钥对
-         */
-
-        deleteKeypairsFn(params) {
-            deleteKeypairs(params)
-                .then(ret => {
-                    if (ret.code === '0000') {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getKeypairFn();
-                    }
-                })
-                .catch(err => {
-                    $log(err);
-                });
-        }
     }
 };
 </script>

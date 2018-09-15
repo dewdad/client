@@ -51,6 +51,7 @@
         <edit-name ref="EditName" />
         <!-- 对话框 修改 -->
         <modify-safe-group ref="ModifySafeGroup" />
+        <delete-dialog ref="DeleteDailog" />
     </div>
 </template>
 <script>
@@ -123,32 +124,12 @@ export default {
          */
 
         deleteSafeGrp(row) {
-            this.$messageBox
-                .confirm('确定要对该安全组进行删除操作吗？', '删除', {
-                    type: 'warning',
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    subMessage: '安全组：' + row.name
-                })
-                .then(() => {
-                    this.delGroupFn(row.id);
-                })
-                .catch(() => {});
-        },
-        // 删除安全组
-        delGroupFn(id) {
-            deleteGroup(id)
-                .then(ret => {
-                    if (ret.code === '0000') {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                        this.getGroupListFn();
-                    }
-                })
-                .catch(err => {
-                    $log(err);
-                });
+            this.$refs.DeleteDailog.show('安全组', row.name, () => {
+                return deleteGroup(row.id);
+            }).then(res => {
+                this.$message.success('操作成功');
+                this.getGroupListFn();
+            });
         },
         // 修改安全组
         modifySafeGrp(rowItem) {

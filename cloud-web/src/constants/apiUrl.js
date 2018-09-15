@@ -83,7 +83,9 @@ export const API_ECS = {
         revertResize: '/compute/serverAction/revertResize/{ecsId}'
     },
     monitor: {
-        moniterEchartMetricData: '/compute/overview/getEchartMetricData'
+        moniterEchartMetricData: '/compute/overview/getEchartMetricData',
+        ruleList: '/monitor/alarmRule/list',
+        createRule: 'POST /alarm/create'
     },
     flavors: {
         getFlavors: '/compute/server/getFlavorGroup',
@@ -410,6 +412,17 @@ export const API_OVERVIEW = {
 
 //工单管理
 export const API_TICKET = {
-    createTicket: TICKET_CTRL + '/order/create', //post 创建工单
-    getOrderList: TICKET_CTRL + '/order/getOrderList', //GET 分页查询我的工单列表
+    //post 创建工单
+    createTicket: TICKET_CTRL + '/order/create',
+    //GET 分页查询我的工单列表
+    getOrderList: TICKET_CTRL + '/order/getOrderList',
+
+    //delete 删除工单
+    deleteOrder: TICKET_CTRL + '/order/delete',
+
+    //put 关闭工单 工单信息，包括工单id和工单编号
+    closeOrder: TICKET_CTRL + '/order/complete',
+
+    //根据工单编号查询工单详情
+    getOrderDetailByOrderNO: TICKET_CTRL + '/order/detail/{orderNO}'
 };

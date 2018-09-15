@@ -1,6 +1,6 @@
 import http from '../utils/http';
 import { API_TICKET } from '../constants/apiUrl';
-// import { cloneDeep } from '../utils/utils';
+import { replaceParamVal } from '../utils/utils';
 
 /**
  * 创建工单
@@ -21,5 +21,37 @@ export async function getOrderList(data) {
     let res = await http.get(url, {
         params: data
     });
+    return res && res.data;
+}
+
+/**
+ * 删除工单
+ * @param {*} req_param  工单ID,多个用英文逗号分隔
+ */
+export async function deleteOrder(data) { 
+    let url = API_TICKET.deleteOrder;  
+    let res = await http.delete(url, {
+        params: data
+    });
+    return res && res.data;
+}
+
+/**
+ * 关闭工单
+ * @param {id,orderNO} 工单信息，包括工单id和工单编号
+ */
+export async function closeOrder(data) { 
+    let url = API_TICKET.closeOrder;  
+    let res = await http.put(url, data);
+    return res && res.data;
+}
+
+/**
+ * 根据工单编号查询工单详情
+ * @param orderNO 工单信息，包括工单id和工单编号
+ */
+export async function getOrderDetailByOrderNO(orderNO) { 
+    let url = replaceParamVal(API_TICKET.getOrderDetailByOrderNO,[orderNO]);  
+    let res = await http.get(url);
     return res && res.data;
 }
