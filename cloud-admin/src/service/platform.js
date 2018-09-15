@@ -133,7 +133,7 @@ export async function searchBindAuth(data) {
 export async function bindAuth(data) {
     console.log('data',data);
     var utl = PlatForm.bindAuth + '/' + data.roleType;
-    let response = await http.put(utl,data.ids);
+    let response = await http.put(utl,data.platformRoleIds);
     return response.data;
 }
 /**

@@ -2,13 +2,13 @@
     <el-dialog title="修改密码" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
             <el-form-item label="旧密码" prop="oldPwd" :label-width="formLabelWidth">
-                <el-input placeholder="输入旧密码" v-model="form.oldPwd"></el-input>
+                <el-input placeholder="输入旧密码" type="password"  v-model="form.oldPwd"></el-input>
             </el-form-item>
             <el-form-item label="新密码" prop="newPwd" :label-width="formLabelWidth">
-                <el-input placeholder="输入新密码" v-model="form.newPwd"></el-input>
+                <el-input placeholder="输入新密码" type="password" v-model="form.newPwd"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
-                <el-input placeholder="再次输入密码" v-model="form.confirmPwd"></el-input>
+                <el-input placeholder="再次输入密码" type="password" v-model="form.confirmPwd"></el-input>
             </el-form-item>
 
             <el-form-item label="用户名称" prop="username" :label-width="formLabelWidth">

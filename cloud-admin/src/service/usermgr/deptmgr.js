@@ -32,6 +32,24 @@ export async function createDept(data) {
     let url = DEPT.createDept ;
     let response = await http.post(url,data);
     return response;
+}/**
+ *创建部门配额
+ * @param {*}
+ */
+export async function createQuota(data) {
+    console.log('data',data);
+    let url = DEPT.createQuota ;
+    let response = await http.post(url,data);
+    return response;
+}/**
+ *修改部门配额
+ * @param {*}
+ */
+export async function changeDeptQuota(data) {
+    console.log('data',data);
+    let url = DEPT.changeDeptQuota ;
+    let response = await http.put(url,data);
+    return response;
 }
 /**
  *编辑部门
@@ -82,6 +100,15 @@ export async function searchQuota(data) {
     let response = await http.get(url,{
         params: data
     });
+    return response.data;
+}
+/**
+ *查看配额和使用量
+ * @param {*}
+ */
+export async function searchDeptDetail(data) {
+    let url = DEPT.searchDeptDetail+data;
+    let response = await http.get(url);
     return response.data;
 }
 /**
@@ -165,7 +192,7 @@ export async function resetPwd(data) {
         userId:data.userId,
         userName:data.username
     };
-    let url = DEPT.resetPwd+data.userId+'/resetPassword';
+    let url = DEPT.resetPwd+data.userId+'/password';
     let response = await http.put(url, postdata);
     return response;
 }

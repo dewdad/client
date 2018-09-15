@@ -159,7 +159,7 @@ export default {
                 orderDesc: '', //工单描述
                 phone: '',
                 email: '',
-                attachFiles:'', //附件文件
+                orderAttach:'', //附件文件
             },
             radio2: 3,
             rules:{
@@ -235,7 +235,7 @@ export default {
                         }
                     }
 
-                    this.form.attachFiles = arr || [];
+                    this.form.orderAttach = arr || [];
                     createOrder(this.form).then(ret => {
                         if(ret.data.code === '0000'){
                             this.confirmBtn = false;

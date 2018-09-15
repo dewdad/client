@@ -44,6 +44,9 @@ export const DEPT = {
     delDept: USER_RSA + '/dept/',//删除部门
     searchUser: USER_RSA + '/dept/get/',//根据id查找用户
     createDept: USER_RSA + '/dept/',//创建部门
+    createQuota: USER_RSA + '/dept/quota',//创建部门配额
+    changeDeptQuota: USER_RSA + '/dept/quota',//创建部门配额
+    searchDeptDetail: USER_RSA + '/dept/get/',//查看部门详情
     editDept: USER_RSA + '/dept/',//编辑部门
     searchQuota: USER_RSA + '/dept/getQuotaAndUsage/',//查看配额和使用量
     projectList: USER_RSA + '/project/list',//租户列表
@@ -139,7 +142,7 @@ export const API_MENU_MGR = {
 export const ORDER_MODULE = {
     myorderList: ORDER + '/getOrderList',//分页查询我的工单
     createOrder: ORDER + '/create',//创建工单
-    changePwd: ORDER + '/user/chgpwd',
+    delOrder: ORDER + '/delete',
 
 };
 
