@@ -259,8 +259,12 @@ input:disabled {
     .el-form-item.is-error.is-nomal .el-input__inner,
     .el-form-item.is-error.is-nomal .el-input__inner:focus,
     .el-form-item.is-error.is-nomal .el-textarea__inner,
-    .el-form-item.is-error.is-nomal .el-textarea__inner:focus {
-        border-color: $--basic-input-border-color;
+    .el-form-item.is-error.is-nomal .el-textarea__inner:focus,
+    .el-form-item.is-error .is-nomal .el-input__inner,
+    .el-form-item.is-error .is-nomal .el-input__inner:focus,
+    .el-form-item.is-error .is-nomal .el-textarea__inner,
+    .el-form-item.is-error .is-nomal .el-textarea__inner:focus {
+        border-color: $--basic-input-border-color !important;
     }
 
     .el-checkbox {
