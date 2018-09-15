@@ -45,8 +45,8 @@
                         <el-button type="primary" class="font12 ml20" @click="deleteCurrent(index)" size="small">删 除</el-button>
                     </div>
                     <el-form-item>
-                        <el-button type="primary" class="font12 " @click="submitForm">提  交</el-button>
                         <el-button type="default" class="font12 ml20" @click="cancel">取 消</el-button>
+                        <el-button type="primary" class="font12 " @click="submitForm">提  交</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -190,7 +190,11 @@ export default {
                     console.log('res',res);
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$alert('操作成功','提示');
+                        this.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                        this.goBack();
 
                     }else{
                         this.$alert('添加失败', '提示', {
@@ -210,7 +214,11 @@ export default {
                 .then(res => {
                     if(res.data.code == '0000'){
                         console.log('操作成功', res);
-                        return this.$alert('操作成功','提示');
+                        this.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                        this.goBack();
                     }else{
                         this.$alert('修改失败', '提示', {
                             type: 'error'

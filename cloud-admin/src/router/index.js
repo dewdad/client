@@ -186,6 +186,13 @@ export default new Router({
                                 title: '我的工单'
                             },
                             component: () => import('@/views/workorder/myorder/myorder')
+                        },{
+                            path: 'hosts',
+                            name: 'app.cloudres.hosts',
+                            meta: {
+                                title: '云主机'
+                            },
+                            component: () => import('@/views/cloudres/instance')
                         }
                     ]
                 }
