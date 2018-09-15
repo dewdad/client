@@ -103,7 +103,7 @@
                         <!--</div>-->
                     <!--</el-col>-->
                 <!--</el-row>-->
-                <div class="mt10" style="margin-left:115px;">
+                <div class="mt10" style="margin-left:180px;">
                     <el-button type="default" size="small" class="font12" @click="goBack">取 消</el-button>
                     <el-button type="primary" size="small" class="font12" @click="submitForm">提 交</el-button>
                 </div>

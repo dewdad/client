@@ -24,11 +24,11 @@
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item label="密码" prop="password"  >
-                    <el-input clearable  v-model="form.password"></el-input>
+                    <el-input clearable type="password"   v-model="form.password"></el-input>
                 </el-form-item>
                 <!-- 确认密码 -->
                 <el-form-item label="确认密码" prop="confirpwd"  >
-                    <el-input clearable v-model="form.confirpwd"></el-input>
+                    <el-input clearable type="password"  v-model="form.confirpwd"></el-input>
                 </el-form-item>
                 <!-- 角色 -->
                 <el-form-item label="角色" prop="roleId"  >
@@ -68,14 +68,20 @@ export default {
                 callback();
             }
         };
-        // let compairPassword = function(rule, value, callback){
-        //     let pasd = this.$refs.form.password || 0;
-        //     if (pasd !== value) {
-        //         callback(new Error('请确保两次输入的密码一致'));
-        //     } else {
-        //         callback();
-        //     }
-        // };
+        let compairPassword = function(rule, value, callback){
+            if(!value){
+                callback();
+            }else{
+                this.$refs.form.clearValidate(['confirpwd']);
+                let pasd = this.form.password || 0;
+                if (pasd !== value) {
+                    callback(new Error('请确保两次输入的密码一致'));
+                } else {
+                    callback();
+                }
+            }
+
+        };
         return {
             opType: 1,
             domainName:'',
@@ -97,11 +103,13 @@ export default {
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
                 'password':[
-                    { required: true,message: '必填项',trigger: ['blur']}
+                    { required: true,message: '必填项',trigger: ['blur']},
+
                 ],
                 'confirpwd':[
                     { required: true,message: '必填项',trigger: ['blur']},
-                    // { validator: compairPassword, trigger: 'blur' }
+                    { validator: compairPassword, trigger: 'blur' }
+
                 ],
                 'roleId':[
                     { required: true,message: '必填项',trigger: ['change']}

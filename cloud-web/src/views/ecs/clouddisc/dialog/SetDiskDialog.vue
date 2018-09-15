@@ -263,7 +263,7 @@ export default {
                 ids.push(item.id);
             });
             let data = {
-                diskIds: ids.length,
+                diskIds: ids.length ? ids : [''],
                 policyId: this.rowItem.pid,
                 sourcePage: 'policy-page'
             };

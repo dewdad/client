@@ -47,9 +47,7 @@
                         <template v-if="col.column=='orderTitle'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.orderTitle}}</span>
-
-
+                                    <a class="font12 mr10" @click="showDetail(scope.row)">{{scope.row.title}}</a>
                                 </template>
                             </el-table-column>
                         </template>
@@ -105,7 +103,7 @@
                                 <b class="link-division-symbol" ></b>
                                 <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
                                 <b class="link-division-symbol" ></b>
-                                <a  @click="delRole(scope.row)" class="btn-linker" >删除</a>
+                                <a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>
 
                             </template>
                         </el-table-column>
@@ -134,7 +132,7 @@ import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateOrder from './CreateOrder';
 import OrderDetail from './OrderDetail';
 
-import {myorderList} from '@/service/order.js';
+import {myorderList,delOrder} from '@/service/order.js';
 export default {
     name: 'app',
 
@@ -231,6 +229,10 @@ export default {
                     }
                 });
         },
+        //工单详情
+        showDetail(item){
+            this.$refs.OrderDetail.show(item);
+        },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
             this.myorderList();
@@ -239,21 +241,21 @@ export default {
             this.searchObj.paging.limit = val;
             this.myorderList();
         },
-        // delrole(item){
-        //     delRole(item).then(ret=>{
-        //         this.myorderList();
-        //     });
-        // },
+        del(item){
+            delOrder(item).then(ret=>{
+                this.myorderList();
+            });
+        },
         /**
-         * 删除角色
+         * 删除工单
          */
-        delRole(item) {
+        delOrder(item) {
             this.$confirm('确定要进行删除操作吗？', '删除', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                this.delrole(item);
+                this.del(item.id);
             }).catch(() => {
                 this.$message({
                     type: 'info',
