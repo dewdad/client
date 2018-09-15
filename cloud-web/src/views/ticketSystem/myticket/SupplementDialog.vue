@@ -9,7 +9,7 @@
                 <span>欢迎访问 WordPress 官方中文文档站点</span>
             </zt-form-item>
             <zt-form-item label="补充" prop="supple">
-                <textarea class="supple-text" v-model="ruleForm.supple" style="width: 90%"></textarea>
+                <textarea class="supple-text" v-model="ruleForm.supple"></textarea>
             </zt-form-item>
             <zt-form-item label="附件">
                 <div class="el-upload__tip input-help mb10">
@@ -20,7 +20,7 @@
                     :action="uploadAction" 
                     :headers="uploadHeaders"
                     :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
-                    :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT" 
+                    :limit="1" 
                     :file-list="fileList" 
                     :on-exceed="handleExceed" 
                     :on-change="handleChange"
@@ -119,7 +119,7 @@ export default {
             });
         },
         handleExceed(files, fileList) {
-            let msg = $t('account.Auth.departAuth.material.validator.max');
+            let msg = $t('只能上传1个附件');
             this.$message.error(msg);
         },
         //文件上传:回调函数======================start=============================
@@ -221,6 +221,7 @@ export default {
         height: 90px;
     }
     .supple-text{
+        line-height: 20px;
         min-height: 118px;
         max-height: 118px;
         min-width:100%;

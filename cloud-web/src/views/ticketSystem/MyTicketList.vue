@@ -108,7 +108,14 @@
                 </template>
             </el-table>
             <div class="pagination">
-                <el-pagination background @size-change="handleSizeChange" :current-page.sync="searchObj.paging.pageIndex" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.paging.limit" layout="sizes, prev, pager, next" :total="searchObj.paging.totalItems">
+                <el-pagination 
+                    background 
+                    @size-change="handleSizeChange" 
+                    :current-page.sync="searchObj.paging.pageIndex"
+                    @current-change="handleCurrentChange" 
+                    :page-size="searchObj.paging.limit" 
+                    layout="sizes, prev, pager, next" 
+                    :total="searchObj.paging.totalItems">
                 </el-pagination>
             </div>
         </div>
@@ -230,7 +237,7 @@ export default {
                         let resData = res.data || {};
                         if(resData.records){
                             this.tableDataList = resData.records || [];
-                            this.searchObj.paging.totalItems = data.total || 0;
+                            this.searchObj.paging.totalItems = resData.total || 0;
                         }                        
                     }else {
                         $log(res.msg);
