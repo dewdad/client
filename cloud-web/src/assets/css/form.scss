@@ -230,6 +230,7 @@ input:disabled {
             margin-right: 0px;
         }
     }
+
     .el-input__suffix {
         .el-icon-circle-close {
             &:before {
@@ -261,6 +262,12 @@ input:disabled {
 
     .el-checkbox {
         margin-right: 3px;
+    }
+}
+
+.el-input__prefix {
+    .el-input__icon {
+        display: inline-block;
     }
 }
 
