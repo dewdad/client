@@ -3,7 +3,7 @@ export default [
         path: 'monitor',
         name: 'app.monitor',
         meta: {
-            moduleName: '云监控'
+            moduleName: '云监控CMS'
         },
         redirect: '/app/monitor/alarmrule/list',
         component: {
