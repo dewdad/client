@@ -80,12 +80,16 @@ export const API_ECS = {
         getAllPortList: ECS_CTRL + '/servers/ports',
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password',
         flavorConfirm: '/compute/server/flavorConfirm/{ecsId}',
-        revertResize: '/compute/serverAction/revertResize/{ecsId}'
+        revertResize: '/compute/serverAction/revertResize/{ecsId}',
+        attachPort: '/compute/serverAction/attachPort/{serverId}/{portId}',
+        detachPort: '/compute/serverAction/detachPort/{serverId}/{attachmentId}',
+        listPortAttachment: '/compute/serverAction/listPortAttachment/{serverId}'
     },
     monitor: {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData',
         ruleList: '/monitor/alarmRule/list',
-        createRule: 'POST /alarm/create'
+        createRule: '/monitor/alarm/create',
+        historyList: '/monitor/alarmAction/list'
     },
     flavors: {
         getFlavors: '/compute/server/getFlavorGroup',

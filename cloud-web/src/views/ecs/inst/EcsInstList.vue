@@ -48,11 +48,13 @@
                 <el-table-column prop="ipaddr" :label="getLabel('ipaddr')" min-width="125" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <ul>
-                            <li v-for="(ip, index) in scope.row.addresses.addresses" :key="index" class="text-nowrap">
-                                <span>{{index}}：</span>
-                                {{ip[0].addr}}
-                                <span class="color-secondary">（内）</span>
-                            </li>
+                            <template v-for="(addresses, index) in scope.row.addresses.addresses">
+                                <li v-for="ip in addresses" :key="index + ip.addr" class="text-nowrap">
+                                    <span>{{index}}：</span>
+                                    {{ip.addr}}
+                                    <span class="color-secondary"> {{ip['OS-EXT-IPS:type'] === 'fixed' ? '（内）' : '（外）'}}</span>
+                                </li>
+                            </template>
                         </ul>
                     </template>
                 </el-table-column>
@@ -62,7 +64,7 @@
                         <el-tooltip class="item" effect="light" :disabled="scope.row.status !== 'BUILD'" :content="scope.row.status === 'BUILD' ? '预计需要3-6分钟' : ''" placement="top">
                             <zt-status :status="ECS_STATUS" :value="scope.row['OS-EXT-STS:task_state'] === 'deleting' ? 'deleted' : scope.row.status" class="text-nowrap status-column"></zt-status>
                         </el-tooltip>
-                        <i v-if="scope.row.status === 'error'" v-tooltip="'虚拟机处于错误状态'" class="el-icon-warning ml5 color-danger"></i>
+                        <i v-if="scope.row.status === 'error'" v-tooltip="scope.row.fault.message" class="el-icon-warning ml5 color-danger"></i>
                         <!-- <i class="el-icon-warning" v-tooltip="''"></i> -->
                     </template>
                 </el-table-column>
@@ -93,33 +95,33 @@
                 </el-table-column>
                 <el-table-column :label="$t('common.tableHeaderOperateText')" key="op" width="260" class-name="option-column text-nowrap">
                     <template slot-scope="scope">
-                        <!-- 管理 -->
-                        <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">{{$t('ecs.inst.list.manage') }}</router-link>
-                        <b class="link-division-symbol"></b>
-                        <!-- 远程登录 -->
-                        <a @click="getVncBefore(scope.row)" :disabled="dropdownActive(scope.row.status, remoteLoginActivedStatus)">{{$t('ecs.inst.list.remoteLogin') }}</a>
-                        <b class="link-division-symbol"></b>
-                        <!-- 更改实例规格 -->
-                        <router-link :to="{name:'app.ecs.changeconfig',params:{id:scope.row.id,item:scope.row}}" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)">{{$t('ecs.inst.list.modifyConfig') }}</router-link>
-                        <b class="link-division-symbol"></b>
-                        <!-- 更多 -->
-                        <zt-dropdown size="small" trigger="click" :placement="getPlacement(scope.$index)">
-                            <span class="el-dropdown-link">
-                                {{$t('common.more')}}
-                                <i class="el-icon-arrow-down"></i>
-                            </span>
-                            <zt-dropdown-menu slot="dropdown" :placement="getPlacement(scope.$index)">
-                                <zt-dropdown-item v-tooltip.left="dropdownActive(scope.row.status, item.activedStatus) ? item.tip : ''" v-for="item in ECS_DROPDOWN" :key="item.text" :disabled="!item.children && dropdownActive(scope.row.status, item.activedStatus)">
-                                    {{item.text}}
-                                    <zt-dropdown-menu slot="dropdown" v-if="item.children">
-                                        <zt-dropdown-item @click="dropdownClickHandler(child, scope.row)" v-tooltip.left="dropdownActive(scope.row.status, child.activedStatus) ? child.tip : ''" v-for="child in getChildren(item,scope.row)" :key="child.text" :disabled="dropdownActive(scope.row.status, child.activedStatus)">
-                                            <span>{{child.text}}</span>
-                                        </zt-dropdown-item>
-                                    </zt-dropdown-menu>
-                                </zt-dropdown-item>
-                            </zt-dropdown-menu>
-                        </zt-dropdown>
-                    </template>
+    <!-- 管理 -->
+    <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">{{$t('ecs.inst.list.manage') }}</router-link>
+    <b class="link-division-symbol"></b>
+    <!-- 远程登录 -->
+    <a @click="getVncBefore(scope.row)" :disabled="dropdownActive(scope.row.status, remoteLoginActivedStatus)">{{$t('ecs.inst.list.remoteLogin') }}</a>
+    <b class="link-division-symbol"></b>
+    <!-- 更改实例规格 -->
+    <router-link :to="{name:'app.ecs.changeconfig',params:{id:scope.row.id,item:scope.row}}" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)">{{$t('ecs.inst.list.modifyConfig') }}</router-link>
+    <b class="link-division-symbol"></b>
+    <!-- 更多 -->
+    <zt-dropdown size="small" trigger="click" :placement="getPlacement(scope.$index)">
+        <span class="el-dropdown-link">
+            {{$t('common.more')}}
+            <i class="el-icon-arrow-down"></i>
+        </span>
+        <zt-dropdown-menu slot="dropdown" :placement="getPlacement(scope.$index)">
+            <zt-dropdown-item v-tooltip.left="dropdownActive(scope.row.status, item.activedStatus) ? item.tip : ''" v-for="item in ECS_DROPDOWN" :key="item.text" :disabled="!item.children && dropdownActive(scope.row.status, item.activedStatus)">
+                {{item.text}}
+                <zt-dropdown-menu slot="dropdown" v-if="item.children">
+                    <zt-dropdown-item @click="dropdownClickHandler(child, scope.row)" v-tooltip.left="dropdownActive(scope.row.status, child.activedStatus) ? child.tip : ''" v-for="child in getChildren(item,scope.row)" :key="child.text" :disabled="dropdownActive(scope.row.status, child.activedStatus)">
+                        <span>{{child.text}}</span>
+                    </zt-dropdown-item>
+                </zt-dropdown-menu>
+            </zt-dropdown-item>
+        </zt-dropdown-menu>
+    </zt-dropdown>
+</template>
                 </el-table-column>
             </el-table>
             <div class="pagination">
@@ -216,6 +218,9 @@
         <bind-link-ip-dialog :opType="opType" ref="bindLinkIpDialog" />
         <!-- 恢复 确认 -->
         <flavor-confirm ref="flavorConfirm" />
+        <!-- 绑定分离网卡 -->
+        <bind-net-work-card ref="bindNetWorkCard" />
+        
         <!-- 手机验证弹框 -->
         <mobile-code-dialog ref="mobileCodeDialog" :code-type="CHECK"></mobile-code-dialog>
 

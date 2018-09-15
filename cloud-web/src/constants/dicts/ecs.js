@@ -172,8 +172,10 @@ export const ECS_DROPDOWN = [
         text: '网络和安全',
         children: [
             {key: 9, text: $t('ecs.inst.list.dropdownBtns.securityGroupConfig'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'instSafeGroup', show: true},
-            {key: 10, text: $t('ecs.inst.list.dropdownBtns.bindPublicIP'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindip', show: false},
-            {key: 11, text: $t('ecs.inst.list.dropdownBtns.unbindPublicIP'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false}
+            {key: 10, text: '添加网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'bindNetWorkCard', show: true},
+            {key: 11, text: '分离网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'unbindNetWorkCard', show: false},
+            {key: 10, text: '绑定浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindip', show: false},
+            {key: 13, text: '解 浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false}
         ]
     }
 ];
@@ -594,23 +596,23 @@ export const DISK_BACK_STATUS = [
 ];
 
 export const MONITOR_RULE_TYPES = [
-    {key: '1', value: 'get请求数', unit: 'Frequency'},
-    {key: '2', value: 'put请求数', unit: 'Frequency'},
-    {key: '3', value: '总请求数', unit: 'Frequency'},
-    {key: '4', value: '下载流量', unit: 'byte'},
-    {key: '5', value: '带宽流量', unit: 'byte'},
-    {key: 'cpu_util', value: 'cpu使用率', unit: '%'},
-    {key: 'mem_util', value: '内存使用率', unit: '%'},
-    {key: 'network_incoming_bytes_aggregate_rate', value: '带外网络流入速率', unit: 'byte/s'},
-    {key: 'network_outgoing_bytes_aggregate_rate', value: '带外网络流出速率', unit: 'byte/s'},
-    {key: 'disk_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
-    {key: 'disk_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
-    {key: 'disk_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
-    {key: 'disk_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
-    {key: 'disk_device_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s'},
-    {key: 'disk_device_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency'},
-    {key: 'disk_device_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s'},
-    {key: 'disk_device_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency'},
+    {key: '1', value: 'get请求数', unit: 'Frequency', type: '1'},
+    {key: '2', value: 'put请求数', unit: 'Frequency', type: '1'},
+    {key: '3', value: '总请求数', unit: 'Frequency', type: '1'},
+    {key: '4', value: '下载流量', unit: 'byte', type: '1'},
+    {key: '5', value: '带宽流量', unit: 'byte', type: '1'},
+    {key: 'cpu_util', value: 'cpu使用率', unit: '%', type: '2'},
+    {key: 'mem_util', value: '内存使用率', unit: '%', type: '2'},
+    {key: 'network_incoming_bytes_aggregate_rate', value: '带外网络流入速率', unit: 'byte/s', type: '2'},
+    {key: 'network_outgoing_bytes_aggregate_rate', value: '带外网络流出速率', unit: 'byte/s', type: '2'},
+    {key: 'disk_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s', type: '2'},
+    {key: 'disk_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency', type: '2'},
+    {key: 'disk_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s', type: '2'},
+    {key: 'disk_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency', type: '2'},
+    {key: 'disk_device_read_bytes_rate', value: '磁盘读速率', unit: 'byte/s', type: '3'},
+    {key: 'disk_device_read_requests_rate', value: '磁盘读操作速率', unit: 'Frequency', type: '3'},
+    {key: 'disk_device_write_bytes_rate', value: '磁盘写速率', unit: 'byte/s', type: '3'},
+    {key: 'disk_device_write_requests_rate', value: '磁盘写操作速率', unit: 'Frequency', type: '3'},
     {key: 'rds001_cpu_usage', value: 'CPU利用率', unit: '该指标用于统计测量对象的CPU利用率，以比率为单位。'},
     {key: 'rds002_mem_usage', value: '内存利用率', unit: '该指标用于统计测量对象的内存利用率，以比率为单位。'},
     {key: 'rds003_iops', value: 'IOPS', unit: '该指标用于统计当前实例，单位时间内系统处理的I/O请求数量（平均值）。'},

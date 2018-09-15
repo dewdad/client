@@ -1,4 +1,3 @@
-import {getUserInfoDetail} from '@/service/user';
 import {API_UserAccount} from '@/constants/apiUrl';
 import {isArray} from '@/utils/utils';
 const user = {
@@ -71,18 +70,18 @@ const user = {
         }
     },
     actions: {
-        getUserInfoDetailFn({state, commit, dispatch}, params = state.userInfo.uid) {
-            return getUserInfoDetail({uid: params}).then(res => {
-                let datumId = res && res.result && res.result.id || '';
-                let photoId = res && res.result && res.result.photoId || '';
-                let params = {
-                    datumId: datumId,
-                    photoId: photoId
-                };
-                commit('SET_PHOTOID', params);
-                return res.result;
-            });
-        }
+        // getUserInfoDetailFn({state, commit, dispatch}, params = state.userInfo.uid) {
+        //     return getUserInfoDetail({uid: params}).then(res => {
+        //         let datumId = res && res.result && res.result.id || '';
+        //         let photoId = res && res.result && res.result.photoId || '';
+        //         let params = {
+        //             datumId: datumId,
+        //             photoId: photoId
+        //         };
+        //         commit('SET_PHOTOID', params);
+        //         return res.result;
+        //     });
+        // }
     }
 };
 export default user;

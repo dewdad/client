@@ -3,18 +3,18 @@
         <page-header>
             报警历史
             <div slot="right">
-                <el-radio-group value="1d" v-model="radioTime" @change="dataChangeType" size="small">
-                    <el-radio-button border  label="1d">1小时</el-radio-button>
-                    <el-radio-button border label="7d">2小时</el-radio-button>
-                    <el-radio-button border  label="30d">4小时</el-radio-button>
-                    <el-radio-button border  label="30d">6小时</el-radio-button>
-                    <el-radio-button border  label="30d">12小时</el-radio-button>
-                    <el-radio-button border  label="30d">1天</el-radio-button>
-                    <el-radio-button border  label="30d">3天</el-radio-button>
-                    <el-radio-button border  label="30d">7天</el-radio-button>
+                <el-radio-group v-model="radioTime" size="small">
+                    <el-radio-button border  :label="1">1小时</el-radio-button>
+                    <el-radio-button border :label="2">2小时</el-radio-button>
+                    <el-radio-button border  :label="4">4小时</el-radio-button>
+                    <el-radio-button border  :label="6">6小时</el-radio-button>
+                    <el-radio-button border  :label="12">12小时</el-radio-button>
+                    <el-radio-button border  :label="24">1天</el-radio-button>
+                    <el-radio-button border  :label="72">3天</el-radio-button>
+                    <el-radio-button border  :label="168">7天</el-radio-button>
                 </el-radio-group>
                 选择日期： <el-date-picker
-      v-model="value6"
+      v-model="daterange"
       type="daterange"
       size="small"
       range-separator="至"
@@ -25,7 +25,7 @@
         </page-header>
         <div class="page-body mt10">
             <!-- 列表 -->
-            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getSnapshotList" :paging="searchObj.paging">
+            <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getData" :paging="searchObj.paging">
                 <el-table-column min-width="120" prop="name" label="产品类型">
                 </el-table-column>
                 <el-table-column prop="id" label="故障资源">
@@ -52,13 +52,11 @@
                 </el-table-column>
             </zt-table>
         </div>
-        <delete-dialog ref="DeleteDailog" />
-        <create-contact ref="CreateContact" />
     </div>
 </template>
 <script>
-import {getSnapshotList, deleteSnapshots} from '@/service/ecs/snapshot.js';
-import CreateContact from './components/CreateContact';
+import {getAlarmHistoryList} from '@/service/monitor/alarmRule.js';
+import {dateFormat} from '@/utils/utils';
 export default {
     data() {
         let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}, {field: 'mobiel', label: '资源名称', inputval: '', tagType: 'INPUT'}];
@@ -76,31 +74,53 @@ export default {
             loading: false,
             snaplistShow: true,
             searchObj,
-            fieldValue: '',
             showId: '',
             inlineForm: {
-                field: '',
-                value: ''
+                startDate: '',
+                endDate: ''
             },
-            radioTime: '1d'
+            radioTime: '',
+            daterange: []
         };
     },
-    components: {
-        CreateContact
+    watch: {
+        daterange: function(newval) {
+            if (newval) {
+                this.inlineForm.startDate = dateFormat(newval[0], 'YYYY-MM-DD HH:mm:ss');
+                this.inlineForm.endDate = dateFormat(newval[1], 'YYYY-MM-DD HH:mm:ss');
+            } else {
+                this.inlineForm.startDate = '';
+                this.inlineForm.endDate = '';
+            }
+            this.search();
+        },
+        radioTime: function(newval) {
+            let nowDate = new Date();
+            this.inlineForm.endDate = dateFormat(nowDate, 'YYYY-MM-DD HH:mm:ss');
+            this.inlineForm.startDate = dateFormat(new Date(nowDate.getTime() - newval * 3600000), 'YYYY-MM-DD HH:mm:ss');
+            this.search();
+        }
     },
-    mounted() {},
+    created() {
+        // 默认查询1小时
+        this.radioTime = 1;
+        this.getData();
+    },
     methods: {
-        getSnapshotList(params) {
-            params = params || this.searchObj.paging;
+        search() {
+            let params = Object.assign({}, this.inlineForm, this.searchObj.paging);
+            $log(params);
+            this.getData(params);
+        },
+        getData(params) {
+            params = params ? Object.assign({}, params, this.inlineForm) : this.searchObj.paging;
             if (params !== false) this.loading = true;
-            getSnapshotList(params)
+            getAlarmHistoryList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
-                        if (resData && resData.data) {
-                            this.tableData = resData.data || [];
-                            this.searchObj.paging.totalItems = resData.total || 0;
-                        }
+                        this.tableData = resData.records || [];
+                        this.searchObj.paging.totalItems = resData.total || 0;
                     }
                 })
                 .catch(err => {
@@ -109,20 +129,6 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
-        },
-        editSnap(row) {
-            this.$refs.CreateDisk.show(row).then(() => {});
-        },
-        deleteSnap(row) {
-            this.$refs.DeleteDailog.show('快照', row.name, () => {
-                return deleteSnapshots(row.id);
-            }).then(res => {
-                this.$message.success('操作成功');
-                this.getSnapshotList();
-            });
-        },
-        addContact() {
-            this.$refs.CreateContact.show().then(() => {});
         }
     }
 };
