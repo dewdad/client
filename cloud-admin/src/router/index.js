@@ -200,6 +200,13 @@ export default new Router({
                                 title: '已处理工单'
                             },
                             component: () => import('@/views/workorder/myorder/ProcessedOrder')
+                        },{
+                            path: 'hosts',
+                            name: 'app.cloudres.hosts',
+                            meta: {
+                                title: '云主机'
+                            },
+                            component: () => import('@/views/cloudres/instance')
                         }
                     ]
                 }

@@ -8,7 +8,8 @@
                 <el-input placeholder="输入新密码" type="password" v-model="form.newPwd"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
-                <el-input placeholder="再次输入密码" type="password" v-model="form.confirmPwd"></el-input>
+                <el-input placeholder="再次输入密码" @blur="checkPwd" @change="checkPwd" v-bind:class="{ borderRed: invalidPsd }" type="password" v-model="form.confirmPwd"></el-input>
+                <span v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;">两次密码不一致</span>
             </el-form-item>
 
             <el-form-item label="用户名称" prop="username" :label-width="formLabelWidth">
@@ -32,6 +33,7 @@ export default {
             resolve: null,
             reject: null,
             confirmBtn: false,
+            invalidPsd:false,
             form:{
                 newPwd:'',
                 username:'',
@@ -77,6 +79,13 @@ export default {
             this.isShow = false;
 
         },
+        checkPwd(){
+            if(this.form.newPwd !== this.form.confirmPwd) {
+                this.invalidPsd = true;
+            } else {
+                this.invalidPsd = false;
+            }
+        },
         cancel() {
             this.hide();
             typeof this.reject() === 'function' && this.reject();
@@ -92,6 +101,13 @@ export default {
             this.confirmBtn = true;
             this.form.userId = this.item.id;
             console.log('this.form',this.form);
+            if(this.form.newPwd !== this.form.confirmPwd) {
+                this.invalidPsd = true;
+                this.confirmBtn = false;
+                return;
+            } else {
+                this.invalidPsd = false;
+            }
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     resetPwd(this.form)
@@ -126,6 +142,8 @@ export default {
     }
 };
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
+    .borderRed{
+        border-color:#f56c6c;
+    }
 </style>

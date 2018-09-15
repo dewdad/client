@@ -220,7 +220,11 @@ export default {
                     createRenter(param).then(ret => {
                         $log('result...', ret);
                         if(ret.data.code === '0000'){
-                            return this.$alert('操作成功','提示');
+                            this.$message({
+                                message: '保存成功',
+                                type: 'success'
+                            });
+                            this.goBack();
                         }else{
                             this.$alert('操作失败', '提示', {
                                 type: 'error'

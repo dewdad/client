@@ -5,9 +5,11 @@
                 show-checkbox
                 default-expand-all
                 node-key="menuCode"
+                :check-strictly="strictly"
                 :default-checked-keys="selectedKeys"
                 ref="tree"
                 highlight-current
+                @node-click="handleNodeClick"
                 :props="defaultProps">
         </el-tree>
         <span slot="footer" class="dialog-footer">
@@ -24,6 +26,7 @@ export default {
         return{
             formLabelWidth: '110px',
             isShow: false,
+            strictly:false,
             resolve: null,
             reject: null,
             defaultProps: {
@@ -58,10 +61,15 @@ export default {
             this.isShow = false;
 
         },
+        handleNodeClick(){
+            console.log('treekeys',this.$refs.tree.getCheckedKeys());
+        },
         //获取默认关联上的部门节点
         getSelectedKeys(){
             let data = this.data;
+            this.strictly = false;
             let keys = [];
+            this.selectedKeys = [];
             for(let i = 0;i < data.length;i++){
                 if(data[i].selected){
                     keys.push(data[i].menuCode);
@@ -85,6 +93,7 @@ export default {
 
             }
             this.selectedKeys = keys;
+            console.log('this.selectedKeys',this.selectedKeys);
         },
         //获取被选择了的节点
         getKey() {
@@ -128,6 +137,7 @@ export default {
             let params = {
                 roleId:this.roleId,
             };
+            this.data = [];
             $log('params', params);
             getMenuTreeByRoleId(params).then(ret => {
                 $log('data', ret);

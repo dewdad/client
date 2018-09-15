@@ -10,8 +10,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
+                        <el-button type="default" class="font12 " @click="cancel">取 消</el-button>
                         <el-button type="primary" class="font12 ml20" @click="bindAuth">提  交</el-button>
-                        <el-button type="default" class="font12 ml20" @click="cancel">取 消</el-button>
                     </el-form-item>
                 </el-form>
             </el-row>
