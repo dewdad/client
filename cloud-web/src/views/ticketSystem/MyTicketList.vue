@@ -124,7 +124,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 
-import { getOrderList,deleteOrder } from '@/service/ticket.js';
+import { getOrderList,deleteOrder,closeOrder } from '@/service/ticket.js';
 
 
 export default {
@@ -331,6 +331,21 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$message.success('操作成功');
+                let date = {
+                    id: id,
+                    status: 1
+                };
+                closeOrder(date)
+                    .then( res => {
+                        if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                            this.$message.success('关闭成功');
+                            this.search();
+                        }                        
+                    })
+                    .catch( (err) => {
+                        $log(err);                          
+                    });
+
             }).catch(() => {         
             });
         }

@@ -246,3 +246,17 @@ export async function deleteNetwork({vpcId}) {
     let ret = await http.delete(replaceParamVal(API_ECS.network.networkID, [vpcId]), {vpcId});
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE;
 }
+
+
+/**
+ * 创建路由接口
+ * @param fixedIp 路由名称
+ * @param networkId 管理状态
+ * @param routerId 外网ID
+ * @param subnetId 外网ID
+ */
+export async function addRoutePort({...arg}) {
+    $log('post /editRouter ->', {...arg});
+    let ret = await http.post(API_ECS.network.addRoutePort, {...arg});
+    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+}
