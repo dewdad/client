@@ -25,7 +25,7 @@ export default {
     data() {
         return{
             formLabelWidth: '110px',
-            isShow: true,
+            isShow: false,
             strictly:false,
             resolve: null,
             reject: null,
