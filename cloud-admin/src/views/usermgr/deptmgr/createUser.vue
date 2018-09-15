@@ -72,9 +72,7 @@ export default {
             if(!value){
                 callback();
             }else{
-                this.$refs.form.clearValidate(['confirpwd']);
-                let pasd = this.form.password || 0;
-                if (pasd !== value) {
+                if (this.form.password !== this.form.confirpwd) {
                     callback(new Error('请确保两次输入的密码一致'));
                 } else {
                     callback();

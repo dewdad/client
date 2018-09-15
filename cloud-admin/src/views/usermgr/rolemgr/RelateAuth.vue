@@ -5,9 +5,11 @@
                 show-checkbox
                 default-expand-all
                 node-key="menuCode"
+                :check-strictly="true"
                 :default-checked-keys="selectedKeys"
                 ref="tree"
                 highlight-current
+                @node-click="handleNodeClick"
                 :props="defaultProps">
         </el-tree>
         <span slot="footer" class="dialog-footer">
@@ -57,6 +59,9 @@ export default {
         hide() {
             this.isShow = false;
 
+        },
+        handleNodeClick(){
+            console.log('treekeys',this.$refs.tree.getCheckedKeys());
         },
         //获取默认关联上的部门节点
         getSelectedKeys(){
