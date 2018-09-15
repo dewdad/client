@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-09-14 15:27:45 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-14 17:18:11
+ * @Last Modified time: 2018-09-15 16:52:53
  */
 
 import http from '@/utils/http';
@@ -69,5 +69,19 @@ export async function getAlarmRuleList({pageIndex = 1, limit = 10} = {}) {
  */
 export async function createRule(data) {
     let res = await http.get(API_ECS.monitor.createRule, data);
+    return res && res.data;
+}
+
+/**
+ * 报警历史列表
+ * @param {*} param0
+ */
+export async function getAlarmHistoryList({pageIndex = 1, limit = 10} = {}) {
+    let url = API_ECS.monitor.historyList;
+    let res = await http.get(url, {
+        params: {
+            ...arguments[0]
+        }
+    });
     return res && res.data;
 }
