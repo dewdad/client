@@ -88,7 +88,10 @@ export default {
         filterHandler(filters) {
             let values = Object.values(filters);
             let value = values[0][0];
-            this.$emit('filterVal', value);
+            let keys = Object.keys(filters);
+            let obj = {};
+            obj[keys[0]] = value;
+            this.$emit('filterVal', obj);
         }
     }
 };

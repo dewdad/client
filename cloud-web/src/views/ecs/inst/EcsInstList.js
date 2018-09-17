@@ -16,7 +16,6 @@ import {
     //modifyVncPwd,
     //reloadSystem
 } from '@/service/ecs/list.js';
-import {addGroupForInstance} from '@/service/ecs/security';
 import ZT_CONFIG from '@/constants/config';
 import {showTextByKey, cloneDeep, sleep /*convertToVchartData*/} from '@/utils/utils.js';
 //import {moniterEchartMetricData} from '@/service/ecs/overview';

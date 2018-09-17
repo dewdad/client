@@ -215,6 +215,7 @@ export default {
             this.ruleForm.rules.splice(index, 1);
         },
         getRule() {
+            this.loading = true;
             getRule(this.$route.params.id).then(res => {
                 if (res.code === '0000') {
                     let data = res.data;
@@ -226,6 +227,8 @@ export default {
                         type: 'error'
                     });
                 }
+            }).finally(() => {
+                this.loading = false;
             });
         },
         submit() {
