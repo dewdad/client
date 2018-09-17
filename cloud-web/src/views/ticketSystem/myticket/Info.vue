@@ -93,10 +93,10 @@ export default {
     data() {
         let orderStatus = [
             {key:'' ,'text':'全部',value:''},
-            {key:9,'text':'待审核',value:'9'},
-            {key:4,'text':'待处理',value:'4'},
-            {key:1,'text':'已处理',value:'1'},
-            {key:2,'text':'已关闭',value:'2'}
+            {key:1,'text':'待审核',value:'1'},
+            {key:2,'text':'处理中',value:'2'},
+            {key:3,'text':'待确认',value:'3'},
+            {key:4,'text':'已完成',value:'4'}
         ];
         let moduleTypes = [
             {value: '1', label: '弹性云主机',
