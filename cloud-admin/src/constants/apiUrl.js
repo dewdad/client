@@ -155,6 +155,7 @@ export const ORDER_MODULE = {
     transferList: ORDER + '/getUserList',
     //  补充说明
     supplement: 'resources/order/supplement',
+    getSupplement: 'resources/order/getSupplement',
 };
 
 
