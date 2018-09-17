@@ -67,6 +67,7 @@ export default {
             };
             searchProjectByuserId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
+                this.selectedProject = [];
                 let resData = ret.data;
                 if(resData){
                     this.getprojectList();
@@ -83,6 +84,7 @@ export default {
             $log('params', param);
             projectList(param).then(ret => {
                 $log('list', ret);
+                this.allProject = [];
                 if(ret.data && ret.data.data){
                     let resData = ret.data.data;
                     let selectedProject = this.selectedProject;

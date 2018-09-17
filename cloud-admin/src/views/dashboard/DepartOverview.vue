@@ -7,14 +7,15 @@
                 <div class="selDepart mb20">
                     <div class="finger-cursor">
                         <span class="el-dropdown-link font18" @click="selDepartBox">
-                            {{selDepartVal}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
+                            {{brunch.name}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
                         </span>
                     </div>
                     <el-tree v-show="departShow"
-                    :data="departData" 
-                    :expand-on-click-node="false" 
+                    :data="departData"
+                    :expand-on-click-node="false"
                     :props="defaultProps"
-                    @node-click="selDepart"></el-tree>
+                    :default-checked-keys="selectedKey"
+                    @node-click="handleNodeClick"></el-tree>
                     <span class="color-secondary font12">您可以通过切换部门查看相应配额使用情况</span>
                 </div>
                 <!-- 弹性云主机、CPU、内存 -->
@@ -188,9 +189,9 @@
                                 </div>
                                 <!-- 租户列表 -->
                                 <ul class="floor-tenant__box__ul">
-                                    <li class="floor-tenant__box__li" :class="{'be-selected': item.projectId === selTenantId }" v-for="(item, index) in tenantList" :key="index">
+                                    <li class="floor-tenant__box__li" @click="selTenant(item.projectId)" :class="{'be-selected': item.projectId === selTenantId }" v-for="(item, index) in tenantList" :key="index">
                                         <i class="iconfont icon-zuhu mr10"></i>
-                                        <span @click="selTenant(item.projectId)">{{item.projectName}}</span>
+                                        <span >{{item.projectName}}</span>
                                     </li>
                                 </ul>
                             </div>

@@ -63,6 +63,7 @@ export default {
             };
             searchByProjectId(param).then(ret => {
                 $log('list....searchByProjectId', ret);
+                this.selectedUser = [];
                 let resData = ret.data;
                 this.listUser();
                 if(resData){
@@ -79,6 +80,7 @@ export default {
             console.log('param',param);
             findeRole(param).then(ret => {
                 $log('list', ret);
+                this.allUsers = [];
                 if(ret.data && ret.data.data){
                     let resData = ret.data.data;
                     let selectedUser = this.selectedUser;

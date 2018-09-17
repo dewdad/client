@@ -57,7 +57,7 @@ export default {
         },
     },
     watch: {
-        '$route': function(newVal) {            
+        '$route': function(newVal) {
             if(newVal) {
                 this.parseActivemenu(this.menuList);
             }
@@ -86,7 +86,7 @@ export default {
             return routerName;
         },
         //处理激活的一二级菜单；
-        parseActivemenu(menuList){        
+        parseActivemenu(menuList){
             if(menuList && menuList.length){
                 this.activeRouteHref = this.parseRouterName();
                 menuList.forEach( (menu) =>{
@@ -97,9 +97,8 @@ export default {
                             }                           
                         });                        
                         if(submenu) {
-                            console.log('this.activeMenuCode',submenu);
-                            console.log('this.menu',menu);
                             this.activeMenuCode = menu.menuCode;
+                            this.submenus = menu.submenus;
                         }else{                         
                             this.activeMenuCode = '0000';
                         }
@@ -109,24 +108,34 @@ export default {
         },
         getMenus(){
             if(window.navList.length){
-                console.log('window.navList.length',window.navList);
-                let submenus = [];
-                this.parseActivemenu(window.navList);
-                console.log('this.activeMenuCode',this.activeMenuCode);
-
-                let menu = window.navList.find( (menu) => {
-                    return menu.menuCode === this.activeMenuCode;
-                });
-                if(menu) {
-                    submenus = menu.submenus || [];
+                // let submenus = [];
+                let navlist = window.navList;
+                let that = this;
+                if(navlist && navlist.length){
+                    this.activeRouteHref = this.parseRouterName();
+                    navlist.forEach( (menu) =>{
+                        if(menu.submenus && menu.submenus.length){
+                            let submenu = menu.submenus.find( (submenu) => {
+                                if(submenu.routeHref && submenu.routeHref !== '#'){
+                                    return submenu.routeHref === this.activeRouteHref;
+                                }
+                            });
+                            if(submenu) {
+                                that.activeMenuCode = menu.menuCode;
+                                let me = navlist.find( (me) => {
+                                    return me.menuCode === that.activeMenuCode;
+                                });
+                                that.submenus = me.submenus;
+                            }else{
+                                that.activeMenuCode = '0000';
+                            }
+                        }
+                    });
                 }
-
-                $log('menu----------',menu);
-                return this.submenus = submenus;
             }
-            return [];
         },
         handleSelect(active) {
+            console.log('active',active);
             this.activeMenuCode = active;
 
             if(this.menuList.length){                
@@ -137,11 +146,13 @@ export default {
                 if(submenus.length){
                     let submenu = submenus[0];                   
                     this.goto(submenu.routeHref);
+                }else if(menu.menuCode === '2000' || menu.routeHref.includes('http://') || menu.menuName === '概览'){
+                    this.goto(menu.routeHref);
                 }
             } 
         }
     },
-    created(){
+    mounted(){
         this.getMenus();
     }
 };
@@ -156,4 +167,7 @@ export default {
         }
         background-color:#fff !important;
     }
+    /*.sidebar-submenu .is-active.is-opened{*/
+        /*background-color:#2d8cf0 !important;*/
+    /*}*/
 </style>

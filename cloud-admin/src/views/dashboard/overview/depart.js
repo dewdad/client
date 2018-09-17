@@ -1,8 +1,8 @@
 import EchartsLine from '@/components/charts/EchartsLine';
 import EchartsPie from '@/components/charts/EchartsPie';
-
+import { mapState } from 'vuex';
 import {getAdminOverview, getTenantIntro} from '@/service/overview.js';
-
+import {deptTree} from '@/service/usermgr/deptmgr.js';
 let resourceArr = [
     {class: 'iconfont icon-yunzhuji-gailan', name: '弹性主机', field: 'INSTANCES', totalField: 'qInstances'},
     {class: 'iconfont icon-CPU-gailan', name: 'CPU', field: 'CORES', totalField: 'qCpu'},
@@ -20,48 +20,101 @@ export default {
         return {
             resourceArr,
             searchVal: '',
-            departData: [
-                {
-                    label: '一级部门1',
-                    id: 'yijibumen',
-                    children: [{
-                        label: '二级部门1-1',
-                        children: [{
-                            label: '三级部门1-1-1'
-                        }]
-                    }]
-                },
-                {
-                    label: '一级部门2',
-                    children: [{
-                        label: '二级部门2-1',
-                        children: [{
-                            label: '三级部门2-1-1'
-                        }]
-                    }]
-                },
-                {
-                    label: '一级部门3',
-                    children: [{
-                        label: '二级部门3-1',
-                        children: [{
-                            label: '三级部门3-1-1s'
-                        }]
-                    }]
-                }
-            ],
+            departData: [],
             departShow: false,
             defaultProps: {
                 children: 'children',
-                label: 'label'
+                label: 'name'
             },
-            quota: {},
-            usages: {},
+            quota: {
+                cpu:0,
+                instances:0,
+                volumes:0,
+                snapshot:0,
+                volumeSize:0,
+                ram:0,
+                securityGroup:0,
+                securityGroupRule:0,
+                floatingIps:0,
+                network:0,
+                ports:0,
+                routers:0,
+                subnet:0,
+                backup:0,
+                backupSize:0
+            },
+            usages: {
+                cores: '',
+                instances: '',
+                volumes: '',
+                snapshots: '',
+                gigabytes: '',
+                ram: '',
+                security_group: '',
+                security_group_rule: '',
+                floatingip: '',
+                network: '',
+                port: '',
+                router: '',
+                subnet: '',
+                region: '',
+                backup: '',
+                backupSize: ''
+            },
             tenantList: [],
-            selTenantId: ''
+            selTenantId: '',
+            deptList:[],
+            brunch:{},
+            selectedKey:[],
+            item:{}
+
         };
     },
     methods:{
+        handleNodeClick(data){
+            this.brunch = data;
+            // 记录当前部门分支
+            this.$store.commit('user/DEPTBRUNCH', data);
+            this.selectedKey = [];
+            this.selectedKey.push(data.id);
+            console.log('this.selectedKey',this.selectedKey);
+            this.deptTree();
+            this.getAdminOverviewFn();
+            this.getTenantIntroFn();
+        },
+        //获取部门树
+        deptTree(){
+            let params = {
+                pageIndex: 1,
+                limit: 999,
+                totalItems: 0,
+                roleType:this.user.roleType,
+                domain:this.deptbrunch.id,
+            };
+            $log('params', params);
+            deptTree(params).then(ret => {
+                $log('treedata', ret);
+                let resData = ret.data;
+                let tree = this.deptbrunch;
+                if(resData){
+                    console.log('resData',resData);
+                    this.departData = resData|| [];
+                    if(tree && tree.id){
+                        console.log('tree....',tree);
+                        this.brunch = tree;
+                        this.selectedKey.push(tree.id);
+                    }else{
+                        this.brunch = this.departData[0];
+                        this.selectedKey.push(this.brunch.id);
+                        // 记录当前部门分支
+                        this.$store.commit('user/DEPTBRUNCH', this.brunch);
+                    }
+                    this.getAdminOverviewFn();
+                    this.getTenantIntroFn();
+
+                }
+            });
+        },
         // 选择部门
         selDepart(data) {
             console.warn(data);
@@ -72,23 +125,26 @@ export default {
             this.departShow = !this.departShow;
         },
         // 概览数据
-        getAdminOverviewFn(){
+        getAdminOverviewFn(id){
             let params = {
-                deptId: 'deptId'
+                deptId: id ? id : this.brunch.id
             };
             getAdminOverview(params)
                 .then(res => {
+                    this.quota = [];
+                    this.usages = [];
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         this.quota = res.data && res.data.quota || [];
                         this.usages = res.data && res.data.usages || [];
                         let deptList = res.data && res.data.deptList || [];
-                        this.departData = [];
-                        for (let d in deptList){
-                            let treeArr = {};
-                            treeArr.label = deptList[d].name;
-                            treeArr.id = deptList[d].id;
-                            this.departData.push(treeArr);
-                        }
+                        this.deptList = res.data && res.data.deptList || [];
+                        // this.departData = [];
+                        // for (let d in deptList){
+                        //     let treeArr = {};
+                        //     treeArr.label = deptList[d].name;
+                        //     treeArr.id = deptList[d].id;
+                        //     this.departData.push(treeArr);
+                        // }
                     }
                 })
                 .catch(e => {
@@ -99,18 +155,26 @@ export default {
         searchTenant() {
             this.getTenantIntroFn();
         },
+        //显示当前租户的详情
+        selTenant(id){
+            this.selTenantId = id;
+            this.getAdminOverviewFn(id)
+        },
         // 
         getTenantIntroFn() {
             let params = {
-                deptId: '760dca9617db40b8b594029315ab371c',
+                deptId: this.brunch.id,
                 projectName: this.searchVal
             };
             getTenantIntro(params)
                 .then(res => {
                     console.warn(res);
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        this.tenantList = [];
                         this.tenantList = res.data || [];
-                        this.selTenantId = this.tenantList && this.tenantList[0].projectId;
+                        console.log(' this.tenantList', this.tenantList);
+                        console.log('this.selTenantId',this.selTenantId);
+                        if(this.tenantList.length > 0) this.selTenantId = this.tenantList && this.tenantList[0].projectId;
                     }
                 })
                 .catch(e => {
@@ -124,18 +188,17 @@ export default {
         EchartsPie
     },
     computed: {
+        ...mapState({
+            user: state => state.user.userInfo,
+            deptbrunch: state => state.user.deptbrunch,
+        }),
         tenantResource() {
             return this.tenantList.filter(
                 item => item.projectId === this.selTenantId
             )
         },
-        // 当前选中部门
-        selDepartVal() {
-            return this.departData[0].label;
-        }
     },
-    mounted() {
-        this.getAdminOverviewFn();
-        this.getTenantIntroFn();
+    created() {
+        this.deptTree();
     }
 };
