@@ -88,8 +88,13 @@ export const API_ECS = {
     monitor: {
         moniterEchartMetricData: '/compute/overview/getEchartMetricData',
         ruleList: '/monitor/alarmRule/list',
+        updateRule: '/monitor/alarmRule/update',
         createRule: '/monitor/alarm/create',
-        historyList: '/monitor/alarmAction/list'
+        ruleInfo: '/monitor/alarm/{alarmId}',
+        historyList: '/monitor/alarmAction/list',
+        alarmNotice: '/monitor/alarmNotice/',
+        alarmNoticeList: '/monitor/alarmNotice/list',
+        updateNotice: '/monitor/alarmNotice/{id}'
     },
     flavors: {
         getFlavors: '/compute/server/getFlavorGroup',

@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-21 11:35:47 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-14 16:55:20
+ * @Last Modified time: 2018-09-17 11:38:28
  */
 
 import moment from 'moment';
@@ -444,15 +444,12 @@ export const checkEleHasScroll = ele => {
  */
 export const operatorReplace = operator => {
     let entitys = {
-        l: '小',
-        g: '大',
-        t: '于',
+        lt: '小于',
+        elt: '小于等于',
+        gt: '大于',
+        egt: '大于等于',
         eq: '等于',
-        neq: '不'
+        ne: '不等于'
     };
-    let regexp = new RegExp('[' + Object.keys(entitys).join('') + ']', 'g');
-    let newstring = operator.replace(regexp, function(matched) {
-        return entitys[matched];
-    });
-    return newstring;
+    return entitys[operator] ? entitys[operator] : '';
 };

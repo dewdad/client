@@ -36,6 +36,15 @@ export default [
                     {
                         path: 'add',
                         name: 'app.monitor.alarmrule.add',
+                        component: () => import('@/views/monitor/alarmrule/Add.vue'),
+                        meta: {
+                            parentName: 'app.monitor',
+                            activeIndex: 'app.monitor.alarmrule.list'
+                        }
+                    },
+                    {
+                        path: 'edit/:id',
+                        name: 'app.monitor.alarmrule.edit',
                         component: () => import('@/views/monitor/alarmrule/Edit.vue'),
                         meta: {
                             parentName: 'app.monitor',
