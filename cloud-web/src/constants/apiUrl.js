@@ -194,7 +194,10 @@ export const API_ECS = {
         existEcs: ECS_CTRL + '/security-group/{group_id}/not-exist-ecs', // 查询所有实例-用于给安全组添加实例-过滤掉已经加入到本安全组的实例
         deleteGroupRule: '/compute/securityGroup/deleteSecurityGroupRule', // 删除安全组规则
         deleteGroup: '/compute/securityGroup/{group_id}', // 删除安全组
-        getGroupRuleList: '/compute/securityGroup/rule/list' // 查询安全组规则列表
+        getGroupRuleList: '/compute/securityGroup/rule/list', // 查询安全组规则列表
+        addGroupForInstance: '/compute/securityGroup/addGroupForInstance/{serverId}/{groupId}',
+        listGroupByInstance: '/compute/securityGroup/listGroupByInstance/{serverId}',
+        delGroupForInstance: '/compute/securityGroup/delGroupForInstance/{serverId}/{groupId}'
     },
     // 对等链接
     peering: {
