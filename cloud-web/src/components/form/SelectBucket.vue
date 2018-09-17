@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="ids" :multiple="multiple" no-data-text="暂无Bucket" :loading="loading" :placeholder="placeholder">
+    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无Bucket" :loading="loading" :placeholder="placeholder">
         <el-option v-for="item in bucketList" :key="item.owner.id" :label="item.name" :value="item.name"></el-option>
     </el-select>
 </template>
@@ -24,6 +24,10 @@ export default {
         },
         value: {
             type: [String, Array]
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
     watch: {
