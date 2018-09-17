@@ -3,7 +3,7 @@
         <div class="detailbox">
             <p class="top">工单详情</p>
             <p>  工单号: {{item.orderNO }}</p>
-            <p>  标题: {{item.orderTitle}}</p>
+            <p>  标题: {{item.title}}</p>
             <p>  描述: {{item.orderDesc}}</p>
             <p>  电话: {{item.mobile }}</p>
             <p>  邮箱: {{ item.email}}</p>

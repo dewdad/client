@@ -152,7 +152,9 @@ export const ORDER_MODULE = {
     myorderList: ORDER + '/getOrderList',//分页查询我的工单
     createOrder: ORDER + '/create',//创建工单
     delOrder: ORDER + '/delete',
-    transferList: ORDER + '/getUserList'
+    transferList: ORDER + '/getUserList',
+    //  补充说明
+    supplement: 'resources/order/supplement',
 };
 
 

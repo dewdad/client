@@ -85,7 +85,7 @@
                         </template>
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                            <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
                                     <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
@@ -97,7 +97,7 @@
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <a  @click="relateAuth(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>

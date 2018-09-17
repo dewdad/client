@@ -44,3 +44,12 @@ export async function transferList(data) {
     });
     return response.data;
 }
+
+/**
+ * 补充工单
+ */
+export async function supplement({...arg}) {
+    $log('post /supplement ->', {...arg});
+    let ret = await http.post(ORDER_MODULE.supplement, {...arg});
+    return ret && ret.data;
+}

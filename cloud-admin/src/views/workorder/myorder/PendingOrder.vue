@@ -27,7 +27,7 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-table :data="tableData"  header-row-class-name="data-list">
+                <el-table :data="tableData"  header-row-class-name="data-list" v-loading="loading_list">
                     <template v-for="col in cols">
                         <!-- 工单号 -->
                         <template v-if="col.column=='orderNO'">
@@ -79,7 +79,7 @@
                         </template>
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                            <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
                                     <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
@@ -91,7 +91,7 @@
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>
@@ -122,6 +122,8 @@
 
         <!-- 转交功能 -->
         <transfer-dialog ref="TransferDialog"></transfer-dialog>
+        <!-- 补充工单 -->
+        <supplement-dialog ref="SupplementDialog"></supplement-dialog>
     </div>
 </template>
 <script>
@@ -129,6 +131,7 @@ import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateOrder from './CreateOrder';
 import OrderDetail from './OrderDetail';
 import TransferDialog from './../dialog/TransferDialog';
+import SupplementDialog from './../dialog/SupplementDialog';
 
 import {myorderList,delOrder} from '@/service/order.js';
 export default {
@@ -169,15 +172,16 @@ export default {
                 searchText:''
             },
             type:'orderNO',
-            tableData: []
-
+            tableData: [],
+            loading_list: false
         };
     },
     components: {
         PageHeader,
         CreateOrder,
         OrderDetail,
-        TransferDialog
+        TransferDialog,
+        SupplementDialog
     },
     methods: {
         myorderList(){
@@ -185,6 +189,7 @@ export default {
                 paging:this.searchObj.paging,
                 [this.type]:this.formInline.searchText
             };
+            this.loading_list = true;
             $log('params', params);
             myorderList(params).then(ret => {
                 $log('data', ret);
@@ -193,7 +198,7 @@ export default {
                     this.tableData = resData.records || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
-
+                this.loading_list = false;
             });
         },
         filterHandler(value, row, column) {
@@ -255,6 +260,13 @@ export default {
                 .then((res) => {
                     $log(res);
                 });
+        },
+        // 补充
+        createRole(row) {
+            this.$refs['SupplementDialog'].show({...row})
+                .then((res) => {
+                    $log(res);
+                });
         }
     },
 
@@ -264,4 +276,5 @@ export default {
 };
 </script>
 <style scoped>
+
 </style>

@@ -53,7 +53,7 @@
     </el-dialog>
 </template>
 <script>
-// import {transferList} from '@/service/order.js';
+import {transferList} from '@/service/order.js';
 export default {
     data() {
         return {
@@ -74,13 +74,15 @@ export default {
     watch: {
         isShow(val) {
             if(!val){
-                this.$refs['ruleForm'].resetFields();
+                // this.$refs['ruleForm'].resetFields();
             }
         }
     },
     methods: {
         show(params) {
             this.isShow = true;
+            this.getTransferList();
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -114,13 +116,17 @@ export default {
                 }
             });
         },
-        // 
-        // getTransferList() {
-
-        // }
+        // 获得转交工单列表
+        getTransferList() {
+            transferList()
+                .then((res) => {
+                    $log(res);
+                }).catch((err) => {
+                    $log(err);
+                });
+        }
     }
 };
 </script>
 <style lang="scss">
-.TransferDialog{}
 </style>

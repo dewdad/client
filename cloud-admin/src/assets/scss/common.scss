@@ -994,3 +994,17 @@ h5.title {
         border-right-color:#cfd4d8 !important;
     }
 }
+
+
+// 滚动条样式
+::-webkit-scrollbar{
+    display:block;
+    width: 6px;
+    height: 6px;
+    background-color: #fff;
+}
+::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color:#c2c2c2;
+}
