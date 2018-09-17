@@ -2,7 +2,7 @@
     <el-dialog
         title="申请浮动IP"
         :visible.sync="isShow"
-        width="45%"
+        width="600px"
         class="EditRouter">
         <el-alert
             title="基于特殊参数创建一路由。"

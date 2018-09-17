@@ -2,7 +2,7 @@
     <el-dialog
         title="添加静态路由"
         :visible.sync="isShow"
-        width="45%"
+        width="600px"
         class="addStaticRouter">
         <zt-form class="mt20" inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small" :rules="rules" ref="ruleForm">
             <!-- 路由名称 -->

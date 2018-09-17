@@ -43,6 +43,7 @@ import ChartsLine from '@/components/charts/ChartsLine.vue';
 import Retrieval from '@/components/retrieval/retrieval';
 import flavorConfirm from './ecsDialog/flavorConfirm.vue';
 import bindNetWorkCard from './ecsDialog/bindNetWorkCard';
+import SelectSecurityGroupDialog from '../create/components/SelectSecurityGroupDialog';
 import {ECS_STATUS, ECS_DROPDOWN, remoteLoginActivedStatus, modifyConfigActivedStatus} from '@/constants/dicts/ecs.js';
 
 export default {
@@ -277,7 +278,8 @@ export default {
         HelpDialog,
         Retrieval,
         flavorConfirm,
-        bindNetWorkCard
+        bindNetWorkCard,
+        SelectSecurityGroupDialog
     },
     destroyed() {
         clearInterval(this.task);
@@ -917,7 +919,8 @@ export default {
          * 安全组配置  点击进入本实例安全组
          */
         instSafeGroup: function(rowItem) {
-            this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
+            this.$refs.SelectSecurityGroupDialog.show(rowItem.security_groups);
+            // this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
         },
 
         // /**
