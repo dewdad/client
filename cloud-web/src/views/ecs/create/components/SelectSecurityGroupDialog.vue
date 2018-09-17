@@ -2,7 +2,7 @@
     <el-dialog v-if="isShow" width="878px" title="选择安全组" :visible="true" :close-on-click-modal="false" @close="cancel">
         <div>
             <search-box :fields="searchObjExtra.fields" @select="search"></search-box>
-            <el-table :loading="loading" max-height="240" class="data-list" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;" @row-dblclick="confirm">
+            <el-table :loading="loading"  class="data-list"  :data="tableData" @current-change="selectRow" highlight-current-row  style="width: 100%;">
                 <el-table-column prop="id" label="" width="50" class-name=" ">
                     <template slot-scope="scope">
                         <el-radio v-model="currentGroup" :label="scope.row"></el-radio>
@@ -26,7 +26,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background :current-page="searchObj.paging.pageIndex" :page-sizes="[10, 20, 50, 100]" :page-size="searchObj.paging.limit" layout="sizes, prev, pager, next" :total="searchObj.paging.totalItems">
+                <el-pagination background :current-page="searchObj.paging.pageIndex" @current-change="handleCurrentChange" :page-size="searchObj.paging.limit" layout="total, prev, pager, next" :total="searchObj.paging.totalItems">
                 </el-pagination>
             </div>
         </div>
@@ -68,21 +68,31 @@ export default {
                 //分页
                 paging: {
                     pageIndex: 1,
-                    limit: 10,
+                    limit: 5,
                     totalItems: 0
                 }
-            }
+            },
+            filterId: []
         };
     },
     components: {
         SearchBox
     },
+    watch: {
+        isShow: function(newval) {
+            if (!newval) {
+                this.currentGroup = null;
+                this.isSubmit = false;
+            }
+        }
+    },
     created() {
         this.getSecurityGroupList();
     },
     methods: {
-        show() {
+        show(id) {
             this.isShow = true;
+            this.filterId = id;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -100,12 +110,17 @@ export default {
                     type: 'error'
                 });
             } else {
+                this.isSubmit = true;
                 this.resolve(this.currentGroup);
-                this.close();
+                // this.close();
             }
         },
+        selectRow(row) {
+            this.currentGroup = row;
+        },
         handleCurrentChange(value) {
-            this.currentGroup = value;
+            this.searchObj.paging.pageIndex = value;
+            this.getSecurityGroupList();
         },
         getSecurityGroupList() {
             this.loading = true;
@@ -126,14 +141,12 @@ export default {
                     $log(err);
                 })
                 .finally(() => {
-                    // this.loading = false;
+                    this.loading = false;
                 });
         },
         search(params) {
             $log(params);
-            this.searchObj.name = '',
-            this.searchObj.id = '',
-            this.searchObj[params.selValue.field] = params.selInputValue;
+            (this.searchObj.name = ''), (this.searchObj.id = ''), (this.searchObj[params.selValue.field] = params.selInputValue);
             this.searchObj.paging.pageIndex = 1;
             this.getSecurityGroupList();
         }

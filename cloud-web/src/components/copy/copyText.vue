@@ -1,7 +1,7 @@
 <template>
     <div class="copy">
         <!-- <div class="copy__success" :class="[{'active' : copySucc}, position]" v-if="copySucc"><i v-if="position !== 'right'" class="iconfont font14 icon-fuzhichenggong color-success" ></i> 复制成功</div> -->
-        <i class="iconfont icon-fuzhi font14 finger-cursor" :title="$t('common.Clippings')" :class="{'color-secondary': copyStyle}" @mousedown="mousedownFn" @mouseup="mouseupFn" v-clipboard:copy="bindText" @success="copySuccess"></i>
+        <i class="iconfont icon-fuzhi finger-cursor" :title="$t('common.Clippings')" :class="{'color-secondary': copyStyle}" @mousedown="mousedownFn" @mouseup="mouseupFn" v-clipboard:copy="bindText" @success="copySuccess"></i>
     </div>
 </template>
 <script>

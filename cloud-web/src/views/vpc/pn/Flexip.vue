@@ -1,6 +1,7 @@
 <template>
 <div class="page-main">
-    <page-header class="mb10">
+    <page-header>
+        浮动IP
         <div slot="content"  class="pull-right">
             <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
                 申请浮动IP
@@ -10,6 +11,7 @@
             </el-button>
         </div>
     </page-header>
+    <div class="page-body">
     <!-- 表格 -->
     <zt-table
         @filterVal="filterHandler"
@@ -38,7 +40,7 @@
                 {{scope.row.fixedIpAddress}}
             </template>
         </el-table-column>
-        <el-table-column label="状态" prop="state" :filter-multiple="false"  :filtered-value="[state]" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'UP'},{text: '未绑定', value: 'DOWN'} ]">
+        <el-table-column label="状态" prop="state" :filter-multiple="false"  :filtered-value="[state]" column-key="state" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'ACTIVE'},{text: '未绑定', value: 'DOWN'} ]">
             <template slot-scope="scope">
                 <span :class="{'color-danger': scope.row.state === 'DOWN'}">
                     {{scope.row.state === 'DOWN' ? '未绑定' : '已绑定'}}
@@ -61,7 +63,7 @@
             </template>
         </el-table-column>
     </zt-table>
-
+    </div>
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
     <!-- 申请浮动IP -->
@@ -249,11 +251,8 @@ export default {
         },
         // 状态筛选
         filterHandler(value) {
-            if (value) {
-                this.state = value;
-            } else {
-                this.state = '';
-            }
+            $log(value);
+            this.state = value['state'];
             console.warn(value);
             this.fetchData();
         }

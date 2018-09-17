@@ -17,13 +17,24 @@ export const API_LOGIN = {
     changePwd: USER_CONTROLLER + '/user/chgpwd',
 
 };
-// 云资源管理
+// 云资源管理-主机
 export const CLOUD_RES = {
     ecsList: ADMIN + '/server/list',
     delEcs: ADMIN + '/server/',
     bootEcs: ADMIN + '/serverAction/reboot/',
     rebootEcs: ADMIN + '/admin/serverAction/reboot/',
 
+};
+// 云资源管理-网络管理
+export const NETWORK = {
+    networkList: ADMIN + '/network/list',
+    delNetwork: ADMIN + '/network/',
+    editNetwork: ADMIN + '/network/',
+    createNetwork: ADMIN + '/network',
+    createPort: ADMIN + '/port',
+    editPort: ADMIN + '/port/',
+    searchPortList: ADMIN + '/port',
+    delPort: ADMIN + '/port/',
 };
 // 系统配置
 export const SYSCONFIG = {

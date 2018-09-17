@@ -321,6 +321,7 @@ export default {
             setTimeout(() => {
                 this.$refs.SelectSecurityGroupDialog.show().then(res => {
                     $log(res);
+                    this.$refs.SelectSecurityGroupDialog.close();
                     this.form.currentSecurityGroup = res;
                 });
             }, 500);

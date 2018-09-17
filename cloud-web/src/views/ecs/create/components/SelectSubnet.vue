@@ -76,7 +76,7 @@ export default {
             this.form.subNet = '';
             getNetwork().then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
-                    this.netWorkList = res.data;
+                    this.netWorkList = res.data.data;
                     if (!isEmpty(this.netWorkList)) {
                         this.form.netWork = this.netWorkList[0];
                         // this.getSubnetByNetId(this.form.netWork.id);

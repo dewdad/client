@@ -27,13 +27,13 @@
                             <div class="text-nowrap table-row-list-item hoverToShowContent">
                                 <!-- <router-link :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">e-m5e3k7ais9uf86u9m1pu</router-link> <copy-text class="hoverToShow" :bindText="scope.row.id"></copy-text> -->
                                 <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,flavorId:scope.row.flavorId,item:scope.row}}">{{ scope.row.id }}</router-link>
-                                <copy-text class="hoverToShow finger-cursor" :bindText="scope.row.id" position="right"></copy-text>
+                                <copy-text class="hoverToShow finger-cursor font12" :bindText="scope.row.id" position="right"></copy-text>
                             </div>
                             <div class="flex text-nowrap flex-align-center table-row-list-item hoverToShowContent">
                                 <!-- hoverToShow -->
                                 <span class="text-ellipsis" v-tooltip="{content: scope.row.name, fold: true}">{{scope.row.name}}</span>
-                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 amendInfo finger-cursor" style="padding: 1px" @click="editinstname(scope.row)"></i>
-                                <copy-text class="ml5 flex finger-cursor hoverToShow" :bindText="scope.row.name" position="right"></copy-text>
+                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 amendInfo finger-cursor" @click="editinstname(scope.row)"></i>
+                                <copy-text class="ml5 flex finger-cursor hoverToShow font12" :bindText="scope.row.name" position="right"></copy-text>
                             </div>
                         </div>
                     </template>
@@ -48,11 +48,13 @@
                 <el-table-column prop="ipaddr" :label="getLabel('ipaddr')" min-width="125" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <ul>
-                            <li v-for="(ip, index) in scope.row.addresses.addresses" :key="index" class="text-nowrap">
-                                <span>{{index}}：</span>
-                                {{ip[0].addr}}
-                                <span class="color-secondary">（内）</span>
-                            </li>
+                            <template v-for="(addresses, index) in scope.row.addresses.addresses">
+                                <li v-for="ip in addresses" :key="index + ip.addr" class="text-nowrap">
+                                    <span>{{index}}：</span>
+                                    {{ip.addr}}
+                                    <span class="color-secondary"> {{ip['OS-EXT-IPS:type'] === 'fixed' ? '（内）' : '（外）'}}</span>
+                                </li>
+                            </template>
                         </ul>
                     </template>
                 </el-table-column>
@@ -62,7 +64,7 @@
                         <el-tooltip class="item" effect="light" :disabled="scope.row.status !== 'BUILD'" :content="scope.row.status === 'BUILD' ? '预计需要3-6分钟' : ''" placement="top">
                             <zt-status :status="ECS_STATUS" :value="scope.row['OS-EXT-STS:task_state'] === 'deleting' ? 'deleted' : scope.row.status" class="text-nowrap status-column"></zt-status>
                         </el-tooltip>
-                        <i v-if="scope.row.status === 'error'" v-tooltip="'虚拟机处于错误状态'" class="el-icon-warning ml5 color-danger"></i>
+                        <i v-if="scope.row.status === 'error'" v-tooltip="scope.row.fault.message" class="el-icon-warning ml5 color-danger"></i>
                         <!-- <i class="el-icon-warning" v-tooltip="''"></i> -->
                     </template>
                 </el-table-column>
@@ -103,7 +105,7 @@
                         <router-link :to="{name:'app.ecs.changeconfig',params:{id:scope.row.id,item:scope.row}}" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)">{{$t('ecs.inst.list.modifyConfig') }}</router-link>
                         <b class="link-division-symbol"></b>
                         <!-- 更多 -->
-                        <zt-dropdown size="small" trigger="click" :placement="getPlacement(scope.$index)">
+                        <zt-dropdown size="small" style="margin-left:5px;" trigger="click" :placement="getPlacement(scope.$index)">
                             <span class="el-dropdown-link">
                                 {{$t('common.more')}}
                                 <i class="el-icon-arrow-down"></i>
@@ -216,6 +218,10 @@
         <bind-link-ip-dialog :opType="opType" ref="bindLinkIpDialog" />
         <!-- 恢复 确认 -->
         <flavor-confirm ref="flavorConfirm" />
+        <!-- 绑定分离网卡 -->
+        <bind-net-work-card ref="bindNetWorkCard" />
+        <!-- 安全组弹框 -->
+        <select-security-group-dialog ref="SelectSecurityGroupDialog" />
         <!-- 手机验证弹框 -->
         <mobile-code-dialog ref="mobileCodeDialog" :code-type="CHECK"></mobile-code-dialog>
 

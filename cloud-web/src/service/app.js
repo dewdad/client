@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 09:53:24 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-08-27 23:04:05
+ * @Last Modified time: 2018-09-17 11:15:42
  */
 import http from '../utils/http';
 
@@ -38,4 +38,19 @@ export async function getRegion() {
 export async function getCitys() {
     let res = await http.get('server/citys.json');
     return res.data;
+}
+
+/**
+ * 获取系统配置
+ * @param {*} data
+ */
+export async function getSysConfig({limit = 9999, pageIndex = 1, code = ''} = {}) {
+    let res = await http.get('/resources/systemConfig/list', {
+        params: {
+            limit,
+            pageIndex,
+            code
+        }
+    });
+    return res && res.data;
 }

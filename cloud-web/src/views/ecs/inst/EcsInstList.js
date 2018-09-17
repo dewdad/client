@@ -42,6 +42,8 @@ import HelpDialog from '@/views/ecs/inst/ecsDialog/HelpDialog.vue';
 import ChartsLine from '@/components/charts/ChartsLine.vue';
 import Retrieval from '@/components/retrieval/retrieval';
 import flavorConfirm from './ecsDialog/flavorConfirm.vue';
+import bindNetWorkCard from './ecsDialog/bindNetWorkCard';
+import SelectSecurityGroupDialog from './ecsDialog/SelectSecurityGroupDialog';
 import {ECS_STATUS, ECS_DROPDOWN, remoteLoginActivedStatus, modifyConfigActivedStatus} from '@/constants/dicts/ecs.js';
 
 export default {
@@ -275,7 +277,9 @@ export default {
         ChartsLine,
         HelpDialog,
         Retrieval,
-        flavorConfirm
+        flavorConfirm,
+        bindNetWorkCard,
+        SelectSecurityGroupDialog
     },
     destroyed() {
         clearInterval(this.task);
@@ -915,8 +919,13 @@ export default {
          * 安全组配置  点击进入本实例安全组
          */
         instSafeGroup: function(rowItem) {
-            this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
+            this.$refs.SelectSecurityGroupDialog.show(rowItem);
+            // this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
         },
+        /**
+         * 删除安全组
+         */
+        deleteSafeGroup: function(rowItem) {},
 
         // /**
         //  * 提交工单
@@ -1088,6 +1097,16 @@ export default {
                                     if (rowItem.floatIp && isConnIP) outarr.push(child);
                                     break;
                                 }
+                                case 'unbindNetWorkCard': {
+                                    let keys = Object.keys(rowItem.addresses.addresses);
+                                    if (keys.length > 1) outarr.push(child);
+                                    break;
+                                }
+                                case 'deleteSafeGroup': {
+                                    let keys = Object.keys(rowItem.security_groups);
+                                    if (keys.length > 1) outarr.push(child);
+                                    break;
+                                }
                                 default: {
                                 }
                             }
@@ -1097,6 +1116,45 @@ export default {
                 }
             }
             return cloneDeep(children);
+        },
+
+        /**
+         * 绑定网卡
+         */
+        bindNetWorkCard(rowItem) {
+            console.log('bindip:', rowItem);
+            this.$refs.bindNetWorkCard
+                .show(rowItem, 1)
+                .then(ret => {
+                    this.getEcsInstList({show: false});
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log($t('common.cancel'));
+                    }
+                });
+        },
+        /**
+         * 分离网卡
+         */
+        unbindNetWorkCard(rowItem) {
+            this.$refs.bindNetWorkCard
+                .show(rowItem, 2)
+                .then(ret => {
+                    this.getEcsInstList({show: false});
+                    setTimeout(() => {
+                        this.getEcsInstList({show: false});
+                    }, 2000);
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log($t('common.cancel'));
+                    }
+                });
         }
     }
 };

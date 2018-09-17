@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-07 11:00:42
+ * @Last Modified time: 2018-09-17 10:25:02
  * ecs模块 读取网络信息接口
  */
 
@@ -15,12 +15,9 @@ import ERRCODE from '@/constants/code';
  * data: 值为空查询所有
  * @param {*} data
  */
-export async function getNetwork({sysCode = 'image', isSensitive = 0} = {}) {
-    let res = await http.get(API_ECS.network.getNetwork, {
-        params: {
-            sysCode,
-            isSensitive
-        }
+export async function getNetwork() {
+    let res = await http.get(API_ECS.network.network, {
+        params: {}
     });
     return res && res.data;
 }
@@ -156,8 +153,6 @@ export async function deleteRouter({id}) {
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 
-
-
 /**
  * 网络列表数据查询 GET /networks/vpcId
  * @param vpcId 网络ID
@@ -246,7 +241,6 @@ export async function deleteNetwork({vpcId}) {
     let ret = await http.delete(replaceParamVal(API_ECS.network.networkID, [vpcId]), {vpcId});
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE;
 }
-
 
 /**
  * 创建路由接口

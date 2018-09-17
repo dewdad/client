@@ -29,7 +29,7 @@
                 <!-- 确认密码 -->
                 <el-form-item label="确认密码" prop="confirpwd"  >
                     <el-input clearable type="password" v-bind:class="{ borderRed: invalidPsd }" v-model="form.confirpwd" @blur="checkPwd" @change="checkPwd"></el-input>
-                    <span v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;">两次密码不一致</span>
+                    <div v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;text-align:left;line-height:1.6">两次密码不一致</div>
                 </el-form-item>
                 <!-- 角色 -->
                 <el-form-item label="角色" prop="roleId"  >

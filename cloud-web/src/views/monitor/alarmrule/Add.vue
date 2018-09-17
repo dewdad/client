@@ -3,7 +3,7 @@
         <page-header class="no-border">
             <!-- 返回上一级 -->
             <div class="GoBack">
-                <b class="font16 mr10">修改报警规则</b>
+                <b class="font16 mr10">添加报警规则</b>
                 <el-button size="mini" type="info" @click="$router.go(-1)">
                     <i class="iconfont icon-fanhui"></i>返回</el-button>
             </div>
@@ -15,10 +15,10 @@
                     <span class="color3 font16">关联资源</span>
                 </legend>
                 <zt-form-item label="产品" prop="alarm.type">
-                    <select-system-config v-model="ruleForm.alarm.type" :disabled="true" code="alarm.types" placeholder="请选择产品类型"></select-system-config>
+                    <select-system-config v-model="ruleForm.alarm.type" code="alarm.types" placeholder="请选择产品类型"></select-system-config>
                 </zt-form-item>
                 <zt-form-item label="资源" prop="alarm.resourceType">
-                    <el-select v-model="ruleForm.alarm.resourceType" :disabled="true" placeholder="请选择资源">
+                    <el-select v-model="ruleForm.alarm.resourceType" placeholder="请选择资源">
                         <el-option label="全部资源" value="0"></el-option>
                         <!-- <el-option v-if="ruleForm.alarm.type === '1'" label="bucket维度" value="1"></el-option> -->
                         <el-option label="自定义" value="1"></el-option>
@@ -29,7 +29,7 @@
                     <select-bucket v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择bucket"></select-bucket>
                 </zt-form-item>
                 <zt-form-item key="ecsInst" v-if="ruleForm.alarm.type === 'instance' && ruleForm.alarm.resourceType === '1'" label="实例" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择实例', trigger: ['submit']}]">
-                    <select-ecs-inst v-model="ruleForm.alarm.instanceIds" :disabled="true" :multiple="true" placeholder="请选择实例"></select-ecs-inst>
+                    <select-ecs-inst v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择实例"></select-ecs-inst>
                 </zt-form-item>
                 <zt-form-item key="disk" v-if="ruleForm.alarm.type === '3' && ruleForm.alarm.resourceType === '1'" label="云盘" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择云盘', trigger: ['submit']}]">
                     <select-disk v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择云盘"></select-disk>
@@ -194,15 +194,9 @@ export default {
                 item['noticeType'] = this.ruleForm.noticeType;
                 return item;
             });
-        },
-        isEdit: function() {
-            return this.$route.params.id ? true : false;
         }
     },
     created() {
-        if (this.$route.params.id) {
-            this.getRule();
-        }
     },
     methods: {
         addRule() {
@@ -215,20 +209,14 @@ export default {
             this.ruleForm.rules.splice(index, 1);
         },
         getRule() {
-            this.loading = true;
             getRule(this.$route.params.id).then(res => {
                 if (res.code === '0000') {
-                    let data = res.data;
-                    this.ruleForm.alarm.resourceType = data.resourceType;
-                    this.ruleForm.alarm.type = data.type;
-                    this.ruleForm.alarm.instanceIds = data.instanceIds;
+                    this.ruleForm = res.data;
                 } else {
                     this.$alert('告警规则不存在', {
                         type: 'error'
                     });
                 }
-            }).finally(() => {
-                this.loading = false;
             });
         },
         submit() {

@@ -8,7 +8,8 @@
                 <el-input placeholder="输入新密码" v-model="form.newPwd"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
-                <el-input placeholder="再次输入密码" v-model="form.confirmPwd"></el-input>
+                <el-input placeholder="再次输入密码" v-model="form.confirmPwd" v-bind:class="{ borderRed: invalidPsd }" @blur="checkPwd" @change="checkPwd"></el-input>
+                <div v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;text-align:left;line-height:1.6">两次密码不一致</div>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -28,6 +29,7 @@ export default {
             resolve: null,
             reject: null,
             confirmBtn: false,
+            invalidPsd:false,
             form:{
                 newPwd:'',
                 oldPwd:'',
@@ -35,13 +37,13 @@ export default {
             },
             rules:{
                 newPwd: [
-                    { required: true, message: '请输入新密码', trigger: 'blur,submit' }
+                    { required: true, message: '请输入新密码', trigger: 'blur' }
                 ],
                 oldPwd: [
-                    { required: true, message: '请输旧密码', trigger: 'blur,submit' }
+                    { required: true, message: '请输旧密码', trigger: 'blur' }
                 ],
                 confirmPwd: [
-                    { required: true, message: '请确认密码', trigger: 'blur,submit' }
+                    { required: true, message: '请确认密码', trigger: 'blur' }
                 ]
 
             }
@@ -66,6 +68,13 @@ export default {
             this.isShow = false;
 
         },
+        checkPwd(){
+            if(this.form.newPwd !== this.form.confirmPwd) {
+                this.invalidPsd = true;
+            } else {
+                this.invalidPsd = false;
+            }
+        },
         cancel() {
             this.hide();
             typeof this.reject() === 'function' && this.reject();
@@ -78,13 +87,18 @@ export default {
             });
         },
         confirm() {
-            this.confirmBtn = true;
+
             this.form.userId = this.user.id;
             this.form.userName = this.user.name;
-            console.log('this.user',this.user);
-            console.log('this.form',this.form);
+            if(this.form.newPwd !== this.form.confirmPwd) {
+                this.invalidPsd = true;
+                return;
+            } else {
+                this.invalidPsd = false;
+            }
             this.$refs.form.validate((valid) => {
                 if (valid) {
+                    this.confirmBtn = true;
                     pwdChange(this.form)
                         .then(res => {
                             if(res.code === '0000'){
@@ -116,5 +130,7 @@ export default {
 };
 </script>
 <style lang="scss">
-
+    .borderRed input{
+        border-color:#f56c6c !important;
+    }
 </style>

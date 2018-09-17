@@ -35,6 +35,7 @@
           {{validateMessage}}
         </div>
       </transition>
+       <slot name="help"></slot>
     </div>
   </div>
 </template>

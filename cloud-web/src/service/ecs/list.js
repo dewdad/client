@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-10 11:26:08
+ * @Last Modified time: 2018-09-15 18:44:53
  * ecs模块 列表页面
  */
 
@@ -279,5 +279,34 @@ export async function revertResize(ecsId) {
  */
 export async function flavorConfirm(ecsId) {
     let res = await http.post(replaceParamVal(API_ECS.inst.flavorConfirm, [ecsId]));
+    return res && res.data;
+}
+
+/**
+ * 添加网卡 主机连接到网络端口
+ * @param {*} serverId
+ * @param {*} portId
+ */
+export async function attachPort(serverId, portId) {
+    let res = await http.post(replaceParamVal(API_ECS.inst.attachPort, [serverId, portId]));
+    return res && res.data;
+}
+
+/**
+ * 分离网卡 主机分离网络端口
+ * @param {*} serverId
+ * @param {*} attachmentId
+ */
+export async function detachPort(serverId, attachmentId) {
+    let res = await http.post(replaceParamVal(API_ECS.inst.detachPort, [serverId, attachmentId]));
+    return res && res.data;
+}
+
+/**
+ * 查询主机已连接的网络端口列表
+ * @param {*} serverId
+ */
+export async function listPortAttachment(serverId) {
+    let res = await http.get(replaceParamVal(API_ECS.inst.listPortAttachment, [serverId]));
     return res && res.data;
 }

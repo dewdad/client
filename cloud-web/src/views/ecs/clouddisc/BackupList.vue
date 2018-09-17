@@ -3,7 +3,7 @@
         <page-header>
             云盘备份
             <div slot="right">
-                <el-button type="info" size="small" @click="getBackupList(false)">
+                <el-button type="info" size="small" @click="getBackupList('')">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
@@ -99,8 +99,8 @@ export default {
     },
     methods: {
         getBackupList(params) {
-            params = params || this.searchObj.paging;
             if (params !== false) this.loading = true;
+            params = params || this.searchObj.paging;
             getBackupList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {

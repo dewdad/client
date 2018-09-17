@@ -153,7 +153,7 @@ input:disabled {
 
     .el-form-item__error.el-form-item__error--inline {
         position: absolute;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         width: 200px;
         top: 0;
@@ -161,7 +161,16 @@ input:disabled {
         vertical-align: middle;
         height: $--basic-input-height;
         line-height: 1.5;
+        // left: 100%;
+    }
+    .input-help + .el-form-item__error--inline {
         left: 100%;
+    }
+    .flex {
+        .el-form-item__error--inline {
+            // position: relative;
+            left: 100%;
+        }
     }
     .el-form-item--medium {
         .el-form-item__label {
@@ -256,8 +265,12 @@ input:disabled {
     .el-form-item.is-error.is-nomal .el-input__inner,
     .el-form-item.is-error.is-nomal .el-input__inner:focus,
     .el-form-item.is-error.is-nomal .el-textarea__inner,
-    .el-form-item.is-error.is-nomal .el-textarea__inner:focus {
-        border-color: $--basic-input-border-color;
+    .el-form-item.is-error.is-nomal .el-textarea__inner:focus,
+    .el-form-item.is-error .is-nomal .el-input__inner,
+    .el-form-item.is-error .is-nomal .el-input__inner:focus,
+    .el-form-item.is-error .is-nomal .el-textarea__inner,
+    .el-form-item.is-error .is-nomal .el-textarea__inner:focus {
+        border-color: $--basic-input-border-color !important;
     }
 
     .el-checkbox {
@@ -495,12 +508,5 @@ input:disabled {
     }
     .el-checkbox__input.is-checked .el-checkbox__inner {
         color: $--color-primary;
-    }
-}
-
-// 列表页
-.list-page {
-    .el-table.data-list td {
-        padding: 7px 0;
     }
 }

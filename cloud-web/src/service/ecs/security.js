@@ -21,7 +21,6 @@ import {replaceParamVal} from '@/utils/utils';
  *
  */
 export async function getSecurityGroupList(data) {
-    data['offset'] = (data.pageIndex - 1) * data.limit + 1;
     let url = API_ECS.security.getGroupList;
     let res = await http.get(url, {params: data});
     return res && res.data;
@@ -197,5 +196,34 @@ export async function updateGroupRule(rule_id, {remark = ''} = {}) {
     let res = await http.put(replaceParamVal(url, [rule_id]), {
         remark
     });
+    return res && res.data;
+}
+
+/**
+ * 给实例添加安全组
+ * @param {*} serverId
+ * @param {*} groupId
+ */
+export async function addGroupForInstance(serverId, groupId) {
+    let res = await http.post(replaceParamVal(API_ECS.security.addGroupForInstance, [serverId, groupId]));
+    return res && res.data;
+}
+
+/**
+ * 本实例已绑定安全组
+ * @param {*} serverId
+ */
+export async function listGroupByInstance(serverId) {
+    let res = await http.get(replaceParamVal(API_ECS.security.listGroupByInstance, [serverId]));
+    return res && res.data;
+}
+
+/**
+ * 给实例解绑安全组
+ * @param {*} serverId
+ * @param {*} groupId
+ */
+export async function delGroupForInstance(serverId, groupId) {
+    let res = await http.delete(replaceParamVal(API_ECS.security.delGroupForInstance, [serverId, groupId]));
     return res && res.data;
 }
