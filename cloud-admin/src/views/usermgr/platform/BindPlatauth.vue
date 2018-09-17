@@ -97,7 +97,8 @@ export default {
             console.log('param',param);
             bindAuth(param).then(ret => {
                 if(ret.code === '0000'){
-                    return this.$alert('操作成功','提示');
+                    this.$alert('操作成功','提示');
+                    this.hide();
                 }else{
                     this.$alert('操作失败', '提示', {
                         type: 'error'
