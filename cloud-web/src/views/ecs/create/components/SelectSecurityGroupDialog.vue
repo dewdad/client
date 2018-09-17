@@ -1,8 +1,8 @@
 <template>
     <el-dialog v-if="isShow" width="878px" title="选择安全组" :visible="true" :close-on-click-modal="false" @close="cancel">
-        <div>
+        <div >
             <search-box :fields="searchObjExtra.fields" @select="search"></search-box>
-            <el-table :loading="loading" max-height="240" class="data-list" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;" @row-dblclick="confirm">
+            <el-table :loading="loading" max-height="240" class="data-list" header-row-class-name="data-list" row-class-name="data-list" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;" @row-dblclick="confirm">
                 <el-table-column prop="id" label="" width="50" class-name=" ">
                     <template slot-scope="scope">
                         <el-radio v-model="currentGroup" :label="scope.row"></el-radio>
@@ -71,18 +71,27 @@ export default {
                     limit: 10,
                     totalItems: 0
                 }
-            }
+            },
+            filterId: []
         };
     },
     components: {
         SearchBox
     },
+    watch: {
+        isShow: function(newval) {
+            if (!newval) {
+                this.currentGroup = null;
+            }
+        }
+    },
     created() {
         this.getSecurityGroupList();
     },
     methods: {
-        show() {
+        show(id) {
             this.isShow = true;
+            this.filterId = id;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -131,9 +140,7 @@ export default {
         },
         search(params) {
             $log(params);
-            this.searchObj.name = '',
-            this.searchObj.id = '',
-            this.searchObj[params.selValue.field] = params.selInputValue;
+            (this.searchObj.name = ''), (this.searchObj.id = ''), (this.searchObj[params.selValue.field] = params.selInputValue);
             this.searchObj.paging.pageIndex = 1;
             this.getSecurityGroupList();
         }

@@ -67,6 +67,7 @@
                 <el-button size="small" type="primary" :loading="updating" @click="editPermission">确定</el-button>
             </span>
         </el-dialog>
+        <delete-dialog ref="DeleteDailog"/>
     </div>
 </template>
 <script>
@@ -176,34 +177,14 @@ export default {
         },
         // 删除bucket
         deleteBucket() {
-            this.$messageBox
-                .confirm('您确定要进行bucket删除操作吗？', '删除', {
-                    subMessage: this.headerInfo.bucket,
-                    alertMessage: '删除操作无法恢复，请谨慎操作',
-                    type: 'warning'
-                })
-                .then(() => {
-                    this.$refs.mobileCodeDialog
-                        .show()
-                        .then(res => {
-                            if (res.code === this.CODE.SUCCESS_CODE) {
-                                deleteBucket(this.bucketId).then(res => {
-                                    if (res.code === this.CODE.SUCCESS_CODE) {
-                                        this.$message({
-                                            message: '删除成功',
-                                            type: 'success'
-                                        });
-                                        // 通知bucket列表刷新
-                                        this.$store.commit('oss/CHANGE_REFRESH_BUCKET');
-                                        this.$router.push({name: 'app.oss.overview'});
-                                    }
-                                });
-                            }
-                        })
-                        .catch(err => {
-                            $log(err);
-                        });
-                });
+            this.$refs.DeleteDailog.show('bucket', this.headerInfo.bucket, () => {
+                return deleteBucket(this.bucketId);
+            }).then(res => {
+                this.$message.success('操作成功');
+                // 通知bucket列表刷新
+                this.$store.commit('oss/CHANGE_REFRESH_BUCKET');
+                this.$router.push({name: 'app.oss.overview'});
+            });
         },
         editPermission() {
             this.updating = true;

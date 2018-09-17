@@ -27,13 +27,13 @@
                             <div class="text-nowrap table-row-list-item hoverToShowContent">
                                 <!-- <router-link :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">e-m5e3k7ais9uf86u9m1pu</router-link> <copy-text class="hoverToShow" :bindText="scope.row.id"></copy-text> -->
                                 <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,flavorId:scope.row.flavorId,item:scope.row}}">{{ scope.row.id }}</router-link>
-                                <copy-text class="hoverToShow finger-cursor" :bindText="scope.row.id" position="right"></copy-text>
+                                <copy-text class="hoverToShow finger-cursor font12" :bindText="scope.row.id" position="right"></copy-text>
                             </div>
                             <div class="flex text-nowrap flex-align-center table-row-list-item hoverToShowContent">
                                 <!-- hoverToShow -->
                                 <span class="text-ellipsis" v-tooltip="{content: scope.row.name, fold: true}">{{scope.row.name}}</span>
-                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 amendInfo finger-cursor" style="padding: 1px" @click="editinstname(scope.row)"></i>
-                                <copy-text class="ml5 flex finger-cursor hoverToShow" :bindText="scope.row.name" position="right"></copy-text>
+                                <i v-if="!dropdownActive(scope.row.status, modifyConfigActivedStatus)" class="iconfont icon-edit_people ml10 amendInfo finger-cursor" @click="editinstname(scope.row)"></i>
+                                <copy-text class="ml5 flex finger-cursor hoverToShow font12" :bindText="scope.row.name" position="right"></copy-text>
                             </div>
                         </div>
                     </template>
@@ -95,33 +95,33 @@
                 </el-table-column>
                 <el-table-column :label="$t('common.tableHeaderOperateText')" key="op" width="260" class-name="option-column text-nowrap">
                     <template slot-scope="scope">
-    <!-- 管理 -->
-    <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">{{$t('ecs.inst.list.manage') }}</router-link>
-    <b class="link-division-symbol"></b>
-    <!-- 远程登录 -->
-    <a @click="getVncBefore(scope.row)" :disabled="dropdownActive(scope.row.status, remoteLoginActivedStatus)">{{$t('ecs.inst.list.remoteLogin') }}</a>
-    <b class="link-division-symbol"></b>
-    <!-- 更改实例规格 -->
-    <router-link :to="{name:'app.ecs.changeconfig',params:{id:scope.row.id,item:scope.row}}" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)">{{$t('ecs.inst.list.modifyConfig') }}</router-link>
-    <b class="link-division-symbol"></b>
-    <!-- 更多 -->
-    <zt-dropdown size="small" trigger="click" :placement="getPlacement(scope.$index)">
-        <span class="el-dropdown-link">
-            {{$t('common.more')}}
-            <i class="el-icon-arrow-down"></i>
-        </span>
-        <zt-dropdown-menu slot="dropdown" :placement="getPlacement(scope.$index)">
-            <zt-dropdown-item v-tooltip.left="dropdownActive(scope.row.status, item.activedStatus) ? item.tip : ''" v-for="item in ECS_DROPDOWN" :key="item.text" :disabled="!item.children && dropdownActive(scope.row.status, item.activedStatus)">
-                {{item.text}}
-                <zt-dropdown-menu slot="dropdown" v-if="item.children">
-                    <zt-dropdown-item @click="dropdownClickHandler(child, scope.row)" v-tooltip.left="dropdownActive(scope.row.status, child.activedStatus) ? child.tip : ''" v-for="child in getChildren(item,scope.row)" :key="child.text" :disabled="dropdownActive(scope.row.status, child.activedStatus)">
-                        <span>{{child.text}}</span>
-                    </zt-dropdown-item>
-                </zt-dropdown-menu>
-            </zt-dropdown-item>
-        </zt-dropdown-menu>
-    </zt-dropdown>
-</template>
+                        <!-- 管理 -->
+                        <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">{{$t('ecs.inst.list.manage') }}</router-link>
+                        <b class="link-division-symbol"></b>
+                        <!-- 远程登录 -->
+                        <a @click="getVncBefore(scope.row)" :disabled="dropdownActive(scope.row.status, remoteLoginActivedStatus)">{{$t('ecs.inst.list.remoteLogin') }}</a>
+                        <b class="link-division-symbol"></b>
+                        <!-- 更改实例规格 -->
+                        <router-link :to="{name:'app.ecs.changeconfig',params:{id:scope.row.id,item:scope.row}}" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)">{{$t('ecs.inst.list.modifyConfig') }}</router-link>
+                        <b class="link-division-symbol"></b>
+                        <!-- 更多 -->
+                        <zt-dropdown size="small" style="margin-left:5px;" trigger="click" :placement="getPlacement(scope.$index)">
+                            <span class="el-dropdown-link">
+                                {{$t('common.more')}}
+                                <i class="el-icon-arrow-down"></i>
+                            </span>
+                            <zt-dropdown-menu slot="dropdown" :placement="getPlacement(scope.$index)">
+                                <zt-dropdown-item v-tooltip.left="dropdownActive(scope.row.status, item.activedStatus) ? item.tip : ''" v-for="item in ECS_DROPDOWN" :key="item.text" :disabled="!item.children && dropdownActive(scope.row.status, item.activedStatus)">
+                                    {{item.text}}
+                                    <zt-dropdown-menu slot="dropdown" v-if="item.children">
+                                        <zt-dropdown-item @click="dropdownClickHandler(child, scope.row)" v-tooltip.left="dropdownActive(scope.row.status, child.activedStatus) ? child.tip : ''" v-for="child in getChildren(item,scope.row)" :key="child.text" :disabled="dropdownActive(scope.row.status, child.activedStatus)">
+                                            <span>{{child.text}}</span>
+                                        </zt-dropdown-item>
+                                    </zt-dropdown-menu>
+                                </zt-dropdown-item>
+                            </zt-dropdown-menu>
+                        </zt-dropdown>
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="pagination">
@@ -220,7 +220,8 @@
         <flavor-confirm ref="flavorConfirm" />
         <!-- 绑定分离网卡 -->
         <bind-net-work-card ref="bindNetWorkCard" />
-        
+        <!-- 安全组弹框 -->
+        <select-security-group-dialog ref="SelectSecurityGroupDialog" />
         <!-- 手机验证弹框 -->
         <mobile-code-dialog ref="mobileCodeDialog" :code-type="CHECK"></mobile-code-dialog>
 
