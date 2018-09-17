@@ -97,21 +97,6 @@ export default {
         }),
     },
     methods: {
-        // handleClick(data,checked, node) {
-        //     console.log(data,checked, node);
-        //     this.i++;
-        //     if(this.i % 1 == 0){
-        //         if(checked){
-        //             console.log('this.$refs.tree',this.$refs.tree);
-        //             this.$refs.tree.setCheckedNodes([]);
-        //             this.$refs.tree.setCheckedNodes([data]);
-        //             //交叉点击节点
-        //         }else{
-        //             this.$refs.tree.setCheckedNodes([]);
-        //             //点击已经选中的节点，置空
-        //         }
-        //     }
-        // },
         handleNodeClick(data){
             this.brunch = data;
             // 记录当前部门分支
@@ -251,8 +236,8 @@ export default {
             });
         },
         //创建部门
-        createDept(item,optype){
-            this.$refs.CreateDept.show(item,optype)
+        createDept(item,brunch,optype){
+            this.$refs.CreateDept.show(item,brunch,optype)
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.deptTree();

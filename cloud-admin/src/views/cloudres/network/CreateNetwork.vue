@@ -25,7 +25,7 @@
             </el-form-item>
             <el-form-item label="网络地址 " prop="subnet.cidr" :label-width="formLabelWidth">
                 <el-input placeholder="输入子网络地址" style="width:88%" v-model="form.subnet.cidr"></el-input>
-                <el-tooltip class="item ml10" effect="light" content="CIDR格式的网络地址 (例如 192.168.0.0/24, 2001:DB8::/48" placement="right">
+                <el-tooltip class="ml10" effect="light" content="CIDR格式的网络地址 (例如 192.168.0.0/24, 2001:DB8::/48" placement="right">
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
             </el-form-item>
@@ -46,20 +46,20 @@
             </el-form-item>
             <el-form-item label="分配地址池 " prop="subnet.pools" :label-width="formLabelWidth">
                 <el-input placeholder="输入分配地址池" style="width:88%" v-model="form.subnet.pools"></el-input>
-                <el-tooltip class="item ml10" effect="light"  placement="right">
+                <el-tooltip class=" ml10" effect="light"  placement="right">
                     <div slot="content">IP地址分配池.<br/>每条记录是：开始IP,结束IP(例如 192.168.1.100,192.168.1.120)，<br/> 每行一条记录。</div>
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
             </el-form-item>
             <el-form-item label="DNS服务器 " prop="subnet.dnsNames" :label-width="formLabelWidth">
                 <el-input placeholder="输入DNS服务器" style="width:88%" v-model="form.subnet.dnsNames"></el-input>
-                <el-tooltip class="item ml10" effect="light" content="该子网的DNS服务器IP地址列表，每行一个。" placement="right">
+                <el-tooltip class=" ml10" effect="light" content="该子网的DNS服务器IP地址列表，每行一个。" placement="right">
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
             </el-form-item>
             <el-form-item label="主机路由 " prop="subnet.hostRoutes" :label-width="formLabelWidth">
                 <el-input placeholder="输入子主机路由" style="width:88%" v-model="form.subnet.hostRoutes"></el-input>
-                <el-tooltip class="item ml10" effect="light"  placement="right">
+                <el-tooltip class=" ml10" effect="light"  placement="right">
                     <div slot="content">主机增加额外的路由. 记录格式是：目的CIDR, <br/>下一跳(例如192.168.200.0/24,10.56.1.254) ，<br/> 每行一条记录。</div>
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>

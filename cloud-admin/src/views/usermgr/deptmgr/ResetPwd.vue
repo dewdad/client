@@ -9,7 +9,7 @@
             </el-form-item>
             <el-form-item label="确认密码" prop="confirmPwd" :label-width="formLabelWidth">
                 <el-input placeholder="再次输入密码" @blur="checkPwd" @change="checkPwd" v-bind:class="{ borderRed: invalidPsd }" type="password" v-model="form.confirmPwd"></el-input>
-                <span v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;">两次密码不一致</span>
+                <div v-if="invalidPsd" style="color: #f56c6c;font-size: 12px;text-align:left;line-height:1.6">两次密码不一致</div>
             </el-form-item>
 
             <el-form-item label="用户名称" prop="username" :label-width="formLabelWidth">

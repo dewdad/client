@@ -74,6 +74,8 @@ export default {
             reject: null,
             confirmBtn: false,
             optype:1,
+            roleType:'1',
+            brunch:{},
             form:{
                 enabled:true,
                 name:'',
@@ -157,9 +159,12 @@ export default {
     },
     props: {},
     methods: {
-        show(item,optype) {
+        show(item,brunch,optype) {
             this.isShow = true;
             this.item = item;
+            this.brunch = brunch;
+            this.roleType = this.user.roleType;
+            console.log(this.user.roleType);
             if(optype === 2){
                 console.log('item',item);
                 this.form.id = item.id;
@@ -221,35 +226,37 @@ export default {
             });
         },
         create(){
-            this.form.parentId = '';
+            this.form.parentId = this.roleType == '1' ? '' : this.brunch.id;
             createDept(this.form)
                 .then(res => {
                     console.log('reds',res);
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
                         this.form.quota.deptId = res.data.data.id;
-                        createQuota(this.form.quota)
-                            .then(res => {
-                                console.log('reds',res);
-                                if(res.data.code === '0000'){
-                                    this.resolve(this.form.quota);
-                                    this.hide();
-                                    this.setting();
+                        if(this.roleType == '1'){
+                            createQuota(this.form.quota)
+                                .then(res => {
+                                    console.log('reds',res);
+                                    if(res.data.code === '0000'){
+                                        this.resolve(this.form.quota);
+                                        this.hide();
+                                        this.setting();
+                                        this.confirmBtn = false;
+                                    }else{
+                                        this.$alert('操作失败', '提示', {
+                                            type: 'error'
+                                        });
+                                        this.confirmBtn = false;
+                                        return;
+                                    }
+                                })
+                                .catch(err => {
                                     this.confirmBtn = false;
-                                }else{
-                                    this.$alert('操作失败', '提示', {
+                                    this.$alert(err, '提示', {
                                         type: 'error'
                                     });
-                                    this.confirmBtn = false;
-                                    return;
-                                }
-                            })
-                            .catch(err => {
-                                this.confirmBtn = false;
-                                this.$alert(err, '提示', {
-                                    type: 'error'
                                 });
-                            });
+                        }
                         this.hide();
                         this.setting();
                         this.confirmBtn = false;
@@ -276,28 +283,30 @@ export default {
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
                         this.form.quota.deptId = this.form.id;
-                        changeDeptQuota(this.form.quota)
-                            .then(res => {
-                                console.log('reds',res);
-                                if(res.data.code === '0000'){
-                                    this.resolve(this.form.quota);
-                                    this.hide();
-                                    this.setting();
+                        if(this.roleType == '1'){
+                            changeDeptQuota(this.form.quota)
+                                .then(res => {
+                                    console.log('reds',res);
+                                    if(res.data.code === '0000'){
+                                        this.resolve(this.form.quota);
+                                        this.hide();
+                                        this.setting();
+                                        this.confirmBtn = false;
+                                    }else{
+                                        this.$alert('操作失败', '提示', {
+                                            type: 'error'
+                                        });
+                                        this.confirmBtn = false;
+                                        return;
+                                    }
+                                })
+                                .catch(err => {
                                     this.confirmBtn = false;
-                                }else{
-                                    this.$alert('操作失败', '提示', {
+                                    this.$alert(err, '提示', {
                                         type: 'error'
                                     });
-                                    this.confirmBtn = false;
-                                    return;
-                                }
-                            })
-                            .catch(err => {
-                                this.confirmBtn = false;
-                                this.$alert(err, '提示', {
-                                    type: 'error'
                                 });
-                            });
+                        }
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'

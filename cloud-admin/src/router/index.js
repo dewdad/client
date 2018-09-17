@@ -202,7 +202,7 @@ export default new Router({
                             component: () => import('@/views/workorder/myorder/ProcessedOrder')
                         },{
                             path: 'hosts',
-                            name: 'app.cloudres.hosts',
+                            name: 'app.resources.instance',
                             meta: {
                                 title: '云主机'
                             },
