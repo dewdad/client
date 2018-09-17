@@ -22,9 +22,9 @@
                             </el-option>
                         </el-select>
                     </el-form-item> -->
-                    <!-- <el-form-item>
+                    <el-form-item label="时间范围">
                         <el-date-picker
-                            v-model="searchObj.daterange"
+                            v-model="daterange"
                             type="datetimerange"
                             size="small"
                             start-placeholder="开始日期"
@@ -32,7 +32,7 @@
                             :default-time="['00:00:00','23:59:59']"
                             value-format="yyyy-MM-dd HH:mm:ss">
                         </el-date-picker>
-                    </el-form-item> -->
+                    </el-form-item>
                     <el-form-item label="工单编号">
                         <el-input placeholder="搜索关键字" v-model="formInline.orderNO"></el-input>
                     </el-form-item>
@@ -234,6 +234,7 @@ export default {
             cols,
             searchObj,
             moduleTypes,
+            daterange: '',
             formInline: {
                 // orderNO:'',
                 // moduleType: ''
