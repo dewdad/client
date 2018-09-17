@@ -166,6 +166,12 @@ input:disabled {
     .input-help + .el-form-item__error--inline {
         left: 100%;
     }
+    .flex {
+        .el-form-item__error--inline {
+            // position: relative;
+            left: 100%;
+        }
+    }
     .el-form-item--medium {
         .el-form-item__label {
             line-height: $--basic-input-height--medium;
