@@ -16,6 +16,7 @@ import {
     //modifyVncPwd,
     //reloadSystem
 } from '@/service/ecs/list.js';
+import {addGroupForInstance} from '@/service/ecs/security';
 import ZT_CONFIG from '@/constants/config';
 import {showTextByKey, cloneDeep, sleep /*convertToVchartData*/} from '@/utils/utils.js';
 //import {moniterEchartMetricData} from '@/service/ecs/overview';
@@ -43,7 +44,7 @@ import ChartsLine from '@/components/charts/ChartsLine.vue';
 import Retrieval from '@/components/retrieval/retrieval';
 import flavorConfirm from './ecsDialog/flavorConfirm.vue';
 import bindNetWorkCard from './ecsDialog/bindNetWorkCard';
-import SelectSecurityGroupDialog from '../create/components/SelectSecurityGroupDialog';
+import SelectSecurityGroupDialog from './ecsDialog/SelectSecurityGroupDialog';
 import {ECS_STATUS, ECS_DROPDOWN, remoteLoginActivedStatus, modifyConfigActivedStatus} from '@/constants/dicts/ecs.js';
 
 export default {
@@ -919,9 +920,25 @@ export default {
          * 安全组配置  点击进入本实例安全组
          */
         instSafeGroup: function(rowItem) {
-            this.$refs.SelectSecurityGroupDialog.show(rowItem.security_groups);
+            this.$refs.SelectSecurityGroupDialog.show(rowItem).then(res => {
+                $log(res);
+                addGroupForInstance(rowItem.id, res.id)
+                    .then(res => {
+                        if (res.code === '0000') {
+                            this.$refs.SelectSecurityGroupDialog.close();
+                            this.$message.success('操作成功');
+                        }
+                    })
+                    .catch(err => {
+                        $log(err);
+                    });
+            });
             // this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
         },
+        /**
+         * 删除安全组
+         */
+        deleteSafeGroup: function(rowItem) {},
 
         // /**
         //  * 提交工单
@@ -1095,6 +1112,11 @@ export default {
                                 }
                                 case 'unbindNetWorkCard': {
                                     let keys = Object.keys(rowItem.addresses.addresses);
+                                    if (keys.length > 1) outarr.push(child);
+                                    break;
+                                }
+                                case 'deleteSafeGroup': {
+                                    let keys = Object.keys(rowItem.security_groups);
                                     if (keys.length > 1) outarr.push(child);
                                     break;
                                 }

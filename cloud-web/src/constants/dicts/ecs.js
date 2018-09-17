@@ -171,7 +171,8 @@ export const ECS_DROPDOWN = [
         flag: true, //需要处理显示和隐藏按钮
         text: '网络和安全',
         children: [
-            {key: 9, text: $t('ecs.inst.list.dropdownBtns.securityGroupConfig'), activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'instSafeGroup', show: true},
+            {key: 9, text: '安全组配置', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'instSafeGroup', show: true},
+            // {key: 14, text: '删除安全组', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'deleteSafeGroup', show: false},
             {key: 10, text: '添加网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'bindNetWorkCard', show: true},
             {key: 11, text: '分离网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'unbindNetWorkCard', show: false},
             {key: 10, text: '绑定浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindip', show: false},
