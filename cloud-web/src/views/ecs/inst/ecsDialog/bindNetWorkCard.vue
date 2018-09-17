@@ -6,7 +6,7 @@
             </zt-form-item>
             <zt-form-item label="网卡" prop="portId" class="mb0" :rules="rules">
                 <el-select v-if="this.opType === 1" key="bind" v-model="ruleForm.portId" size="small" :loading="remote" placeholder="请选择" popper-class="el-popper--small">
-                    <el-option v-for="item in netWorkList" :key="item.id" :label="item.name" :value="item.id">
+                    <el-option v-for="item in netWorkListFilter" :key="item.id"  :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
                 <el-select v-if="this.opType === 2" key="unbind" v-model="ruleForm.portId" size="small" :loading="remote" placeholder="请选择" popper-class="el-popper--small">
@@ -52,6 +52,12 @@ export default {
     computed: {
         dialogTitle() {
             return this.opType === 1 ? '添加网卡' : '分离网卡';
+        },
+        netWorkListFilter() {
+            return this.netWorkList.filter(item => {
+                // return item.hasOwnProperty(this.)
+                return this.ecsInst.addresses && this.ecsInst.addresses.addresses[item.name] ? false : true;
+            });
         }
     },
     watch: {
