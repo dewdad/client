@@ -44,3 +44,24 @@ export async function transferList(data) {
     });
     return response.data;
 }
+
+/**
+ * 补充工单
+ */
+export async function supplement({...arg}) {
+    $log('post /supplement ->', {...arg});
+    let ret = await http.post(ORDER_MODULE.supplement, {...arg});
+    return ret && ret.data;
+}
+
+/**
+ * 获得工单补充内容
+ * @param {*}
+ */ 
+export async function getSupplement(data) {
+    console.log('data',data);
+    let response = await http.get(ORDER_MODULE.getSupplement, {
+        params: data
+    });
+    return response.data;
+}

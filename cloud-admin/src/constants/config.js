@@ -25,6 +25,12 @@ const ZT_CONFIG = {
     WEB_SITE_URL:'www.peopledailycloud.com:8002', //媒体云公网地址
     REMOTE_LOGIN_URL_ALIAS:'www.meitiyun.com/vnc', //远程登录显示url地址
 
+    //工单管理 ticketSystem
+    TS_IMAGE_ACCEPT: 'jpg,jpeg,png,bmp,gif,txt,rar,zip,doc,xls,docx,xlsx,pdf,ini,conf,eml',
+    TS_IMAGE_SIZE_MAX: 8, //最大限制大小，单位默认M
+    TS_IMAGE_TOTAL_LIMIT: 3, //附件数限制
+    TS_TICKET_AUTO_CLOSED_DAY: 30, //30天后工单自动关闭
+
 };
 
 export default ZT_CONFIG;
