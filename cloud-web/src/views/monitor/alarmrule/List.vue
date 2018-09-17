@@ -18,15 +18,15 @@
                 </el-table-column> -->
                 <el-table-column min-width="180" prop="ruleMetric" label="监控项">
                     <template slot-scope="scope">
-                        {{scope.row.ruleMetric|showTextByKey(MONITOR_RULE_TYPES, 'key', 'value')}}
+                        {{scope.row.ruleMetric|showTextByKey(MONITOR_RULE_TYPES, 'value', 'name')}}
                     </template>
                 </el-table-column>
                 <el-table-column min-width="100" prop="size" label="维度">
                     <template slot-scope="scope">
-                        全部云硬盘
+                        <!-- 全部云硬盘 -->
                     </template>
                 </el-table-column>
-                <el-table-column min-width="180" prop="ruleMetric" :show-overflow-tooltip="false" label="报警规则">
+                <el-table-column min-width="300" prop="ruleMetric" :show-overflow-tooltip="false" label="报警规则">
                     <template slot-scope="scope">
                         <div style="word-break: break-word;">{{scope.row|getRuleDesc}}</div>
                     </template>
@@ -44,9 +44,9 @@
                 <!-- 操作 -->
                 <el-table-column label="操作" key="op" width="150" class-name="option-column">
                     <template slot-scope="scope">
-                        <!-- <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
-                        <b class="link-division-symbol"></b> -->
-                        <a @click="deleteSnap(scope.row)" class="btn-linker">删除</a>
+                        <router-link :to="{name: 'app.monitor.alarmrule.edit', params: {id: scope.row.alarmId}}" class="btn-linker">修改</router-link>
+                        <b class="link-division-symbol"></b>
+                        <a @click="deleteRule(scope.row)" class="btn-linker">删除</a>
                     </template>
                 </el-table-column>
             </zt-table>
@@ -55,9 +55,10 @@
     </div>
 </template>
 <script>
-import {getAlarmRuleList, deleteSnapshots} from '@/service/monitor/alarmRule.js';
-import {MONITOR_RULE_TYPES} from '@/constants/dicts/ecs';
+import {getAlarmRuleList, deleteRule} from '@/service/monitor/alarmRule.js';
+import {getSysConfig} from '@/service/app';
 import {showTextByKey, operatorReplace} from '@/utils/utils';
+let MONITOR_RULE_TYPES = [];
 export default {
     data() {
         let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}];
@@ -71,7 +72,7 @@ export default {
         };
         return {
             fields,
-            MONITOR_RULE_TYPES,
+            MONITOR_RULE_TYPES: [],
             tableData: [],
             loading: false,
             snaplistShow: true,
@@ -88,21 +89,20 @@ export default {
         getRuleDesc: function(rule) {
             return (
                 '监控项：' +
-                showTextByKey(MONITOR_RULE_TYPES, rule.ruleMetric, 'key', 'value') +
+                showTextByKey(MONITOR_RULE_TYPES, rule.ruleMetric, 'value', 'name') +
                 '，监控频率：' +
                 rule.alarmTime +
                 '分钟， ' +
                 '监控值：' +
                 operatorReplace(rule.comparisonOperator) +
-                rule.threshold +
-                ',连续' +
-                rule.alarmSeveralTimes +
-                '次 则报警'
+                rule.threshold
             );
         }
     },
-    components: {},
-    mounted() {
+    async created() {
+        let res = await getSysConfig({code: 'alarm.metrics'});
+        this.MONITOR_RULE_TYPES = res.data.data[0].itemList;
+        MONITOR_RULE_TYPES = this.MONITOR_RULE_TYPES;
         this.getData();
     },
     methods: {
@@ -129,12 +129,12 @@ export default {
         editSnap(row) {
             this.$refs.CreateDisk.show(row).then(() => {});
         },
-        deleteSnap(row) {
-            this.$refs.DeleteDailog.show('快照', row.name, () => {
-                return deleteSnapshots(row.id);
+        deleteRule(row) {
+            this.$refs.DeleteDailog.show('告警规则', row.name, () => {
+                return deleteRule(row.alarmId);
             }).then(res => {
                 this.$message.success('操作成功');
-                this.getSnapshotList();
+                this.getData();
             });
         }
     }

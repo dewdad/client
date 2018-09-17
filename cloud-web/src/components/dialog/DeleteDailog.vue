@@ -73,12 +73,18 @@ export default {
             if (typeof this.callback !== 'function') return;
             this.loading = true;
             new Promise((resolve, reject) => {
-                return this.callback().then(() => {
-                    return resolve();
+                return this.callback().then((res) => {
+                    if (res.code === '0000') {
+                        return resolve();
+                    } else {
+                        return reject();
+                    }
                 });
             }).then(() => {
                 this.hide();
                 this.resolve();
+            }).finally(() => {
+                this.loading = false;
             });
             
             //this.hide();

@@ -1,16 +1,16 @@
 <template>
-    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无Bucket" :loading="loading" :placeholder="placeholder">
-        <el-option v-for="item in bucketList" :key="item.owner.id" :label="item.name" :value="item.name"></el-option>
+    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无数据" :loading="loading" :placeholder="placeholder">
+        <el-option v-for="item in dataList" :key="item.id" :label="item.name" :value="item.value"></el-option>
     </el-select>
 </template>
 <script>
-import {getBucketListByUid} from '@/service/oss/index';
+import {getSysConfig} from '@/service/app';
 export default {
     data() {
         return {
             ids: null,
             loading: false,
-            bucketList: []
+            dataList: []
         };
     },
     props: {
@@ -20,10 +20,13 @@ export default {
         },
         placeholder: {
             type: String,
-            default: '请选择bucket'
+            default: '请选择'
         },
         value: {
             type: [String, Array]
+        },
+        code: {
+            type: String
         },
         disabled: {
             type: Boolean,
@@ -36,17 +39,22 @@ export default {
         }
     },
     created() {
-        this.getBucket();
+        this.getData();
         this.ids = this.value;
     },
     methods: {
-        getBucket() {
+        getData() {
             this.loading = true;
-            getBucketListByUid()
+            getSysConfig({code: this.code})
                 .then(res => {
-                    if (res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        this.bucketList = res.data || [];
+                    if (res.code === this.CODE.SUCCESS_CODE) {
+                        let jsonData = res.data;
+                        this.dataList = jsonData.data[0].itemList || [];
+                        this.ids = this.dataList[0].value;
+                        this.$emit('input', this.dataList[0].value);
                     }
+                }).catch(err => {
+                    $log(err);
                 })
                 .finally(() => {
                     this.loading = false;

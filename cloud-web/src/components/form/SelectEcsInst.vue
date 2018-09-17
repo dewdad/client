@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="instanceIds" :multiple="multiple" no-data-text="暂无实例" :loading="loading" :placeholder="placeholder">
+    <el-select v-model="instanceIds" :multiple="multiple" :disabled="disabled" no-data-text="暂无实例" :loading="loading" :placeholder="placeholder">
         <el-option v-for="item in ecsInsts" :key="item.id" :label="item.name" :value="item.id"></el-option>
     </el-select>
 </template>
@@ -24,6 +24,10 @@ export default {
         },
         value: {
             type: [String, Array]
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
     watch: {
