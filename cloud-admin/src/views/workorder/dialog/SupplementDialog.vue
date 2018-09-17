@@ -4,19 +4,19 @@
         :visible.sync="isShow"
         width="45%"
         class="Supplement">
-        <zt-form inline-message :model="ruleForm" label-width="100px" :rules="rules" style="width:452px;" size="small"  ref="ruleForm">
-            <zt-form-item label="问题标题">
+        <el-form inline-message :model="ruleForm" label-width="100px" :rules="rules" style="width:452px;" size="small"  ref="ruleForm">
+            <el-form-item label="问题标题">
                 <span>{{myticketInfo.title}}</span>
-            </zt-form-item>
-            <zt-form-item label="补充" prop="supple">
+            </el-form-item>
+            <el-form-item label="补充" prop="supple">
                 <textarea class="supple-text" v-model="ruleForm.supple"></textarea>
-            </zt-form-item>
-            <zt-form-item label="附件">
-                <div class="el-upload__tip input-help mb10">
-                    {{ replaceParamVal("可上传{imageLimit}个 附件每个附件大小不得超过{maxsize}M。附件支持的格式有：{fileAccept}",
-                    [ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT,ZT_CONFIG.TS_IMAGE_SIZE_MAX,ZT_CONFIG.TS_IMAGE_ACCEPT]) }}
+            </el-form-item>
+            <el-form-item label="附件">
+                <div class="el-upload__tip input-help mb10 pt0">
+                    可上传3个 附件每个附件大小不得超过8M。附件支持的格式有：<br>
+                    jpg,jpeg,png,bmp,gif,txt,rar,zip,doc,xls,docx,xlsx,pdf,ini,conf,eml
                 </div>
-                <zt-upload multiple ref="upload" 
+                <el-upload multiple ref="upload" 
                     :action="uploadAction" 
                     :headers="uploadHeaders"
                     :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
@@ -29,31 +29,25 @@
                     :on-remove="handleRemove" 
                     :before-upload="beforeAvatarUpload">
                     <i class="el-icon-plus"></i>
-                </zt-upload> 
-            </zt-form-item>
-        </zt-form>
+                </el-upload> 
+            </el-form-item>
+        </el-form>
         <span slot="footer" class="dialog-footer">            
             <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
+            <el-button type="primary" class="font12" @click="confirm">确 定</el-button>
         </span>
     </el-dialog>
 </template>
 <script>
-import ZTUpload from '@/components/ZTUpload';
 import ZT_CONFIG from '@/constants/config';
-import {replaceParamVal} from '@/utils/utils';
-import { supplement } from '@/service/ticket';
+import { supplement } from '@/service/order';
 export default {
-    components:{
-        'zt-upload': ZTUpload,
-    },
     data() {
         return {
             isShow: false,
             resolve: null,
             reject: null,
             ZT_CONFIG,
-            replaceParamVal,
             floatId: '',
             ruleForm:{
                 supple:'',
@@ -119,7 +113,7 @@ export default {
             });
         },
         handleExceed(files, fileList) {
-            let msg = $t('只能上传1个附件');
+            let msg = '只能上传1个附件';
             this.$message.error(msg);
         },
         //文件上传:回调函数======================start=============================
@@ -150,13 +144,14 @@ export default {
             const MiB = 1024 * 1024; //1MB 字节大小；
             const isLt8M = file.size < this.ZT_CONFIG.TS_IMAGE_SIZE_MAX * MiB;
             if (!isJPG) {
-                let msg = $t('account.Auth.companyAuth.msg.imageAccept');
-                showError(msg);
-                //this.$message.error(msg);
+                let msg = 'account.Auth.companyAuth.msg.imageAccept';
+                // showError(msg);
+                this.$message.error(msg);
             }
             if (!isLt8M) {
-                let msg = $t('account.Auth.imageSizeTip') + this.ZT_CONFIG.TS_IMAGE_SIZE_MAX + $t('abbr.mb');
-                showError(msg);
+                let msg = '上传图片大小不能超过' + this.ZT_CONFIG.TS_IMAGE_SIZE_MAX + 'MiB';
+                // showError(msg);
+                this.$message.error(msg);
             }
             return isJPG && isLt8M;
         },
@@ -226,6 +221,17 @@ export default {
         max-height: 118px;
         min-width:100%;
         max-width: 100%;
+    }
+    ::-webkit-scrollbar{
+        display:block;
+        width: 6px;
+        height: 6px;
+        background-color: #fff;
+    }
+    ::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        background-color:#c2c2c2;
     }
 }
 </style>

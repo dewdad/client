@@ -58,8 +58,7 @@ export async function getOrderDetailByOrderNO(orderNO) {
 
 
 /**
- * 根据工单编号查询工单详情
- * @param orderNO 工单信息，包括工单id和工单编号
+ * 补充工单
  */
 export async function supplement({...arg}) {
     $log('post /supplement ->', {...arg});

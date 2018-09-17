@@ -12,15 +12,29 @@
                             创建工单
                         </el-button>
                     </el-form-item>
-                    <el-form-item>
-                        <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
-                            <el-option label="工单号" value="orderNO"></el-option>
-                            <el-option label="标题" value="orderTitle"></el-option>
-                            <el-option label="联系方式" value="phone"></el-option>
+                    <!-- <el-form-item label="产品类型">
+                        <el-select v-model="formInline.moduleType" size="small" placeholder="请选择" value-key="value">
+                            <el-option
+                            v-for="item in moduleTypes"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
                         </el-select>
+                    </el-form-item> -->
+                    <el-form-item label="时间范围"> 
+                        <el-date-picker
+                            v-model="daterange"
+                            type="datetimerange"
+                            size="small"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :default-time="['00:00:00','23:59:59']"
+                            value-format="yyyy-MM-dd HH:mm:ss">
+                        </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                    <el-form-item label="工单编号">
+                        <el-input placeholder="搜索关键字" v-model="formInline.orderNO"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="myorderList" icon="el-icon-search">搜索</el-button>
@@ -63,7 +77,7 @@
                         <template v-if="col.column=='productType'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.productType}}</span>
+                                    <span class="font12 mr10">{{getModuleTypeVal(scope.row.moduleType)}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -71,7 +85,7 @@
                         <template v-if="col.column=='faultType'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.faultType}}</span>
+                                    <span class="font12 mr10">{{getOrderTypeVal(scope.row.moduleType, scope.row.orderType)}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -85,21 +99,21 @@
                         </template>
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                            <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 3">已审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 4">已关闭</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 2">处理中</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 3">待确认</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 4">已完成</span>
                                 </template>
                             </el-table-column>
                         </template>
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="relateAuth(scope.row)" class="btn-linker" >转交</a>
+                                <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>
                                 <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
                                 <b class="link-division-symbol" ></b>
@@ -125,12 +139,20 @@
         </el-row>
         <create-order ref="CreateOrder"></create-order>
         <order-detail ref="OrderDetail"></order-detail>
+
+        <!-- 转交功能 -->
+        <transfer-dialog ref="TransferDialog"></transfer-dialog>
+        <!-- 补充工单 -->
+        <supplement-dialog ref="SupplementDialog"></supplement-dialog>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateOrder from './CreateOrder';
 import OrderDetail from './OrderDetail';
+
+import TransferDialog from './../dialog/TransferDialog';
+import SupplementDialog from './../dialog/SupplementDialog';
 
 import {myorderList,delOrder} from '@/service/order.js';
 export default {
@@ -156,19 +178,66 @@ export default {
                 dropdowns: [
                     {key: 0, 'text': '全部', 'state': true, value: ''},
                     {key: 1, 'text': '待审核', 'state': false, value: '1'},
-                    {key: 2, 'text': '待处理', 'state': false, value: '2'},
-                    {key: 3, 'text': '已审核', 'state': false, value: '3'},
-                    {key: 4, 'text': '已关闭', 'state': false, value: '4'}
+                    {key: 2, 'text': '处理中', 'state': false, value: '2'},
+                    {key: 3, 'text': '待确认', 'state': false, value: '3'},
+                    {key: 4, 'text': '已完成', 'state': false, value: '4'}
                 ]
             },
+        ];
+
+        let moduleTypes = [
+            {value: 1, label: '弹性云主机',
+                orderTypes: [
+                    {value: 10, label: '远程连接'},
+                    {value: 11, label: '镜像'},
+                    {value: 12, label: '安全组配置'},
+                    {value: 13, label: '升降配'},
+                    {value: 14, label: '磁盘扩容'},
+                    {value: 15, label: '挂载磁盘'}
+                ]
+            },
+            // {value: '2', label: '云数据库RDS',
+            //     orderTypes: [
+            //         {value: 20, label: '版本/规格'},
+            //         {value: 21, label: '只读实例'},
+            //         {value: 22, label: '监控与报警'},
+            //         {value: 23, label: '日志'},
+            //         {value: 24, label: '参数设置'},
+            //         {value: 25, label: '备份恢复'}
+            //     ]
+            // },
+            {value: 3, label: '对象存储OSS',
+                orderTypes: [
+                    {value: 30, label: '文件上传/下载'},
+                    {value: 31, label: '读写限制'},
+                    {value: 32, label: 'SDK/API'},
+                    {value: 33, label: '图片处理服务'},
+                    {value: 34, label: '域名/监控'},
+                    {value: 35, label: '静态页面'},
+                    {value: 36, label: '防盗链'},
+                    {value: 37, label: '镜像回源'}
+                ]
+            },
+            // {value: '4', label: '云数据库Redis', orderTypes: []},
+            // {value: '5', label: '弹性伸缩', orderTypes: []},
+            {value: 6, label: '专有网络VPC',
+                orderTypes: [
+                    {value: 60, label: 'VPC使用场景'},
+                    {value: 61, label: 'VPC配置'},
+                    {value: 62, label: '对等连接'},
+                    {value: 63, label: '虚拟防火墙'}
+                ]
+            },            
         ];
 
         return {
             cols,
             searchObj,
+            moduleTypes,
+            daterange: '',
             formInline: {
-                data:'',
-                searchText:''
+                // orderNO:'',
+                // moduleType: ''
             },
             type:'orderNO',
             tableData: []
@@ -178,14 +247,15 @@ export default {
     components: {
         PageHeader,
         CreateOrder,
-        OrderDetail
-
+        OrderDetail,
+        TransferDialog,
+        SupplementDialog
     },
     methods: {
         myorderList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
+                ...this.formInline
             };
             $log('params', params);
             myorderList(params).then(ret => {
@@ -201,19 +271,6 @@ export default {
         filterHandler(value, row, column) {
             const property = column['property'];
             return row[property] === value;
-        },
-        relateAuth(item){
-            this.$refs.RelateAuth.show(item)
-                .then(ret => {
-                    return this.$alert('操作成功','提示');
-                })
-                .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log('取消');
-                    }
-                });
         },
         createOrder(item,optype){
             this.$refs.CreateOrder.show(item,optype)
@@ -241,14 +298,14 @@ export default {
             this.searchObj.paging.limit = val;
             this.myorderList();
         },
+        /**
+         * 删除工单
+         */
         del(item){
             delOrder(item).then(ret=>{
                 this.myorderList();
             });
         },
-        /**
-         * 删除工单
-         */
         delOrder(item) {
             this.$confirm('确定要进行删除操作吗？', '删除', {
                 confirmButtonText: '确定',
@@ -263,6 +320,33 @@ export default {
                 });
             });
         },
+        // 转交工单
+        transferOrder(row) {
+            this.$refs['TransferDialog'].show({...row})
+                .then((res) => {
+                    $log(res);
+                });
+        },
+        // 补充
+        createRole(row) {
+            this.$refs['SupplementDialog'].show({...row})
+                .then((res) => {
+                    $log(res);
+                });
+        },
+        // 解析产品类型取值
+        getModuleTypeVal(val) {
+            return this.moduleTypes.filter(
+                item => item.value === val
+            )[0].label;
+        },
+        // 解析故障类型取值
+        getOrderTypeVal(val1, val2) {
+            let orderTypeList = this.moduleTypes.filter( item => item.value === val1 )[0].orderTypes;
+            return orderTypeList.filter(
+                item => item.value === val2
+            )[0].label;
+        }
     },
 
     mounted(){
