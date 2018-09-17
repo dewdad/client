@@ -44,7 +44,8 @@ export default {
                 startDate:'',
                 endDate:'',
                 dateRange:[]
-            }
+            },
+            loadingContent : true
         };
     },
     computed: {
@@ -178,6 +179,7 @@ export default {
                 //searchAllEcs: 'true',
                 instanceId: this.instance
             };
+            this.loadingContent = true; 
             moniterEchartMetricData(data).then( (res) => {
                 if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
                     let datas = res.data || [];
@@ -193,8 +195,10 @@ export default {
                             break;
                         }
                         default:{}
-                    } 
-                }  
+                    }
+                    this.loadingContent = false;  
+                }
+                this.loadingContent = false;  
             });
             
         },

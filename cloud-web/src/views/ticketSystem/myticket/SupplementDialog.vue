@@ -6,7 +6,7 @@
         class="Supplement">
         <zt-form inline-message :model="ruleForm" label-width="100px" :rules="rules" style="width:452px;" size="small"  ref="ruleForm">
             <zt-form-item label="问题标题">
-                <span>欢迎访问 WordPress 官方中文文档站点</span>
+                <span>{{myticketInfo.title}}</span>
             </zt-form-item>
             <zt-form-item label="补充" prop="supple">
                 <textarea class="supple-text" v-model="ruleForm.supple"></textarea>
