@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-09-14 15:27:45 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-17 14:13:14
+ * @Last Modified time: 2018-09-17 19:52:59
  */
 
 import http from '@/utils/http';
@@ -87,13 +87,19 @@ export async function getAlarmHistoryList({pageIndex = 1, limit = 10} = {}) {
 }
 
 /**
- * 删除告警规则
+ * 删除或禁用告警规则
  * @param {*} id
  */
-export async function deleteRule(alarmId) {
+export async function deleteRule(data, status = 2) {
+    data['status'] = status;
+    delete data['alarmInstances'];
+    delete data['resourceType'];
+    delete data['ruleLevel'];
+    delete data['syncFlag'];
+    delete data['ruleMetricName'];
+    delete data['createTime'];
     let res = await http.put(API_ECS.monitor.updateRule, {
-        alarmId,
-        status: 2
+        ...data
     });
     return res && res.data;
 }
