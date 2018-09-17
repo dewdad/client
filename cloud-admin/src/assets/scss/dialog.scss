@@ -28,6 +28,7 @@
     .el-dialog__body {
         padding: $--dialog-body-padding;
         color: $--color-text-regular;
+        overflow-x: hidden;
     }
     .dialog-footer {
         .el-button--info {

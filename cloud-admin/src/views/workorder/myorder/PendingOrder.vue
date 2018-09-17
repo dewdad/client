@@ -82,9 +82,9 @@
                             <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 3">已审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 4">已关闭</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 2">处理中</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 3">待确认</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 4">已完成</span>
                                 </template>
                             </el-table-column>
                         </template>

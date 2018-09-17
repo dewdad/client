@@ -12,8 +12,9 @@
                 <textarea class="supple-text" v-model="ruleForm.supple"></textarea>
             </el-form-item>
             <el-form-item label="附件">
-                <div class="el-upload__tip input-help mb10">
-
+                <div class="el-upload__tip input-help mb10 pt0">
+                    可上传3个 附件每个附件大小不得超过8M。附件支持的格式有：<br>
+                    jpg,jpeg,png,bmp,gif,txt,rar,zip,doc,xls,docx,xlsx,pdf,ini,conf,eml
                 </div>
                 <el-upload multiple ref="upload" 
                     :action="uploadAction" 
@@ -112,7 +113,7 @@ export default {
             });
         },
         handleExceed(files, fileList) {
-            let msg = $t('只能上传1个附件');
+            let msg = '只能上传1个附件';
             this.$message.error(msg);
         },
         //文件上传:回调函数======================start=============================
@@ -144,12 +145,13 @@ export default {
             const isLt8M = file.size < this.ZT_CONFIG.TS_IMAGE_SIZE_MAX * MiB;
             if (!isJPG) {
                 let msg = 'account.Auth.companyAuth.msg.imageAccept';
-                showError(msg);
-                //this.$message.error(msg);
+                // showError(msg);
+                this.$message.error(msg);
             }
             if (!isLt8M) {
-                let msg = 'account.Auth.imageSizeTip' + this.ZT_CONFIG.TS_IMAGE_SIZE_MAX + 'abbr.mb';
-                showError(msg);
+                let msg = '上传图片大小不能超过' + this.ZT_CONFIG.TS_IMAGE_SIZE_MAX + 'MiB';
+                // showError(msg);
+                this.$message.error(msg);
             }
             return isJPG && isLt8M;
         },

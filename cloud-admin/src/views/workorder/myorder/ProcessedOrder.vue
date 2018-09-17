@@ -82,9 +82,9 @@
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 2">待处理</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 3">已审核</span>
-                                    <span class="font12 mr10" v-if="scope.row.status == 4">已关闭</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 2">处理中</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 3">待确认</span>
+                                    <span class="font12 mr10" v-if="scope.row.status == 4">已完成</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -93,7 +93,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="relateAuth(scope.row)" class="btn-linker" >转交</a>
+                                <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>
                                 <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
                                 <b class="link-division-symbol" ></b>
@@ -119,12 +119,21 @@
         </el-row>
         <create-order ref="CreateOrder"></create-order>
         <order-detail ref="OrderDetail"></order-detail>
+
+        <!-- 转交功能 -->
+        <transfer-dialog ref="TransferDialog"></transfer-dialog>
+        <!-- 补充工单 -->
+        <supplement-dialog ref="SupplementDialog"></supplement-dialog>
+        
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateOrder from './CreateOrder';
 import OrderDetail from './OrderDetail';
+
+import TransferDialog from './../dialog/TransferDialog';
+import SupplementDialog from './../dialog/SupplementDialog';
 
 import {myorderList,delOrder} from '@/service/order.js';
 export default {
@@ -150,9 +159,9 @@ export default {
                 dropdowns: [
                     {key: 0, 'text': '全部', 'state': true, value: ''},
                     {key: 1, 'text': '待审核', 'state': false, value: '1'},
-                    {key: 2, 'text': '待处理', 'state': false, value: '2'},
-                    {key: 3, 'text': '已审核', 'state': false, value: '3'},
-                    {key: 4, 'text': '已关闭', 'state': false, value: '4'}
+                    {key: 2, 'text': '处理中', 'state': false, value: '2'},
+                    {key: 3, 'text': '待确认', 'state': false, value: '3'},
+                    {key: 4, 'text': '已完成', 'state': false, value: '4'}
                 ]
             },
         ];
@@ -172,8 +181,9 @@ export default {
     components: {
         PageHeader,
         CreateOrder,
-        OrderDetail
-
+        OrderDetail,
+        TransferDialog,
+        SupplementDialog
     },
     methods: {
         myorderList(){
@@ -257,6 +267,20 @@ export default {
                 });
             });
         },
+        // 转交工单
+        transferOrder(row) {
+            this.$refs['TransferDialog'].show({...row})
+                .then((res) => {
+                    $log(res);
+                });
+        },
+        // 补充
+        createRole(row) {
+            this.$refs['SupplementDialog'].show({...row})
+                .then((res) => {
+                    $log(res);
+                });
+        }
     },
 
     mounted(){

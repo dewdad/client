@@ -2,8 +2,8 @@
     <el-dialog title="创建工单" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules" label-width="120px">
             <!-- 标题 -->
-            <el-form-item label="标题" prop="orderTitle"  >
-                <el-input   v-model="form.orderTitle" placeholder="问题标题，不得超过100字!"></el-input>
+            <el-form-item label="标题" prop="title"  >
+                <el-input   v-model="form.title" placeholder="问题标题，不得超过100字!"></el-input>
             </el-form-item>
             <!-- 产品类型 -->
             <el-form-item label="产品类型" prop="productType"  >
@@ -17,8 +17,8 @@
                 </el-select>
             </el-form-item>
             <!-- 故障类型 -->
-            <el-form-item label="故障类型" prop="productType"  >
-                <el-select v-model="form.faultType" placeholder="请选择故障类型">
+            <el-form-item label="故障类型" prop="orderType"  >
+                <el-select v-model="form.orderType" placeholder="请选择故障类型">
                     <el-option
                             v-for="item in form.productType.faultTypes"
                             :key="item.value"
@@ -36,28 +36,28 @@
             </el-form-item>
 
             <!-- 描述 -->
-            <el-form-item label="问题描述" prop="problemDescribe" >
-                <el-input clearable type="textarea" v-model="form.problemDescribe" placeholder="问题描述，不得超过100字，若提交密码或AccessKeys等信息，请通过“机密信息”方式添加，并在问题处理完毕后及时修改"></el-input>
+            <el-form-item label="问题描述" prop="orderDesc" >
+                <el-input clearable type="textarea" v-model="form.orderDesc" placeholder="问题描述，不得超过100字，若提交密码或AccessKeys等信息，请通过“机密信息”方式添加，并在问题处理完毕后及时修改"></el-input>
             </el-form-item>
             <!-- 补充说明 -->
-            <el-form-item label="补充说明" prop="extraDesc" >
-                <el-input type="textarea" v-model="form.extraDesc" resize="none" rows="5"
+            <el-form-item label="补充说明" prop="remark" >
+                <el-input type="textarea" v-model="form.remark" resize="none" rows="5"
                           placeholder="补充说明，不得超过100字，若为弹性云服务器相关问题，请补充说明IP端口、网站地址、web目录等；若为RDS相关问题，请补充说明账号等，并尽快提交充分信息便于排查">
                 </el-input>
             </el-form-item>
             <!-- 实例 -->
-            <el-form-item label="实例" prop="id" >
-                <el-input clearable  v-model="form.id" ></el-input>
+            <el-form-item label="实例" prop="resourceId" >
+                <el-input clearable  v-model="form.resourceId" ></el-input>
             </el-form-item>
             <!-- 机密信息 -->
-            <el-form-item label="机密信息" prop="orderDesc" >
-                <el-input type="textarea" v-model="form.orderDesc" resize="none" rows="5"
+            <el-form-item label="机密信息" prop="secretInfo" >
+                <el-input type="textarea" v-model="form.secretInfo" resize="none" rows="5"
                           placeholder="请在此处填写实例名、账号、密码等机密信息，提交后，机密信息将做加密处理">
                 </el-input>
             </el-form-item>
             <!-- 联系方式 -->
-            <el-form-item label="联系方式" prop="phone"  >
-                <el-input clearable v-model="form.phone"></el-input>
+            <el-form-item label="联系方式" prop="mobile"  >
+                <el-input clearable v-model="form.mobile"></el-input>
             </el-form-item>
 
             <!-- 邮箱 -->
@@ -150,26 +150,27 @@ export default {
             fileListArr: [],
             domainName:'',
             form:{
-                orderTitle: '', //工单标题
+                title: '', //工单标题
                 productType: '', //产品类型
-                faultType: '', //缺陷类型
-                problemDescribe: '', //问题描述
-                id: '', //实例id
-                extraDesc: '', //补充描述
-                orderDesc: '', //工单描述
-                phone: '',
+                orderType: '', //缺陷类型
+                orderDesc: '', //问题描述
+                resourceId: '', //实例id
+                remark: '', //补充描述
+                // orderDesc: '', //工单描述
+                mobile: '',
+                secretInfo: '',
                 email: '',
                 orderAttach:'', //附件文件
             },
             radio2: 3,
             rules:{
-                'orderTitle':[
+                'title':[
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
-                'problemDescribe':[
+                'orderDesc':[
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
-                'phone':[
+                'mobile':[
                     { required: true,message: '必填项',trigger: ['blur']},
                     { validator: validatePhone, trigger: 'blur' }
                 ],
@@ -180,7 +181,7 @@ export default {
                 productType: [
                     { required: true, message: '请选择产品类型', trigger: 'change' }
                 ],
-                faultType: [
+                orderType: [
                     { required: true, message: '请选择故障类型', trigger: 'change' }
                 ],
 
@@ -236,12 +237,13 @@ export default {
                     }
 
                     this.form.orderAttach = arr || [];
+                    this.form.moduleType = this.form.productType.value || '';
                     createOrder(this.form).then(ret => {
-                        if(ret.data.code === '0000'){
+                        console.warn(ret);
+                        if(ret && ret.code === '0000'){
                             this.confirmBtn = false;
                             this.hide();
                             this.setting();
-                            this.$alert('操作成功','提示');
                             return;
                         }else{
                             this.$alert('操作失败', '提示', {
