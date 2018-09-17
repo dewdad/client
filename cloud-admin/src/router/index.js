@@ -207,6 +207,20 @@ export default new Router({
                                 title: '云主机'
                             },
                             component: () => import('@/views/cloudres/instance')
+                        },{
+                            path: 'network',
+                            name: 'app.resources.network',
+                            meta: {
+                                title: '网络管理'
+                            },
+                            component: () => import('@/views/cloudres/network/networkmgr')
+                        },{
+                            path: 'protmgr/:id',
+                            name: 'app.resources.network.protmgr',
+                            meta: {
+                                title: '端口管理'
+                            },
+                            component: () => import('@/views/cloudres/network/protmgr')
                         }
                     ]
                 }
