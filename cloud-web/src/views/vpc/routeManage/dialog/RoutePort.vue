@@ -2,7 +2,7 @@
     <el-dialog
         title="路由接口"
         :visible.sync="isShow"
-        width="45%"
+        width="600px"
         class="RoutePort">
         <el-alert
             title="基于特殊参数创建一路由。"

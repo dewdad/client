@@ -1,6 +1,7 @@
 <template>
 <div class="page-main">
-    <page-header class="mb10">
+    <page-header>
+        浮动IP
         <div slot="content"  class="pull-right">
             <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
                 申请浮动IP
@@ -10,6 +11,7 @@
             </el-button>
         </div>
     </page-header>
+    <div class="page-body">
     <!-- 表格 -->
     <zt-table
         @filterVal="filterHandler"
@@ -61,7 +63,7 @@
             </template>
         </el-table-column>
     </zt-table>
-
+    </div>
     <!-- 绑定浮动IP -->
     <BindFLexIP ref="BindFLexIP"></BindFLexIP>
     <!-- 申请浮动IP -->

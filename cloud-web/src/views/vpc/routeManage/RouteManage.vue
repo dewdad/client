@@ -1,7 +1,8 @@
 <template>
     <div class="page-main">
         <!-- 顶部 -->
-        <page-header class="mb10">
+        <page-header>
+            路由管理
             <div slot="content"  class="pull-right">
                 <el-button type="primary" size="small" @click="openRouterDialog('create')" class="mr10">
                     添加路由
@@ -14,7 +15,7 @@
         <!-- 搜索栏 -->
         <!-- <search-box :searchObjExtra="searchObjExtra" @select="getScreenVal"></search-box> -->
         <!-- 表格 -->
-        <div>
+        <div class="page-body">
             <zt-table
                 :loading="loading" 
                 :data="routerList" 

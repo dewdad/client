@@ -1,7 +1,7 @@
 <template>
 <div class="page-main">
-    <!-- 搜素栏 -->
-    <page-header class="mb10">
+    <page-header>
+        专有网络
         <div slot="content"  class="pull-right">
             <el-button type="primary" size="small" @click="create">
                 创建专有网络
@@ -11,6 +11,7 @@
             </el-button>
         </div>
     </page-header>
+    <div class="page-body">
     <!-- 表格 -->
     <zt-table
         :loading="isLoading"
@@ -62,6 +63,7 @@
             </template>
         </el-table-column>
     </zt-table>
+    </div>
     <!-- 创建专有网络弹窗 -->
     <create ref="create"></create>
 </div>
