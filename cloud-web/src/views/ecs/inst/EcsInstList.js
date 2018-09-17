@@ -920,19 +920,7 @@ export default {
          * 安全组配置  点击进入本实例安全组
          */
         instSafeGroup: function(rowItem) {
-            this.$refs.SelectSecurityGroupDialog.show(rowItem).then(res => {
-                $log(res);
-                addGroupForInstance(rowItem.id, res.id)
-                    .then(res => {
-                        if (res.code === '0000') {
-                            this.$refs.SelectSecurityGroupDialog.close();
-                            this.$message.success('操作成功');
-                        }
-                    })
-                    .catch(err => {
-                        $log(err);
-                    });
-            });
+            this.$refs.SelectSecurityGroupDialog.show(rowItem);
             // this.$router.push({name: 'app.ecs.inst.securitygrp', params: {id: rowItem.id, item: rowItem}});
         },
         /**

@@ -3,7 +3,7 @@
         <page-header>
             云盘快照
             <div slot="right">
-                <el-button type="info" size="small" @click="getSnapshotList">
+                <el-button type="info" size="small" @click="getSnapshotList('')">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>
             </div>
@@ -142,8 +142,8 @@ export default {
     },
     methods: {
         getSnapshotList(params) {
-            params = params || this.searchObj.paging;
             if (params !== false) this.loading = true;
+            params = params || this.searchObj.paging;
             getSnapshotList(params)
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
