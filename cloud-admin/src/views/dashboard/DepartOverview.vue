@@ -5,8 +5,8 @@
             <el-col :span="24" style="height: 100%;">
                 <!-- 头部(部门选择) -->
                 <div class="selDepart mb20">
-                    <div class="finger-cursor">
-                        <span class="el-dropdown-link font18" @click="selDepartBox">
+                    <div class="finger-cursor deptDropdownBtn" >
+                        <span class="el-dropdown-link font18" >
                             {{brunch.name}}<i class="el-icon-caret-bottom el-icon--right color-secondary"></i>
                         </span>
                     </div>

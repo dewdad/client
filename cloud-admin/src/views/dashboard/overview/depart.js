@@ -121,9 +121,9 @@ export default {
             this.departShow = false;
         },
         // 打开部门菜单
-        selDepartBox(){
-            this.departShow = !this.departShow;
-        },
+        // selDepartBox(e){
+        //     this.departShow = !this.departShow;
+        // },
         // 概览数据
         getAdminOverviewFn(id){
             let params = {
@@ -200,5 +200,17 @@ export default {
     },
     created() {
         this.deptTree();
+    },
+    mounted(){
+        this.clickDeptDropdown = (e) => {
+            e.stopPropagation();
+            if (e.target.className.split(' ')[1] === 'deptDropdownBtn' || e.target.className.split(' ')[0] === 'el-dropdown-link'){
+                this.departShow = !this.departShow;
+                // document.getElementById('submit').click();
+            }else{
+                this.departShow = false;
+            }
+        };
+        document.body.addEventListener('click', this.clickDeptDropdown, false);
     }
 };

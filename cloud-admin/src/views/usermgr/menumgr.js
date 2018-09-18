@@ -108,7 +108,6 @@ export default {
         handleSizeChange: function(params) {
             console.log('params:', params);
             this.searchObj.paging.limit = params;
-            this.searchObj.paging.pageIndex = 1;
             this.search();
         },
     },
