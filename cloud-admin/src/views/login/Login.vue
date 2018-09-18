@@ -13,7 +13,7 @@
                         <el-input v-model="form.password" placeholder="请输入密码" type="password"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" long @click="submit">登录</el-button>
+                        <el-button type="primary" id="submit" long @click="submit">登录</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -183,6 +183,14 @@ export default {
                     this.errorMsg = 'dsds';
                 });
         }
+    },
+    mounted(){
+        this.bodyListener = (e) => {
+            if (e.keyCode === 13 && e.target === document.body){
+                document.getElementById('submit').click();
+            }
+        };
+        document.body.addEventListener('keyup', this.bodyListener, false);
     }
 };
 </script>

@@ -305,7 +305,7 @@ export default {
             };
             selectUsageByDate(params)
                 .then(res => {
-                    console.warn(res);
+                    // console.warn(res);
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let dayEcsUsages = res.data && res.data.dayEcsUsages || [];
                         this.ecsTotal = res.data && res.data.ecsTotal || '0';
@@ -344,7 +344,7 @@ export default {
         },
         // 即将达到上限标准
         getUsage(val1, val2) {
-            console.warn(val2);
+            // console.warn(val2);
             if(val2 === 0) {
                 return false;
             }

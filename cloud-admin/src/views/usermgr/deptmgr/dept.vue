@@ -27,7 +27,7 @@
                             <span class="icon-zt_view"></span> 查看配额</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="createDept(brunch,2)">
+                        <el-button @click="createDept(brunch,brunch,2)">
                             <span class="icon-zt_edit"></span> 编辑</el-button>
                     </el-form-item>
                 </el-form>
