@@ -176,7 +176,7 @@ export const ECS_DROPDOWN = [
             {key: 10, text: '添加网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'bindNetWorkCard', show: true},
             {key: 11, text: '分离网卡', activedStatus: ['ACTIVE'], tip: '', handle: 'unbindNetWorkCard', show: false},
             {key: 10, text: '绑定浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'bindip', show: false},
-            {key: 13, text: '解 浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false}
+            {key: 13, text: '解绑浮动IP', activedStatus: ['SHUTOFF', 'ACTIVE', 'WAIT_REBOOT'], tip: '', handle: 'unbindip', show: false}
         ]
     }
 ];
