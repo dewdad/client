@@ -1,14 +1,14 @@
 <template>
-    <el-dialog :title="dialogTitle" :visible.sync="isShow" width="600px" class="dlg-bindip" @close="cancel">
+    <el-dialog v-if="isShow" :title="dialogTitle" :visible.sync="isShow" width="600px" class="dlg-bindip" @close="cancel">
         <zt-form inline-message :model="ruleForm" label-width="73px" style="width:392px;" size="small"  ref="ruleForm" :show-message="false">
             <!-- 当前实例 -->
             <zt-form-item :label="$t('dialog.bindPublicip.currentInst')" class="lh-em1">
-                <span class="font12">{{ecsInst.name||ecsInst.id}}</span>
+                <span class="font12">{{get(ecsInst, 'name')||get(ecsInst, 'id')}}</span>
             </zt-form-item>
             <!-- 公网IP -->
-            <zt-form-item :label="$t('common.publicNetworkIP')" prop="publicNet.id" class="mb0" :rules="rules">
+            <zt-form-item label="浮动IP" prop="publicNet.id" class="mb0" :rules="rules">
                 <div>
-                    <el-select v-model="ruleForm.publicNet" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" popper-class="el-popper--small">
+                    <el-select v-model="ruleForm.publicNet" :loading="loadingData" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" popper-class="el-popper--small">
                         <el-option v-for="item in (opType === 1?publicNetData:bandedPublicNetData)" :key="item.id" :label="item.floatingIpAddress" :value="item">
                         </el-option>
                     </el-select>
@@ -46,6 +46,7 @@ export default {
             resolve: null,
             reject: null,
             loading: false,
+            loadingData: false,
             ecsInst: {},
             //intranetData: {},
             publicNetData: [], //绑定页面：未绑定的公网
@@ -102,15 +103,15 @@ export default {
             });
         },
         hide() {
-            this.isShow = false;
-
             this.ruleForm = {
                 intranet: {}, //内网fixIp
                 publicNet: ''
             },
             this.loading = false;
             this.ecsInst = {};   
-            this.$refs['ruleForm'].clearValidate();         
+            this.$refs['ruleForm'].resetFields(); 
+            this.$refs['ruleForm'].clearValidate();   
+            this.isShow = false;      
         },
         cancel() {
             this.hide();
@@ -127,7 +128,7 @@ export default {
         confirm() {
             this.$refs['ruleForm'].validate(async valid => {
                 if (valid) {   
-                    await this.getPortByEcsId(this.ecsInst.ecsId, this.ruleForm.publicNet.id);                 
+                    // await this.getPortByEcsId(this.ecsInst.ecsId, this.ruleForm.publicNet.id);                 
                     let data = {
                         floatipId: this.ruleForm.publicNet.id,
                         instanceId: this.ecsInst.ecsId
@@ -180,20 +181,25 @@ export default {
 
         //解绑：查询本实例已经绑定的公网IP
         getBindedPublicIpByEcsId: function(ecsInst) {
+            this.loadingData = true;
             return getBindedPublicIpByEcsId(ecsInst).then(
                 res => {               
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {                      
-                        this.bandedPublicNetData = res.data;
+                        this.bandedPublicNetData = res.data.data;
                     } else {
                     }
-                },
-                err => {}
-            );
+                }
+            ).catch(err => {
+                $log(err);
+            }).finally(() => {
+                this.loadingData = false;
+            });
         },
 
         //绑定：找所有未绑定的 公网IP
         //status: 值为'DOWN' 时查询找所有未绑定的 公网IP
-        getUnbindPublicIP: function(state = 'DOWN') {            
+        getUnbindPublicIP: function(state = 'DOWN') {     
+            this.loadingData = true;       
             return getUnbindPublicIP({ state }).then(
                 res => {                   
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
@@ -205,7 +211,9 @@ export default {
                     }
                 },
                 err => {}
-            );
+            ).finally(() => {
+                this.loadingData = false;
+            });
         }
     }
 };

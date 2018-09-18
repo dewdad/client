@@ -785,6 +785,9 @@ export default {
                 .show(rowItem, 1)
                 .then(ret => {
                     this.getEcsInstList({show: false});
+                    setTimeout(() => {
+                        this.getEcsInstList({show: false});
+                    }, 2000);
                 })
                 .catch(err => {
                     if (err) {
@@ -803,6 +806,9 @@ export default {
                 .show(rowItem, 2)
                 .then(ret => {
                     this.getEcsInstList({show: false});
+                    setTimeout(() => {
+                        this.getEcsInstList({show: false});
+                    }, 2000);
                 })
                 .catch(err => {
                     if (err) {
@@ -1080,16 +1086,16 @@ export default {
                         if (child.show) {
                             outarr.push(child);
                         } else {
-                            let isPublicIP = rowItem.floatIp ? rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_PUBLIC_IP) != -1 : false;
-                            let isConnIP = rowItem.floatIp ? rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_CONNECT_IP) != -1 : false;
+                            let isPublicIP = rowItem.addresses ? JSON.stringify(rowItem.addresses.addresses).indexOf('floating') !== -1 : false;
+                            let isConnIP = rowItem.floatIp ? rowItem.floatIp.indexOf(ZT_CONFIG.FLOAT_IP_IS_CONNECT_IP) !== -1 : false;
                             switch (child.handle) {
                                 case 'bindip':
                                 case 'bindconnectip': {
-                                    if (!rowItem.floatIp) outarr.push(child);
+                                    if (!isPublicIP) outarr.push(child);
                                     break;
                                 }
                                 case 'unbindip': {
-                                    if (rowItem.floatIp && isPublicIP) outarr.push(child);
+                                    if (isPublicIP) outarr.push(child);
 
                                     break;
                                 }

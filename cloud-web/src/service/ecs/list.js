@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-15 18:44:53
+ * @Last Modified time: 2018-09-18 14:44:44
  * ecs模块 列表页面
  */
 
@@ -157,8 +157,7 @@ export async function getPortByEcsId(ecsId, ipId) {
 
 //查询本实例已经绑定的公网IP
 export async function getBindedPublicIpByEcsId({ecsId}) {
-    let url = replaceParamVal(API_ECS.inst.getBindedPublicIpByEcsId, [ecsId]);
-    let res = await http.get(url, {});
+    let res = await http.get(API_ECS.inst.getBindedPublicIpByEcsId, {params: {ecsId}});
     return res && res.data;
 }
 
