@@ -19,13 +19,14 @@
             <slot></slot>
         </el-tooltip>
         <slot v-else></slot>
-      <transition name="el-zoom-in-top">
-        <div v-if="!hideSuccessIcon && showSuccessIcon" :class="['el-form-item__success']">
+      <transition-group name="el-zoom-in-top">
+        <div v-if="!hideSuccessIcon && showSuccessIcon" key="a" :class="['el-form-item__success']">
             <i class="iconfont icon-chenggong"></i>
         </div>
         <div
           v-if="validateState === 'error' && showMessage && form.showMessage"
           class="el-form-item__error"
+          key="b"
           :class="{
             'el-form-item__error--inline': typeof inlineMessage === 'boolean'
               ? inlineMessage
@@ -34,7 +35,7 @@
         >
           {{validateMessage}}
         </div>
-      </transition>
+      </transition-group>
        <slot name="help"></slot>
     </div>
   </div>

@@ -50,7 +50,7 @@ import CreateKeypair from './dialog/CreateKeypair';
 
 import {getKeypairList, deleteKeypairs} from '@/service/ecs/keypairs.js';
 
-let fields = [{field: 'status', label: '密钥对名称', inputval: '', tagType: 'INPUT'}];
+let fields = [{field: 'name', label: '密钥对名称', inputval: '', tagType: 'INPUT'}];
 
 let searchObj = {
     //分页

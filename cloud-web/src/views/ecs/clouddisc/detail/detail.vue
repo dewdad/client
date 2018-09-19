@@ -20,8 +20,8 @@
                                 </td>
                                 <td>磁盘属性：</td>
                                 <td>
-                                    <span v-if="rowItem.bootable===true">系统盘</span>
-                                    <span v-if="rowItem.bootable===false">数据盘</span>
+                                    <span v-if="rowItem.attachments && rowItem.attachments.length && rowItem.attachments[0].device === '/dev/vda'">系统盘</span>
+                                    <span v-else>数据盘</span>
                                 </td>
                             </tr>
                             <tr>

@@ -35,6 +35,7 @@
 </template>
 <script>
 import {getDiskList, mountDisk} from '@/service/ecs/disk/disk.js';
+import {sleep} from '@/utils/utils';
 export default {
     data() {
         return {
@@ -94,8 +95,9 @@ export default {
             this.loading = true;
             //挂载云盘
             mountDisk(data)
-                .then(res => {
+                .then(async res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
+                        await sleep(2000);
                         this.resolve(res);
                         this.hide();
                         //this.setting();
@@ -113,7 +115,8 @@ export default {
         getDiskAll() {
             let params = {
                 pageIndex:1,
-                limit: 9999
+                limit: 9999,
+                status: 'available'
             };
             this.remote = true;
             getDiskList(params).then(res => {

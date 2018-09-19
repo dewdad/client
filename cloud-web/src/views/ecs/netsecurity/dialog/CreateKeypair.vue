@@ -4,7 +4,7 @@
             <zt-form inline-message class="wd403" ref="ruleForm" size="small" :model="form" label-width="100px" :rules="rules">
                 <zt-form-item label="密钥对名称" class="mb0" prop="keyPairName">
                     <el-input size="small" v-model="form.keyPairName" maxlength="64" placeholder="请输入密钥对名称"></el-input>
-                    <div class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
+                    <div slot="help" class="input-help">长度限制为2-64个字符, 只能由英文字母、数字、下划线、中划线组成</div>
                 </zt-form-item>
                 <zt-form-item label="创建类型" class="mb0" prop="radioType" :rules="[{
                         required: true,
@@ -13,7 +13,7 @@
                     }]">
                     <el-radio v-model="form.radioType" label="auto">自动新建密钥对</el-radio>
                     <el-radio v-model="form.radioType" label="import">导入已有密钥对</el-radio>
-                    <div v-if="form.radioType === 'auto'" class="input-help">创建完成后请一定下载私钥，您只有一下载私钥的机会。</div>
+                    <div v-if="form.radioType === 'auto'" slot="help" class="input-help">创建完成后请一定下载私钥，您只有一下载私钥的机会。</div>
                 </zt-form-item>
                 <zt-form-item v-if="form.radioType === 'import'" label="公钥内容" class="mb0" prop="keyContent" :rules="[{
                         required: true,
@@ -21,7 +21,7 @@
                         trigger: ['submit']
                     }]">
                     <el-input type="textarea" size="small" :autosize="{ minRows: 6, maxRows: 10}" v-model="form.keyContent" placeholder=""></el-input>
-                    <div class="input-help">(Base64编码)
+                    <div slot="help" class="input-help">(Base64编码)
                         <a class="finger-cursor">导入样例</a>
                     </div>
                 </zt-form-item>
@@ -61,7 +61,7 @@ export default {
                         trigger: ['submit', 'blur']
                     },
                     {
-                        pattern: /^[\u4e00-\u9fa5a-zA-Z0-9-_]+$/,
+                        pattern: /^[a-zA-Z0-9-_]+$/,
                         message: '名称输入有误',
                         trigger: ['submit', 'blur']
                     }
@@ -117,7 +117,7 @@ export default {
                         .then(res => {
                             if (res.code === '0000') {
                                 this.$message.success('操作成功');
-                                window.open(API_URL + res.data) ;
+                                if (this.form.radioType === 'auto') window.open(API_URL + res.data) ;
                                 this.resolve(data);
                                 this.hide();
                             }

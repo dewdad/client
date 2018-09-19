@@ -147,7 +147,7 @@ export default {
 
         //刷新
         refresh: function() {
-            this.$emit('refresh',this.stateParams.id);
+            this.$emit('refresh');
         }
     },
 };

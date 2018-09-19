@@ -54,7 +54,7 @@ export async function createGroup({name = '', description = '', zone = 'az1.dc1'
 
 export async function modifyGroup({id, name = '', description = ''} = {}) {
     let url = API_ECS.security.modifyGroup;
-    let res = await http.put(url, {
+    let res = await http.put(replaceParamVal(url, [id]), {
         id,
         name,
         description

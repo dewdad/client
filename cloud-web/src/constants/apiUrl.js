@@ -73,6 +73,7 @@ export const API_ECS = {
         resizeInstFlavor: ECS_CTRL + '/servers/{instanceId}/resize/{flavorId}',
         reloadInstOS: ECS_CTRL + '/servers/reloadSystem',
         actionInst: '/compute/server/action/{instanceId}',
+        reboot: '/compute/serverAction/reboot/{serverId}/{type}',
         editInstInfo: '/compute/server/editEcs/{instanceId}',
         deleteInst: '/compute/server/{instanceId}',
         getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
@@ -183,7 +184,7 @@ export const API_ECS = {
     },
     security: {
         createGroup: '/compute/securityGroup/createSecurityGroup', // 创建安全组
-        modifyGroup: '/compute/securityGroup/updateSecurityGroup', // 修改安全组
+        modifyGroup: '/compute/securityGroup/updateSecurityGroup/{id}', // 修改安全组
         exampleBindGroup: ECS_CTRL + '/security-group/bind-ecs', // 给实例绑定安全组
         exampleUntieGroup: ECS_CTRL + '/security-group/unbind-ecs', // 给实例解绑安全组
         createGroupRule: '/compute/securityGroup/createSecurityGroupRule', // 创建安全组规则

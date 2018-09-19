@@ -641,7 +641,7 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             //this.ecsInstAction(rowItem.id, ret.radio);
                             ret.loading = true;
-                            this.ecsInstAction(rowItem.id, 'reboot', 1)
+                            this.ecsInstAction(rowItem.id, 'reboot', ret.radio)
                                 .then(async res => {
                                     if (res.code === '0000') {
                                         ret.loading = false;

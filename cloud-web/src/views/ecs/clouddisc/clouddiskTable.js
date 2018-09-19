@@ -352,7 +352,7 @@ export default {
             this.$refs.ModifyDiskDescripDialog.show(rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
+                    this.getDiskList(false);
                 })
                 .catch(err => {
                     if (err) {
@@ -370,7 +370,6 @@ export default {
             this.$refs.ModifyDiskPropDialog.show(rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
-                    return this.$confirm('操作成功');
                 })
                 .catch(err => {
                     if (err) {

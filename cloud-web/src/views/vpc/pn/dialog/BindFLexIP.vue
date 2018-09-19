@@ -20,8 +20,8 @@
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
+            <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -33,6 +33,7 @@ export default {
             isShow: false,
             resolve: null,
             reject: null,
+            loading: false,
             floatId: '',
             ruleForm:{
                 felxIp:'',
@@ -94,20 +95,19 @@ export default {
         },
         // 确定绑定浮动IP
         bindFloatIPFn() {
-
+            this.loading = true;
             bindFloatIP(this.ruleForm.ecsCase, this.floatId)
                 .then(res => {
-                    if (res && res.data) {
-                        let data = res.data;
-                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let dataList = data.data || [];
-                            $log(dataList);
-                        }
+                    if (res) {
+                        this.$message.success('操作成功');
+                        this.resolve(true);
+                        this.hide();
                     }
                 })
                 .catch(e => {
                     console.error('bindFloatIPFn', e);
-                    self.loading = false;
+                }).finally(() => {
+                    this.loading = false;
                 });
         }
     }

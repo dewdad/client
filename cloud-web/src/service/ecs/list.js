@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-18 14:44:44
+ * @Last Modified time: 2018-09-19 18:41:01
  * ecs模块 列表页面
  */
 
@@ -105,6 +105,9 @@ export async function saveInstFlavor({ecsId, flavorId}) {
  */
 export async function ecsInstAction(instanceId, actionReq, type) {
     let url = replaceParamVal(API_ECS.inst.actionInst, [instanceId]);
+    if (actionReq === 'reboot') {
+        url = replaceParamVal(API_ECS.inst.reboot, [instanceId, type]);
+    }
     let res = await http.post(url, {
         actionReq,
         type
