@@ -20,7 +20,7 @@ export async function getUnbindPublicIP({status = 'down', floatingIpAddress = ''
     let url = API_ECS.floatIp.list;
     let response = await http.get(url, {
         params: {
-            state: status,
+            status: status,
             pageIndex: 1,
             limit: 1000
         }
