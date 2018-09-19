@@ -30,6 +30,13 @@ export default {
         state.navCollapse = !state.navCollapse;
     },
     /**
+     * 二级菜单栏收展
+     * @param {*} state
+     */
+    SIDEBAR_COLLAPSE(state) {
+        state.sidebarCollapse = true;
+    },
+    /**
      * 设置页面错误显示
      * @param {*} state
      * @param {*} data

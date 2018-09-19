@@ -15,6 +15,8 @@ export default new Vuex.Store({
         collapse: false,
         // 二级菜单展开，收起 默认展开
         navCollapse: false,
+        // 二级菜单展开，收起 默认展开
+        sidebarCollapse: false,
         // 登录状态
         isLogined: false,
         // 路由加载中

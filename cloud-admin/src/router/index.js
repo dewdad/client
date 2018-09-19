@@ -221,6 +221,27 @@ export default new Router({
                                 title: '端口管理'
                             },
                             component: () => import('@/views/cloudres/network/protmgr')
+                        },{
+                            path: 'resmodel',
+                            name: 'app.resources.resmodel',
+                            meta: {
+                                title: '资源模板'
+                            },
+                            component: () => import('@/views/cloudres/resmodel/resmodel')
+                        },{
+                            path: 'instanceDetail/:id',
+                            name: 'app.resources.instance.instanceDetail',
+                            meta: {
+                                title: '云主机详情'
+                            },
+                            component: () => import('@/views/cloudres/instanceDetail')
+                        },{
+                            path: 'image',
+                            name: 'app.cloudres.image',
+                            meta: {
+                                title: '镜像'
+                            },
+                            component: () => import('@/views/cloudres/mirror/mirror')
                         }
                     ]
                 }

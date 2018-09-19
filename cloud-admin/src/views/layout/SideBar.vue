@@ -13,7 +13,7 @@
                 <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
-        <div class="sidebar-submenu" v-if="submenus.length">          
+        <div class="sidebar-submenu" v-if="submenus.length">
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
@@ -50,7 +50,8 @@ export default {
     computed: {
         ...mapState({
             user: state => state.user.userInfo,
-            //isCollapse: state => state.collapse,
+            sidebarCollapse: state => state.sidebarCollapse,
+
         }),
         menuList: function() {            
             return window.navList || [];
@@ -87,6 +88,7 @@ export default {
         },
         //处理激活的一二级菜单；
         parseActivemenu(menuList){
+
             if(menuList && menuList.length){
                 this.activeRouteHref = this.parseRouterName();
                 menuList.forEach( (menu) =>{
@@ -98,8 +100,10 @@ export default {
                         });                        
                         if(submenu) {
                             this.activeMenuCode = menu.menuCode;
+                            // 收展侧边菜单
                             this.submenus = menu.submenus;
-                        }else{                         
+                        }else{
+                            // 收展侧边菜单
                             this.activeMenuCode = '0000';
                         }
                     }
@@ -111,6 +115,7 @@ export default {
                 // let submenus = [];
                 let navlist = window.navList;
                 let that = this;
+
                 if(navlist && navlist.length){
                     this.activeRouteHref = this.parseRouterName();
                     navlist.forEach( (menu) =>{
@@ -125,8 +130,10 @@ export default {
                                 let me = navlist.find( (me) => {
                                     return me.menuCode === that.activeMenuCode;
                                 });
+
                                 that.submenus = me.submenus;
                             }else{
+
                                 that.activeMenuCode = '0000';
                             }
                         }

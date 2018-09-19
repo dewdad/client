@@ -8,7 +8,7 @@
                 <el-input placeholder="输入描述" v-model="form.description"></el-input>
             </el-form-item>
 
-        <div v-if="user.roleType == 1">
+        <div v-if="user.roleType == 1 || user.roleType == 2">
             <el-form-item label="VCPU数量：" prop="quota.cpu" :label-width="formLabelWidth" >
                 <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.cpu"></el-input-number>
             </el-form-item>
@@ -169,6 +169,7 @@ export default {
                 console.log('item',item);
                 this.form.id = item.id;
                 this.form.name = item.name;
+                if(item.quota) this.form.quota = item.quota;
                 this.form.description = item.description;
                 this.searchDeptDetail();
             }else{
@@ -220,7 +221,7 @@ export default {
             searchDeptDetail(this.item.id).then(ret => {
                 $log('list....detail', ret);
                 let resData = ret.data;
-                if(resData){
+                if(resData && resData.quota){
                     this.form = resData || [];
                 }
             });
