@@ -16,7 +16,7 @@
             <!-- 端口范围 -->
             <zt-form-item v-if="ruleForm.Protocol_type.indexOf('all') === -1" label="端口范围" prop="port">
                 <el-input size="small" :disabled="checkPortList.length > 0 " v-model="ruleForm.port" placeholder="例如：22/22或3389/3389"></el-input>
-                <span class="input-help">取值范围从1到65535；设置格式例如“1/200”、“80/80”，其中 “-1/-1”不能单独设置，代表不限制端口。</span>
+                <span class="input-help">取值范围从1到65535；设置格式例如“1/200”、“80/80”。</span>
             </zt-form-item>
             <!-- 常用端口 -->
             <zt-form-item v-if="ruleForm.Protocol_type === 'TCP'" label="常用端口">
@@ -41,7 +41,7 @@
             </zt-form-item>
             <!-- 地址段 -->
             <zt-form-item label="授权对象" key="ADDR" prop="uthorizationip" v-if="remoteIpPrefix === 'ADDR'" :rules="[{required: true, message: '必填项', trigger: ['submit']}, {pattern: IPAddr_REGEXP, message: '输入有误', trigger: ['submit', 'blur']}]">
-                <el-input size="small" v-model="ruleForm.uthorizationip" placeholder="例如:10.x.y.z/32,多个用, 隔开，最多支持50组"></el-input>
+                <el-input size="small" v-model="ruleForm.uthorizationip" placeholder="例如:10.x.y.z/32"></el-input>
                 <span class="input-help">请根据实际场景设置授权对象的CIDR，另外，0.0.0.0/0代表允许或拒绝所有IP的访问，设置时请务必谨慎。</span>
             </zt-form-item>
             <!-- 描述 -->

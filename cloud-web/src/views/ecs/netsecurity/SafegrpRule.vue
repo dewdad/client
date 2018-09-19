@@ -34,6 +34,8 @@
                                 </template>
                             </template>
                     </el-table-column>
+                    <!-- 授权地址 -->
+                    <el-table-column prop="remote_ip_prefix" label="授权地址"></el-table-column>
                     <!-- 授权类型 -->
                     <el-table-column prop="ethertype" label="授权类型"></el-table-column>
                 <!-- 操作 -->
