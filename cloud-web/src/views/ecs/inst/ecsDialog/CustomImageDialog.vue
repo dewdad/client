@@ -11,10 +11,8 @@
         <div style="padding-right: 150px;">
             <zt-form class="mt20" inline-message size="small" :model="customImage" label-width="130px" :rules="rules" ref="ruleForm">
                 <zt-form-item label="自定义镜像名称" class="mb20" prop="imageName">
-                    <div>
                         <el-input v-model="customImage.imageName" placeholder="请输入自定义镜像名称" maxlength="64" :clearable="true"></el-input>
-                        <span class="input-help">不能输入中文，长度为2-64个字符，不能以特殊字符及数字开头，只可包含特殊字符中的".","_"或"-"</span>
-                    </div>
+                        <span slot="help" class="input-help">不能输入中文，长度为2-64个字符，不能以特殊字符及数字开头，只可包含特殊字符中的".","_"或"-"</span>
                 </zt-form-item>
             </zt-form>
         </div>

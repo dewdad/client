@@ -44,6 +44,7 @@ export default {
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.$message.success('操作成功');
+                    this.refresh();
                 })
                 .catch(err => {
                     if (err) {
@@ -52,6 +53,9 @@ export default {
                         console.log('取消');
                     }
                 });
+        },
+        refresh() {
+            this.$refs.table.getDiskList();
         }
     }
 };

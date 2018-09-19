@@ -25,7 +25,7 @@
                     </el-table-column>
                     <el-table-column label="选择" width="120" class-name="option-column">
                         <template slot-scope="scope">
-                            <a @click="confirm(scope.row.id)">选择</a>
+                            <a @click="confirm(scope.row.id)" :disabled="checkDisabled(scope.row.id)">选择</a>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -160,6 +160,12 @@ export default {
                 .finally(() => {
                     this.isSubmit = false;
                 });
+        },
+        checkDisabled(id) {
+            let find = this.currentGroupList.find(item => {
+                return item.id === id;
+            });
+            return find === undefined ? false : true;
         },
         handleCurrentChange(value) {
             this.searchObj.paging.pageIndex = value;

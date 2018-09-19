@@ -1,85 +1,74 @@
 <template>
-<div class="page-main">
-    <page-header>
-        浮动IP
-        <div slot="content"  class="pull-right">
-            <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
-                申请浮动IP
-            </el-button>
-            <el-button type="info" size="small" @click="fetchData">
-                <i class="iconfont icon-icon-refresh"></i>
-            </el-button>
+    <div class="page-main">
+        <page-header>
+            浮动IP
+            <div slot="content" class="pull-right">
+                <el-button type="primary" size="small" @click="applyFloatIPFn" class="mr10">
+                    申请浮动IP
+                </el-button>
+                <el-button type="info" size="small" @click="fetchData">
+                    <i class="iconfont icon-icon-refresh"></i>
+                </el-button>
+            </div>
+        </page-header>
+        <div class="page-body">
+            <!-- 表格 -->
+            <zt-table @filterVal="filterHandler" :loading="isLoading" :data="tableData" :search="true" :search-condition="fields" @search="getScreenVal" :paging="searchObj.paging" size="small">
+                <el-table-column prop="title" label="VPCID/名称" :min-width="180">
+                    <template slot-scope="scope">
+                        <div>
+                            <span class="font12">{{scope.row.floatingNetworkId}}</span>
+                        </div>
+                        <div>{{scope.row.networkName}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="IP地址">
+                    <template slot-scope="scope">
+                        {{scope.row.floatingIpAddress}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="已映射固定IP地址">
+                    <template slot-scope="scope">
+                        {{scope.row.fixedIpAddress}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" prop="state" :filter-multiple="false" :filtered-value="[state]" column-key="state" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'ACTIVE'},{text: '未绑定', value: 'DOWN'} ]">
+                    <template slot-scope="scope">
+                        <span :class="{'color-danger': scope.row.fixedIpAddress === null}">
+                            {{scope.row.fixedIpAddress ? '已绑定': '未绑定'}}
+                        </span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="绑定实例" :min-width="50">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.subnets}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
+                    <template slot-scope="scope">
+                        <a @click="bindFlexFn(scope.row)" :disabled="scope.row.fixedIpAddress !== null">绑定</a>
+                        <b class="link-division-symbol"></b>
+                        <a :disabled="scope.row.fixedIpAddress === null" @click="unbundlingIp(scope.row)">解绑</a>
+                        <b class="link-division-symbol"></b>
+                        <a @click="deleteFloatIP(scope.row)">释放</a>
+                    </template>
+                </el-table-column>
+            </zt-table>
         </div>
-    </page-header>
-    <div class="page-body">
-    <!-- 表格 -->
-    <zt-table
-        @filterVal="filterHandler"
-        :loading="isLoading"
-        :data="tableData" 
-        :search="true" 
-        :search-condition="fields" 
-        @search="getScreenVal" 
-        :paging="searchObj.paging"
-        size="small">
-        <el-table-column prop="title" label="VPCID/名称" :min-width="180">
-            <template slot-scope="scope">
-                <div>
-                    <span class="font12">{{scope.row.floatingNetworkId}}</span>
-                </div>
-                <div>{{scope.row.networkName}}</div>
-            </template>
-        </el-table-column>
-        <el-table-column label="IP地址">
-            <template slot-scope="scope">
-                {{scope.row.floatingIpAddress}}
-            </template>
-        </el-table-column>
-        <el-table-column label="已映射固定IP地址">
-            <template slot-scope="scope">
-                {{scope.row.fixedIpAddress}}
-            </template>
-        </el-table-column>
-        <el-table-column label="状态" prop="state" :filter-multiple="false"  :filtered-value="[state]" column-key="state" :filters="[{text: '全部', value: ''}, {text: '已绑定', value: 'ACTIVE'},{text: '未绑定', value: 'DOWN'} ]">
-            <template slot-scope="scope">
-                <span :class="{'color-danger': scope.row.state === 'DOWN'}">
-                    {{scope.row.state === 'DOWN' ? '未绑定' : '已绑定'}}
-                </span>
-            </template>
-        </el-table-column>
-        <el-table-column label="绑定实例" :min-width="50">
-            <template slot-scope="scope">
-                <span>{{scope.row.subnets}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
-            <template slot-scope="scope" >
-                <a @click="bindFlexFn(scope.row)">绑定</a>
-                <b class="link-division-symbol"></b>
-                <span class="color-secondary" v-if="scope.row.state === 'DOWN'">解绑</span>
-                <a v-else>解绑</a>
-                <b class="link-division-symbol"></b>
-                <a @click="deleteFloatIP(scope.row)">释放</a>
-            </template>
-        </el-table-column>
-    </zt-table>
+        <!-- 绑定浮动IP -->
+        <BindFLexIP ref="BindFLexIP"></BindFLexIP>
+        <!-- 申请浮动IP -->
+        <ApplyFloatIP ref="ApplyFloatIP"></ApplyFloatIP>
     </div>
-    <!-- 绑定浮动IP -->
-    <BindFLexIP ref="BindFLexIP"></BindFLexIP>
-    <!-- 申请浮动IP -->
-    <ApplyFloatIP ref="ApplyFloatIP"></ApplyFloatIP>    
-</div>
 </template>
 <script>
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import ApplyFloatIP from './dialog/ApplyFloatIP';
 import BindFLexIP from './dialog/BindFLexIP';
-import {queryFlexIP, queryNetwork, deleteFloatIP } from '@/service/ecs/network.js';
+import {queryFlexIP, queryNetwork, deleteFloatIP} from '@/service/ecs/network.js';
 import {getEcsInstList} from '@/service/ecs/list.js';
-
-let fields = [
-    {field: 'name', label: '浮动IP地址', tagType: 'INPUT'}
-];
+import {unbundlingIp} from '@/service/ecs/floating';
+let fields = [{field: 'name', label: '浮动IP地址', tagType: 'INPUT'}];
 
 let searchObj = {
     //分页
@@ -147,37 +136,52 @@ export default {
         },
         // 获得搜索条件
         getScreenVal(params) {
-            $log('searchVal',params);
+            $log('searchVal', params);
             this.searchObj.paging.pageIndex = params.pageIndex;
             this.floatingIpAddressVal = params.fileds.name;
             this.fetchData();
         },
         // 绑定浮动Ip
-        bindFlexFn(params){
+        bindFlexFn(params) {
             let BindFLexIP = this.$refs.BindFLexIP;
             if (BindFLexIP) {
-                BindFLexIP.show(params, this.exampleList)
-                    .then(ret => {
-                        if (ret) {
-                            this.fetchData();
-                        }
-                    });
+                BindFLexIP.show(params, this.exampleList).then(ret => {
+                    if (ret) {
+                        this.fetchData();
+                    }
+                });
             }
+        },
+        unbundlingIp(row) {
+            this.$confirm(`你确定要解绑浮动IP：${row.floatingIpAddress} 吗？`, '解绑', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'danger'
+            }).then(() => {
+                unbundlingIp({floatipId: row.id}).then(res => {
+                    if (res.data.code === '0000') {
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.fetchData();
+                    }
+                });
+            });
         },
         // 申请浮动IP
         applyFloatIPFn() {
             let ApplyFloatIP = this.$refs.ApplyFloatIP;
             if (ApplyFloatIP) {
-                ApplyFloatIP.show(this.outerNetData)
-                    .then(ret => {
-                        if (ret) {
-                            this.$message({
-                                message: '操作成功',
-                                type: 'success'
-                            });
-                            this.fetchData();
-                        }
-                    });
+                ApplyFloatIP.show(this.outerNetData).then(ret => {
+                    if (ret) {
+                        this.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                        this.fetchData();
+                    }
+                });
             }
         },
         // 获取实例列表
@@ -214,7 +218,6 @@ export default {
                 console.warn('fetchData', ret);
 
                 this.outerNetData = ret.data;
-
             } catch (error) {
                 console.error('fetchData', error.message);
             }
@@ -231,7 +234,6 @@ export default {
                     return deleteFloatIP({
                         floatIP: row.id
                     });
-                    
                 })
                 .then(ret => {
                     $log('deleteNetwork ret <-', ret);
@@ -243,11 +245,10 @@ export default {
                         this.fetchData();
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     // 取消
                     $log('deleteNetwork', error.message);
                 });
-            
         },
         // 状态筛选
         filterHandler(value) {

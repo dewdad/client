@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-13 19:25:58
+ * @Last Modified time: 2018-09-19 17:42:07
  * ecs模块-云盘
  */
 
@@ -39,10 +39,11 @@ export async function setDiskSnapshotPolicy({diskIds, policyId, sourcePage}) {
 }
 
 //更新磁盘，修改磁盘描述
-export async function updateDisk(id, name) {
+export async function updateDisk({id, name = '', remark} = {}) {
     let url = replaceParamVal(API_ECS.disk.updateDisk, [id]);
     let res = await http.put(url, {
-        name: name
+        name,
+        remark
     });
     return res && res.data;
 }

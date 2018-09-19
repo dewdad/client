@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-18 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-07 16:28:36
+ * @Last Modified time: 2018-09-19 18:07:00
  * ecs模块 浮动IP
  */
 
@@ -16,13 +16,14 @@ const ECS_CTRL = 'services-ecs';
 //绑定：找所有未绑定的 公网IP
 //status: 值为'DOWN' 时查询找所有未绑定的 公网IP,
 //eip_subnet: 传值且为true时查询连接IP
-export async function getUnbindPublicIP({status = 'down', floatingIpAddress = ''} = {}) {
+export async function getUnbindPublicIP({status = 'DOWN', statusroptionValue = 'all'} = {}) {
     let url = API_ECS.floatIp.list;
     let response = await http.get(url, {
         params: {
             status: status,
             pageIndex: 1,
-            limit: 1000
+            limit: 1000,
+            statusroptionValue
         }
     });
     return response.data;

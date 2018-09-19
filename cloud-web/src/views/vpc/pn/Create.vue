@@ -4,7 +4,7 @@
     <div class="pr130">
         <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
             <zt-form-item label="专有网络名称" prop="name">
-                <el-input v-model="data.name"></el-input>
+                <el-input v-model="data.name" maxlength="48"></el-input>
                 <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
             <zt-form-item v-if="this.type === 'create'" label="网段" prop="cindr">
@@ -30,8 +30,8 @@
         </zt-form>
     </div>
     <span slot="footer" class="dialog-footer">
-        <el-button type="primary" class="font12" @click="confirm" :loading="loading">确 定</el-button>
-        <el-button type="info" class="font12" @click="hide">取 消</el-button>
+        <el-button type="info" size="small" @click="hide">取 消</el-button>
+        <el-button type="primary" size="small" @click="confirm" :loading="loading">确 定</el-button>
     </span>
 </el-dialog>
 </template>
@@ -97,7 +97,8 @@ export default {
             },
             rules: {
                 name: [
-                    { required: true, message: '请输入专有网络名称', trigger: 'blur' }
+                    { required: true, message: '请输入专有网络名称', trigger: 'blur' },
+                    { min: 1, max: 48, message: '长度为2-48个字符', trigger: 'blur' }
                 ],
                 cindr: [
                     { required: true, message: '请输入网段', trigger: 'blur' },

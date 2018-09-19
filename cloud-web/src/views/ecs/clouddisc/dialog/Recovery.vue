@@ -4,8 +4,8 @@
             <zt-form inline-message class="mt20 demo-ruleForm" label-width="80px" size="small" ref="ruleForm">
                 <!-- 恢复到 -->
                 <zt-form-item label="恢复到">
-                    <el-select v-model="formData.volumeId" :loading="remote" placeholder="请选择云盘">
-                        <el-option v-for="item in disks" :key="item.id" :label="item.name" :value="item.id">
+                    <el-select v-model="formData.volumeId" :loading="remote" value-key="id" placeholder="请选择云盘">
+                        <el-option v-for="item in disks" :key="item.id" :label="item.name" :value="item">
                         </el-option>
                     </el-select>
                 </zt-form-item>
@@ -19,7 +19,7 @@
     </el-dialog>
 </template>
 <script>
-import {getAllDisk, restoreBackup} from '@/service/ecs/disk/disk.js';
+import {getDiskList, restoreBackup} from '@/service/ecs/disk/disk.js';
 
 export default {
     data() {
@@ -72,9 +72,15 @@ export default {
         confirm() {
             let data = {
                 backupId: this.rowItem.id,
-                volumeId: this.formData.volumeId
+                volumeId: this.formData.volumeId.id
                 //imageRef: '',
             };
+            if (this.formData.volumeId.size <= this.rowItem.size) {
+                this.$alert('磁盘容量必须大于等于备份容量', {
+                    type: 'error'
+                });
+                return;
+            }
             this.loading = true;
             restoreBackup(data)
                 .then( res => {
@@ -95,7 +101,12 @@ export default {
         //查询所有云盘
         getAllDisk() {
             this.remote = true;
-            getAllDisk().then(res => {
+            let params = {
+                pageIndex:1,
+                limit: 9999,
+                status: 'available'
+            };
+            getDiskList(params).then(res => {
                 if (res.code === '0000') {
                     let data = res.data;
                     let jsonData = data.data;

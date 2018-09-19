@@ -16,8 +16,8 @@
         </el-alert>
         <div class="mt20">
             <span class="title font14">{{ $t('dialog.restartEcsInst.restartType') }}</span>
-            <el-radio v-model="radio" :label="4">{{ $t('dialog.restartEcsInst.restart') }}</el-radio>
-            <el-radio v-model="radio" :label="5">{{ $t('dialog.restartEcsInst.forceRestart') }}</el-radio>
+            <el-radio v-model="radio" label="SOFT">{{ $t('dialog.restartEcsInst.restart') }}</el-radio>
+            <el-radio v-model="radio" label="HARD">{{ $t('dialog.restartEcsInst.forceRestart') }}</el-radio>
         </div>
         <el-alert v-show="radio ===5" class="font12 mt20" type="warning" :closable="false" title="">
             <div>
@@ -39,7 +39,7 @@ export default {
             resolve: null,
             reject: null,
             loading: false,
-            radio: 4,
+            radio: 'SOFT',
             toggleClass:false,
             isForcechecked:false,
             rowItem:{}

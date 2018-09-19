@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-17 10:25:02
+ * @Last Modified time: 2018-09-19 18:09:09
  * ecs模块 读取网络信息接口
  */
 
@@ -72,7 +72,7 @@ export async function bindFloatIP(instIP, floatIP) {
 export async function confirmApplyFloatIP({...arg}) {
     $log('GET /applyFloatIP ->', {...arg});
     let ret = await http.post(API_ECS.network.applyFloatIP, {...arg});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+    return ret && ret.data;
 }
 
 /**

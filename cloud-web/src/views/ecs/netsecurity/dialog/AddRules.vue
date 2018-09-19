@@ -14,12 +14,12 @@
                 </el-select>
             </zt-form-item>
             <!-- 端口范围 -->
-            <zt-form-item label="端口范围" prop="port">
+            <zt-form-item v-if="ruleForm.Protocol_type.indexOf('all') === -1" label="端口范围" prop="port">
                 <el-input size="small" :disabled="checkPortList.length > 0 " v-model="ruleForm.port" placeholder="例如：22/22或3389/3389"></el-input>
                 <span class="input-help">取值范围从1到65535；设置格式例如“1/200”、“80/80”，其中 “-1/-1”不能单独设置，代表不限制端口。</span>
             </zt-form-item>
             <!-- 常用端口 -->
-            <zt-form-item label="常用端口">
+            <zt-form-item v-if="ruleForm.Protocol_type === 'TCP'" label="常用端口">
                 <el-checkbox-group v-model="checkPortList">
                     <el-checkbox v-for="item in commonPort" :key="item.label" class="ml10" :label="item.label">{{item.value}}</el-checkbox>
                 </el-checkbox-group>
@@ -89,11 +89,11 @@ export default {
             descInput: '',
             commonPort,
             checkPortList: [],
-            accessType: [{value: 'TCP', label: 'TCP'}, {value: 'UDP', label: 'UDP'}, {value: 'ICMP', label: 'ICMP'}],
+            accessType: [{value: 'allTCP', label: '允许所有TCP'}, {value: 'allUDP', label: '允许所有UDP'}, {value: 'allICMP', label: '允许所有ICMP'},{value: 'TCP', label: 'TCP'}, {value: 'UDP', label: 'UDP'}, {value: 'ICMP', label: 'ICMP'}],
             authType: [{value: 'ADDR', label: '地址段访问'}, {value: 'SGRP', label: '安全组访问'}],
             remoteIpPrefix: 'ADDR',
             ruleForm: {
-                Protocol_type: 'TCP',
+                Protocol_type: 'allTCP',
                 port: '',
                 uthorizationip: '',
                 remark: ''
@@ -124,6 +124,7 @@ export default {
         },
         isShow: function(newval) {
             if (!newval) {
+                this.checkPortList = [];
                 this.$refs.ruleForm.resetFields();
                 this.$refs.ruleForm.clearValidate();
             }

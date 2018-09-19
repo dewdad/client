@@ -3,7 +3,7 @@
         <page-header>
             <img src="@/assets/images/control/oss_icon.svg" height="50" alt="">
             <div slot="content">
-                <div class="font18">{{get(headerInfo, 'bucket')}}</div>
+                <div class="font18">{{get(headerInfo, 'name')}}</div>
             </div>
             <div slot="right" class="font12">
                 <label v-if="permission === 'Read'" class=" mr10 color-danger">

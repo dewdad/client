@@ -18,11 +18,20 @@
         <!-- 列表 -->
             <zt-table :loading="loading"  :data="tableData" :search="false"  @search="getGroupRuleListFn" :paging="searchObj.paging">
                     <!-- 协议类型 -->
-                    <el-table-column prop="protocol" label="协议类型"></el-table-column>
+                    <el-table-column prop="protocol" label="协议类型">
+                        <template slot-scope="scope">
+                            {{scope.row.protocol || '所有'}}
+                        </template>
+                    </el-table-column>
                     <!-- 端口范围 -->
                     <el-table-column prop="protocol" label="端口范围">
                         <template slot-scope="scope">
+                            <template v-if="scope.row.port_range_min || scope.row.port_range_max">
                             {{scope.row.port_range_min}} - {{scope.row.port_range_max}}
+                            </template>
+                            <template v-else>
+                                所有
+                                </template>
                             </template>
                     </el-table-column>
                     <!-- 授权类型 -->

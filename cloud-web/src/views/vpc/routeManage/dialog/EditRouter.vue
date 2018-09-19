@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="申请浮动IP"
+        title="创建路由"
         :visible.sync="isShow"
         width="600px"
         class="EditRouter">

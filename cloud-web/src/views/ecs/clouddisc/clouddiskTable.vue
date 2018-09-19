@@ -74,7 +74,7 @@
                     </template>
                 </el-table-column>
                 <!-- 操作 -->
-                <el-table-column label="操作" key="op"  class-name="option-column" width="280">
+                <el-table-column label="操作" key="op" class-name="option-column" width="280">
                     <template slot-scope="scope">
                         <!-- 创建快照 -->
                         <span @click="createSnap(scope.row)" class="btn-linker">创建快照</span>
@@ -90,13 +90,12 @@
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item :disabled="scope.row.status!=='available'" :command="{handle:'mountDataDiskFn',rowItem:scope.row}">挂载</el-dropdown-item>
-                                <el-dropdown-item :disabled="scope.row.status!=='in-use' || scope.row.image_id !== ''" :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
+                                <el-dropdown-item :disabled="(scope.row.status!=='in-use' && scope.row.image_id !== '') || (scope.row.status!=='in-use')" :command="{handle:'unmoutDisk',rowItem:scope.row}">卸载</el-dropdown-item>
                                 <el-dropdown-item :disabled="scope.row.status==='in-use'" :command="{handle:'releaseDisk',rowItem:scope.row}">释放</el-dropdown-item>
                                 <el-dropdown-item :command="{handle:'modifyDiskDescrip',rowItem:scope.row}"> 修改磁盘描述</el-dropdown-item>
-                                <el-dropdown-item command>
+                                <el-dropdown-item v-if="instanceId === ''" command :disabled="scope.row.status!=='available'">
                                     <router-link tag="div" :to="{name:'app.ecs.expandsize',params:{id:scope.row.id,item:scope.row}}">磁盘扩容</router-link>
                                 </el-dropdown-item>
-                                <el-dropdown-item command class="color999 font12" v-if="scope.row.status!=='in-use' && scope.row.status !=='available' && scope.row.bootable === false">磁盘扩容</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </template>
