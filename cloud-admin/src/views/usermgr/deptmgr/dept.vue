@@ -11,23 +11,23 @@
                             <span class="icon-zt_plus"></span> 新建部门</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button  @click="enableDept(brunch,2)">
+                        <el-button  @click="enableDept(brunch,2)" :disabled="brunch.id === user.deptId">
                             <span class="icon-zt_enablement"></span> 启用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button  @click="disableDept(brunch,2)">
+                        <el-button  @click="disableDept(brunch,2)" :disabled="brunch.id === user.deptId">
                             <span class="icon-zt_disable"></span> 禁用</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button  @click="delDept(brunch)">
+                        <el-button  @click="delDept(brunch)" :disabled="brunch.id === user.deptId">
                             <span class="fa fa-trash"></span> 删除</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="viewDept(brunch)">
+                        <el-button @click="viewDept(brunch)" >
                             <span class="icon-zt_view"></span> 查看配额</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="createDept(brunch,brunch,2)">
+                        <el-button @click="createDept(brunch,brunch,2)" :disabled="brunch.id === user.deptId">
                             <span class="icon-zt_edit"></span> 编辑</el-button>
                     </el-form-item>
                 </el-form>

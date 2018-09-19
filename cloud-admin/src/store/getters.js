@@ -4,6 +4,7 @@ const getters = {
     deptbrunch: state => state.user.deptbrunch,
     collapse: state => state.collapse,
     navCollapse: state => state.navCollapse,
+    sidebarCollapse: state => state.sidebarCollapse,
     isLogined: state => state.isLogined,
 };
 export default getters;

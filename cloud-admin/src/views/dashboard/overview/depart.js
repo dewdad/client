@@ -66,7 +66,8 @@ export default {
             deptList:[],
             brunch:{},
             selectedKey:[],
-            item:{}
+            item:{},
+            fullscreenLoading: false,
 
         };
     },
@@ -92,7 +93,9 @@ export default {
                 domain:this.deptbrunch.id,
             };
             $log('params', params);
+            this.fullscreenLoading = true;
             deptTree(params).then(ret => {
+                this.fullscreenLoading = false;
                 $log('treedata', ret);
                 let resData = ret.data;
                 let tree = this.deptbrunch;
@@ -204,7 +207,7 @@ export default {
     mounted(){
         this.clickDeptDropdown = (e) => {
             e.stopPropagation();
-            if (e.target.className.split(' ')[1] === 'deptDropdownBtn' || e.target.className.split(' ')[0] === 'el-dropdown-link'){
+            if (e.target.className.split(' ')[1] === 'deptDropdownBtn' || e.target.className.split(' ')[0] === 'el-dropdown-link'|| e.target.className.split(' ')[0] === 'el-icon-caret-bottom'){
                 this.departShow = !this.departShow;
                 // document.getElementById('submit').click();
             }else{
