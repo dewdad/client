@@ -1,5 +1,5 @@
 <template>
-    <div class="page-main depart-box">
+    <div class="page-main depart-box" v-loading.lock="fullscreenLoading">
         <!-- 外层 -->
         <el-row :gutter="20">
             <el-col :span="24" style="height: 100%;">

@@ -8,6 +8,7 @@ const OP_LOG = '/mq';
 const SYS = '/resources';//平台
 const ORDER = '/resources/order';//工单
 const ADMIN = '/compute/admin';//管理
+const ME = '/compute';//图表
 
 
 // 登录模块
@@ -22,8 +23,23 @@ export const CLOUD_RES = {
     ecsList: ADMIN + '/server/list',
     delEcs: ADMIN + '/server/',
     bootEcs: ADMIN + '/serverAction/reboot/',
-    rebootEcs: ADMIN + '/admin/serverAction/reboot/',
+    rebootEcs: ADMIN + '/serverAction/reboot/',
+    getHostItem: ADMIN + '/securityGroup/getSecurityGroupsDetail/',
+    getHostItemDetail: ADMIN + '/server/get/',
+    showVolumeDetails: ADMIN + '/volume/',
+    getEcharts: ME + '/overview/getEchartMetricData',
+    serverGetVNCConsole: ADMIN + '/serverAction/getVNCConsole/',
+    Virtualmig: ADMIN + '/server/liveMigrate/',
+    createMirror: ADMIN + '/image/create',
+    searchMirrorList: ADMIN + '/image/list',
+    delMirror: ADMIN + '/image/delete',
 
+};
+// 云资源管理-资源模板
+export const MODEL = {
+    modelList: ADMIN + '/flavor/list',
+    delModel: ADMIN + '/flavor/delete',
+    createModel: ADMIN + '/flavor',
 };
 // 云资源管理-网络管理
 export const NETWORK = {

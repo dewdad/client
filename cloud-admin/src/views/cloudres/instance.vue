@@ -39,7 +39,8 @@
                         <template v-if="col.column=='dept'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.id}}</span>
+                                    <span class="font12 mr10">{{scope.row.domain_name}}</span>
+
                                 </template>
                             </el-table-column>
                         </template>
@@ -47,32 +48,29 @@
                         <template v-if="col.column=='renter'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 1">超级管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 2">部门管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 3">子部门管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 4">用户</span>
-
+                                    <span class="font12 mr10">{{scope.row.project_name}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <a class="font12 mr10" @click="showDetail(scope.row)">{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='net'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <p class="font12 mr10 color999">{{returnName(scope.row.addresses.addresses)}}</p>
+                                    <p class="font12 mr10 ">{{returnValue(scope.row.addresses.addresses)}}</p>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='setting'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row.flavor.name}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -86,7 +84,7 @@
                         <template v-if="col.column=='creatTime'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.creatTime | date}}</span>
+                                    <span class="font12 mr10">{{scope.row.created | date}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -95,14 +93,24 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="delEcs(scope.row)" class="btn-linker">删除</a>
-                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' "></b>
                                 <a  @click="bootEcs(scope.row,'start')" class="btn-linker" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' ">启动</a>
+                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' "></b>
+                                <a  @click="rebootEcs(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">重启</a>
                                 <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
-                                <a  @click="rebootEcs(scope.row,'')" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">重启</a>
-                                <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
-                                <a  @click="delRole(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
-
+                                <a  @click="bootEcs(scope.row,'stop')" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
+                                <b class="link-division-symbol"></b>
+                                <el-dropdown>
+                                            <span class="btn-linker">
+                                                更多
+                                                <i class="el-icon-arrow-down el-icon--right"></i>
+                                            </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item @click.native="delEcs(scope.row)">删除</el-dropdown-item>
+                                        <el-dropdown-item @click.native="serverGetVNCConsole(scope.row)">远程连接</el-dropdown-item>
+                                        <el-dropdown-item @click.native="bootEcs(scope.row,'pause')">暂停</el-dropdown-item>
+                                        <!--<el-dropdown-item @click.native="Virtualmig(scope.row)">云主机热迁移</el-dropdown-item>-->
+                                    </el-dropdown-menu>
+                                </el-dropdown>
                             </template>
                         </el-table-column>
                     </template>
@@ -129,7 +137,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 // import RelateAuth from './RelateAuth';
 // import CreateRole from './CreateRole';
-import {ecsList,delEcs,rebootEcs,bootEcs} from '@/service/cloudres.js';
+import {ecsList,delEcs,rebootEcs,bootEcs,serverGetVNCConsole,Virtualmig} from '@/service/cloudres.js';
 export default {
     name: 'app',
 
@@ -148,7 +156,7 @@ export default {
             { column: 'name', text: '名称', width: '10%' },
             { column: 'net', text: '网络', width: '10%' },
             { column: 'setting', text: '配置', width: '10%' },
-            { column: 'status', text: '状态', width: '10%' },
+            { column: 'status', text: '状态', width: '5%' },
             { column: 'creatTime', text: '创建时间', width: '10%' }
         ];
 
@@ -179,9 +187,9 @@ export default {
             ecsList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
-                    this.searchObj.paging.totalItems = resData.total || 0;
+                if(resData && resData.resultList){
+                    this.tableData = resData.resultList || [];
+                    this.searchObj.paging.totalItems = resData.totalPages || 0;
                 }
 
             });
@@ -199,6 +207,16 @@ export default {
         //             }
         //         });
         // },
+        returnName(item){
+            for(let key in item){
+                return key;
+            }
+        },
+        returnValue(item){
+            for(let key in item){
+                return item[key][0].address;
+            }
+        },
         createRole(item,optype){
             this.$refs.CreateRole.show(item,optype)
                 .then(ret => {
@@ -262,6 +280,26 @@ export default {
                 this.ecsList();
             });
         },
+        //远程连接
+        serverGetVNCConsole(item){
+            serverGetVNCConsole(item.id).then(ret=>{
+                window.location.href = ret.data.url;
+            });
+        },
+        //云主机热迁移
+        Virtualmig(item){
+            console.log('itemcxssd',item);
+            let param = {
+                id:item.id,
+                param:{
+                    host:item.host,
+                    serverId:item.id,
+                }
+            };
+            Virtualmig(param).then(ret=>{
+                console.log('ret',ret);
+            });
+        },
         bootEcs(item,opName){
             let param = {
                 id:item.id,
@@ -271,6 +309,9 @@ export default {
                 this.ecsList();
             });
 
+        },
+        showDetail(item){
+            return this.$router.push({name:'app.resources.instance.instanceDetail',params:{id:item.id,item:item}});
         },
         del(item){
             delEcs(item.id).then(ret=>{

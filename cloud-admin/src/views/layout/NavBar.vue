@@ -2,7 +2,7 @@
     <div>
         
         <div class="logo-con pull-left">
-            <img src="@/assets/images/logo_open.svg" width="85px" alt="" @click="goHome">
+            <img src="@/assets/images/logo_open.svg" width="85px" alt="" >
         </div>
         
         <!--  <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -36,7 +36,8 @@ export default {
     },
     computed: {
         ...mapState({
-            user: state => state.user.userInfo,            
+            user: state => state.user.userInfo,
+            isCollapse: state => state.sidebarCollapse,
         }),
         breadcrumb: function() {
             let matched = this.$route.matched;
