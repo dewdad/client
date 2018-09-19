@@ -23,19 +23,19 @@
                 <el-col :span="12">
                     <el-form :inline="true" size="small">
                         <el-form-item>
-                            <el-button type="primary" @click="goBack()">
+                            <el-button type="primary" @click="serverGetVNCConsole(item)">
                                 <span class="iconfont icon-chaolianjie font12"></span>  远程连接</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="goBack()">
+                            <el-button type="primary" @click="bootEcs(item,'start')">
                                 <span class="iconfont icon-dashboard_icon_peop3 font12"></span> 开机</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary"  @click="goBack()">
+                            <el-button type="primary"  @click="bootEcs(item,'stop')">
                                 <span class="iconfont icon-tingzhi font12"></span>  关机</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="goBack()">
+                            <el-button type="primary" @click="rebootEcs(item)">
                                 <span class="iconfont icon-zhongqi font12"></span>  重启</el-button>
                         </el-form-item>
                         <el-form-item class="pull-right">
@@ -337,7 +337,7 @@
 <script>
 // import {createUser} from '@/service/usermgr/deptmgr.js';
 import EchartsLine from '@/components/charts/EchartsLine';
-import {getHostItem,getHostItemDetail,showVolumeDetails,getEcharts} from '@/service/cloudres.js';
+import {getHostItem,getHostItemDetail,showVolumeDetails,getEcharts,rebootEcs,bootEcs,serverGetVNCConsole} from '@/service/cloudres.js';
 export default {
     name: 'createUser',
     components: {
@@ -388,6 +388,44 @@ export default {
         },
     },
     methods:{
+        rebootEcs(item){
+            rebootEcs(item.id).then(ret=>{
+                if(ret.code === '0000'){
+                    this.setOrigin();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+
+            });
+        },
+        //远程连接
+        serverGetVNCConsole(item){
+            serverGetVNCConsole(item.id).then(ret=>{
+                window.location.href = ret.data.url;
+            });
+        },
+        bootEcs(item,opName){
+            let param = {
+                id:item.id,
+                type:opName
+            };
+            bootEcs(param).then(ret=>{
+                if(ret.code === '0000'){
+                    this.setOrigin();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
+
+        },
         timediff(time) {
             let outstr = '';
             if(time){
@@ -444,8 +482,6 @@ export default {
             return outstr;
         },
         setOrigin(){
-            console.log('this.stateParams',this.stateParams);
-            console.log('this.item',this.item);
             let param = localStorage.getItem('condition');
             if(param){
                 this.stateParams = JSON.parse(param);

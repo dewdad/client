@@ -174,8 +174,7 @@ export default {
     },
     components: {
         PageHeader,
-        // RelateAuth,
-        // CreateRole
+
     },
     methods: {
         ecsList(){
@@ -194,19 +193,7 @@ export default {
 
             });
         },
-        // relateAuth(item){
-        //     this.$refs.RelateAuth.show(item)
-        //         .then(ret => {
-        //             return this.$alert('操作成功','提示');
-        //         })
-        //         .catch(err => {
-        //             if (err) {
-        //                 console.log('Error', err);
-        //             } else {
-        //                 console.log('取消');
-        //             }
-        //         });
-        // },
+
         returnName(item){
             for(let key in item){
                 return key;
@@ -217,20 +204,7 @@ export default {
                 return item[key][0].address;
             }
         },
-        createRole(item,optype){
-            this.$refs.CreateRole.show(item,optype)
-                .then(ret => {
-                    this.ecsList();
-                    return this.$alert('操作成功','提示');
-                })
-                .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log('取消');
-                    }
-                });
-        },
+
         getStatusText(status){
             let outstr = '';
             if(status){
@@ -277,7 +251,15 @@ export default {
          * */
         rebootEcs(item){
             rebootEcs(item.id).then(ret=>{
-                this.ecsList();
+                if(ret.code === '0000'){
+                    this.ecsList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
             });
         },
         //远程连接
@@ -297,7 +279,15 @@ export default {
                 }
             };
             Virtualmig(param).then(ret=>{
-                console.log('ret',ret);
+                if(ret.code === '0000'){
+                    this.ecsList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
             });
         },
         bootEcs(item,opName){
@@ -306,7 +296,15 @@ export default {
                 type:opName
             };
             bootEcs(param).then(ret=>{
-                this.ecsList();
+                if(ret.code === '0000'){
+                    this.ecsList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
             });
 
         },

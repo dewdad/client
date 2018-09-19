@@ -237,6 +237,9 @@ export default {
         },
         //创建部门
         createDept(item,brunch,optype){
+            if(optype === 2 && this.brunch.id === this.user.deptId){
+                return;
+            }
             this.$refs.CreateDept.show(item,brunch,optype)
                 .then(ret => {
                     console.log('操作成功', ret);
@@ -315,6 +318,10 @@ export default {
         },
         //启用部门
         enableDept(item){
+            console.log('item',item);
+            if(item.id === this.user.deptId){
+                return;
+            }
             let enableState = item.enabled;
             let status = item.status;
             item.enabled = true;
@@ -337,6 +344,9 @@ export default {
         },
         //禁用部门
         disableDept(item){
+            if(item.id === this.user.deptId){
+                return;
+            }
             let enableState = item.enabled;
             let status = item.status;
             item.enabled = false;
@@ -456,6 +466,9 @@ export default {
          * 删除部门
          */
         delDept(item) {
+            if(item.id === this.user.deptId){
+                return;
+            }
             this.$confirm('确定要进行删除操作吗？', '删除', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
