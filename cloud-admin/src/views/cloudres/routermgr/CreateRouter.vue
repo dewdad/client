@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item label="管理状态：" prop="adminStateUp" :label-width="formLabelWidth">
                 <el-select v-model="form.adminStateUp">
-                    <el-option v-for="item in adminStateUps" :key="item.key" :value="item.key"></el-option>
+                    <el-option v-for="item in adminStateUps" :key="item.key" :label="item.value" :value="item.key"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -41,11 +41,14 @@ export default {
             item:{},
             form:{
                 name:'',
-                adminStateUp:'UP',
+                adminStateUp:'true',
 
             },
             rules:{
                 name: [
+                    { required: true, message: '必填项', trigger: 'blur' }
+                ],
+                adminStateUp: [
                     { required: true, message: '必填项', trigger: 'blur' }
                 ],
             },
@@ -65,7 +68,7 @@ export default {
             this.optype = optype;
             if(optype === 2){
                 this.form.name = item.name;
-                this.form.adminStateUp = item.adminStateUp;
+                this.form.adminStateUp = item.admin_state_up ? 'true' : 'false';
             }else{
                 this.form.name = '';
                 this.form.adminStateUp = '';
@@ -118,6 +121,7 @@ export default {
             createRouter(this.form)
                 .then(res => {
                     console.log('redssssssss',res);
+                    console.log('this.form',this.form);
                     if(res.code === '0000'){
                         this.resolve(this.form);
                         this.hide();

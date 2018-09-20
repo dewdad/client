@@ -8,7 +8,7 @@
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createInterface({},1)">
+                        <el-button type="primary" @click="createInterface(item)">
                             <span class="icon-zt_plus"></span>
                             创建接口
                         </el-button>
@@ -62,21 +62,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="createInterface(scope.row,2)" class="btn-linker" >编辑</a>
-                                <b class="link-division-symbol"></b>
-                                <a  @click="createInterface(scope.row)" >接口管理</a>
-                                <b class="link-division-symbol" ></b>
-                                <el-dropdown>
-                                            <span class="btn-linker">
-                                                更多
-                                                <i class="el-icon-arrow-down el-icon--right"></i>
-                                            </span>
-                                    <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item @click.native="createInterface(scope.row)">静态路由表</el-dropdown-item>
-                                        <el-dropdown-item @click.native="createInterface(scope.row)">设置网关</el-dropdown-item>
-                                        <el-dropdown-item @click.native="createInterface(scope.row)">删除</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </el-dropdown>
+                                <a  @click="createInterface(scope.row)" class="btn-linker" >删除接口</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -95,10 +81,12 @@
                 </div>
             </el-col>
         </el-row>
+        <create-interface ref="CreateInterface"></create-interface>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
+import CreateInterface from './CreateInterface';
 import {searchPortList} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -135,7 +123,8 @@ export default {
         };
     },
     components: {
-        PageHeader
+        PageHeader,
+        CreateInterface
     },
     methods: {
         searchPortList(){
@@ -155,7 +144,18 @@ export default {
             });
         },
         createInterface(){
-
+            this.$refs.CreateInterface.show(this.item)
+                .then(ret => {
+                    this.modelList();
+                    return this.$alert('操作成功','提示');
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log('取消');
+                    }
+                });
         },
         goBack(){
             window.history.back();

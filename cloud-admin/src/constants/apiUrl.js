@@ -55,6 +55,7 @@ export const NETWORK = {
     delNetwork: ADMIN + '/network/',
     editNetwork: ADMIN + '/network/',
     createNetwork: ADMIN + '/network',
+    searchSubnetList: ADMIN + '/network/',
     createPort: ADMIN + '/port',
     editPort: ADMIN + '/port/',
     searchPortList: ADMIN + '/port',
@@ -63,12 +64,15 @@ export const NETWORK = {
     editRouter: ADMIN + '/router/',
     createRouter: ADMIN + '/router',
     delRouter: ADMIN + '/router/',
+
+    delDetail: ADMIN + '/router/',
     floatIplist: ADMIN + '/floatIp/list',
     floatIpquota: ADMIN + '/floatIp/quotas',
     disassociateFromPort: ADMIN + '/floatIp/disassociateFromPort/',
     delfloatIp: ADMIN + '/floatIp/',
     floatIpdetail: ADMIN + '/floatIp/',
     createFloatIp: ADMIN + '/floatIp',
+    listSDK: ADMIN + '/network/listSDK',
 };
 // 系统配置
 export const SYSCONFIG = {
