@@ -237,7 +237,7 @@ export default new Router({
                             component: () => import('@/views/cloudres/instanceDetail')
                         },{
                             path: 'image',
-                            name: 'app.cloudres.image',
+                            name: 'app.resource.image',
                             meta: {
                                 title: '镜像'
                             },
@@ -284,6 +284,13 @@ export default new Router({
                                 title: 'IP管理'
                             },
                             component: () => import('@/views/cloudres/floatmgr/floatip')
+                        },{
+                            path: 'distrouter/:item',
+                            name: 'app.cloudres.network.distrouter',
+                            meta: {
+                                title: '静态路由表'
+                            },
+                            component: () => import('@/views/cloudres/routermgr/distrouter')
                         }
                     ]
                 }

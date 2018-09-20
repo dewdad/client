@@ -1,16 +1,22 @@
 <template>
-    <el-dialog title="创建资源模板" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+    <el-dialog title="设置网关" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
-            <el-form-item label="名称 " prop="name" :label-width="formLabelWidth">
-                <el-input placeholder="输入名称" v-model="form.name"></el-input>
+            <el-alert
+                    title="您可以将一个指定的外部网络连接到路由器.外部网络将作为路由器的默认路由同时将扮演外部连接网关的角色"
+                    type="info"
+                    :closable="false">
+            </el-alert>
+            <el-form-item label="外部网络：" prop="networkId" :label-width="formLabelWidth" class="mt20">
+                <el-select v-model="form.networkId">
+                    <el-option v-for="item in pull" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="VCPU数量" prop="vcpus" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.vcpus"></el-input-number>
+            <el-form-item label="路由名称："  :label-width="formLabelWidth">
+                <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
-            <el-form-item label="内存（GB）" prop="ram" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.ram"></el-input-number>
+            <el-form-item label="路由id："  :label-width="formLabelWidth">
+                <el-input v-model="form.id" disabled></el-input>
             </el-form-item>
-
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
@@ -20,31 +26,27 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {createModel} from '@/service/cloudres.js';
+import {listSDK,editRouter} from '@/service/cloudres.js';
 export default {
     data() {
         return{
-            formLabelWidth: '120px',
+            formLabelWidth: '130px',
             isShow: false,
             resolve: null,
             reject: null,
             confirmBtn: false,
+            optype:1,
+            pull:[],
+            item:{},
             form:{
+                networkId:'',
                 name:'',
-                vcpus:'',
-                ram:''
+                id:'',
             },
             rules:{
-                name: [
-                    { required: true, message: '请输入名称', trigger: 'blur' }
-                ],
-                vcpu: [
-                    { required: true, message: '请输VCPU数量', trigger: 'submit' }
-                ],
-                ram: [
-                    { required: true, message: '请输内存大小', trigger: 'submit' }
+                networkId: [
+                    { required: true, message: '请输选择资源', trigger: 'blur' }
                 ]
-
             }
         };
     },
@@ -55,26 +57,31 @@ export default {
     },
     props: {},
     methods: {
-        show() {
+        show(item) {
             this.isShow = true;
-            // this.optype = optype;
-            // console.log('item',item);
-            // if(optype !== 1){
-            //     this.form.roleType = item.roleType;
-            //     this.form.id = item.id;
-            // }
-            // this.form.roleName = item.roleName;
-            // this.form.description = item.description;
-            // console.log('optype',optype);
+            this.item = item;
+            this.form.networkId = '';
+            this.form.id = item.id;
+            this.form.name = item.name;
+            this.listSDK();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
             });
 
         },
+        listSDK(){
+            listSDK().then(ret => {
+                $log('data', ret);
+                let resData = ret.data;
+                if(resData && resData.data){
+                    this.pull = resData.data || [];
+                }
+            });
+        },
+
         hide() {
             this.isShow = false;
-
         },
         cancel() {
             this.hide();
@@ -89,17 +96,22 @@ export default {
         },
         confirm() {
             this.confirmBtn = true;
-            // this.form.deptId = this.user.deptId;
+            console.log('this.form',this.form);
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    createModel(this.form)
+                    let param = {
+                        id:this.item.id,
+                        param:this.form
+                    };
+                    editRouter(param)
                         .then(res => {
-                            console.log('res',res);
+                            console.log('redssssssss',res);
                             if(res.code === '0000'){
-                                this.resolve(this.form);
+                                this.resolve(param);
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;
+                                return this.$alert('操作成功','提示');
                             }else{
                                 this.$alert('操作失败', '提示', {
                                     type: 'error'
@@ -121,6 +133,9 @@ export default {
                 }
             });
         }
+    },
+    mounted(){
+
     }
 };
 </script>
