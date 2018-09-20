@@ -13,7 +13,7 @@
                 <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
-        <div class="sidebar-submenu" v-if="submenus.length">
+        <div class="sidebar-submenu" v-if="submenus.length||noClose">
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
@@ -45,6 +45,7 @@ export default {
             activeRouteHref: '',
             isCollapse: true,
             activeMenuCode: '0000', //menuCode
+            noClose:false
         };
     },
     computed: {
@@ -97,11 +98,13 @@ export default {
                             if(submenu.routeHref && submenu.routeHref !== '#'){
                                 return submenu.routeHref === this.activeRouteHref;
                             }                           
-                        });                        
+                        });
+
                         if(submenu) {
                             this.activeMenuCode = menu.menuCode;
                             // 收展侧边菜单
                             this.submenus = menu.submenus;
+                            console.log('this.submenus',this.submenus);
                         }else{
                             // 收展侧边菜单
                             this.activeMenuCode = '0000';
@@ -115,25 +118,34 @@ export default {
                 // let submenus = [];
                 let navlist = window.navList;
                 let that = this;
-
+                console.log();
                 if(navlist && navlist.length){
                     this.activeRouteHref = this.parseRouterName();
+
+                    console.log('this.activeRouteHref',this.activeRouteHref);
                     navlist.forEach( (menu) =>{
                         if(menu.submenus && menu.submenus.length){
+                            // let hsSubmenu = false;
                             let submenu = menu.submenus.find( (submenu) => {
                                 if(submenu.routeHref && submenu.routeHref !== '#'){
                                     return submenu.routeHref === this.activeRouteHref;
                                 }
                             });
-                            if(submenu) {
+                            if(this.activeRouteHref.indexOf('app.resources.network') > -1 || this.activeRouteHref.indexOf('app.resource.volume') > -1){
+                                this.noClose = true;
+                            }else{
+                                this.noClose = false;
+                            }
+                            if(submenu || this.noClose) {
                                 that.activeMenuCode = menu.menuCode;
+                                console.log('that.activeMenuCode',that.activeMenuCode);
+
                                 let me = navlist.find( (me) => {
                                     return me.menuCode === that.activeMenuCode;
                                 });
-
                                 that.submenus = me.submenus;
                             }else{
-
+                                console.log('this.oooooo',this.activeRouteHref);
                                 that.activeMenuCode = '0000';
                             }
                         }

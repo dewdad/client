@@ -98,7 +98,7 @@
                                 <a  @click="rebootEcs(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">重启</a>
                                 <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
                                 <a  @click="bootEcs(scope.row,'stop')" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
-                                <b class="link-division-symbol"></b>
+                                <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
                                 <el-dropdown>
                                             <span class="btn-linker">
                                                 更多

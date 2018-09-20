@@ -38,7 +38,7 @@
         <!-- 备注 -->
         <el-form inline-message :model="ruleForm" label-width="100px" :rules="rules" style="width:452px;" size="small"  ref="ruleForm">
             <el-form-item label="备注" prop="remark">
-                <textarea class="remark-text" v-model="ruleForm.remark"></textarea>
+                <el-input type="textarea" class="remark-text" v-model="ruleForm.remark"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">            

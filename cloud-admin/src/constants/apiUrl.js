@@ -33,13 +33,21 @@ export const CLOUD_RES = {
     createMirror: ADMIN + '/image/create',
     searchMirrorList: ADMIN + '/image/list',
     delMirror: ADMIN + '/image/delete',
-
 };
 // 云资源管理-资源模板
 export const MODEL = {
     modelList: ADMIN + '/flavor/list',
     delModel: ADMIN + '/flavor/delete',
     createModel: ADMIN + '/flavor',
+};
+// 云资源管理-磁盘管理
+export const VOLUME = {
+    searchCloudList: ADMIN + '/volume/list',//云盘列表
+    searchSnapshotList: ADMIN + '/volumeSnapshot/list',//快照列表
+    searchBackupList: ADMIN + '/volumeBackups/lis',//备份列表
+    delCloud: ADMIN + '/volume/',
+    delSnapshot: ADMIN + '/volumeSnapshot/',
+    delBackup: ADMIN + '/volumeBackups/',
 };
 // 云资源管理-网络管理
 export const NETWORK = {
@@ -51,6 +59,16 @@ export const NETWORK = {
     editPort: ADMIN + '/port/',
     searchPortList: ADMIN + '/port',
     delPort: ADMIN + '/port/',
+    routerList: ADMIN + '/router/list',
+    editRouter: ADMIN + '/router/',
+    createRouter: ADMIN + '/router',
+    delRouter: ADMIN + '/router/',
+    floatIplist: ADMIN + '/floatIp/list',
+    floatIpquota: ADMIN + '/floatIp/quotas',
+    disassociateFromPort: ADMIN + '/floatIp/disassociateFromPort/',
+    delfloatIp: ADMIN + '/floatIp/',
+    floatIpdetail: ADMIN + '/floatIp/',
+    createFloatIp: ADMIN + '/floatIp',
 };
 // 系统配置
 export const SYSCONFIG = {
