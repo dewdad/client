@@ -110,6 +110,7 @@ export default {
         getEcsImageList: function(params) {
             params = params || this.searchObj.paging;
             params['type'] = this.searchObj.type;
+            console.log('params',params);
             this.loading = true;
             this.tableData = [];
             getImages(params)
