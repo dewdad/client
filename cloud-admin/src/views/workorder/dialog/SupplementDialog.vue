@@ -9,7 +9,7 @@
                 <span>{{myticketInfo.title}}</span>
             </el-form-item>
             <el-form-item label="补充" prop="supple">
-                <textarea class="supple-text" v-model="ruleForm.supple"></textarea>
+                <el-input type="textarea"  class="supple-text" v-model="ruleForm.supple"></el-input>
             </el-form-item>
             <el-form-item label="附件">
                 <div class="el-upload__tip input-help mb10 pt0">
