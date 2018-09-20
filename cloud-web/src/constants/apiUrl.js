@@ -173,6 +173,7 @@ export const API_ECS = {
         routerList: '/compute/router/list', // 路由列表
         editRouter: '/compute/router/', // 添加或修改路由
         delRouter: '/compute/router/{id}', // 添加或修改路由
+        getRouterInfo: '/compute/router/{routerId}', // 添加或修改路由
         applyFloatIP: '/compute/floatip', // 确认申请浮动IP
         delFloatIP: '/compute/floatip/{floatIP}', // 释放浮动IP
         networkCount: '/compute/network/{vpcId}', // 获取网络详情

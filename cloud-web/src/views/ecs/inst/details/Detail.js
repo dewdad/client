@@ -238,8 +238,11 @@ export default {
         floatIP() {
             let floatIPStr = [];
             for(let k in this.addresses) {
-                if (this.addresses[k][0]['OS-EXT-IPS:type'] === 'float') {
-                    floatIPStr.push(this.addresses[k][0]['addr']);
+                let add2 = this.addresses[k];
+                for (let k2 in add2){
+                    if (add2[k2]['OS-EXT-IPS:type'] === 'floating') {
+                        floatIPStr.push(add2[k2]['addr']);
+                    }
                 }
             }
             return floatIPStr.join(',');
@@ -248,8 +251,11 @@ export default {
         privateIP() {
             let privateIPStr = [];
             for(let k in this.addresses) {
-                if (this.addresses[k][0]['OS-EXT-IPS:type'] === 'fixed') {
-                    privateIPStr.push(this.addresses[k][0]['addr']);
+                let add2 = this.addresses[k];
+                for (let k2 in add2){
+                    if (add2[k2]['OS-EXT-IPS:type'] === 'fixed') {
+                        privateIPStr.push(add2[k2]['addr']);
+                    }
                 }
             }
             return privateIPStr.join(',');
