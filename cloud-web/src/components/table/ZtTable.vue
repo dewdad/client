@@ -78,10 +78,8 @@ export default {
             let data = {
                 pageIndex: this.currentPage,
                 limit: this.paging.limit,
-                fileds: {
-                    [this.inlineForm.field]: this.inlineForm.value
-                }
             };
+            data[this.inlineForm.field] = this.inlineForm.value;
             this.$emit('search', data);
         },
         // 状态筛选
