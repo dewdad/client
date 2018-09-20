@@ -7,14 +7,14 @@
         <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
             <zt-form-item label="防火墙名称" prop="name">
                 <el-input v-model="data.name"></el-input>
-                <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
+                <span slot="help" class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
             <zt-form-item label="区域" v-if="type === 'create'">
                 <region-select v-model="data.zone"></region-select>
             </zt-form-item>
             <zt-form-item label="描述">
                 <el-input v-model="data.remark"></el-input>
-                <span class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
+                <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
             </zt-form-item>
         </zt-form>
     </div>

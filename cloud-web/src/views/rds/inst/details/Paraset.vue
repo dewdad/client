@@ -62,7 +62,7 @@
                     <zt-form-item v-if="myForm.datatype === 'integer'" label="参数值" prop="value" :rules="[{required: true, message: '参数值不能为空', trigger: 'change'}]">
                         <el-input-number style="width: 100%;" v-model="myForm.value" controls-position="right" :min="myForm.valueRange.split('-')[0]" :max="myForm.valueRange.split('-')[1]"></el-input-number>
                         <!-- <el-input  v-model="myForm.runvalue" placeholder="请输入参数值"></el-input> -->
-                        <span class="input-help">
+                        <span slot="help" class="input-help">
                             输入范围：[{{myForm.valueRange}}]
                         </span>
                     </zt-form-item>

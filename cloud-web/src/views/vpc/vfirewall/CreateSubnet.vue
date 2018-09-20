@@ -8,11 +8,11 @@
             </zt-form-item>
             <zt-form-item label="名称" prop="name">
                 <el-input v-model="data.name"></el-input>
-                <span class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
+                <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
             </zt-form-item>
             <zt-form-item label="网段" prop="cindr">
                 <ip-input v-model="data.cindr" v-if="isShow"></ip-input>
-                <span class="input-help">
+                <span slot="help" class="input-help">
                     <span class="text-warning">创建后无法修改。</span><br>
                     <span class="text-break-all">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
                     例如：192.168.94.0/24
@@ -20,7 +20,7 @@
             </zt-form-item>
             <zt-form-item label="描述">
                 <el-input v-model="data.remark"></el-input>
-                <span class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
+                <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
             </zt-form-item>
         </zt-form>
     </div>

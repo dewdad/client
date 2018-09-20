@@ -224,8 +224,9 @@ export default {
             this.$refs.changePwdDialog
                 .show()
                 .then( res => {
-                    this.$message.success($t('common.successOpt'));   
-                    this.getUserInfoDetail();                 
+                    // this.$message.success($t('common.successOpt'));   
+                    this.getUserInfoDetail();
+                               
                 });
         },
 

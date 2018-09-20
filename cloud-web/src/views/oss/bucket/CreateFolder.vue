@@ -4,7 +4,7 @@
             <zt-form ref="myForm" label-width="90px" :model="myForm" size="small" :rules="rules" inline-message>
                 <zt-form-item label="目录名" prop="dirname">
                     <el-input v-model="myForm.dirname" placeholder="请输入目录名称"></el-input>
-                    <span class="input-help">
+                    <span slot="help" class="input-help">
                         目录命名规范：<br/> 1.不允许使用表情符，请使用符合要求的UTF-8字符
                         <br/> 2.「/」用于分割路径，可快速创建子目录，但，不要以「/」打头，不要出现连续的「/」
                         <br/> 3.不允许出现名为「..」的子目录
