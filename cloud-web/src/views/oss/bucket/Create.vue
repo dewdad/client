@@ -9,9 +9,9 @@
                 <zt-form-item label="读写权限">
                     <el-radio-group v-model="bucket.rwAuth" size="small">
                         <el-radio-button label="true">私有</el-radio-button>
-                        <el-radio-button label="false">公开</el-radio-button>
+                        <el-radio-button label="false">公共读</el-radio-button>
                     </el-radio-group>
-                    <span class="input-help">公开和私有仅对Bucket读文件生效，修改、删除、写入等对Bucket的操作均需要拥有者的授权才能进行。</span>
+                    <span class="input-help">公共读和私有仅对Bucket读文件生效，修改、删除、写入等对Bucket的操作均需要拥有者的授权才能进行。</span>
                 </zt-form-item>
             </zt-form>
         </div>

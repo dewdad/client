@@ -11,7 +11,6 @@
                 <ip-input v-model="data.cindr" :value="cindrVal" v-if="isShow"></ip-input>
                 <span class="input-help">
                     <span class="color-warning lh20">创建后无法修改。</span><br>
-                    <span class="text-break-all lh20">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
                     <span class="lh20">例如：192.168.94.0/24</span>
                 </span>
             </zt-form-item>
