@@ -96,7 +96,7 @@
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" min-width="60" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=item.status" class="color999">删除</span>
                                 <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'" class="btn-linker">删除</a>
@@ -160,7 +160,7 @@ export default {
             {key:'reserved',value:'保留'},
             {key:'attaching',value:'连接中'},
             {key:'detaching',value:'分离中'},
-            {key:'in_use',value:'使用中'},
+            {key:'in-use',value:'使用中'},
             {key:'maintenance',value:'维修中'},
             {key:'deleting',value:'删除中'},
             {key:'awaiting_transfer',value:'等待转移'},
@@ -211,8 +211,8 @@ export default {
         },
         convertStatusSnapshot(status) {
             status = status.toLowerCase();
-            for (var i = 0, ii = this.statusArrVolume.length; i < ii; i++) {
-                var item = this.statusArrVolume[i];
+            for (let i = 0, ii = this.statusArrVolume.length; i < ii; i++) {
+                let item = this.statusArrVolume[i];
                 if (item.key == status) {
                     return item.value;
                 }

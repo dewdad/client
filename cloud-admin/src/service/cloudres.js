@@ -123,6 +123,15 @@ export async function searchPortList(data) {
         params: data
     });
     return response.data;
+}/**
+ *查询子网列表
+ * @param {*}
+ */
+export async function searchSubnetList(data) {
+    console.log('data',data);
+    let url = NETWORK.searchSubnetList +'/get';
+    let response = await http.get(url);
+    return response.data;
 }
 /**
  *编辑网络
@@ -202,6 +211,16 @@ export async function createModel(data) {
     console.log('data',data);
     let url = MODEL.createModel;
     let response = await http.post(url,data);
+    return response.data;
+}
+/**
+ *删除模板
+ * @param {*}
+ */
+export async function delModel(data) {
+    console.log('data',data);
+    var url = MODEL.delModel + '?req_param=' + data;
+    let response = await http.delete(url);
     return response.data;
 }
 //镜像
@@ -304,7 +323,6 @@ export async function searchBackupList(data) {
  */
 export async function createRouter(data) {
     console.log('data',data);
-    data.adminStateUp = data.admin_state_up;
     let response = await http.post(NETWORK.createRouter,data);
     return response.data;
 }
@@ -314,7 +332,6 @@ export async function createRouter(data) {
  */
 export async function editRouter(data) {
     console.log('data',data);
-
     let url = NETWORK.editRouter + data.id;
     let response = await http.put(url,data.param);
     return response.data;
@@ -338,6 +355,16 @@ export async function routerList(data) {
     let response = await http.get(NETWORK.routerList, {
         params: data
     });
+    return response.data;
+}
+/**
+ *路由详情
+ * @param {*}
+ */
+export async function delDetail(data) {
+    console.log('data',data);
+    let URL = NETWORK.delDetail+ data;
+    let response = await http.get(URL);
     return response.data;
 }
 //ip管理
@@ -397,6 +424,15 @@ export async function floatIpdetail(data) {
 export async function floatIpquota(data) {
     console.log('data',data);
     let URL = NETWORK.floatIpquota;
+    let response = await http.get(URL);
+    return response.data;
+}/**
+ *外部网络
+ * @param {*}
+ */
+export async function listSDK(data) {
+    console.log('data',data);
+    let URL = NETWORK.listSDK+'?router:external=true';
     let response = await http.get(URL);
     return response.data;
 }

@@ -45,21 +45,21 @@
                         <template v-if="col.column=='vcpu'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.vcpu}}</span>
+                                    <span class="font12 mr10">{{scope.row.vcpus}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='ram'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.ram}}</span>
+                                    <span class="font12 mr10">{{calcSize(scope.row.ram)}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='public'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row['os-flavor-access:is_public']?'是':'否'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -148,6 +148,19 @@ export default {
 
             });
         },
+        calcSize(size) {
+            size = size * 1024 * 1024 * 1024;
+            if (size < 1024) {
+                return size + 'B';
+            }
+            if (size < 1024 * 1024) {
+                return size / 1024 + 'KB';
+            }
+            if (size < 1024 * 1024 * 1024) {
+                return size / (1024 * 1024) + 'MB';
+            }
+            return size / (1024 * 1024 * 1024) + 'GB';
+        },
         createModel(){
             this.$refs.CreateModel.show()
                 .then(ret => {
@@ -176,7 +189,7 @@ export default {
             });
         },
         /**
-         * 删除角色
+         * 删除模板
          */
         delModel(id) {
             this.$confirm('确定要进行删除操作吗？', '删除', {

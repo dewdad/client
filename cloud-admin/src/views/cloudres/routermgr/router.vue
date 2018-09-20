@@ -117,11 +117,13 @@
             </el-col>
         </el-row>
         <create-router ref="CreateRouter"></create-router>
+        <create-gateway ref="CreateGateway"></create-gateway>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateRouter from './CreateRouter';
+import CreateGateway from './CreateGateway';
 
 import {routerList,delRouter} from '@/service/cloudres.js';
 export default {
@@ -167,7 +169,8 @@ export default {
     },
     components: {
         PageHeader,
-        CreateRouter
+        CreateRouter,
+        CreateGateway
     },
     methods: {
         routerList(){
@@ -189,11 +192,12 @@ export default {
             let itemStr = JSON.stringify(rowItem);
             return this.$router.push({name:'app.cloudres.network.routermanage',params:{item:itemStr}});
         },
-        distRouter(){},
-        setGateWay(){},
-        //修改/创建路由
-        editRouter(item,optype){
-            this.$refs.CreateRouter.show(item,optype).then(ret=>{
+        distRouter(rowItem){
+            let itemStr = JSON.stringify(rowItem);
+            return this.$router.push({name:'app.cloudres.network.distrouter',params:{item:itemStr}});
+        },
+        setGateWay(item){
+            this.$refs.CreateGateway.show(item).then(ret=>{
                 console.log('retfsdff',ret);
                 if(ret && ret.id){
                     this.routerList();
@@ -207,27 +211,21 @@ export default {
             }
             );
         },
-        // convertStatusSnapshot(status) {
-        //     status = status.toLowerCase();
-        //     for (var i = 0, ii = this.statusArrVolume.length; i < ii; i++) {
-        //         var item = this.statusArrVolume[i];
-        //         if (item.key == status) {
-        //             return item.value;
-        //         }
-        //     }
-        //     return status;
-        // },
-        calcSize(size) {
-            if (size < 1024) {
-                return size + 'B';
+        //修改/创建路由
+        editRouter(item,optype){
+            this.$refs.CreateRouter.show(item,optype).then(ret=>{
+                console.log('retfsdff',ret);
+                if(ret.adminStateUp || ret.id){
+                    this.routerList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
             }
-            if (size < 1024 * 1024) {
-                return size / 1024 + 'KB';
-            }
-            if (size < 1024 * 1024 * 1024) {
-                return size / (1024 * 1024) + 'MB';
-            }
-            return size / (1024 * 1024 * 1024) + 'GB';
+            );
         },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
@@ -239,7 +237,15 @@ export default {
         },
         del(item){
             delRouter(item.id).then(ret=>{
-                this.routerList();
+                if(ret.code === '0000'){
+                    this.routerList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
             });
         },
         /**
