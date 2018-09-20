@@ -7,7 +7,7 @@
                 </zt-form-item>
                 <zt-form-item label="备份名称" prop="name">
                     <el-input v-model="myForm.name" placeholder="请输入备份名称"></el-input>
-                    <span class="input-help">
+                    <span slot="help" class="input-help">
                          名称在4位到64位之间，必须以字母开头，不区分大小写，可以包含字母、数字、中划线或下划线，不能包含其他特殊字符。
                     </span>
                 </zt-form-item>

@@ -2,14 +2,14 @@
 <el-dialog :visible.sync="isShow" v-loading="loading" loading="empty">
     <div slot="title">{{title}}</div>
     <div class="pr130">
-        <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
+        <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" inline-message>
             <zt-form-item label="专有网络名称" prop="name">
                 <el-input v-model="data.name" maxlength="48"></el-input>
-                <span class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
+                <span slot="help" class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
             </zt-form-item>
             <zt-form-item v-if="this.type === 'create'" label="网段" prop="cindr">
                 <ip-input v-model="data.cindr" :value="cindrVal" v-if="isShow"></ip-input>
-                <span class="input-help">
+                <span slot="help" class="input-help">
                     <span class="color-warning lh20">创建后无法修改。</span><br>
                     <span class="lh20">例如：192.168.94.0/24</span>
                 </span>

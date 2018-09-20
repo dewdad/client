@@ -6,7 +6,7 @@
                 <zt-form-item label="自定义镜像名称" prop="name">
                     <div>
                     <el-input size="small" v-model="ruleForm.name"></el-input>
-                    <span class="input-help">长度为2-64个字符，不能以特殊字符及数字开头，只可包含特殊字符中的"."，"_"或"-"。</span>
+                    <span slot="help" class="input-help">长度为2-64个字符，不能以特殊字符及数字开头，只可包含特殊字符中的"."，"_"或"-"。</span>
                     </div>
                 </zt-form-item>
                 <!-- 镜像描述 -->

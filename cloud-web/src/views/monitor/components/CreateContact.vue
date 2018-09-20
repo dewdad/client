@@ -3,7 +3,7 @@
         <zt-form inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
             <zt-form-item label="姓名" prop="name">
                 <el-input size="small" v-model="ruleForm.name" placeholder="请输入联系人姓名"></el-input>
-                <span class="input-help">姓名以中英文字符开始，且长度大于2位，小于30的中文、 英文字母、数字、"."、下划线组成</span>
+                <span slot="help" class="input-help">姓名以中英文字符开始，且长度大于2位，小于30的中文、 英文字母、数字、"."、下划线组成</span>
             </zt-form-item>
             <zt-form-item label="手机号码" prop="phone">
                 <el-input size="small" v-model="ruleForm.phone" placeholder="请输入联系人手机"></el-input>

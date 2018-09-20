@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="创建路由"
+        :title="title"
         :visible.sync="isShow"
         width="600px"
         class="EditRouter">
@@ -38,7 +38,7 @@
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="info" class="font12" @click="isShow = false" :disabled="loadingBtn">取 消</el-button>
             <el-button type="primary" class="font12" @click="confirm" :loading="loadingBtn">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
@@ -83,6 +83,20 @@ export default {
             ]
         };
     },
+    computed: {
+        title() {
+            return this.accesstType === 'update' ? '编辑路由' : '创建路由';
+        }
+    },
+    watch: {
+        isShow(val) {
+            if(!val) {
+                this.ruleForm.routerName = '';
+                this.ruleForm.outerNet = '';
+                this.$refs['ruleForm'].resetFields();
+            }
+        }
+    },
     methods: {
         show(rowItem) {
             this.isShow = true;
@@ -93,6 +107,8 @@ export default {
                 this.ruleForm.outerNet = rowItem.row.networkId;
                 this.ruleForm.manageState = rowItem.row.adminStateUp;
                 this.routerId = rowItem.row.id;
+            } else{
+                this.ruleForm.routerName = '';
             }
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -104,7 +120,7 @@ export default {
         },
         cancel() {
             this.hide();
-            typeof this.reject() === 'function' && this.reject();
+            // typeof this.reject() === 'function' && this.reject();
         },
         setting() {
             return new Promise(resolve => {

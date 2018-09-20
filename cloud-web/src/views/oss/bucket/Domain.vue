@@ -29,7 +29,7 @@
                 <zt-form ref="addForm" label-width="110px" :model="addForm" size="small" :rules="rules" inline-message>
                     <zt-form-item label="用户域名" prop="domain">
                         <el-input v-model="addForm.domain" placeholder="请输入用户域名" @keyup.enter.native="confirm"></el-input>
-                        <span class="input-help">域名由特定字符集、英文字母、数字及“-”(即连字符或减号)任意组合而成, 但开头及结尾均不能含有“-”。 域名中字母不分大小写，且至少包含一个“.”。域名最长可达67个字节(包括后缀.com、.net、.org等)。</span>
+                        <span slot="help" class="input-help">域名由特定字符集、英文字母、数字及“-”(即连字符或减号)任意组合而成, 但开头及结尾均不能含有“-”。 域名中字母不分大小写，且至少包含一个“.”。域名最长可达67个字节(包括后缀.com、.net、.org等)。</span>
                     </zt-form-item>
                 </zt-form>
             </div>

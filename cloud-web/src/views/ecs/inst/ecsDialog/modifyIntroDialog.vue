@@ -8,7 +8,7 @@
 
             <zt-form-item :label="$t('dialog.modifyEcsInstInfo.instName.label')" class="mb20" prop="name" :showRule="true" has-help>
                 <el-input v-model="ecsInst.name" :placeholder="$t('dialog.modifyEcsInstInfo.instName.placeholder')" maxlength="64" minlength="2" :clearable="true"></el-input>
-                <!-- <span class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span> -->
+                <!-- <span slot="help" class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span> -->
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">

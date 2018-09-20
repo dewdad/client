@@ -5,7 +5,7 @@
         <el-table class="data-list" @filter-change="filterHandler" @cell-mouse-enter="cellMouseEnter" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
             <slot name="default"></slot>
         </el-table>
-        <div class="pagination">
+        <div v-if="isPaging" class="pagination">
             <el-pagination background :current-page="paging.pageIndex" @current-change="handleCurrentChange" :page-size="paging.limit" layout="total, prev, pager, next" :total="paging.totalItems">
             </el-pagination>
         </div>
@@ -50,6 +50,10 @@ export default {
                     limit: 10
                 };
             }
+        },
+        isPaging:{
+            type: Boolean,
+            default: true
         },
         cellMouseEnter: {
             type: Function,

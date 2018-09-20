@@ -100,13 +100,20 @@ export default {
             if(!this.form.userId) return; 
             this.$refs.form.validate( (valid) => {
                 if (valid) {
-                    this.loading = true;                    
+                    this.loading = true;                   
                     pwdChange(this.form)
                         .then(res => {
+                            console.warn(res);
                             this.loading = false;
                             if(res && res.code === this.CODE.SUCCESS_CODE){
-                                this.resolve();
-                                this.hide(); 
+                                this.$alert('修改成功，请重新登录', '提示', {
+                                    confirmButtonText: '确定',
+                                    showClose: false
+                                }).then(() => {
+                                    this.resolve();
+                                    this.hide();   
+                                }); 
+                                
                             }
                         })
                         .catch(err => {

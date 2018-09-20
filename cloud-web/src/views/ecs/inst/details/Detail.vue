@@ -90,7 +90,7 @@
                                     <!-- 磁盘数量 -->
                                     <tr>
                                         <td>{{ $t('common.diskNumber') }}：</td>
-                                        <td>{{ (ecsInst['os-extended-volumes:volumes_attached'].length) || 0 }}块</td>
+                                        <td>{{ (ecsInst['os-extended-volumes:volumes_attached'] && ecsInst['os-extended-volumes:volumes_attached'].length) || 0 }}块</td>
                                     </tr>
                                     <!-- 操作系统 -->
                                     <tr>
@@ -98,11 +98,11 @@
                                         <td>{{ ecsInst.image &&  ecsInst.image.name}}</td>
                                     </tr>
                                     <!-- 公网IP -->
-                                    <tr v-show="!ecsInst.floatIp || ecsInst.floatIp.indexOf('10.3') === -1">
+                                    <tr v-show="floatIP">
                                         <td>浮动IP：</td>
-                                        <td>{{ecsInst.floatIp ||'-'}}
-                                            <span v-show="ecsInst.floatIp">
-                                                <copy-text :bindText="ecsInst.floatIp"></copy-text>
+                                        <td>{{floatIP ||'-'}}
+                                            <span v-show="floatIP">
+                                                <copy-text :bindText="floatIP"></copy-text>
                                             </span>
                                         </td>
                                     </tr>
@@ -183,7 +183,7 @@
                         <!-- CPU使用率 -->
                         <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.cpuPercentUsed') }}</span>
-                            <echarts-line v-if="xData_cpu.length > 0" 
+                            <echarts-line v-if="xData_cpu && xData_cpu.length > 0" 
                                 :legendData="legendData_cpu" 
                                 :seriesData="seriesData_cpu" 
                                 :lineStyle="lineStyle_cpu" 
@@ -200,7 +200,7 @@
                         <!-- 内存使用率 -->
                         <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.memoryPercentUsed') }}</span>
-                            <echarts-line v-if="xData_mem.length > 0" 
+                            <echarts-line v-if="xData_mem && xData_mem.length > 0" 
                                 :legendData="legendData_mem" 
                                 :seriesData="seriesData_mem" 
                                 :lineStyle="lineStyle_mem" 
@@ -216,7 +216,7 @@
                         <!-- 网络流量 -->
                         <div class="panel-body zt-panel-body" style="height: 320px;">
                             <span class="font12 ml15 title">{{ $t('ecs.inst.details.outerNetwork') }}</span>
-                            <echarts-line v-if="xData_net.length > 0" 
+                            <echarts-line v-if="xData_net && xData_net.length > 0" 
                                 :legendData="legendData_net" 
                                 :seriesData="seriesData_net" 
                                 :lineStyle="lineStyle_net" 

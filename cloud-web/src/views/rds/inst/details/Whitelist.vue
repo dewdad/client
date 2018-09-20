@@ -44,17 +44,17 @@
                     </zt-form-item>
                     <zt-form-item label="组内白名单" prop="ipAddress">
                         <el-input type="textarea" :resize="'none'" :rows="6" v-model="myForm.ipAddress" placeholder="请输入组内白名单"></el-input>
-                        <span class="input-help">
+                        <span slot="help" class="input-help">
                             <a href="javascript:;" class="font12">加载ECS内网IP</a>
                             <span class="pull-right">还可以添加{{inputLengh}}个白名单</span>
                         </span>
-                        <span class="input-help">
+                        <span slot="help" class="input-help">
                             指定IP地址：192.168.0.1 允许192.168.0.1的IP地址访问RDS<br/> 指定IP段：192.168.0.0/24 允许从192.168.0.1到192.168.0.255的IP地址访问RDS<br/> 多个IP设置，用英文逗号隔开，如192.168.0.1,192.168.0.0/24
                         </span>
-                        <span class="input-help">
+                        <span slot="help" class="input-help">
                             <a>如何定位本地IP</a>
                         </span>
-                        <span class="input-help">
+                        <span slot="help" class="input-help">
                             <el-alert type="warning" title="新名单将于1分钟后生效" :closable="false">
                             </el-alert>
                         </span>

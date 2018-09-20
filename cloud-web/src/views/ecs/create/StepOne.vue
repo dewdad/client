@@ -14,11 +14,11 @@
                 </div>
                 <!-- <div class="create-form-item__input">
                         <el-input placeholder="请输入内容" size="small"></el-input>
-                        <span class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span>
+                        <span slot="help" class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span>
                     </div>
                     <div class="create-form-item__input">
                         <el-input type="textarea" autosize placeholder="请输入内容" v-model="active" size="small"></el-input>
-                        <span class="input-help">描述为选填内容，长度小于300个字符</span>
+                        <span slot="help" class="input-help">描述为选填内容，长度小于300个字符</span>
                     </div> -->
             </div>
         </el-card>

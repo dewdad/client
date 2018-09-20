@@ -8,16 +8,16 @@
             <!-- 路由名称 -->
             <zt-form-item label="目的CIDR"  prop="destination">
                 <el-input v-model="ruleForm.destination"></el-input>
-                <span class="input-help" style="line-height: 16px">比如要建立子网A:192.168.0.0/24到子网B：192.168.1.0/24的静态路由表，那么目的cidr就是192.168.1.0/24</span>
+                <span slot="help" class="input-help" style="line-height: 16px">比如要建立子网A:192.168.0.0/24到子网B：192.168.1.0/24的静态路由表，那么目的cidr就是192.168.1.0/24</span>
             </zt-form-item>
             <!-- 选择外网 -->
             <zt-form-item label="下一跳" prop="nexthop">
                 <el-input v-model="ruleForm.nexthop"></el-input>
-                <span class="input-help" style="line-height: 16px">下一跳的IP必须是路由器接口已连接的子网的一个IP。</span>
+                <span slot="help" class="input-help" style="line-height: 16px">下一跳的IP必须是路由器接口已连接的子网的一个IP。</span>
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
+            <el-button type="info" class="font12" @click="isShow = false" :disabled="loadingBtn">取 消</el-button>
             <el-button type="primary" class="font12" @click="confirm" :loading="loadingBtn">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
@@ -46,6 +46,15 @@ export default {
                 ]
             },
         };
+    },
+    watch: {
+        isShow(val){
+            if(!val){
+                this.ruleForm.destination = '';
+                this.ruleForm.nexthop = '';
+                this.$refs['ruleForm'].resetFields();
+            }
+        }
     },
     methods: {
         show(rowItem) {
@@ -93,6 +102,7 @@ export default {
                     ...this.ruleForm
                 }
             ];
+            this.loadingBtn = true;
             addStaticRouter(this.routeData[0])
                 .then(ret => {
                     if (ret) {
@@ -102,8 +112,10 @@ export default {
                             type: 'success'
                         });
                     }
+                    this.loadingBtn = false;
                 })
                 .catch(error => {
+                    this.loadingBtn = false;
                     console.warn('添加路由', error.message);
                 })
                 .finally(() => {
