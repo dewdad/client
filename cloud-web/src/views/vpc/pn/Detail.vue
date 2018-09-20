@@ -36,8 +36,8 @@
                     <tr>
                         <td>状态：</td>
                         <td><zt-status :status="ECS_STATUS" :value="countData.status && countData.status.toLowerCase()" ></zt-status></td>
-                        <td>租户ID：</td>
-                        <td>{{countData.tenant_id}}</td>
+                        <td>网关IP：</td>
+                        <td>{{countData.neutronSubnets && countData.neutronSubnets[0].gateway_ip}}</td>
                     </tr>
                     <tr>
                         <td>管理状态：</td>
@@ -50,12 +50,6 @@
                         <td>{{countData.neutronSubnets && countData.neutronSubnets[0].enable_dhcp ? '已激活' : '未激活'}}</td>
                         <td>IP版本：</td>
                         <td>IPV{{countData.neutronSubnets && countData.neutronSubnets[0].ip_version}}</td>
-                    </tr>
-                    <tr>
-                        <td>网关IP：</td>
-                        <td>{{countData.neutronSubnets && countData.neutronSubnets[0].gateway_ip}}</td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
