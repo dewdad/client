@@ -165,7 +165,7 @@ export default {
                         createNum: this.numberApply,
                         volumeType: this.sysDisk.type.value,
                         size: this.sysDisk.size,
-                        description: '',
+                        description: this.form.desc,
                         ecsId: '',
                         snapshotId: ''
                     };

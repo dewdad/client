@@ -10,10 +10,6 @@
                 <el-input v-model="ecsInst.name" :placeholder="$t('dialog.modifyEcsInstInfo.instName.placeholder')" maxlength="64" minlength="2" :clearable="true"></el-input>
                 <!-- <span class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span> -->
             </zt-form-item>
-            <zt-form-item :label="$t('dialog.modifyEcsInstInfo.desc.label')" class="mb0 hide-star" prop="remark">
-                <el-input type="textarea" v-model="ecsInst.remark" maxlength="300" autosize :placeholder="$t('dialog.modifyEcsInstInfo.desc.placeholder')" :clearable="true"></el-input>
-                <span class="input-help">{{$t('dialog.modifyEcsInstInfo.desc.tip')}}</span>
-            </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">
             <el-button type="info" class="font12" @click="isShow = false" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>

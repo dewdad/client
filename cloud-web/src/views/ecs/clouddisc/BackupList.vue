@@ -121,6 +121,7 @@ export default {
         recovery(row) {
             this.$refs.Recovery.show(row).then(() => {
                 this.$message.success('操作成功');
+                this.getBackupList();
             }).catch(err => {
                 $log(err);
             });

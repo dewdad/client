@@ -420,7 +420,7 @@ export const DISK_STATUS = [
     },
     {
         text: '恢复错误',
-        value: 'error_restoring',
+        value: 'error-restoring',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -545,7 +545,7 @@ export const DISK_BACK_STATUS = [
     },
     {
         text: '恢复错误',
-        value: 'error_restoring',
+        value: 'error-restoring',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -553,6 +553,12 @@ export const DISK_BACK_STATUS = [
     {
         text: '恢复中',
         value: 'restoring-backup',
+        className: 'color-progress-warning',
+        type: 'progress'
+    },
+    {
+        text: '恢复中',
+        value: 'restoring',
         className: 'color-progress-warning',
         type: 'progress'
     },
