@@ -44,8 +44,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
-
+                                    <a class="font12 mr10 btn-linker" @click="showDetail(scope.row)">{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
                         </template>
@@ -80,7 +79,7 @@
                         <template v-if="col.column=='size'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{calcSize(scope.row.size)}}</span>
+                                    <span class="font12 mr10" v-if="scope.row.size">{{calcSize(scope.row.size)}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -103,17 +102,19 @@
                    :page-sizes="[10, 20, 50, 100]"
                    :page-size="searchObj.paging.limit"
                    layout="sizes, prev, pager, next"
-                   :total="searchObj.paging.totalItems">
+                   :total="totalItems">
                     </el-pagination>
                 </div>
             </el-col>
         </el-row>
         <create-mirror ref="CreateMirror"></create-mirror>
+        <mirror-detail ref="MirrorDetail"></mirror-detail>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateMirror from './CreateMirror';
+import MirrorDetail from './MirrorDetail';
 import {searchMirrorList,delMirror} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -124,7 +125,6 @@ export default {
             paging: {
                 pageIndex: 1,
                 limit: 10,
-                totalItems: 0
             },
         };
         let cols = [
@@ -156,6 +156,7 @@ export default {
                 data:'',
                 searchText:''
             },
+            totalItems: 0,
             type:'name',
             tableData: []
 
@@ -164,7 +165,7 @@ export default {
     components: {
         PageHeader,
         CreateMirror,
-        // CreateRole
+        MirrorDetail
     },
     methods: {
         searchMirrorList(){
@@ -178,7 +179,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.data){
                     this.tableData = resData.data || [];
-                    this.searchObj.paging.totalItems = resData.total || 0;
+                    this.totalItems = resData.total || 0;
                 }
             });
         },
@@ -195,6 +196,9 @@ export default {
                         console.log('取消');
                     }
                 });
+        },
+        showDetail(item){
+            this.$refs.MirrorDetail.show(item);
         },
         convertStatus(status) {
             let upperCase = status.toUpperCase();

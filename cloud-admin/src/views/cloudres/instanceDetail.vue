@@ -238,7 +238,7 @@
                                            大小：
                                        </el-col>
                                        <el-col :span="18">
-                                           {{volume.size}}GB
+                                           <span v-if="volume.size">{{volume.size}}GB</span>
                                        </el-col>
                                    </el-row>
                                    <el-row class="listitem">
@@ -507,7 +507,7 @@ export default {
                     if(resData['OS-EXT-SRV-ATTR:hypervisor_hostname']) this.host.hostname = resData['OS-EXT-SRV-ATTR:hypervisor_hostname'];
                     if(resData['key_name']) this.host.keyname = resData['key_name'];
                     console.log('this.host',this.host);
-                    if(resData['os-extended-volumes:volumes_attached'].length !== 0){
+                    if(resData['os-extended-volumes:volumes_attached'] && resData['os-extended-volumes:volumes_attached'].length !== 0){
                         showVolumeDetails(resData['os-extended-volumes:volumes_attached'][0].id).then(ret => {
                             $log('getHostItemDetail', ret);
                             let resData = ret.data;

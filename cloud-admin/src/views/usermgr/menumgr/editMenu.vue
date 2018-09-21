@@ -61,7 +61,14 @@
                         <el-radio label="new">是</el-radio>
                         <el-radio label="2">否</el-radio>
                     </el-radio-group>
-                </el-form-item>  
+                </el-form-item>
+                <!-- d菜单类型 -->
+                <el-form-item label="菜单类型" prop="menuType">
+                    <el-radio-group v-model="menu.menuType">
+                        <el-radio label="1">管理员</el-radio>
+                        <el-radio label="2">用户</el-radio>
+                    </el-radio-group>
+                </el-form-item>
 
                 <el-form-item>
                     <el-button type="primary" size="small" @click="onSubmit">保存</el-button>
@@ -89,7 +96,7 @@ export default {
             routeHref: '',
             routeUrl: '',
             orderBy: 1,
-            menuType: 1,
+            menuType: '1',
             status: 1,
             isNew : 'new',
         };
@@ -144,6 +151,13 @@ export default {
                         message: '必填项',
                         trigger: ['submit','blur']
                     },                    
+                ],
+                menuType:[
+                    {
+                        required: true,
+                        message: '必填项',
+                        trigger: ['blur']
+                    },
                 ]
             } 
         };

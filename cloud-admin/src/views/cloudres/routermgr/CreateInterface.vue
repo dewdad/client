@@ -32,7 +32,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {listSDK,editRouter} from '@/service/cloudres.js';
+import {allSubnets,editRouter} from '@/service/cloudres.js';
 export default {
     data() {
         return{
@@ -74,22 +74,22 @@ export default {
             this.form.subnet = '';
             this.form.id = item.id;
             this.form.name = item.name;
-            this.listSDK();
+            this.allSubnets();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
             });
 
         },
-        listSDK(){
+        allSubnets(){
             let param = {
                 enable_dhcp:true
             };
-            listSDK(param).then(ret => {
+            allSubnets(param).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.pull = resData.data || [];
+                if(resData ){
+                    this.pull = resData || [];
                 }
             });
         },
