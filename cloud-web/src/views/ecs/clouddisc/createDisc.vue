@@ -14,11 +14,11 @@
                         <zt-form ref="instNameForm" :show-message="true" inline-message size="small" :model="form" :rules="rules" label-width="0" style="width:300px;">
                             <zt-form-item id="instname" label="" class="hide-star" prop="diskName">
                                 <el-input v-model="form.diskName" placeholder="请输入云盘名称" size="small"></el-input>
-                                <span class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span>
+                                <span slot="help" class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符</span>
                             </zt-form-item>
                             <zt-form-item label="" class="mb0 hide-star" prop="desc">
                                 <el-input type="textarea" v-model="form.desc" maxlength="300" autosize placeholder="磁盘描述" :clearable="true"></el-input>
-                                <span class="input-help">{{$t('ecs.create.instdesc.tips')}}</span>
+                                <span slot="help" class="input-help">{{$t('ecs.create.instdesc.tips')}}</span>
                             </zt-form-item>
                         </zt-form>
                     </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="create-form-item__content">
                     <zt-input-number style="width:170px" v-model="numberApply" :tooltip="'容量范围: 20G - 32768G'" size="small" :precision="0" :step="1" suffix="块" controls-position="right" :min="1" :max="250"></zt-input-number>
-                    <span class="input-help">最多可开通 250 块云盘，已开通 {{numberApply}} 块</span>
+                    <span slot="help" class="input-help">最多可开通 250 块云盘，已开通 {{numberApply}} 块</span>
 
                     <!-- 当前配置 -->
                     <div style="padding:20px;background-color:#F9FAFD;" class="mt20">
@@ -165,7 +165,7 @@ export default {
                         createNum: this.numberApply,
                         volumeType: this.sysDisk.type.value,
                         size: this.sysDisk.size,
-                        description: '',
+                        description: this.form.desc,
                         ecsId: '',
                         snapshotId: ''
                     };

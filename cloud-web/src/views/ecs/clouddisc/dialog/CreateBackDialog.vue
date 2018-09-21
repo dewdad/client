@@ -17,7 +17,7 @@
             <!-- 备份名称 -->
             <zt-form-item label="备份名称" prop="snapshotName">
                 <el-input size="small" v-model="ruleForm.snapshotName"></el-input>
-                <span class="input-help">备份名称为2-128个字符，备份名不能以auto开头。</span>
+                <span slot="help" class="input-help">备份名称为2-128个字符，备份名不能以auto开头。</span>
             </zt-form-item>
             <!-- 备份描述 -->
             <zt-form-item label="备份描述">

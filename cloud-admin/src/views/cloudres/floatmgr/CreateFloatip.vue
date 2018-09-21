@@ -1,16 +1,20 @@
 <template>
-    <el-dialog title="创建资源模板" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+    <el-dialog title="分配IP各项目" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
-            <el-form-item label="名称 " prop="name" :label-width="formLabelWidth">
-                <el-input placeholder="输入名称" v-model="form.name"></el-input>
+            <el-alert
+                    title="从指定的浮动IP池中分配一个浮动IP。"
+                    type="info"
+                    :closable="false">
+            </el-alert>
+            <el-form-item label="资源池：" prop="floatingNetworkId" :label-width="formLabelWidth" class="mt20">
+                <el-select v-model="form.floatingNetworkId">
+                    <el-option v-for="item in pull" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="VCPU数量" prop="vcpus" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.vcpus"></el-input-number>
+            <el-form-item label="项目配额："  :label-width="formLabelWidth">
+                <el-progress :percentage="(usage.current/usage.max)*100||0"></el-progress>
+                <div>已使用 {{usage.current}}, 共{{usage.max}}</div>
             </el-form-item>
-            <el-form-item label="内存（GB）" prop="ram" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.ram"></el-input-number>
-            </el-form-item>
-
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
@@ -20,31 +24,25 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {createModel} from '@/service/cloudres.js';
+import {networkList,floatIpquota,createFloatIp} from '@/service/cloudres.js';
 export default {
     data() {
         return{
-            formLabelWidth: '120px',
+            formLabelWidth: '130px',
             isShow: false,
             resolve: null,
             reject: null,
             confirmBtn: false,
+            optype:1,
+            pull:[],
+            usage:{},
             form:{
-                name:'',
-                vcpus:'',
-                ram:''
+                floatingNetworkId:''
             },
             rules:{
-                name: [
-                    { required: true, message: '请输入名称', trigger: 'blur' }
-                ],
-                vcpu: [
-                    { required: true, message: '请输VCPU数量', trigger: 'submit' }
-                ],
-                ram: [
-                    { required: true, message: '请输内存大小', trigger: 'submit' }
+                floatingNetworkId: [
+                    { required: true, message: '请输选择资源', trigger: 'blur' }
                 ]
-
             }
         };
     },
@@ -55,26 +53,45 @@ export default {
     },
     props: {},
     methods: {
-        show() {
+        show(item,optype) {
             this.isShow = true;
-            // this.optype = optype;
-            // console.log('item',item);
-            // if(optype !== 1){
-            //     this.form.roleType = item.roleType;
-            //     this.form.id = item.id;
-            // }
-            // this.form.roleName = item.roleName;
-            // this.form.description = item.description;
-            // console.log('optype',optype);
+            this.form.floatingNetworkId = '';
+            this.networkList();
+            this.floatIpquota();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
             });
 
         },
+        networkList(){
+            let params = {
+                is_default:0,
+            };
+            $log('params', params);
+            networkList(params).then(ret => {
+                $log('data', ret);
+                let resData = ret.data;
+                if(resData && resData.resultList){
+                    this.pull = resData.resultList || [];
+                }
+            });
+        },
+        floatIpquota(){
+            let params = {
+                is_default:0,
+            };
+            $log('params', params);
+            floatIpquota(params).then(ret => {
+                $log('data', ret);
+                let resData = ret.data;
+                if(resData){
+                    this.usage = resData || [];
+                }
+            });
+        },
         hide() {
             this.isShow = false;
-
         },
         cancel() {
             this.hide();
@@ -89,17 +106,18 @@ export default {
         },
         confirm() {
             this.confirmBtn = true;
-            // this.form.deptId = this.user.deptId;
+            console.log('this.form',this.form);
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    createModel(this.form)
+                    createFloatIp(this.form)
                         .then(res => {
-                            console.log('res',res);
+                            console.log('redssssssss',res);
                             if(res.code === '0000'){
                                 this.resolve(this.form);
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;
+                                return this.$alert('操作成功','提示');
                             }else{
                                 this.$alert('操作失败', '提示', {
                                     type: 'error'
@@ -121,6 +139,9 @@ export default {
                 }
             });
         }
+    },
+    mounted(){
+
     }
 };
 </script>

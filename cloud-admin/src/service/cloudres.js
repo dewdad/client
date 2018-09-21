@@ -1,5 +1,5 @@
 import http from '../utils/http';
-import {CLOUD_RES,NETWORK,MODEL} from '../constants/apiUrl';
+import {CLOUD_RES,NETWORK,MODEL,VOLUME} from '../constants/apiUrl';
 //import { replaceParamVal } from '../utils/utils';
 
 /**
@@ -123,6 +123,15 @@ export async function searchPortList(data) {
         params: data
     });
     return response.data;
+}/**
+ *查询子网列表
+ * @param {*}
+ */
+export async function searchSubnetList(data) {
+    console.log('data',data);
+    let url = NETWORK.searchSubnetList +'/get';
+    let response = await http.get(url);
+    return response.data;
 }
 /**
  *编辑网络
@@ -204,6 +213,16 @@ export async function createModel(data) {
     let response = await http.post(url,data);
     return response.data;
 }
+/**
+ *删除模板
+ * @param {*}
+ */
+export async function delModel(data) {
+    console.log('data',data);
+    var url = MODEL.delModel + '?req_param=' + data;
+    let response = await http.delete(url);
+    return response.data;
+}
 //镜像
 /**
  *创建镜像
@@ -234,5 +253,186 @@ export async function delMirror(data) {
     console.log('data',data);
     var url = CLOUD_RES.delMirror+ '?req_param=' + data;
     let response = await http.delete(url);
+    return response.data;
+}
+//磁盘
+/**
+ *删除云盘
+ * @param {*}
+ */
+export async function delCloud(data) {
+    console.log('data',data);
+    var url = VOLUME.delCloud + data;
+    let response = await http.delete(url);
+    return response.data;
+}/**
+ *获取云盘列表
+ * @param {*}
+ */
+export async function searchCloudList(data) {
+    console.log('data',data);
+    let response = await http.get(VOLUME.searchCloudList, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *删除快照
+ * @param {*}
+ */
+export async function delSnapshot(data) {
+    console.log('data',data);
+    var url = VOLUME.delSnapshot + data;
+    let response = await http.delete(url);
+    return response.data;
+}/**
+ *获取快照列表
+ * @param {*}
+ */
+export async function searchSnapshotList(data) {
+    console.log('data',data);
+    let response = await http.get(VOLUME.searchSnapshotList, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *删除备份
+ * @param {*}
+ */
+export async function delBackup(data) {
+    console.log('data',data);
+    var url = VOLUME.delBackup + data;
+    let response = await http.delete(url);
+    return response.data;
+}/**
+ *获取备份列表
+ * @param {*}
+ */
+export async function searchBackupList(data) {
+    console.log('data',data);
+    let response = await http.get(VOLUME.searchBackupList, {
+        params: data
+    });
+    return response.data;
+}
+//路由管理
+/**
+ *创建路由
+ * @param {*}
+ */
+export async function createRouter(data) {
+    console.log('data',data);
+    let response = await http.post(NETWORK.createRouter,data);
+    return response.data;
+}
+/**
+ *编辑路由
+ * @param {*}
+ */
+export async function editRouter(data) {
+    console.log('data',data);
+    let url = NETWORK.editRouter + data.id;
+    let response = await http.put(url,data.param);
+    return response.data;
+}
+/**
+ *删除路由
+ * @param {*}
+ */
+export async function delRouter(data) {
+    console.log('data',data);
+    var url = NETWORK.delRouter + data;
+    let response = await http.delete(url);
+    return response.data;
+}
+/**
+ *获取路由列表
+ * @param {*}
+ */
+export async function routerList(data) {
+    console.log('data',data);
+    let response = await http.get(NETWORK.routerList, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *路由详情
+ * @param {*}
+ */
+export async function delDetail(data) {
+    console.log('data',data);
+    let URL = NETWORK.delDetail+ data;
+    let response = await http.get(URL);
+    return response.data;
+}
+//ip管理
+/**
+ *创建浮动IP
+ * @param {*}
+ */
+export async function createFloatIp(data) {
+    console.log('data',data);
+    let response = await http.post(NETWORK.createFloatIp,data);
+    return response.data;
+}
+/**
+ *浮动IP列表
+ * @param {*}
+ */
+export async function floatIplist(data) {
+    console.log('data',data);
+    let response = await http.get(NETWORK.floatIplist, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *解绑浮动IP
+ * @param {*}
+ */
+export async function disassociateFromPort(data) {
+    console.log('data',data);
+    let url = NETWORK.disassociateFromPort +data
+    let response = await http.put(url);
+    return response.data;
+}
+/**
+ *删除浮动IP
+ * @param {*}
+ */
+export async function delfloatIp(data) {
+    console.log('data',data);
+    var url = NETWORK.delfloatIp + data;
+    let response = await http.delete(url);
+    return response.data;
+}
+/**
+ *浮动IP详情
+ * @param {*}
+ */
+export async function floatIpdetail(data) {
+    console.log('data',data);
+    let URL = NETWORK.floatIpdetail + data;
+    let response = await http.get(URL);
+    return response.data;
+}/**
+ *浮动配额
+ * @param {*}
+ */
+export async function floatIpquota(data) {
+    console.log('data',data);
+    let URL = NETWORK.floatIpquota;
+    let response = await http.get(URL);
+    return response.data;
+}/**
+ *外部网络
+ * @param {*}
+ */
+export async function listSDK(data) {
+    console.log('data',data);
+    let URL = NETWORK.listSDK+'?router:external=true';
+    let response = await http.get(URL);
     return response.data;
 }

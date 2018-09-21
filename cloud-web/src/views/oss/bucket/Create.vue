@@ -4,14 +4,14 @@
             <zt-form ref="bucketForm" label-width="120px" :model="bucket" size="small" :rules="rules" inline-message>
                 <zt-form-item label="存储空间名称" prop="name">
                     <el-input v-model="bucket.name" placeholder="请输入储存空间名称"></el-input>
-                    <span class="input-help">存储名称作为唯一标识符，遇到冲突请更换名称，名称由4~63个字符组成，可包含小写字母、数字、中划线</span>
+                    <span slot="help" class="input-help">存储名称作为唯一标识符，遇到冲突请更换名称，名称由4~63个字符组成，可包含小写字母、数字、中划线</span>
                 </zt-form-item>
                 <zt-form-item label="读写权限">
                     <el-radio-group v-model="bucket.rwAuth" size="small">
                         <el-radio-button label="true">私有</el-radio-button>
-                        <el-radio-button label="false">公开</el-radio-button>
+                        <el-radio-button label="false">公共读</el-radio-button>
                     </el-radio-group>
-                    <span class="input-help">公开和私有仅对Bucket读文件生效，修改、删除、写入等对Bucket的操作均需要拥有者的授权才能进行。</span>
+                    <span slot="help" class="input-help">公共读和私有仅对Bucket读文件生效，修改、删除、写入等对Bucket的操作均需要拥有者的授权才能进行。</span>
                 </zt-form-item>
             </zt-form>
         </div>

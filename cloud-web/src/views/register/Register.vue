@@ -16,7 +16,7 @@
                         <zt-form-item id="username" prop="username" :showRule="true" has-help>
                             <div>
                                 <el-input v-model="user.username" :maxlength="32" :placeholder="$t('form.input.username')" clearable></el-input>
-                                <span class="input-help">{{$t('form.tips.username')}}</span>
+                                <span slot="help" class="input-help">{{$t('form.tips.username')}}</span>
                             </div>
                         </zt-form-item>
                         <zt-form-item id="mobile" prop="mobile">

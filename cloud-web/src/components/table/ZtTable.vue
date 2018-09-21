@@ -5,7 +5,7 @@
         <el-table class="data-list" @filter-change="filterHandler" @cell-mouse-enter="cellMouseEnter" v-loading="loading" :data="dataList" header-row-class-name="data-list" style="width: 100%">
             <slot name="default"></slot>
         </el-table>
-        <div class="pagination">
+        <div v-if="isPaging" class="pagination">
             <el-pagination background :current-page="paging.pageIndex" @current-change="handleCurrentChange" :page-size="paging.limit" layout="total, prev, pager, next" :total="paging.totalItems">
             </el-pagination>
         </div>
@@ -51,6 +51,10 @@ export default {
                 };
             }
         },
+        isPaging:{
+            type: Boolean,
+            default: true
+        },
         cellMouseEnter: {
             type: Function,
             default: () => {}
@@ -78,10 +82,8 @@ export default {
             let data = {
                 pageIndex: this.currentPage,
                 limit: this.paging.limit,
-                fileds: {
-                    [this.inlineForm.field]: this.inlineForm.value
-                }
             };
+            data[this.inlineForm.field] = this.inlineForm.value;
             this.$emit('search', data);
         },
         // 状态筛选

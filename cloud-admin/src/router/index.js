@@ -237,11 +237,60 @@ export default new Router({
                             component: () => import('@/views/cloudres/instanceDetail')
                         },{
                             path: 'image',
-                            name: 'app.cloudres.image',
+                            name: 'app.resource.image',
                             meta: {
                                 title: '镜像'
                             },
                             component: () => import('@/views/cloudres/mirror/mirror')
+                        },{
+                            path: 'cloud',
+                            name: 'app.resource.volume.cloud',
+                            meta: {
+                                title: '云盘'
+                            },
+                            component: () => import('@/views/cloudres/volume/cloud')
+                        },{
+                            path: 'backup',
+                            name: 'app.resource.volume.backup',
+                            meta: {
+                                title: '备份'
+                            },
+                            component: () => import('@/views/cloudres/volume/backup')
+                        },{
+                            path: 'snapshot',
+                            name: 'app.resource.volume.snapshot',
+                            meta: {
+                                title: '快照'
+                            },
+                            component: () => import('@/views/cloudres/volume/snapshot')
+                        },{
+                            path: 'routermgr',
+                            name: 'app.cloudres.network.routermgr',
+                            meta: {
+                                title: '路由管理'
+                            },
+                            component: () => import('@/views/cloudres/routermgr/router')
+                        },{
+                            path: 'routermanage/:item',
+                            name: 'app.cloudres.network.routermanage',
+                            meta: {
+                                title: '接口管理'
+                            },
+                            component: () => import('@/views/cloudres/routermgr/routermanage')
+                        },{
+                            path: 'ipmgr',
+                            name: 'app.cloudres.network.ipmgr',
+                            meta: {
+                                title: 'IP管理'
+                            },
+                            component: () => import('@/views/cloudres/floatmgr/floatip')
+                        },{
+                            path: 'distrouter/:item',
+                            name: 'app.cloudres.network.distrouter',
+                            meta: {
+                                title: '静态路由表'
+                            },
+                            component: () => import('@/views/cloudres/routermgr/distrouter')
                         }
                     ]
                 }

@@ -4,6 +4,18 @@
             <el-form-item label="名称 " prop="name" :label-width="formLabelWidth">
                 <el-input placeholder="输入名称" v-model="form.name"></el-input>
             </el-form-item>
+            <el-form-item label="网络类型 " prop="networkType" :label-width="formLabelWidth">
+                <el-select v-model="form.networkType">
+                    <el-option label="VXLAN" value="VXLAN"></el-option>
+                    <el-option label="VLAN" value="VLAN"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="物理网络 " prop="physicalNetwork" v-if="form.networkType == 'VLAN'" :label-width="formLabelWidth">
+                <el-input placeholder="输入物理网络" v-model="form.physicalNetwork"></el-input>
+            </el-form-item>
+            <el-form-item label="段ID " prop="segmentId" :label-width="formLabelWidth" v-if="optype == 1">
+                <el-input placeholder="输入段ID" v-model="form.segmentId"></el-input>
+            </el-form-item>
             <el-form-item label="ID " prop="id" :label-width="formLabelWidth" v-if="optype == 2">
                 <el-input placeholder="输入ID" v-model="form.id"></el-input>
             </el-form-item>
@@ -18,11 +30,7 @@
                 <el-radio v-model="form.routerExternal" label="1">是</el-radio>
                 <el-radio v-model="form.routerExternal" label="2">否</el-radio>
             </el-form-item>
-            <el-form-item label="子网选项："  :label-width="formLabelWidth">
-            </el-form-item>
-            <el-form-item label="子网名称 " prop="subnet.name" :label-width="formLabelWidth">
-                <el-input placeholder="输入子网名称" v-model="form.subnet.name"></el-input>
-            </el-form-item>
+
             <el-form-item label="网络地址 " prop="subnet.cidr" :label-width="formLabelWidth">
                 <el-input placeholder="输入子网络地址" style="width:88%" v-model="form.subnet.cidr"></el-input>
                 <el-tooltip class="ml10" effect="light" content="CIDR格式的网络地址 (例如 192.168.0.0/24, 2001:DB8::/48" placement="right">
@@ -89,6 +97,9 @@ export default {
                 admin_state_up:'1',
                 shared:'1',
                 routerExternal:'1',
+                networkType:'VXLAN',
+                physicalNetwork:'',
+                segmentId:'',
                 subnet:{
                     name:'',
                     cidr:'',
@@ -107,6 +118,12 @@ export default {
                 ],
                 id: [
                     { required: true, message: '请输入ID', trigger: 'blur' }
+                ],
+                physicalNetwork: [
+                    { required: true, message: '请输入物理网络', trigger: 'blur' }
+                ],
+                segmentId: [
+                    { required: true, message: '请输入段ID', trigger: 'blur' }
                 ],
                 'subnet.cidr': [
                     { required: true, message: '请输入网络地址', trigger: 'blur' }

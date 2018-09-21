@@ -4,10 +4,10 @@
             <el-input ref="instname" v-model="form.instname" :placeholder="$t('form.input.instname')" maxlength="64" :clearable="true"></el-input>
             <!-- <span class="input-help text-nowrap">{{$t('ecs.create.instname.tips')}}</span> -->
         </zt-form-item>
-        <zt-form-item label="" class="mb0 hide-star" prop="desc">
+        <!-- <zt-form-item label="" class="mb0 hide-star" prop="desc">
             <el-input type="textarea" v-model="form.desc" maxlength="300" autosize :placeholder="$t('form.input.instdesc')" :clearable="true"></el-input>
-            <span class="input-help">{{$t('ecs.create.instdesc.tips')}}</span>
-        </zt-form-item>
+            <span slot="help" class="input-help">{{$t('ecs.create.instdesc.tips')}}</span>
+        </zt-form-item> -->
     </zt-form>
 </template>
 <script>

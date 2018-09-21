@@ -19,14 +19,15 @@ import {replaceParamVal} from '@/utils/utils';
  * type: private表示查询自定义镜像， public表示查询公共镜像
  * }
  */
-export async function getImages({pageIndex = 1, limit = 10, type = '', status = ''} = {}) {
+export async function getImages({pageIndex = 1, limit = 10, type = '', status = '',name = ''} = {}) {
     let offset = (pageIndex - 1) * limit + 1;
     let res = await http.get(API_ECS.images.getImages, {
         params: {
             pageIndex,
             limit,
             offset,
-            status: '',
+            status,
+            name,
             type
         }
     });

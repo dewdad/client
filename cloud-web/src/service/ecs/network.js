@@ -109,6 +109,16 @@ export async function editRouter({...arg}) {
 }
 
 /**
+ * 获得路由详情
+ */
+export async function getRouterInfo(id) {
+    $log('get /editRouter ->', id);
+    let ret = await http.get(replaceParamVal(API_ECS.network.getRouterInfo, [id]));
+    return ret && ret.data;
+}
+
+
+/**
  * 设置网关或清除网关
  * @param name 路由名称
  * @param adminStateUp 管理状态

@@ -14,24 +14,22 @@
     <!-- 表格 -->
     <zt-table
         :loading="isLoading"
-        :data="tableData"
-        @search="getVpcList" 
-        :paging="searchObj.paging">
-        <el-table-column prop="title" label="目的CIDR" width="280">
+        :data="routerList"
+        @search="getVpcList"
+        :isPaging="false">
+        <el-table-column prop="destination" label="目的CIDR" width="280">
             <template slot-scope="scope">
-                <div>{{scope.row.name}}</div>
+                <div>{{scope.row.destination}}</div>
             </template>
         </el-table-column>
         <el-table-column label="下一跳">
             <template slot-scope="scope">
-                <zt-status :status="ECS_STATUS" :value="scope.row.status" ></zt-status>
+                <div>{{scope.row.nexthop}}</div>
             </template>
         </el-table-column>
         <el-table-column label="操作" :min-width="90" class-name="option-column">
             <template slot-scope="scope" >
-                <a>编辑</a>
-                <b class="link-division-symbol"></b>
-                <a>删除</a>
+                <a style="padding-right: 0;">删除</a>
             </template>
         </el-table-column>
     </zt-table>
@@ -44,7 +42,7 @@
 import RegionRadio from '@/components/regionRadio/RegionRadio';
 import AddStaticRouter from './dialog/AddStaticRouter';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
-import {getRouterList} from '@/service/ecs/network.js';
+import { getRouterInfo} from '@/service/ecs/network.js';
 
 let searchObj = {
     //分页
@@ -95,19 +93,12 @@ export default {
         },
         // 获得所有路由列表
         getRouterListFn(fileds) {
-            let params = {
-                pageIndex: 1,
-                totalItems: 0
-            };
-            getRouterList(params)
+            getRouterInfo(this.$route.params.id)
                 .then(res => {
-                    if (res && res.data) {
-                        let data = res.data;
-                        if (data.code && data.code === this.CODE.SUCCESS_CODE) {
-                            let dataList = data.data || [];
-                            this.routerList = dataList.data;
-                            $log('getRouterList ->', dataList);
-                        }
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let dataList = res.data || [];
+                        this.routerList = dataList && dataList.routes;
+                        $log('getRouterList ->', dataList);
                     }
                 })
                 .catch(e => {

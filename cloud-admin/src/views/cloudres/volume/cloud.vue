@@ -1,0 +1,272 @@
+<template>
+    <div class="page-main">
+        <page-header>
+            磁盘
+        </page-header>
+        <el-row class="mt20">
+            <el-col :span="24">
+                <el-form :inline="true" :model="formInline" size="small">
+
+                    <el-form-item>
+                        <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
+                            <el-option v-for="item in searchCond" :value="item.key" :label="item.value" :key="item.key"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="关键字">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'status'"></el-input>
+                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'">
+                            <el-option v-for="item in statusArrVolume" :value="item.key" :label="item.value" :key="item.key"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="ml10" size="small" type="primary" @click="searchCloudList" icon="el-icon-search">搜索</el-button>
+                    </el-form-item>
+                    <el-form-item class="pull-right">
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="searchCloudList"></el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-table :data="tableData"  header-row-class-name="data-list">
+                    <template v-for="col in cols">
+                        <template v-if="col.column=='domain_name'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.domain_name}}</span>
+
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='project_name'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.project_name}}</span>
+
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='name'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.display_name}}</span>
+
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='size'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.size}}GB</span>
+
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='status'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{convertStatusSnapshot(scope.row.status)}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='linkto'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <div class="font12 mr10">
+                                        <p v-for="attachment in scope.row.attachment" :key="attachment.id">{{attachment.hostname}}</p>
+                                        </div>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='zoon'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.availability_zone}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                        <template v-if="col.column=='canstart'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.bootable?'是':'否'}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
+                    </template>
+                    <!-- 操作 -->
+                    <template>
+                        <el-table-column label="操作" key="op" min-width="60" class-name="option-snaplist">
+                            <template slot-scope="scope">
+                                <span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=item.status" class="color999">删除</span>
+                                <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'" class="btn-linker">删除</a>
+                            </template>
+                        </el-table-column>
+                    </template>
+                </el-table>
+                <!--分页-->
+                <div class="pagination">
+                    <el-pagination background
+                   @current-change="currentChange"
+                   @size-change="handleSizeChange"
+                   :current-page="searchObj.paging.pageIndex"
+                   :page-sizes="[10, 20, 50, 100]"
+                   :page-size="searchObj.paging.limit"
+                   layout="sizes, prev, pager, next"
+                   :total="searchObj.paging.totalItems">
+                    </el-pagination>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+<script>
+import PageHeader from '@/components/pageHeader/PageHeader';
+
+import {searchCloudList,delCloud} from '@/service/cloudres.js';
+export default {
+    name: 'app',
+
+    data() {
+        let searchObj = {
+            //分页
+            paging: {
+                pageIndex: 1,
+                limit: 10,
+                totalItems: 0
+            },
+        };
+        let cols = [
+            { column: 'domain_name', text:'部门' , width: '10%'},
+            { column: 'project_name', text:'租户' , width: '5%'},
+            { column: 'name', text: '名称', width: '5%' },
+            { column: 'size', text: '大小', width: '5%' },
+            { column: 'status', text: '状态', width: '5%' },
+            { column: 'linkto', text: '挂载到', width: '10%' },
+            { column: 'zoon', text: '可用域', width: '10%' },
+            { column: 'canstart', text: '可启动', width: '10%' },
+        ];
+
+        let searchCond = [
+            {key: 'domain_name', value: '部门'},
+            {key: 'project_name', value: '租户'},
+            {key: 'display_name', value: '名称'},
+            {key: 'status', value: '状态'},
+            {key: 'size', value: '大小'}
+        ];
+        let statusArrVolume = [
+            {key:'creating',value:'创建中'},
+            {key:'available',value:'可用'},
+            {key:'reserved',value:'保留'},
+            {key:'attaching',value:'连接中'},
+            {key:'detaching',value:'分离中'},
+            {key:'in-use',value:'使用中'},
+            {key:'maintenance',value:'维修中'},
+            {key:'deleting',value:'删除中'},
+            {key:'awaiting_transfer',value:'等待转移'},
+            {key:'error',value:'错误'},
+            {key:'error_deleting',value:'删除时出错'},
+            {key:'backing_up',value:'备份中'},
+            {key:'restoring_backup',value:'恢复备份中'},
+            {key:'error_backing_up',value:'备份时出错'},
+            {key:'error_restoring',value:'恢复备份时出错'},
+            {key:'error_extending',value:'扩展时错误'},
+            {key:'downloading',value:'下载中'},
+            {key:'uploading',value:'上传中'},
+            {key:'extending',value:'扩展中'},
+        ];
+        return {
+            statusArrVolume,
+            searchCond,
+            cols,
+            searchObj,
+            formInline: {
+                data:'',
+                searchText:''
+            },
+            type:'',
+            tableData: []
+
+        };
+    },
+    components: {
+        PageHeader,
+
+    },
+    methods: {
+        searchCloudList(){
+            let params = {
+                paging:this.searchObj.paging,
+                [this.type]:this.formInline.searchText
+            };
+            $log('params', params);
+            searchCloudList(params).then(ret => {
+                $log('data', ret);
+                let resData = ret.data;
+                if(resData && resData.resultList){
+                    this.tableData = resData.resultList || [];
+                    this.searchObj.paging.totalItems = resData.totalPages || 0;
+                }
+            });
+        },
+        convertStatusSnapshot(status) {
+            status = status.toLowerCase();
+            for (let i = 0, ii = this.statusArrVolume.length; i < ii; i++) {
+                let item = this.statusArrVolume[i];
+                if (item.key == status) {
+                    return item.value;
+                }
+            }
+            return status;
+        },
+        calcSize(size) {
+            if (size < 1024) {
+                return size + 'B';
+            }
+            if (size < 1024 * 1024) {
+                return size / 1024 + 'KB';
+            }
+            if (size < 1024 * 1024 * 1024) {
+                return size / (1024 * 1024) + 'MB';
+            }
+            return size / (1024 * 1024 * 1024) + 'GB';
+        },
+        currentChange(val){
+            this.searchObj.paging.pageIndex = val;
+            this.searchCloudList();
+        },
+        handleSizeChange (val) {
+            this.searchObj.paging.limit = val;
+            this.searchCloudList();
+        },
+        del(item){
+            delCloud(item.id).then(ret=>{
+                this.searchCloudList();
+            });
+        },
+        /**
+         * 删除镜像
+         */
+        delCloud(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.del(item);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
+    },
+
+    mounted(){
+        this.searchCloudList();
+    }
+};
+</script>
+<style scoped>
+</style>
