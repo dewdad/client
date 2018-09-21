@@ -1,15 +1,15 @@
 <template>
     <el-dialog
-        title="创建路由"
+        :title="routerId !== '' ? '编辑路由' : '创建路由'"
         :visible.sync="isShow"
         width="600px"
-        class="EditRouter">
+        class="EditRouter" @close="cancel">
         <el-alert
             title="基于特殊参数创建一路由。"
             type="warning"
             :closable="false">
         </el-alert>
-        <zt-form class="mt20" inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small" :rules="rules" ref="ruleForm">
+        <zt-form class="mt20"  inline-message :model="ruleForm" label-width="100px" style="width:392px;" size="small" :rules="rules" ref="ruleForm">
             <!-- 路由名称 -->
             <zt-form-item label="路由名称"  prop="routerName">
                 <el-input v-model="ruleForm.routerName"></el-input>
@@ -101,6 +101,11 @@ export default {
         },
         hide() {
             this.isShow = false;
+            this.ruleForm.routerName = '';
+            this.ruleForm.outerNet = '';
+            this.ruleForm.manageState = 'UP';
+            this.routerId = '';
+            this.$refs.ruleForm.clearValidate();
         },
         cancel() {
             this.hide();
