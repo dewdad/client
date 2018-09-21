@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-19 18:09:09
+ * @Last Modified time: 2018-09-21 10:26:03
  * ecs模块 读取网络信息接口
  */
 
@@ -117,7 +117,6 @@ export async function getRouterInfo(id) {
     return ret && ret.data;
 }
 
-
 /**
  * 设置网关或清除网关
  * @param name 路由名称
@@ -151,7 +150,7 @@ export async function amendRouter({...arg}) {
 export async function addStaticRouter({...arg}) {
     $log('put /editRouter ->', {...arg});
     let ret = await http.put(API_ECS.network.editRouter, {...arg});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
+    return ret && ret.data;
 }
 
 /**
