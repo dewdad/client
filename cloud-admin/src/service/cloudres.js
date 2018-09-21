@@ -142,7 +142,18 @@ export async function editNetwork(data) {
     let url = NETWORK.editNetwork;
     let response = await http.put(url,data);
     return response.data;
-}/**
+}
+/**
+ *所有子网
+ * @param {*}
+ */
+export async function allSubnets(data) {
+    console.log('data',data);
+    let url = NETWORK.allSubnets + '?enable_dhcp=true';
+    let response = await http.get(url);
+    return response.data;
+}
+/**
  *创建网络
  * @param {*}
  */

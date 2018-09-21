@@ -44,7 +44,7 @@ export const MODEL = {
 export const VOLUME = {
     searchCloudList: ADMIN + '/volume/list',//云盘列表
     searchSnapshotList: ADMIN + '/volumeSnapshot/list',//快照列表
-    searchBackupList: ADMIN + '/volumeBackups/lis',//备份列表
+    searchBackupList: ADMIN + '/volumeBackups/list',//备份列表
     delCloud: ADMIN + '/volume/',
     delSnapshot: ADMIN + '/volumeSnapshot/',
     delBackup: ADMIN + '/volumeBackups/',
@@ -56,6 +56,7 @@ export const NETWORK = {
     editNetwork: ADMIN + '/network/',
     createNetwork: ADMIN + '/network',
     searchSubnetList: ADMIN + '/network/',
+    allSubnets: ADMIN + '/subnet',
     createPort: ADMIN + '/port',
     editPort: ADMIN + '/port/',
     searchPortList: ADMIN + '/port',

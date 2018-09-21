@@ -166,9 +166,9 @@ export default {
             searchBackupList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
-                    this.searchObj.paging.totalItems = resData.total || 0;
+                if(resData && resData.resultList){
+                    this.tableData = resData.resultList || [];
+                    this.searchObj.paging.totalItems = resData.totalPages || 0;
                 }
             });
         },
