@@ -9,6 +9,7 @@ const SYS = '/resources';//平台
 const ORDER = '/resources/order';//工单
 const ADMIN = '/compute/admin';//管理
 const ME = '/compute';//图表
+const FILE = '/fileProcess';//文件流
 
 
 // 登录模块
@@ -57,6 +58,7 @@ export const NETWORK = {
     createNetwork: ADMIN + '/network',
     searchSubnetList: ADMIN + '/network/',
     allSubnets: ADMIN + '/subnet',
+    seachSubnet: ME + '/network/',
     createPort: ADMIN + '/port',
     editPort: ADMIN + '/port/',
     searchPortList: ADMIN + '/port',
@@ -203,6 +205,7 @@ export const ORDER_MODULE = {
     createOrder: ORDER + '/create',//创建工单
     delOrder: ORDER + '/delete',
     transferList: ORDER + '/getUserList',
+    searchFile: FILE + '/getFile',
     //  补充说明
     supplement: 'resources/order/supplement',
     getSupplement: 'resources/order/getSupplement',

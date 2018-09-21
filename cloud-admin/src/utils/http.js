@@ -168,6 +168,7 @@ http.interceptors.response.use(
         // token过期或错误 退出重新登录
         if (response.data && response.data.code === ERRCODE.INVALID_TOKEN) {
             // throttled_message(response.data.msg);
+            alert('fail');
             store.dispatch('LOGOUT');
             return;
         }
@@ -193,6 +194,7 @@ http.interceptors.response.use(
                 case 401:
                 case 408:
                     store.dispatch('LOGOUT');
+                    alert('401,408');
                     Router.push({name: 'login'});
                     break;
                 case 403:
@@ -201,8 +203,10 @@ http.interceptors.response.use(
                 default:
                     if (env === 'production') {
                         throttled_message('当前网络信号较差，请稍后再试...');
+                        Router.push({name: 'login'});
                     } else {
                         throttled_message(`服务器错误！错误代码：${error.response.status}`);
+                        Router.push({name: 'login'});
                     }
 
                     break;

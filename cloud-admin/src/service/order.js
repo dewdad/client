@@ -12,6 +12,16 @@ export async function myorderList(data) {
         params: data
     });
     return response.data;
+}/**
+ *查询附件并下载
+ * @param {*}
+ */
+export async function searchFile(data) {
+    console.log('data',data);
+    let response = await http.get(ORDER_MODULE.searchFile, {
+        params: data
+    });
+    return response.data;
 }
 /**
  *创建工单

@@ -20,7 +20,6 @@
             <el-col :span="24">
                 <el-table :data="tableData"  header-row-class-name="data-list">
                     <template v-for="col in cols">
-                        <!-- 角色id -->
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
@@ -28,24 +27,24 @@
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='roleVal'">
+                        <template v-if="col.column=='fixedIp'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleVal}}</span>
+                                    <span class="font12 mr10">{{scope.row.fixed_ips[0].ip_address}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='description'">
+                        <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.description}}</span>
+                                    <span class="font12 mr10">{{scope.row.status == "ACTIVE"? "运行中":"关闭"}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='createTime'">
+                        <template v-if="col.column=='admin'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.createTime | date }}</span>
+                                    <span class="font12 mr10">{{scope.row.admin_state_up?'UP':'DOWN'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -57,7 +56,8 @@
                                 <a  @click="createPort(scope.row,2)" class="btn-linker" >编辑</a>
                                 <b class="link-division-symbol"></b>
                                 <a  @click="delPort(scope.row)" class="btn-linker" >删除</a>
-
+                                <!--<b class="link-division-symbol"></b>-->
+                                <!--<a  @click="addAddress(scope.row)" class="btn-linker" >添加地址对</a>-->
                             </template>
                         </el-table-column>
                     </template>
@@ -97,10 +97,11 @@ export default {
             },
         };
         let cols = [
-            { column: 'name', text:'权限名称' , width: '15%'},
-            { column: 'roleVal', text:'角色' , width: '15%'},
-            { column: 'description', text: '描述', width: '15%' },
-            { column: 'createTime', text: '创建时间', width: '15%' },
+            { column: 'name', text:'名称' , width: '15%'},
+            { column: 'fixedIp', text:'固定ip' , width: '15%'},
+            { column: 'device', text: '连接设备', width: '15%' },
+            { column: 'status', text: '状态', width: '15%' },
+            { column: 'admin', text: '管理状态', width: '15%' },
         ];
         return {
             cols,
@@ -120,14 +121,14 @@ export default {
         searchPortList(){
             let params = {
                 paging:this.searchObj.paging,
-
+                networkId:this.networkId
             };
             $log('params', params);
             searchPortList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
+                if(resData ){
+                    this.tableData = resData || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
@@ -136,7 +137,7 @@ export default {
         /**
          * 删除端口
          */
-        delPlatAuth(item) {
+        delPort(item) {
             this.$confirm('确定要进行删除操作吗？', '删除', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -151,8 +152,8 @@ export default {
             });
         },
         //创建端口
-        createPort(item,optype){
-            let id = this.platId;
+        createPort(item,optype,){
+            let id = this.networkId;
             this.$refs.CreatePort.show(item,optype,id)
                 .then(ret => {
                     console.log('操作成功', ret);
@@ -168,8 +169,17 @@ export default {
                 });
         },
         del(item){
-            delPort(item).then(ret=>{
-                this.searchPortList();
+            delPort(item.id).then(ret=>{
+                if(ret.code === '0000'){
+                    this.searchPortList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+
             });
         },
         currentChange(val){

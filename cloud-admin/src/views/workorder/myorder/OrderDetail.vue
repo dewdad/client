@@ -16,7 +16,14 @@
                 </p>
                 <p> <span>电话:</span> <span>{{item.mobile}}</span></p>
                 <p> <span>邮箱:</span> <span>{{item.email}}</span></p>
-                <p> <span>附件:</span> <span>{{item.email}}</span></p>
+                <p>
+                    <span>附件:</span>
+                    <span v-if="item.attach">
+                        {{returnAttach(item.attach)}}
+                        <a class="btn-link ml5" @click="searchFile(item.attach)">查看</a>
+                    </span>
+                    <span v-else>无</span>
+                </p>
             </div>
             <hr>
             <p class="top mt20" >最新回复</p>
@@ -32,7 +39,7 @@
     </el-dialog>
 </template>
 <script>
-import {getSupplement} from '@/service/order.js';
+import {getSupplement,searchFile} from '@/service/order.js';
 export default {
     data() {
         return{
@@ -65,6 +72,12 @@ export default {
             this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
+        returnAttach(attach){
+            if(attach){
+                let arr = attach.split('/');
+                return arr[arr.length - 1];
+            }
+        },
         setting() {
             return new Promise(resolve => {
                 setTimeout(() => {
@@ -78,6 +91,24 @@ export default {
                 orderNo: val
             };
             getSupplement(params)
+                .then(res =>{
+                    if(res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        console.warn(res);
+                        this.replayData = res.data || [];
+                    }else{
+                        $log(res.msg);
+                    }
+                })
+                .catch(err => {
+                    $log(err);
+                });
+        },
+        // 获得工单补充内容
+        searchFile(val) {
+            let params = {
+                fileName: val
+            };
+            searchFile(params)
                 .then(res =>{
                     if(res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         console.warn(res);
