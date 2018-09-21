@@ -88,8 +88,8 @@ export default {
             allSubnets(param).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.pull = resData.data || [];
+                if(resData ){
+                    this.pull = resData || [];
                 }
             });
         },
