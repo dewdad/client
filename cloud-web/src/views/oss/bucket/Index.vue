@@ -163,7 +163,7 @@ export default {
             getBucketBasic(this.bucketId).then(res => {
                 if (res.code === '0000') {
                     // this.baseInfo = res.data;
-                    this.permission = res.data.grants[0].permission;
+                    this.permission = JSON.stringify(res.data.grants).indexOf('AllUsers') !== -1 ? 'Read' : 'private';
                 }
             });
         },
