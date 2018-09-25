@@ -1,7 +1,5 @@
 <template>
     <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无联系人" value-key="id" :loading="loading" :placeholder="placeholder">
-        {{noticeList}}
-        {{ids}}
         <el-option v-for="item in noticeList" :key="item.id" :label="item.name" :value="item"></el-option>
     </el-select>
 </template>
