@@ -183,7 +183,8 @@ export default {
          * @param {*} rowItem
          */
         editinstname(rowItem) {
-            this.$refs.EditName.show({name: rowItem.name, id: rowItem.id}).then(res => {
+            let name = rowItem.name || rowItem.attachments[0].hostname + '-系统盘';
+            this.$refs.EditName.show({name: name, id: rowItem.id}).then(res => {
                 this.getDiskList();
             });
         },
@@ -349,6 +350,7 @@ export default {
          */
         modifyDiskDescrip: function(rowItem) {
             console.log('editLabel:', rowItem);
+            rowItem.name = rowItem.name || rowItem.attachments[0].hostname + '-系统盘';
             this.$refs.ModifyDiskDescripDialog.show(rowItem)
                 .then(ret => {
                     console.log('操作成功', ret);
