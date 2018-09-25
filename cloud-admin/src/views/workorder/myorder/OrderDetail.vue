@@ -30,8 +30,11 @@
             <div class="reply mb10" v-for="(item, index) in replayData" :key="index">
                 <p>回复内容：{{item.suppleContent}}</p>
                 <p>{{item.createTime | date}}</p>
-                <!-- <p v-if="item.attachUrl">附件：<a :href="API_URL + 'fileProcess/getFile?fileName=' + item.attachUrl" :download="" mce_href="#" target="_blank">{{item.attachUrl}}</a> </p> -->
-                
+                <span v-if="item.attachUrl">
+                        {{returnAttach(item.attachUrl)}}
+                        <a class="btn-link ml5" @click="searchFile(item.attachUrl)">查看</a>
+                    </span>
+
             </div>
         </div>
         <span slot="footer" class="dialog-footer">            

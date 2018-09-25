@@ -194,7 +194,6 @@ http.interceptors.response.use(
                 case 401:
                 case 408:
                     store.dispatch('LOGOUT');
-                    alert('401,408');
                     Router.push({name: 'login'});
                     break;
                 case 403:
