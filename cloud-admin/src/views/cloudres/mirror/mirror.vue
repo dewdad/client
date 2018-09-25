@@ -198,13 +198,13 @@ export default {
                 });
         },
         showDetail(item){
-            this.$refs.MirrorDetail.show(item);
+            if(item) this.$refs.MirrorDetail.show(item);
         },
         convertStatus(status) {
-            let upperCase = status.toUpperCase();
+            let upperCase = status ? status.toUpperCase() : '';
             for (let i = 0, ii = this.imageStatusArr.length; i < ii; i++) {
                 let item = this.imageStatusArr[i];
-                if (item.key == upperCase) {
+                if (item.key === upperCase) {
                     return item.value;
                 }
             }

@@ -38,10 +38,10 @@
             <div class="orderIntro">
                 <p>
                     <span>标签:</span>
-                    <span>{{item.tags.length==0?"":item.tags }}</span>
+                    <span>{{item.tags&&item.tags.length==0?"":item.tags }}</span>
                 </p>
                 <p>
-                    <span>地址:</span> <span>{{item.locations.length==0?"":item.locations[0].url}}</span>
+                    <span>地址:</span> <span>{{ item.locations && item.locations.length>0?item.locations[0].url:''}}</span>
                 </p>
                 <p> <span>文件:</span> <span>{{item.file}}</span></p>
                 <p> <span>图式:</span> <span>{{item.schema}}</span></p>
@@ -75,7 +75,7 @@ export default {
     methods: {
         show(item) {
             this.isShow = true;
-            this.item = item;
+            this.item = item ? item : {};
 
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -88,10 +88,11 @@ export default {
 
         },
         convertStatus(status) {
-            let upperCase = status.toUpperCase();
+            console.log('status',status);
+            let upperCase = status ? status.toUpperCase() : '';
             for (let i = 0, ii = this.imageStatusArr.length; i < ii; i++) {
                 let item = this.imageStatusArr[i];
-                if (item.key == upperCase) {
+                if (item.key === upperCase) {
                     return item.value;
                 }
             }

@@ -142,6 +142,8 @@ export default {
                         .then(res => {
                             if(res.code === '0000'){
                                 this.resolve(this.form);
+                                this.form.isProtected = '1' ;
+                                this.form.public = '1';
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;

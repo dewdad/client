@@ -102,6 +102,7 @@ export default {
                     { required: true,message: '必填项',trigger: ['change']}
                 ],
                 'email':[
+                    { required: true,message: '必填项',trigger: ['submit']},
                     { validator: validateEmail, trigger: 'blur' }
                 ]
             },

@@ -39,7 +39,7 @@
                         <template v-if="col.column=='dept'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.id}}</span>
+                                    <span class="font12 mr10">{{scope.row.domainName}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -47,69 +47,63 @@
                         <template v-if="col.column=='renter'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 1">超级管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 2">部门管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 3">子部门管理员</span>
-                                    <span class="font12 mr10" v-if="scope.row.roleType == 4">用户</span>
-
+                                    <span class="font12 mr10">{{scope.row.domainName}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row.name}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='net'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <p class="font12 color999">{{scope.row.subnets[0].subnetName}}</p>
+                                    <p class="font12">{{scope.row.subnets[0].cidr}}</p>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='share'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                        <template v-if="col.column=='share'" width="80">
+                            <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row.shared == 'true'?'是':'否'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='outside'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                        <template v-if="col.column=='outside'" width="80">
+                            <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.roleName}}</span>
+                                    <span class="font12 mr10">{{scope.row.routerExternal == 'true'?'是':'否'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                        <template v-if="col.column=='status'" >
+                            <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{getStatusText(scope.row.status)}}</span>
+                                    <span class="font12 mr10">{{scope.row.status == "ACTIVE"? "运行中":"关闭"}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='manageStatus'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.creatTime}}</span>
+                                    <span class="font12 mr10">{{scope.row.adminStateUp == 'true'?'UP':'DOWN'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" min-width="230" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <a  @click="delNetwork(scope.row)" class="btn-linker">删除</a>
                                 <b class="link-division-symbol" ></b>
                                 <a  @click="createNetwork(scope.row,2)" class="btn-linker" >编辑</a>
                                 <b class="link-division-symbol" ></b>
                                 <router-link :to="{name:'app.resources.network.protmgr',params:{id:scope.row.id,item:scope.row,fromstate:'app.resources.network'}}" class="btn-linker">端口管理</router-link>
-                                <b class="link-division-symbol"></b>
-                                <a  @click="delRole(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
-
                             </template>
                         </el-table-column>
                     </template>
@@ -123,7 +117,7 @@
                    :page-sizes="[10, 20, 50, 100]"
                    :page-size="searchObj.paging.limit"
                    layout="sizes, prev, pager, next"
-                   :total="searchObj.paging.totalItems">
+                   :total="totalItems">
                     </el-pagination>
                 </div>
             </el-col>
@@ -146,7 +140,6 @@ export default {
             paging: {
                 pageIndex: 1,
                 limit: 10,
-                totalItems: 0
             },
         };
         let cols = [
@@ -163,6 +156,7 @@ export default {
         return {
             cols,
             searchObj,
+            totalItems:0,
             formInline: {
                 data:'',
                 searchText:''
@@ -181,15 +175,17 @@ export default {
         networkList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             networkList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.data){
-                    this.tableData = resData.data || [];
-                    this.searchObj.paging.totalItems = resData.total || 0;
+                if(resData && resData.resultList){
+                    this.tableData = resData.resultList || [];
+                    this.totalItems = resData.totalPages || 0;
                 }
 
             });
