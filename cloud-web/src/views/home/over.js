@@ -12,8 +12,8 @@ export default {
             xData_cpu: [],
             xData_mem: [],
             xWarnData: [],
-            seriesData_cpu:[],
-            seriesData_mem:[],
+            seriesData_cpu: [],
+            seriesData_mem: [],
             gridVal: {
                 bottom: '60',
                 right: '20',
@@ -26,13 +26,8 @@ export default {
                 left: '20',
                 top: '10'
             },
-            seriesWarnData: [
-            ],
-            options: [
-                {value: 1, label: '1天'},
-                {value: 3, label: '3天'},
-                {value: 7, label: '7天'}
-            ],
+            seriesWarnData: [],
+            options: [{value: 1, label: '1天'}, {value: 3, label: '3天'}, {value: 7, label: '7天'}],
             value: 7,
             echartsLineHeight: '200px',
             radioTime: '1d',
@@ -40,12 +35,12 @@ export default {
             tenantData: {},
             instanceList: [],
             instance: '',
-            searchObj:{
-                startDate:'',
-                endDate:'',
-                dateRange:[]
+            searchObj: {
+                startDate: '',
+                endDate: '',
+                dateRange: []
             },
-            loadingContent : true
+            loadingContent: true
         };
     },
     computed: {
@@ -59,21 +54,21 @@ export default {
                     seriesData: this.seriesData_mem[0].seriesData
                 };
                 return arr;
-            } 
+            }
             return arr;
         },
         // 总警告数
         totalWarn() {
             let num = 0;
-            num = this.seriesWarnData[0] && this.seriesWarnData[0].seriesData &&  eval(this.seriesWarnData[0].seriesData.join("+")) || 0;
+            num = (this.seriesWarnData[0] && this.seriesWarnData[0].seriesData && eval(this.seriesWarnData[0].seriesData.join('+'))) || 0;
             return num;
         },
         // 内存配额
         ramVal() {
-            return parseFloat((this.tenantData.qRam / 1024).toFixed(2)) || 0 ;
+            return parseFloat((this.tenantData.qRam / 1024).toFixed(2)) || 0;
         },
         ramUsage() {
-            return parseFloat((this.tenantData.RAM / 1024).toFixed(2)) || 0 ;
+            return parseFloat((this.tenantData.RAM / 1024).toFixed(2)) || 0;
         },
         xData() {
             return this.xData_cpu.length >= this.xData_mem.length ? this.xData_cpu : this.xData_mem;
@@ -89,7 +84,7 @@ export default {
             getOrderCount()
                 .then(res => {
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        this.allOrder = res.data && res.data.allOrder || [];
+                        this.allOrder = (res.data && res.data.allOrder) || [];
                     }
                 })
                 .catch(e => {
@@ -103,7 +98,7 @@ export default {
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let monitoRet = res.data || [];
                         this.seriesWarnData = [];
-                        this.xWarnData = []; 
+                        this.xWarnData = [];
                         let arr = [];
                         for (let w in monitoRet) {
                             let xVal = monitoRet[w].countDate;
@@ -134,7 +129,7 @@ export default {
                 });
         },
         // 获得所有实例
-        getEcsInstListFn(){
+        getEcsInstListFn() {
             let params = {
                 pageIndex: 1,
                 limit: 9999,
@@ -159,85 +154,87 @@ export default {
                 });
         },
         // 监控数据--获取chart数据（执行）
-        searchCharts:function (dataType) {
-            if(!this.searchObj.startDate || !this.searchObj.endDate)
-            {
+        searchCharts: function(dataType) {
+            if (!this.searchObj.startDate || !this.searchObj.endDate) {
                 let now = new Date();
                 let st = new Date(now);
-                st.setHours(st.getHours() - 24); 
+                st.setHours(st.getHours() - 24);
                 this.searchObj.startDate = st;
                 this.searchObj.endDate = now;
                 this.searchObj.dateRange.push(st);
                 this.searchObj.dateRange.push(now);
-            }  
-            let filters = this.$options.filters;  
+            }
+            let filters = this.$options.filters;
             let data = {
-                startTime: filters['date'](this.searchObj.startDate ,'YYYY-MM-DD HH:mm:ss'),
-                endTime: filters['date'](this.searchObj.endDate,'YYYY-MM-DD HH:mm:ss'),
+                startTime: filters['date'](this.searchObj.startDate, 'YYYY-MM-DD HH:mm:ss'),
+                endTime: filters['date'](this.searchObj.endDate, 'YYYY-MM-DD HH:mm:ss'),
                 dataType: dataType, //'cpu','mem','net'
                 instanceType: 'ecs',
                 //searchAllEcs: 'true',
                 instanceId: this.instance
             };
-            this.loadingContent = true; 
-            moniterEchartMetricData(data).then( (res) => {
-                if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
-                    let datas = res.data || [];
-                    switch(dataType){
-                        case 'cpu':{  
-                            this.seriesData_cpu = datas;
-                            this.xData_cpu = datas[0].xData;
-                            break;
+            this.loadingContent = true;
+            moniterEchartMetricData(data)
+                .then(res => {
+                    if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                        let datas = res.data || [];
+                        switch (dataType) {
+                            case 'cpu': {
+                                this.seriesData_cpu = datas;
+                                this.xData_cpu = datas[0].xData;
+                                break;
+                            }
+                            case 'mem': {
+                                this.seriesData_mem = datas;
+                                this.xData_mem = datas[0].xData;
+                                break;
+                            }
+                            default: {
+                            }
                         }
-                        case 'mem':{  
-                            this.seriesData_mem = datas;
-                            this.xData_mem = datas[0].xData;                                
-                            break;
-                        }
-                        default:{}
+                        this.loadingContent = false;
                     }
-                    this.loadingContent = false;  
-                }
-                this.loadingContent = false;  
-            });
-            
+                    this.loadingContent = false;
+                })
+                .catch(err => {
+                    this.loadingContent = false;
+                });
         },
         // 监控数据--筛选日期
-        dataChangeType(){
+        dataChangeType() {
             let value = this.radioTime;
             this.searchObj.dateRange = [];
             console.log(value);
-            let now ,st;
-            switch(value){
-                case '1d':{ 
-                    now = new Date();
-                    st = new Date(now);   
-                    st.setHours(st.getHours() - 24);                         
-                    break;
-                }
-                case '7d':{ 
-                    now = new Date();
-                    st = new Date(now); 
-                    st.setHours(st.getHours() - 7 * 24);                                
-                    break;
-                }
-                case '30d':{ 
-                    now = new Date();
-                    st = new Date(now);   
-                    st.setHours(st.getHours() - 24 * 30);                            
-                    break;
-                }
-                default:{
+            let now, st;
+            switch (value) {
+                case '1d': {
                     now = new Date();
                     st = new Date(now);
-                    st.setHours(st.getHours() - 1); 
+                    st.setHours(st.getHours() - 24);
+                    break;
                 }
-            }  
+                case '7d': {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 7 * 24);
+                    break;
+                }
+                case '30d': {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 24 * 30);
+                    break;
+                }
+                default: {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 1);
+                }
+            }
             this.searchObj.startDate = st;
             this.searchObj.endDate = now;
             this.searchObj.dateRange.push(st);
             this.searchObj.dateRange.push(now);
-
 
             this.editMonitorData();
         },
@@ -246,12 +243,12 @@ export default {
             this.searchCharts('mem');
             this.searchCharts('cpu');
         },
-        // 
+        //
         getUsage(val1, val2) {
-            if(val2 === 0) {
+            if (val2 === 0) {
                 return false;
             }
-            return parseFloat(val1/val2) > 0.9;
+            return parseFloat(val1 / val2) > 0.9;
         }
     },
     mounted() {
