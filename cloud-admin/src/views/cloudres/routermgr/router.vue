@@ -150,9 +150,7 @@ export default {
         let searchCond = [
             {column: 'domain_name', text: '部门'},
             {column: 'project_name', text: '租户'},
-            {column: 'name', text: '路由名称'},
-            {column: 'status', text: '状态'},
-            {column: 'admin_state_up', text: '管理状态'}
+            {column: 'name', text: '路由名称'}
         ];
         return {
             searchCond,

@@ -17,18 +17,18 @@
                 <el-input placeholder="输入段ID" v-model="form.segmentId"></el-input>
             </el-form-item>
             <el-form-item label="ID " prop="id" :label-width="formLabelWidth" v-if="optype == 2">
-                <el-input placeholder="输入ID" v-model="form.id"></el-input>
+                <el-input placeholder="输入ID" v-model="form.id" :disabled='optype == 2'></el-input>
             </el-form-item>
             <el-form-item label="Enable Admin State" prop="admin_state_up" :label-width="formLabelWidth">
                 <el-radio v-model="form.admin_state_up" label="true">是</el-radio>
             </el-form-item>
             <el-form-item label="是否共享" prop="shared" :label-width="formLabelWidth">
-                <el-radio v-model="form.shared" label="1">是</el-radio>
-                <el-radio v-model="form.shared" label="2">否</el-radio>
+                <el-radio v-model="form.shared" label="true">是</el-radio>
+                <el-radio v-model="form.shared" label="false">否</el-radio>
             </el-form-item>
             <el-form-item label="是否为外部网络" prop="routerExternal" :label-width="formLabelWidth">
-                <el-radio v-model="form.routerExternal" label="1">是</el-radio>
-                <el-radio v-model="form.routerExternal" label="2">否</el-radio>
+                <el-radio v-model="form.routerExternal" label="true">是</el-radio>
+                <el-radio v-model="form.routerExternal" label="false">否</el-radio>
             </el-form-item>
 
             <el-form-item label="网络地址 " prop="subnet.cidr" :label-width="formLabelWidth">
@@ -38,19 +38,19 @@
                 </el-tooltip>
             </el-form-item>
             <el-form-item label="IP版本" prop="subnet.ipVersion" :label-width="formLabelWidth">
-                <el-radio v-model="form.subnet.ipVersion" label="1">IPV4</el-radio>
-                <el-radio v-model="form.subnet.ipVersion" label="2">IPV6</el-radio>
+                <el-radio v-model="form.subnet.ipVersion" label="4">IPV4</el-radio>
+                <el-radio v-model="form.subnet.ipVersion" label="6">IPV6</el-radio>
             </el-form-item>
             <el-form-item label="网关IP" prop="subnet.gateway" :label-width="formLabelWidth" v-if="form.subnet.noGateway == '1'">
                 <el-input placeholder="输入网关IP" v-model="form.subnet.gateway"></el-input>
             </el-form-item>
             <el-form-item label="禁用网关" prop="subnet.noGateway" :label-width="formLabelWidth">
-                <el-radio v-model="form.subnet.noGateway" label="2">是</el-radio>
-                <el-radio v-model="form.subnet.noGateway" label="1">否</el-radio>
+                <el-radio v-model="form.subnet.noGateway" label="true">是</el-radio>
+                <el-radio v-model="form.subnet.noGateway" label="false">否</el-radio>
             </el-form-item>
             <el-form-item label="激活DHCP" prop="subnet.dHCPEnabled" :label-width="formLabelWidth">
-                <el-radio v-model="form.subnet.dHCPEnabled" label="1">是</el-radio>
-                <el-radio v-model="form.subnet.dHCPEnabled" label="2">否</el-radio>
+                <el-radio v-model="form.subnet.dHCPEnabled" label="true">是</el-radio>
+                <el-radio v-model="form.subnet.dHCPEnabled" label="false">否</el-radio>
             </el-form-item>
             <el-form-item label="分配地址池 " prop="subnet.pools" :label-width="formLabelWidth">
                 <el-input placeholder="输入分配地址池" type="textarea" style="width:88%" v-model="form.subnet.pools"></el-input>
@@ -95,21 +95,21 @@ export default {
                 name:'',
                 id:'',
                 admin_state_up:'true',
-                shared:'1',
-                routerExternal:'1',
+                shared:'true',
+                routerExternal:'true',
                 networkType:'VXLAN',
                 physicalNetwork:'',
                 segmentId:'',
                 subnet:{
                     name:'',
                     cidr:'',
-                    dHCPEnabled:'1',
+                    dHCPEnabled:'true',
                     dnsNames:'',
                     hostRoutes:'',
                     gateway:'',
-                    noGateway:'1',
+                    noGateway:'true',
                     pools:'',
-                    ipVersion:'1',
+                    ipVersion:'4',
                 }
             },
             rules:{
@@ -143,8 +143,14 @@ export default {
             this.optype = optype;
             console.log('item',item);
             if(optype !== 1){
-                this.form.shared = item.shared ? '1' : '2';
-                this.form.routerExternal = item.routerExternal ? '1' : '2';
+                this.form.shared = item.shared;
+                this.form.admin_state_up = item.adminStateUp;
+                this.form.routerExternal = item.routerExternal;
+                this.form.subnet.cidr = item.subnets[0].cidr;
+                this.form.subnet.gateway = item.subnets[0].gatewayIp;
+                this.form.subnet.dHCPEnabled = item.subnets[0].enableDhcp;
+                this.form.name = item.name;
+                this.form.networkType = item.networkType == 'vxlan' ? 'VXLAN' : 'VLAN';
                 this.form.id = item.id;
             }
             console.log('optype',optype);
@@ -173,14 +179,20 @@ export default {
             this.confirmBtn = true;
             if (typeof this.form.subnet.pools !== 'undefined' && this.form.subnet.pools.toString() !== ''){
                 this.form.subnet.pools = this.form.subnet.pools.split('\n');
+            }else{
+                this.form.subnet.pools = [''];
             }
 
             if (typeof this.form.subnet.dnsNames !== 'undefined' && this.form.subnet.dnsNames.toString() !== ''){
                 this.form.subnet.dnsNames = this.form.subnet.dnsNames.split('\n');
+            }else{
+                this.form.subnet.dnsNames = [''];
             }
 
             if (typeof this.form.subnet.host_routes !== 'undefined' && this.form.subnet.host_routes.toString() !== ''){
                 this.form.subnet.hostRoutes = this.form.subnet.hostRoutes.split('\n');
+            }else{
+                this.form.subnet.hostRoutes = [''];
             }
             this.$refs.form.validate((valid) => {
                 if (valid) {
@@ -197,13 +209,17 @@ export default {
             });
         },
         editNetwork(){
-            this.form.shared = this.form.shared === '1' ? true : false;
-            this.form.routerExternal = this.form.routerExternal === '1' ? true : false;
             this.form.admin_state_up = this.form.admin_state_up === 'true' ? true : false;
             editNetwork(this.form)
                 .then(res => {
-                    if(res.data.code === '0000'){
+                    if(res.code === '0000'){
                         this.resolve(this.form);
+                        this.form.shared = 'true';
+                        this.form.routerExternal = 'true';
+                        this.form.admin_state_up = 'true';
+                        this.form.subnet.dHCPEnabled = 'true';
+                        this.form.subnet.noGateway = 'true';
+                        this.form.subnet.ipVersion = '4';
                         this.hide();
                         this.setting();
                         this.confirmBtn = false;
@@ -211,6 +227,12 @@ export default {
                         this.$alert('操作失败', '提示', {
                             type: 'error'
                         });
+                        this.form.shared = 'true';
+                        this.form.routerExternal = 'true';
+                        this.form.admin_state_up = 'true';
+                        this.form.subnet.dHCPEnabled = 'true';
+                        this.form.subnet.noGateway = 'true';
+                        this.form.subnet.ipVersion = '4';
                         this.confirmBtn = false;
                         return;
                     }
@@ -223,12 +245,17 @@ export default {
                 });
         },
         createNetwork(){
-            this.form.shared = this.form.shared == '1' ? true : false;
-            this.form.routerExternal = this.form.routerExternal == '1' ? true : false;
+            this.form.admin_state_up = this.form.admin_state_up === 'true' ? true : false;
             createNetwork(this.form)
                 .then(res => {
-                    if(res.data.code === '0000'){
+                    if(res.code === '0000'){
                         this.resolve(this.form);
+                        this.form.shared = 'true';
+                        this.form.routerExternal = 'true';
+                        this.form.admin_state_up = 'true';
+                        this.form.subnet.dHCPEnabled = 'true';
+                        this.form.subnet.noGateway = 'true';
+                        this.form.subnet.ipVersion = '4';
                         this.hide();
                         this.setting();
                         this.confirmBtn = false;
@@ -236,6 +263,13 @@ export default {
                         this.$alert('操作失败', '提示', {
                             type: 'error'
                         });
+                        this.form.shared = 'true';
+                        this.form.routerExternal = 'true';
+                        this.form.admin_state_up = 'true';
+                        this.form.subnet.dHCPEnabled = 'true';
+                        this.form.subnet.noGateway = 'true';
+                        this.form.subnet.ipVersion = '4';
+
                         this.confirmBtn = false;
                         return;
                     }

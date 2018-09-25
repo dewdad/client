@@ -154,6 +154,16 @@ export async function allSubnets(data) {
     return response.data;
 }
 /**
+ *根据网络id查找子网
+ * @param {*}
+ */
+export async function seachSubnet(data) {
+    console.log('data',data);
+    let url = NETWORK.seachSubnet + data;
+    let response = await http.get(url);
+    return response.data;
+}
+/**
  *创建网络
  * @param {*}
  */
@@ -179,8 +189,8 @@ export async function delNetwork(data) {
  */
 export async function editPort(data) {
     console.log('data',data);
-    let url = NETWORK.editPort;
-    let response = await http.put(url,data);
+    let url = NETWORK.editPort + data.id;
+    let response = await http.put(url,data.form);
     return response.data;
 }/**
  *创建端口

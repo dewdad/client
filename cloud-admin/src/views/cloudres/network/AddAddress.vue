@@ -1,12 +1,12 @@
 <template>
-    <el-dialog :title="optype == 1?'创建端口':'编辑端口'" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+    <el-dialog title="添加地址对" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
             <el-alert
-                    title="在此可以更新端口的可编辑属性"
+                    title="说明：为这个端口添加允许的地址对。这将允许多个 MAC/IP 地址（范围）对通过这个端口。"
                     type="info"
                     :closable="false">
             </el-alert>
-            <el-form-item label="名称 " prop="name" class="mt20" :label-width="formLabelWidth">
+            <el-form-item label="IP地址或者CIDR " prop="name" class="mt20" :label-width="formLabelWidth">
                 <el-input placeholder="输入名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="管理状态 " prop="admin_state_up" :label-width="formLabelWidth">
@@ -27,20 +27,12 @@
                 </el-tooltip>
             </el-form-item>
             <el-form-item label="指定IP或子网 " prop="chooseType" :label-width="formLabelWidth" v-if="optype==1">
-                <el-select v-model="form.chooseType" style="width:88%" @change="changeType">
+                <el-select v-model="form.chooseType" style="width:88%">
                     <el-option v-for="item in chooseTypeList" :key="item.key" :label="item.value" :value="item.key"></el-option>
                 </el-select>
                 <el-tooltip class=" ml10" effect="light" content="要指定一个子网或一个固定IP地址的，请选择相应选项" placement="right">
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
-            </el-form-item>
-            <el-form-item label="子网 " prop="subnetId" :label-width="formLabelWidth" v-if="form.chooseType == 'sub'">
-                <el-select v-model="form.subnetId" style="width:88%">
-                    <el-option v-for="item in subnets" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="固定IP地址 " prop="fixedIp" :label-width="formLabelWidth"  v-if="form.chooseType == 'fix'">
-                <el-input placeholder="输入固定IP地址" style="width:88%" v-model="form.fixedIp"></el-input>
             </el-form-item>
             <el-form-item label="绑定VNIC " prop="vnic_type" :label-width="formLabelWidth">
                 <el-select v-model="form.vnic_type" style="width:88%">
@@ -59,7 +51,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {editPort,createPort,seachSubnet} from '@/service/cloudres.js';
+import {editPort,createPort} from '@/service/cloudres.js';
 export default {
 
     data() {
@@ -88,8 +80,6 @@ export default {
             confirmBtn: false,
             optype:1,
             item:{},
-            subnets:[],
-            networkId:'',
             form:{
                 name:'',
                 admin_state_up:'',
@@ -97,8 +87,6 @@ export default {
                 deviceName:'',
                 chooseType:'',
                 vnic_type:'',
-                subnetId:'',
-                fixedIp:''
             },
             rules:{
                 name: [
@@ -117,14 +105,11 @@ export default {
     },
     props: {},
     methods: {
-        show(item,optype,id) {
+        show(item,optype) {
             this.isShow = true;
-            this.networkId = id;
             this.optype = optype;
             this.item = item;
             console.log('item',item);
-            this.form.networkId = id;
-            this.searchSubnet(id);
             if(optype === 1){
                 this.form.name = '';
                 this.form.deviceId = '';
@@ -155,13 +140,6 @@ export default {
             this.hide();
             typeof this.reject() === 'function' && this.reject();
         },
-        changeType(){
-            if(this.form.chooseType === 'sub'){
-                this.form.fixedIp = '';
-            }else if(this.form.chooseType === 'fix'){
-                this.form.subnetId = '';
-            }
-        },
         setting() {
             return new Promise(resolve => {
                 setTimeout(() => {
@@ -174,11 +152,6 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     if(this.optype === 1){
-                        if(this.form.chooseType === 'fix'){
-                            this.form.subnetId = '';
-                        }else{
-                            this.form.fixedIp = '';
-                        }
                         this.createPort();
                     }else{
                         this.editPort();
@@ -187,16 +160,6 @@ export default {
                     this.confirmBtn = false;
                     console.log('error submit!!');
                     return false;
-                }
-            });
-        },
-        searchSubnet(id){
-            seachSubnet(id).then(ret => {
-                $log('data', ret);
-                let resData = ret.data;
-                this.subnets = [];
-                if(resData ){
-                    this.subnets = resData.neutronSubnets;
                 }
             });
         },

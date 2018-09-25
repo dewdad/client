@@ -13,7 +13,7 @@
                 <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
-        <div class="sidebar-submenu" v-if="submenus.length||noClose">
+        <div class="sidebar-submenu" v-if="submenus.length">
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
@@ -131,12 +131,12 @@ export default {
                                     return submenu.routeHref === this.activeRouteHref;
                                 }
                             });
-                            if(this.activeRouteHref.indexOf('app.resources.network') > -1 || this.activeRouteHref.indexOf('app.resource.volume') > -1){
-                                this.noClose = true;
-                            }else{
-                                this.noClose = false;
-                            }
-                            if(submenu || this.noClose) {
+                            // if(this.activeRouteHref.indexOf('app.resources.network') > -1 || this.activeRouteHref.indexOf('app.resource.volume') > -1){
+                            //     this.noClose = true;
+                            // }else{
+                            //     this.noClose = false;
+                            // }
+                            if(submenu) {
                                 that.activeMenuCode = menu.menuCode;
                                 console.log('that.activeMenuCode',that.activeMenuCode);
 
