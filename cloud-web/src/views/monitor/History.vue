@@ -4,50 +4,59 @@
             报警历史
             <div slot="right">
                 <el-radio-group v-model="radioTime" size="small">
-                    <el-radio-button border  :label="1">1小时</el-radio-button>
+                    <el-radio-button border :label="1">1小时</el-radio-button>
                     <el-radio-button border :label="2">2小时</el-radio-button>
-                    <el-radio-button border  :label="4">4小时</el-radio-button>
-                    <el-radio-button border  :label="6">6小时</el-radio-button>
-                    <el-radio-button border  :label="12">12小时</el-radio-button>
-                    <el-radio-button border  :label="24">1天</el-radio-button>
-                    <el-radio-button border  :label="72">3天</el-radio-button>
-                    <el-radio-button border  :label="168">7天</el-radio-button>
+                    <el-radio-button border :label="4">4小时</el-radio-button>
+                    <el-radio-button border :label="6">6小时</el-radio-button>
+                    <el-radio-button border :label="12">12小时</el-radio-button>
+                    <el-radio-button border :label="24">1天</el-radio-button>
+                    <el-radio-button border :label="72">3天</el-radio-button>
+                    <el-radio-button border :label="168">7天</el-radio-button>
                 </el-radio-group>
-                选择日期： <el-date-picker
-      v-model="daterange"
-      type="daterange"
-      size="small"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期">
-    </el-date-picker>
+                选择日期：
+                <el-date-picker v-model="daterange" type="daterange" size="small" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                </el-date-picker>
             </div>
         </page-header>
         <div class="page-body mt10">
             <!-- 列表 -->
             <zt-table :loading="loading" :data="tableData" :search="true" :search-condition="fields" @search="getData" :paging="searchObj.paging">
-                <el-table-column min-width="120" prop="name" label="产品类型">
+                <el-table-column prop="name" label="产品类型">
+                    <template slot-scope="scope">
+                        {{scope.row.type|showTextByKey(alarmTypes, 'value', 'name')}}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="id" label="故障资源">
+                <el-table-column min-width="200" prop="instanceName" label="故障资源">
+                     <template slot-scope="scope">
+                       {{scope.row.instanceId}}/{{scope.row.instanceName||'-'}}
+                    </template>
                 </el-table-column>
                 <el-table-column prop="volumeName" label="发生时间">
+                     <template slot-scope="scope">
+                        {{scope.row.createDt|date}}
+                    </template>
                 </el-table-column>
-                <el-table-column prop="volumeName" label="持续时间">
-                </el-table-column>
-                <el-table-column prop="volumeName" label="规则名称">
-                </el-table-column>
-                <el-table-column prop="volumeName" label="通知方式">
+                <el-table-column prop="alamRuleName" label="规则名称">
                 </el-table-column>
                 <el-table-column prop="volumeName" label="状态">
-                </el-table-column>
-                <el-table-column prop="volumeName" label="通知对象">
-                </el-table-column>
-                <!-- 操作 -->
-                <el-table-column label="报警回调" key="op" width="150" class-name="option-column">
                     <template slot-scope="scope">
-                        <span @click="editSnap(scope.row)" class="btn-linker">创建磁盘</span>
-                        <b class="link-division-symbol"></b>
-                        <a @click="deleteSnap(scope.row)" class="btn-linker">删除</a>
+                        <zt-status :status="statusArr" :value="scope.row.current"></zt-status>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="volumeName" label="通知方式">
+                    <template slot-scope="scope">
+                        {{scope.row.alarmNotices && scope.row.alarmNotices[0].noticeType === '0' ? '邮箱': '短信'}}
+                    </template>
+                </el-table-column>
+                
+                <el-table-column  label="通知对象">
+                    <template slot-scope="scope">
+                        <el-popover v-if="scope.row.alarmNotices" placement="top" width="200" trigger="hover" >
+                            <div>手机：{{scope.row.alarmNotices[0].phone}}</div>
+                            <div>邮箱：{{scope.row.alarmNotices[0].email}}</div>
+                            <el-tag slot="reference" class="mr10"> {{scope.row.alarmNotices[0].name}}</el-tag>
+                        </el-popover>
+                       
                     </template>
                 </el-table-column>
             </zt-table>
@@ -56,10 +65,31 @@
 </template>
 <script>
 import {getAlarmHistoryList} from '@/service/monitor/alarmRule.js';
+import {getSysConfig} from '@/service/app';
 import {dateFormat} from '@/utils/utils';
+let statusArr = [
+    {
+        text: '告警',
+        value: 'alarm',
+        className: 'color-warning',
+        icon: 'zticon-running_people1'
+    },
+    {
+        text: '正常',
+        value: 'ok',
+        className: 'color-success',
+        icon: 'zticon-running_people'
+    },
+    {
+        text: '数据不足',
+        value: 'insufficient data',
+        className: 'color-danger',
+        icon: 'zticon-stop'
+    }
+];
 export default {
     data() {
-        let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}, {field: 'mobiel', label: '资源名称', inputval: '', tagType: 'INPUT'}];
+        let fields = [{field: 'alarmRuleName', label: '规则名称', inputval: '', tagType: 'INPUT'}, {field: 'instanceName', label: '资源名称', inputval: '', tagType: 'INPUT'}];
         let searchObj = {
             //分页
             paging: {
@@ -69,6 +99,7 @@ export default {
             }
         };
         return {
+            statusArr,
             fields,
             tableData: [],
             loading: false,
@@ -80,7 +111,8 @@ export default {
                 endDate: ''
             },
             radioTime: '',
-            daterange: []
+            daterange: [],
+            alarmTypes: []
         };
     },
     watch: {
@@ -101,10 +133,10 @@ export default {
             this.search();
         }
     },
-    created() {
+    async created() {
+        await this.getAlarmTypes();
         // 默认查询1小时
         this.radioTime = 1;
-        this.getData();
     },
     methods: {
         search() {
@@ -119,7 +151,7 @@ export default {
                 .then(res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
-                        this.tableData = resData.records || [];
+                        this.tableData = resData.records;
                         this.searchObj.paging.totalItems = resData.total || 0;
                     }
                 })
@@ -128,6 +160,18 @@ export default {
                 })
                 .finally(() => {
                     this.loading = false;
+                });
+        },
+        getAlarmTypes() {
+            getSysConfig({code: 'alarm.types'})
+                .then(res => {
+                    if (res.code === this.CODE.SUCCESS_CODE) {
+                        let jsonData = res.data;
+                        this.alarmTypes = jsonData.data[0].itemList || [];
+                    }
+                })
+                .catch(err => {
+                    $log(err);
                 });
         }
     }

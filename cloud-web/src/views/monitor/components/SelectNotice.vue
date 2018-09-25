@@ -1,16 +1,18 @@
 <template>
-    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" value-key="id" no-data-text="暂无云盘" :loading="loading" :placeholder="placeholder">
-        <el-option v-for="item in diskList" :key="item.id" :label="item.name" :value="item"></el-option>
+    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无联系人" value-key="id" :loading="loading" :placeholder="placeholder">
+        {{noticeList}}
+        {{ids}}
+        <el-option v-for="item in noticeList" :key="item.id" :label="item.name" :value="item"></el-option>
     </el-select>
 </template>
 <script>
-import {getAllDisk} from '@/service/ecs/disk/disk.js';
+import {alarmNoticeList} from '@/service/monitor/alarmRule';
 export default {
     data() {
         return {
             ids: null,
             loading: false,
-            diskList: []
+            noticeList: []
         };
     },
     props: {
@@ -20,7 +22,7 @@ export default {
         },
         placeholder: {
             type: String,
-            default: '请选择云盘'
+            default: '请选择联系人'
         },
         value: {
             type: [String, Array]
@@ -33,20 +35,23 @@ export default {
     watch: {
         ids: function(newval) {
             this.$emit('input', newval);
+        },
+        value: function(newval) {
+            this.ids = newval;
         }
     },
     created() {
-        this.getAllDisk();
+        this.getAllNotice();
         this.ids = this.value;
     },
     methods: {
-        getAllDisk() {
+        getAllNotice() {
             this.loading = true;
-            getAllDisk().then(
+            alarmNoticeList({limit: 9999, pageIndex: 1}).then(
                 res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
                         let jsonData = res.data;
-                        this.diskList = jsonData.data || [];
+                        this.noticeList = jsonData.data || [];
                     }
                 }
             ).finally(() => {

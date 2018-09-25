@@ -91,6 +91,7 @@ export const API_ECS = {
         ruleList: '/monitor/alarmRule/list',
         updateRule: '/monitor/alarmRule/update',
         createRule: '/monitor/alarm/create',
+        setStatus: '/monitor/alarmRule/{id}/{status}',
         ruleInfo: '/monitor/alarm/{alarmId}',
         historyList: '/monitor/alarmAction/list',
         alarmNotice: '/monitor/alarmNotice/',

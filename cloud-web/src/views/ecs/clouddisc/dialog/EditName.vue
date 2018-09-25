@@ -10,12 +10,12 @@
             <!-- 实例名称 -->
             <zt-form-item label="磁盘名称" class="mb0" prop="name">
                 <el-input size="small" v-model="form.name" maxlength="64"></el-input>
-                <div class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
+                <div slot="help" class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" class="font12" @click="isShow=false" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
-            <el-button type="primary" class="font12" @click="confirm" size="small" :loading="loading" :disabled="loading">{{ $t('common.ok') }}</el-button>
+            <el-button type="info"  @click="isShow=false" size="small" :disabled="loading">{{ $t('common.cancel') }}</el-button>
+            <el-button type="primary"  @click="confirm" size="small" :loading="loading" :disabled="loading">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -96,7 +96,7 @@ export default {
             this.$refs['ruleForm'].validate(valid => {
                 if (valid) {
                     this.loading = true;
-                    updateDisk(this.form.id, this.form.name).then(res => {
+                    updateDisk({...this.form}).then(res => {
                         if (res.code === '0000') {
                             this.$message.success('操作成功');
                             this.hide();

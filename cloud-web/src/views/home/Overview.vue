@@ -127,29 +127,14 @@
                                         <el-radio border name="30天" label="30d">30天</el-radio>
                                     </el-radio-group>
                                     <el-select v-model="instance" @change="dataChangeType" placeholder="请选择" size="mini">
-                                        <el-option 
-                                        :value="item.id" 
-                                        :label="item.name" 
-                                        v-for="item in instanceList" 
-                                        :key="item.name"></el-option>
+                                        <el-option :value="item.id" :label="item.name" v-for="item in instanceList" :key="item.name"></el-option>
                                         <i class="el-input__icon iconfont icon-zhuji" slot="prefix"></i>
                                     </el-select>
                                 </span>
                             </div>
                             <div class="info-box-content" id="echartsLine" v-loading="loadingContent">
-                                <echarts-line 
-                                v-if="seriesData.length > 0"
-                                :isMarkPoint="false" 
-                                :gridVal="gridVal" 
-                                :legendData="legendData"  
-                                :seriesData="seriesData" 
-                                :xAxisData="xData" 
-                                legendIcon="rect"
-                                :markPointSymbolSize="['150','55']" 
-                                :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
-                                :dotStyle="['b0e9c4', 'b0e9c4']" 
-                                :idString="'mychart'"></echarts-line>
-                                <div v-else-if="!loadingContent" class="color-secondary font20 text-c no-data">暂无数据</div>
+                                <echarts-line v-if="seriesData.length > 0" :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" :seriesData="seriesData" :xAxisData="xData" legendIcon="rect" :markPointSymbolSize="['150','55']" :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
+                                <div v-if="!loadingContent && seriesData.length === 0" class="color-secondary font20 text-c no-data">暂无数据</div>
                             </div>
                         </div>
                     </el-col>
@@ -172,13 +157,7 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar v-if="xWarnData.length > 0" 
-                                    :legendData="legendWarnData" :isMarkPoint="false" 
-                                    :gridVal="gridVal2" :seriesData="seriesWarnData" 
-                                    :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" 
-                                    :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" 
-                                    :dotStyle="['b0e9c4']" 
-                                    :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendWarnData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesWarnData" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                                 <div v-else class="color-secondary text-c font20 no-data">暂无数据</div>
                             </div>
                         </div>
@@ -193,7 +172,7 @@
                                 <el-row :gutter="10">
                                     <el-col :span="6">
                                         <div class="products">
-                                            <router-link :to="{ name: 'app.vpc.pn'}">                                            
+                                            <router-link :to="{ name: 'app.vpc.pn'}">
                                                 <div class="products-inner img-text-center">
                                                     <i class="iconfont icon-wangluo-gailan"></i>
                                                     <span class="font14 products-name">网络</span>
@@ -204,7 +183,7 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <router-link :to="{ name: 'app.ecs.netsecurity.safegrp'}">  
+                                            <router-link :to="{ name: 'app.ecs.netsecurity.safegrp'}">
                                                 <div class="products-inner img-text-center">
                                                     <i class="iconfont icon-anquanzu-gailan"></i>
                                                     <span class="font12 products-name">安全组</span>
@@ -215,7 +194,7 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <router-link :to="{ name: 'app.vpc.pn-routeManage'}">  
+                                            <router-link :to="{ name: 'app.vpc.pn-routeManage'}">
                                                 <div class="products-inner img-text-center">
                                                     <i class="iconfont icon-luyouqi-gailan"></i>
                                                     <span class="font12 products-name">路由器</span>
@@ -226,7 +205,7 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="products">
-                                            <router-link :to="{ name: 'app.vpc.pn-flexip'}">  
+                                            <router-link :to="{ name: 'app.vpc.pn-flexip'}">
                                                 <div class="products-inner img-text-center" style="border-right: 0;">
                                                     <i class="iconfont icon-fudongIP-gailan"></i>
                                                     <span class="font12 products-name">浮动IP</span>
@@ -267,7 +246,6 @@
             > .el-row:nth-child(2) {
                 flex: 2;
             }
-           
         }
     }
 }
@@ -347,19 +325,19 @@
 }
 
 .info-box-content {
-    a{
+    a {
         text-decoration: none;
         color: #333333;
     }
-    flex:1;
-    .todo-task:hover{
+    flex: 1;
+    .todo-task:hover {
         background-color: #e1e6ed;
         cursor: pointer;
-        span{
+        span {
             color: #999;
         }
     }
-    .no-data{
+    .no-data {
         display: flex;
         height: 100%;
         align-items: center;
@@ -439,13 +417,14 @@
     right: 0px;
     margin-top: -10px;
     cursor: pointer;
-    a{
+    a {
         text-decoration: none;
         color: #333333;
     }
-    &:hover{
-        i, span{
-            color:#0d7ff2 !important;
+    &:hover {
+        i,
+        span {
+            color: #0d7ff2 !important;
         }
     }
 }

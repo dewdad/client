@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="创建磁盘" :visible.sync="isShow" width="600px" class="CreateSnapDialog" @close="cancel">
-        <zt-form inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
+        <zt-form v-if="isShow" inline-message class="mt20 demo-ruleForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
             <!-- 快照ID -->
             <zt-form-item label="快照ID">
                 <span>{{ruleForm.id}}</span>
@@ -40,7 +40,6 @@ export default {
             if (!val) {
                 this.ruleForm.id = '';
                 this.ruleForm.size = '';
-                this.$refs['ruleForm'].clearValidate();
             }
         }
     },

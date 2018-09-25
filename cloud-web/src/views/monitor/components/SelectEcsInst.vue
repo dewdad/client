@@ -55,7 +55,7 @@ export default {
     methods: {
         getEcsInstAll() {
             this.loading = true;
-            getEcsInstList({status: 'active'}).then(
+            getEcsInstList({status: ''}).then(
                 res => {
                     if (res && res.data) {
                         let data = res.data;

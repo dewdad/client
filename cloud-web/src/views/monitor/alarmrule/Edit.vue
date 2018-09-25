@@ -26,13 +26,13 @@
                     </el-select>
                 </zt-form-item>
                 <zt-form-item key="bucket" v-if="ruleForm.alarm.type === '1' && ruleForm.alarm.resourceType === '1'" label="bucket" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择bucket', trigger: ['submit']}]">
-                    <select-bucket v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择bucket"></select-bucket>
+                    <select-bucket v-model="ruleForm.alarm.instanceIds" :disabled="true" :multiple="true" placeholder="请选择bucket"></select-bucket>
                 </zt-form-item>
                 <zt-form-item key="ecsInst" v-if="ruleForm.alarm.type === 'instance' && ruleForm.alarm.resourceType === '1'" label="实例" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择实例', trigger: ['submit']}]">
                     <select-ecs-inst v-model="ruleForm.alarm.instanceIds" :disabled="true" :multiple="true" placeholder="请选择实例"></select-ecs-inst>
                 </zt-form-item>
                 <zt-form-item key="disk" v-if="ruleForm.alarm.type === '3' && ruleForm.alarm.resourceType === '1'" label="云盘" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择云盘', trigger: ['submit']}]">
-                    <select-disk v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择云盘"></select-disk>
+                    <select-disk v-model="ruleForm.alarm.instanceIds" :disabled="true" :multiple="true" placeholder="请选择云盘"></select-disk>
                 </zt-form-item>
                 <legend style="padding-bottom:5px" class="pt0">
                     <span style="line-height:2; margin-right:10px;" class="font14 iconfont icon-setting_people"></span>
@@ -67,10 +67,6 @@
                         <hr slot="help" />
                     </zt-form-item>
                 </div>
-                <zt-form-item>
-                    <label class="finger-cursor" @click.prevent="addRule">
-                        <el-button type="primary" icon="el-icon-plus" size="mini"></el-button> 增加报警规则</label>
-                </zt-form-item>
                 <!-- <zt-form-item label="通道沉默时间" prop="">
                     <el-select>
                         <el-option label="5分钟" value="5"></el-option>
@@ -119,7 +115,7 @@
                     <el-radio v-model="ruleForm.noticeType" label="2">手机+邮箱</el-radio>
                 </zt-form-item>
                 <zt-form-item prop="">
-                    <el-button type="primary" size="small" @click="submit">创建</el-button>
+                    <el-button type="primary" size="small" @click="submit">保存</el-button>
                     <el-button type="info" size="small" @click="$router.go(-1)">
                         取消
                     </el-button>
@@ -130,13 +126,13 @@
 </template>
 <script>
 import {mapState} from 'vuex';
-import SelectEcsInst from '@/components/form/SelectEcsInst';
-import SelectDisk from '@/components/form/SelectDisk';
-import SelectBucket from '@/components/form/SelectBucket';
-import SelectNotice from '@/components/form/SelectNotice';
+import SelectEcsInst from '../components/SelectEcsInst';
+import SelectDisk from '../components/SelectDisk';
+import SelectBucket from '../components/SelectBucket';
+import SelectNotice from '../components/SelectNotice';
 import SelectSystemConfig from '../components/SelectSystemConfig';
 import {cloneDeep} from '@/utils/utils';
-import {createRule, getRule} from '@/service/monitor/alarmRule';
+import {updateRule, getRule} from '@/service/monitor/alarmRule';
 const ruleItem = {
     alarmTime: '5',
     comparisonOperator: '',
@@ -149,6 +145,7 @@ export default {
         return {
             loading: false,
             ruleForm: {
+                alarmId: '',
                 alarm: {
                     name: '',
                     instanceIds: [],
@@ -164,7 +161,8 @@ export default {
                 'alarm.type': [{required: true, message: '请选择产品类型', trigger: ['submit', 'change']}],
                 'alarm.resourceType': [{required: true, message: '请选择资源类型', trigger: ['submit', 'change']}],
                 notices: [{required: true, message: '请选择通知对象', trigger: ['submit', 'change']}]
-            }
+            },
+            ruleInfo: ''
         };
     },
     components: {
@@ -196,11 +194,17 @@ export default {
             });
         },
         isEdit: function() {
-            return this.$route.params.id ? true : false;
+            return this.$route.params.alarmId ? true : false;
+        },
+        ruleItem: function() {
+            let item = this.ruleInfo.alarmRules.find(item => {
+                return item.id === this.$route.params.id;
+            });
+            return item;
         }
     },
     created() {
-        if (this.$route.params.id) {
+        if (this.$route.params.alarmId) {
             this.getRule();
         }
     },
@@ -216,30 +220,59 @@ export default {
         },
         getRule() {
             this.loading = true;
-            getRule(this.$route.params.id).then(res => {
-                if (res.code === '0000') {
-                    let data = res.data;
-                    this.ruleForm.alarm.resourceType = data.resourceType;
-                    this.ruleForm.alarm.type = data.type;
-                    this.ruleForm.alarm.instanceIds = data.instanceIds;
-                } else {
-                    this.$alert('告警规则不存在', {
-                        type: 'error'
-                    });
-                }
-            }).finally(() => {
-                this.loading = false;
-            });
+            getRule(this.$route.params.alarmId)
+                .then(res => {
+                    if (res.code === '0000') {
+                        let data = res.data;
+                        this.ruleInfo = data;
+                        this.ruleForm.alarmId = data.id;
+                        this.ruleForm.alarm.resourceType = data.resourceType;
+                        this.ruleForm.alarm.type = data.type;
+                        for (let inst of data.alarmInstances) {
+                            let obj = {
+                                instanceId: inst.instanceId,
+                                instanceName: inst.instanceName
+                            };
+                            this.ruleForm.alarm.instanceIds.push(obj);
+                        }
+                        // let ruleItem = {
+                        //     alarmTime: data.alarmRules[0].alarmTime,
+                        //     comparisonOperator: data.alarmRules[0].comparisonOperator,
+                        //     ruleMetric: data.alarmRules[0].ruleMetric,
+                        //     ruleName: data.alarmRules[0].ruleName,
+                        //     threshold: data.alarmRules[0].threshold
+                        // };
+                        this.ruleForm.rules = [this.ruleItem];
+                        let alarmNotices = cloneDeep(data.alarmRules[0].alarmNotices);
+                        this.ruleForm.notices = alarmNotices;
+                        // this.ruleForm.alarm.instanceIds = data.instanceIds;
+                    } else {
+                        this.$alert('告警规则不存在', {
+                            type: 'error'
+                        });
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         },
         submit() {
             this.$refs.ruleForm.validate(valid => {
                 if (valid) {
-                    let data = this.ruleForm;
-                    data.notices = this.noticesList;
                     // data.alarm.domainId = this.userInfo.deptId;
                     // data.alarm.projectId = this.userInfo.projectId;
                     this.loading = false;
-                    createRule(data)
+                    let data = {
+                        id: this.ruleItem.id,
+                        alarmId: this.ruleItem.alarmId,
+                        ruleName: this.ruleForm.rules[0].ruleName,
+                        ruleMetric: this.ruleForm.rules[0].ruleMetric,
+                        alarmTime: this.ruleForm.rules[0].alarmTime,
+                        comparisonOperator: this.ruleForm.rules[0].comparisonOperator,
+                        threshold: this.ruleForm.rules[0].threshold,
+                        alarmNotices: this.noticesList
+                    };
+                    updateRule(data)
                         .then(res => {
                             if (res.code === '0000') {
                                 this.$message.success('操作成功');

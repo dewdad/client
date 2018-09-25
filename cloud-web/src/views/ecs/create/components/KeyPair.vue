@@ -157,7 +157,7 @@ export default {
         }),
         osType: function() {
             try {
-                return this.createEcsFormData.mirror.osType.platformName.toLowerCase();
+                return this.createEcsFormData.mirror.osType.toLowerCase();
             } catch (err) {
                 // $log(err);
                 return '';
