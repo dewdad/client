@@ -1,6 +1,6 @@
 <template>
-    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" no-data-text="暂无云盘" :loading="loading" :placeholder="placeholder">
-        <el-option v-for="item in diskList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+    <el-select v-model="ids" :multiple="multiple" :disabled="disabled" value-key="id" no-data-text="暂无云盘" :loading="loading" :placeholder="placeholder">
+        <el-option v-for="item in diskList" :key="item.id" :label="item.name" :value="item"></el-option>
     </el-select>
 </template>
 <script>
