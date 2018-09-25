@@ -5,10 +5,10 @@
                 <el-input placeholder="输入名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="VCPU数量" prop="vcpus" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.vcpus"></el-input-number>
+                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.vcpus"></el-input-number>
             </el-form-item>
             <el-form-item label="内存（GB）" prop="ram" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.ram"></el-input-number>
+                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.ram"></el-input-number>
             </el-form-item>
 
         </el-form>
@@ -31,8 +31,8 @@ export default {
             confirmBtn: false,
             form:{
                 name:'',
-                vcpus:'',
-                ram:''
+                vcpus:1,
+                ram:1
             },
             rules:{
                 name: [

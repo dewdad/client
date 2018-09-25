@@ -405,7 +405,7 @@ export default {
         //远程连接
         serverGetVNCConsole(item){
             serverGetVNCConsole(item.id).then(ret=>{
-                window.location.href = ret.data.url;
+                window.open(ret.data.url);
             });
         },
         bootEcs(item,opName){

@@ -19,7 +19,7 @@ export async function ecsList(data) {
  */
 export async function bootEcs(data) {
     console.log('data',data);
-    let url = CLOUD_RES.bootEcs+data.id + '/'+ data.type;
+    let url = CLOUD_RES.bootEcs+ data.type + '/' + data.id ;
     let response = await http.put(url);
     return response.data;
 }/**

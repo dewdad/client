@@ -65,7 +65,7 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{statusText(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
@@ -101,7 +101,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateFloatip from './CreateFloatip';
-
+import ZtStatus from '@/components/status/ZtStatus';
 import {floatIplist,delfloatIp,disassociateFromPort} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -123,7 +123,28 @@ export default {
             { column: 'pool', text: '资源池', width: '10%' },
             { column: 'status', text: '状态', width: '10%' },
         ];
+        let ECS_STATUS = [
+            {
+                text: '使用中',
+                value: 'ACTIVE',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '未使用',
+                value: 'DOWN',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '错误',
+                value: 'ERROR',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            }
+        ];
         return {
+            ECS_STATUS,
             cols,
             searchObj,
             formInline: {
@@ -137,14 +158,17 @@ export default {
     },
     components: {
         PageHeader,
-        CreateFloatip
+        CreateFloatip,
+        ZtStatus
     },
     methods: {
         floatIplist(){
             let params = {
-                paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
+                paging:this.searchObj.paging
             };
+            if([this.type] && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             floatIplist(params).then(ret => {
                 $log('data', ret);
@@ -155,20 +179,6 @@ export default {
                 }
             });
         },
-        statusText(status){
-            let outstr = '';
-            if(status){
-                switch(status){
-                    case 'ACTIVE':{ outstr = '运行中'; break;}
-                    case 'DOWN':{ outstr = '未使用'; break;}
-                    case 'ERROR':{ outstr = '错误'; break;}
-                    default:{ outstr = status; }
-                }
-            }
-            return outstr;
-        },
-        distRouter(){},
-        setGateWay(){},
         //创建浮动ip
         createFloatIp(){
             this.$refs.CreateFloatip.show().then(ret=>{

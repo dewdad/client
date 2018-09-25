@@ -23,7 +23,7 @@ export const API_LOGIN = {
 export const CLOUD_RES = {
     ecsList: ADMIN + '/server/list',
     delEcs: ADMIN + '/server/',
-    bootEcs: ADMIN + '/serverAction/reboot/',
+    bootEcs: ADMIN + '/serverAction/operate/',
     rebootEcs: ADMIN + '/serverAction/reboot/',
     getHostItem: ADMIN + '/securityGroup/getSecurityGroupsDetail/',
     getHostItemDetail: ADMIN + '/server/get/',

@@ -83,7 +83,16 @@
                         <template v-if="col.column=='status'" >
                             <el-table-column width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.status == "ACTIVE"? "运行中":"关闭"}}</span>
+                                    <span  v-if="scope.row.status == 'ACTIVE'">
+                                        <zt-status :status="[{text: '运行中',value: 'ACTIVE',className: 'color-success',icon: 'icon-running_people'}]" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
+                                    </span>
+                                    <span v-else>
+                                        <svg  class="zticon" aria-hidden="true">
+                                              <use href="#icon-overdue_people"></use>
+
+                                        </svg>
+                                        <span class="font12"> 关闭</span>
+                                    </span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -122,13 +131,12 @@
                 </div>
             </el-col>
         </el-row>
-        <!--<relate-auth ref="RelateAuth"></relate-auth>-->
         <create-network ref="CreateNetwork"></create-network>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-// import RelateAuth from './RelateAuth';
+import ZtStatus from '@/components/status/ZtStatus';
 import CreateNetwork from './CreateNetwork';
 import {networkList,delNetwork} from '@/service/cloudres.js';
 export default {
@@ -152,6 +160,45 @@ export default {
             { column: 'status', text: '状态', width: '5%' },
             { column: 'manageStatus', text: '管理状态', width: '10%' }
         ];
+        // let ECS_STATUS = [
+        //     {
+        //         text: '创建中',
+        //         value: 'creating',
+        //         className: 'color-warning',
+        //         icon: 'icon-recentcreation_peop'
+        //     },
+        //     {
+        //         text: '可用',
+        //         value: 'available',
+        //         className: 'color-success',
+        //         icon: 'icon-running_people'
+        //     },
+        //     {
+        //         text: '删除中',
+        //         value: 'deleting',
+        //         className: 'color-danger',
+        //         icon: 'icon-overdue_people'
+        //     },
+        //     {
+        //         text: '错误',
+        //         value: 'error',
+        //         className: 'color-danger',
+        //         icon: 'icon-overdue_people'
+        //     },
+        //     {
+        //         text: '恢复时出错',
+        //         value: 'error_restoring',
+        //         className: 'color-danger',
+        //         icon: 'icon-overdue_people'
+        //     },
+        //     {
+        //         text: '恢复中',
+        //         value: 'restoring',
+        //         className: 'color-warning',
+        //         icon: 'icon-recentcreation_peop'
+        //     },
+        //
+        // ];
 
         return {
             cols,
@@ -169,6 +216,7 @@ export default {
     components: {
         PageHeader,
         CreateNetwork,
+        ZtStatus
         // CreateRole
     },
     methods: {
@@ -190,19 +238,7 @@ export default {
 
             });
         },
-        // relateAuth(item){
-        //     this.$refs.RelateAuth.show(item)
-        //         .then(ret => {
-        //             return this.$alert('操作成功','提示');
-        //         })
-        //         .catch(err => {
-        //             if (err) {
-        //                 console.log('Error', err);
-        //             } else {
-        //                 console.log('取消');
-        //             }
-        //         });
-        // },
+
         createNetwork(item,optype){
             this.$refs.CreateNetwork.show(item,optype)
                 .then(ret => {
