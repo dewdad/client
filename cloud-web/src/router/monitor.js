@@ -43,7 +43,7 @@ export default [
                         }
                     },
                     {
-                        path: 'edit/:id',
+                        path: 'edit/:id/:alarmId',
                         name: 'app.monitor.alarmrule.edit',
                         component: () => import('@/views/monitor/alarmrule/Edit.vue'),
                         meta: {

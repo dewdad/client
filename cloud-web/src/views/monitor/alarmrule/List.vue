@@ -27,7 +27,7 @@
                         <span v-if="scope.row.resourceType === '0'">全部资源</span>
                         <div v-else>
                             <el-popover placement="top" width="200" trigger="hover">
-                                <div v-for="item in scope.row.alarmInstances" :key="item.instanceId">实例ID：{{item.instanceId}}</div>
+                                <div v-for="item in scope.row.alarmInstances" :key="item.instanceId">实例：{{item.instanceId}}/{{item.instanceName}}</div>
                                 <span slot="reference">自定义</span>
                             </el-popover>
                         </div>
@@ -58,7 +58,7 @@
                         <a v-if="scope.row.status === 0" @click="forbid(scope.row, 1)" class="btn-linker">禁用</a>
                         <a v-else @click="resume(scope.row, 0)" class="btn-linker">启用</a>
                         <b class="link-division-symbol"></b>
-                        <router-link :to="{name: 'app.monitor.alarmrule.edit', params: {id: scope.row.alarmId}}" class="btn-linker">修改</router-link>
+                        <router-link :to="{name: 'app.monitor.alarmrule.edit', params: {id: scope.row.id, alarmId: scope.row.alarmId}}" class="btn-linker">修改</router-link>
                         <b class="link-division-symbol"></b>
                         <a @click="deleteRule(scope.row, 2)" class="btn-linker">删除</a>
                     </template>
@@ -170,7 +170,7 @@ export default {
         },
         deleteRule(row) {
             this.$refs.DeleteDailog.show('告警规则', row.name, () => {
-                return deleteRule(row);
+                return deleteRule(row.id, 2);
             }).then(res => {
                 this.$message.success('操作成功');
                 this.getData();
@@ -181,7 +181,7 @@ export default {
             this.$confirm('您确定要启用该规则吗', '启用', {
                 type: 'warning'
             }).then(() => {
-                deleteRule(row, 0).then(res => {
+                deleteRule(row.id, 0).then(res => {
                     if (res.code === '0000') {
                         this.$message.success('操作成功');
                         this.getData();
@@ -194,7 +194,7 @@ export default {
             this.$confirm('您确定要禁用该规则吗', '禁用', {
                 type: 'warning'
             }).then(() => {
-                deleteRule(row, 1).then(res => {
+                deleteRule(row.id, 1).then(res => {
                     if (res.code === '0000') {
                         this.$message.success('操作成功');
                         this.getData();

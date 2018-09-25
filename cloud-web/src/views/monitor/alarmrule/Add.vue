@@ -25,14 +25,14 @@
                         <!-- <el-option v-if="ruleForm.alarm.type === '3'" label="云硬盘" value="1"></el-option> -->
                     </el-select>
                 </zt-form-item>
-                <zt-form-item key="bucket" v-if="ruleForm.alarm.type === '1' && ruleForm.alarm.resourceType === '1'" label="bucket" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择bucket', trigger: ['submit']}]">
-                    <select-bucket v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择bucket"></select-bucket>
+                <zt-form-item key="bucket" v-if="ruleForm.alarm.type === '1' && ruleForm.alarm.resourceType === '1'" label="bucket" prop="alarm.alarmInstances" :rules="[{required: true, message: '请选择bucket', trigger: ['submit']}]">
+                    <select-bucket v-model="ruleForm.alarm.alarmInstances" :multiple="true" placeholder="请选择bucket"></select-bucket>
                 </zt-form-item>
-                <zt-form-item key="ecsInst" v-if="ruleForm.alarm.type === 'instance' && ruleForm.alarm.resourceType === '1'" label="实例" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择实例', trigger: ['submit']}]">
-                    <select-ecs-inst v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择实例"></select-ecs-inst>
+                <zt-form-item key="ecsInst" v-if="ruleForm.alarm.type === 'instance' && ruleForm.alarm.resourceType === '1'" label="实例" prop="alarm.alarmInstances" :rules="[{required: true, message: '请选择实例', trigger: ['submit']}]">
+                    <select-ecs-inst v-model="ruleForm.alarm.alarmInstances" :multiple="true" placeholder="请选择实例"></select-ecs-inst>
                 </zt-form-item>
-                <zt-form-item key="disk" v-if="ruleForm.alarm.type === '3' && ruleForm.alarm.resourceType === '1'" label="云盘" prop="alarm.instanceIds" :rules="[{required: true, message: '请选择云盘', trigger: ['submit']}]">
-                    <select-disk v-model="ruleForm.alarm.instanceIds" :multiple="true" placeholder="请选择云盘"></select-disk>
+                <zt-form-item key="disk" v-if="ruleForm.alarm.type === '3' && ruleForm.alarm.resourceType === '1'" label="云盘" prop="alarm.alarmInstances" :rules="[{required: true, message: '请选择云盘', trigger: ['submit']}]">
+                    <select-disk v-model="ruleForm.alarm.alarmInstances" :multiple="true" placeholder="请选择云盘"></select-disk>
                 </zt-form-item>
                 <legend style="padding-bottom:5px" class="pt0">
                     <span style="line-height:2; margin-right:10px;" class="font14 iconfont icon-setting_people"></span>
@@ -115,8 +115,8 @@
                     <select-notice v-model="ruleForm.notices" :multiple="true" placeholder="请选择通知对象"></select-notice>
                 </zt-form-item>
                 <zt-form-item label="通知方式" prop="">
-                    <el-radio v-model="ruleForm.noticeType" label="1">邮箱</el-radio>
-                    <el-radio v-model="ruleForm.noticeType" label="2">手机+邮箱</el-radio>
+                    <el-radio v-model="ruleForm.noticeType" label="0">邮箱</el-radio>
+                    <el-radio v-model="ruleForm.noticeType" label="1">短信</el-radio>
                 </zt-form-item>
                 <zt-form-item prop="">
                     <el-button type="primary" size="small" @click="submit">创建</el-button>
@@ -130,10 +130,10 @@
 </template>
 <script>
 import {mapState} from 'vuex';
-import SelectEcsInst from '@/components/form/SelectEcsInst';
-import SelectDisk from '@/components/form/SelectDisk';
-import SelectBucket from '@/components/form/SelectBucket';
-import SelectNotice from '@/components/form/SelectNotice';
+import SelectEcsInst from '../components/SelectEcsInst';
+import SelectDisk from '../components/SelectDisk';
+import SelectBucket from '../components/SelectBucket';
+import SelectNotice from '../components/SelectNotice';
 import SelectSystemConfig from '../components/SelectSystemConfig';
 import {cloneDeep} from '@/utils/utils';
 import {createRule, getRule} from '@/service/monitor/alarmRule';
@@ -150,8 +150,7 @@ export default {
             loading: false,
             ruleForm: {
                 alarm: {
-                    name: '',
-                    instanceIds: [],
+                    alarmInstances: [],
                     resourceType: '0',
                     type: 'instance'
                 },
@@ -176,7 +175,7 @@ export default {
     },
     watch: {
         'ruleForm.alarm.type': function(newval) {
-            this.ruleForm.alarm.instanceIds = [];
+            this.ruleForm.alarm.alarmInstances = [];
             this.$nextTick(() => {
                 this.ruleForm.rules.map(item => {
                     return (item['ruleMetric'] = this.filterArr[0].key);
@@ -194,14 +193,12 @@ export default {
                 item['noticeType'] = this.ruleForm.noticeType;
                 return item;
             });
-        }
+        },
     },
-    created() {
-    },
+    created() {},
     methods: {
         addRule() {
             let obj = cloneDeep(ruleItem);
-            obj.ruleMetric = this.filterArr[0].key;
             $log(obj);
             this.ruleForm.rules.push(obj);
         },
@@ -222,11 +219,11 @@ export default {
         submit() {
             this.$refs.ruleForm.validate(valid => {
                 if (valid) {
-                    let data = this.ruleForm;
+                    let data = cloneDeep(this.ruleForm);
                     data.notices = this.noticesList;
                     // data.alarm.domainId = this.userInfo.deptId;
                     // data.alarm.projectId = this.userInfo.projectId;
-                    this.loading = false;
+                    this.loading = true;
                     createRule(data)
                         .then(res => {
                             if (res.code === '0000') {
