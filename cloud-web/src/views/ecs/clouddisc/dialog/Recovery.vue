@@ -14,7 +14,7 @@
 
         <span slot="footer" class="dialog-footer">
             <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
-             <el-button type="primary" size="small" :loading="loading" :disabled="formData.volumeId === ''" @click="confirm">确定</el-button>
+            <el-button type="primary" size="small" :loading="loading" :disabled="formData.volumeId === ''" @click="confirm">确定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -31,15 +31,14 @@ export default {
             loading: false,
             rowItem: {},
             disks: [],
-            formData:{
-                volumeId:''
-            },
-            
+            formData: {
+                volumeId: ''
+            }
         };
     },
     watch: {
         isShow(val) {
-            if(!val){
+            if (!val) {
                 this.formData.volumeId = '';
                 this.$refs['ruleForm'].clearValidate();
             }
@@ -75,7 +74,7 @@ export default {
                 volumeId: this.formData.volumeId.id
                 //imageRef: '',
             };
-            if (this.formData.volumeId.size <= this.rowItem.size) {
+            if (this.formData.volumeId.size < this.rowItem.size) {
                 this.$alert('磁盘容量必须大于等于备份容量', {
                     type: 'error'
                 });
@@ -83,18 +82,17 @@ export default {
             }
             this.loading = true;
             restoreBackup(data)
-                .then( res => {
-                    if (res && res.code === this.CODE.SUCCESS_CODE) { 
+                .then(res => {
+                    if (res && res.code === this.CODE.SUCCESS_CODE) {
                         this.resolve(res);
                         this.hide();
-                        //this.setting();                                            
-                    }                              
-                })
-                .catch(
-                    err => {
-                        $log(err);
+                        //this.setting();
                     }
-                ).finally(() => {
+                })
+                .catch(err => {
+                    $log(err);
+                })
+                .finally(() => {
                     this.loading = false;
                 });
         },
@@ -102,21 +100,24 @@ export default {
         getAllDisk() {
             this.remote = true;
             let params = {
-                pageIndex:1,
+                pageIndex: 1,
                 limit: 9999,
                 status: 'available'
             };
-            getDiskList(params).then(res => {
-                if (res.code === '0000') {
-                    let data = res.data;
-                    let jsonData = data.data;
-                    this.disks = jsonData || [];
-                }
-            }).catch(err => {
-                $log(err);
-            }).finally(() => {
-                this.remote = false;
-            });
+            getDiskList(params)
+                .then(res => {
+                    if (res.code === '0000') {
+                        let data = res.data;
+                        let jsonData = data.data;
+                        this.disks = jsonData || [];
+                    }
+                })
+                .catch(err => {
+                    $log(err);
+                })
+                .finally(() => {
+                    this.remote = false;
+                });
         }
     }
 };
