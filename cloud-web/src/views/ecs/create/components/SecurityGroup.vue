@@ -119,11 +119,17 @@
                         </el-tabs>
                         <el-table :data="tableData" class="data-list" :search="false" empty-text="还未配置相关规则">
                             <!-- 协议类型 -->
-                            <el-table-column prop="protocol" label="协议类型"></el-table-column>
+                            <el-table-column prop="protocol" label="协议类型">
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.protocol">  {{scope.row.protocol}}</span>
+                                  <span v-else>所有</span>
+                                </template>
+                            </el-table-column>
                             <!-- 端口范围 -->
                             <el-table-column prop="protocol" label="端口范围">
                                 <template slot-scope="scope">
-                                    {{scope.row.port_range_min}} - {{scope.row.port_range_max}}
+                                  <span v-if="scope.row.port_range_min">  {{scope.row.port_range_min}} - {{scope.row.port_range_max}}</span>
+                                  <span v-else>所有</span>
                                 </template>
                             </el-table-column>
                             <!-- 授权类型 -->
