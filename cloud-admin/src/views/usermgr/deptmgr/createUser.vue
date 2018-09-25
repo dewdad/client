@@ -5,7 +5,7 @@
             <span class="pull-right font16">用户{{opType ===1 ? '创建' : '编辑'}}</span>
         </div>
         <div class="page-body">
-            <el-form class="base-info" ref="userform" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="115px" style="width:633px;" :rules="rules" >
+            <el-form class="base-info" ref="form" label-position="right"  v-loading.lock="fullscreenLoading" size="small" :model="form" label-width="115px" style="width:633px;" :rules="rules" >
                 <!-- 名称 -->
                 <el-form-item label="部门" prop="domainId"  >
                     <el-input   :value="domainName" disabled></el-input>
@@ -20,7 +20,8 @@
                 </el-form-item>
                 <!-- 邮箱 -->
                 <el-form-item label="邮箱" prop="email"  >
-                    <el-input clearable type="email"  v-model="form.email"></el-input>
+                    <el-input clearable type="email"  v-model="form.email" v-bind:class="{ borderRed: invalidEmail }" @blur="checkEmail" @change="checkEmail"></el-input>
+                    <div v-if="invalidEmail" style="color: #f56c6c;font-size: 12px;text-align:left;line-height:1.6">密码格式不正确</div>
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item label="密码" prop="password"  >
@@ -61,18 +62,11 @@ export default {
     },
     data() {
         let stateParams = this.$route.params || {};
-        let validateEmail = function(rule, value, callback){
-            let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
-            if (!reg.test(value)) {
-                callback(new Error('请输入正确的邮箱格式'));
-            } else {
-                callback();
-            }
-        };
         return {
             opType: 1,
             domainName:'',
             invalidPsd:false,
+            invalidEmail:false,
             form:{
                 name: '',
                 domainId: '',
@@ -101,12 +95,23 @@ export default {
                 'roleId':[
                     { required: true,message: '必填项',trigger: ['change']}
                 ],
-                'email':[
-                    { required: true,message: '必填项',trigger: ['submit']},
-                    { validator: validateEmail, trigger: 'blur' }
-                ]
+                // 'email':[
+                //     { required: false,message: '必填项',trigger: ['change']},
+                //     { validator: validateEmail, trigger: 'submit' }
+                // ]
             },
         };
+    },
+    beforeRouteLeave(to, from, next){
+        console.log('to.name',to.name);
+        //打开详情页（或者下一个任意界面）之前，把筛选条件保存到localStorage，如果离开列表页并且打开的不是详情页则清除，也可以选择不清除
+        if (to.name == 'app.usrmgr.deptmgr') {
+            let createUserParam = JSON.stringify(this.stateParams);
+            localStorage.setItem('createUserParam', createUserParam);
+        }else{
+            localStorage.removeItem('createUserParam');
+        }
+        next();
     },
     methods:{
         //保存（提交）
@@ -120,14 +125,14 @@ export default {
                 email:this.form.email,
                 roleId:this.form.roleId,
             };
-            if(this.form.password !== this.form.confirpwd) {
+            if(this.form.password !== this.form.confirpwd || this.invalidEmail) {
                 this.invalidPsd = true;
                 return;
             } else {
                 this.invalidPsd = false;
             }
             console.log('param...',param);
-            this.$refs.userform.validate((valid) => {
+            this.$refs.form.validate((valid) => {
                 if (valid) {
                     createUser(param).then(ret => {
                         $log('result...', ret);
@@ -171,14 +176,28 @@ export default {
         },
         checkPwd(){
             if(this.form.password !== this.form.confirpwd) {
-                this.invalidPsd = true;
+                this.invalidEmail = true;
             } else {
-                this.invalidPsd = false;
+                this.invalidEmail = false;
+            }
+        },
+        checkEmail(){
+            let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+            if (this.form.email == '') {
+                this.invalidEmail = false;
+            } else if(!reg.test(this.form.email)){
+                this.invalidEmail = true;
+            }else{
+                this.invalidEmail = false;
             }
         },
         setOrigin(){
             console.log('stateParams.......',this.stateParams);
-            this.domainName = this.stateParams.item.name;
+            let createUserParam = localStorage.getItem('createUserParam');
+            if (createUserParam != null) {
+                this.stateParams = JSON.parse(createUserParam);
+            }
+            if(this.stateParams.item) this.domainName = this.stateParams.item.name;
         },
         //返回到列表页面
         goBack(){
@@ -187,6 +206,17 @@ export default {
     },
 
     mounted() {
+        if(this.stateParams && this.stateParams.item){
+            let str = JSON.stringify(this.stateParams);
+            console.log('str',str);
+            localStorage.setItem('createUserParam', str);
+
+        }
+        let createUserParam = localStorage.getItem('createUserParam');
+        if (createUserParam) {
+            let json = JSON.parse(createUserParam);
+            if(json.item) this.stateParams = json;
+        }
         this.setOrigin();
         this.selectRoleList();
         

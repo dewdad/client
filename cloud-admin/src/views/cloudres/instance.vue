@@ -87,8 +87,8 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="bootEcs(scope.row,'start')" class="btn-linker" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' || scope.row.status == 'PAUSED'">启动</a>
-                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED'|| scope.row.status == 'PAUSED' "></b>
+                                <a  @click="bootEcs(scope.row,'start')" class="btn-linker" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' ">启动</a>
+                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' "></b>
                                 <a  @click="rebootEcs(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">重启</a>
                                 <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
                                 <a  @click="bootEcs(scope.row,'stop')" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
@@ -101,7 +101,8 @@
                                     <el-dropdown-menu slot="dropdown">
                                         <el-dropdown-item @click.native="delEcs(scope.row)">删除</el-dropdown-item>
                                         <el-dropdown-item @click.native="serverGetVNCConsole(scope.row)">远程连接</el-dropdown-item>
-                                        <el-dropdown-item @click.native="bootEcs(scope.row,'pause')">暂停</el-dropdown-item>
+                                        <el-dropdown-item @click.native="bootEcs(scope.row,'pause')" v-if="scope.row.status != 'PAUSED'">暂停</el-dropdown-item>
+                                        <el-dropdown-item @click.native="bootEcs(scope.row,'unpause')" v-if="scope.row.status == 'PAUSED'">解除暂停</el-dropdown-item>
                                         <!--<el-dropdown-item @click.native="Virtualmig(scope.row)">云主机热迁移</el-dropdown-item>-->
                                     </el-dropdown-menu>
                                 </el-dropdown>
@@ -178,6 +179,12 @@ export default {
             {
                 text: '失败',
                 value: 'ERROR',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '关机',
+                value: 'STOPPED',
                 className: 'color-danger',
                 icon: 'icon-overdue_people'
             },

@@ -89,6 +89,7 @@ export default {
         PageHeader,
     },
     data() {
+        let stateParams = this.$route.params;
         let menu = {
             parentMenuCode: '',
             menuName: '',
@@ -101,7 +102,8 @@ export default {
             isNew : 'new',
         };
         
-        return {           
+        return {
+            stateParams,
             opType: 1,
             menu,
             fullscreenLoading: false,
@@ -203,14 +205,24 @@ export default {
     },
 
     created() {
-        let stateParams = this.$route.params;
-        this.opType = parseInt(stateParams.opType);        
+        if(this.stateParams && this.stateParams.rowItem){
+            let str = JSON.stringify(this.stateParams);
+            localStorage.setItem('menuEdit', str);
+
+        }
+        let menuEdit = localStorage.getItem('menuEdit');
+        if (menuEdit) {
+            let json = JSON.parse(menuEdit);
+            if(json.rowItem) this.stateParams = json;
+        }
+
+        this.opType = parseInt(this.stateParams.opType);
         if(this.opType === 1){
-            if(parseInt(stateParams.code) > 0){
-                this.menu.parentMenuCode = stateParams.code;
+            if(parseInt(this.stateParams.code) > 0){
+                this.menu.parentMenuCode = this.stateParams.code;
             }            
         } else if(this.opType === 2) {
-            this.menu = stateParams.rowItem;            
+            this.menu = this.stateParams.rowItem;
         }
         
     },

@@ -22,7 +22,7 @@
                     </el-menu-item>
                     <el-submenu index="1-4" v-if="submenu.submenus.length&&submenu.menuName != '网络'" :key="submenu.menuCode" >
                         <span slot="title">{{submenu.menuName}}</span>
-                        <el-menu-item :index="bottomMenu.routeHref" v-for="bottomMenu in submenu.submenus" :key="bottomMenu.menuCode">{{bottomMenu.menuName}}</el-menu-item>
+                        <el-menu-item :index="bottomMenu.routeHref" @click="saveParentMenu(submenus)" v-for="bottomMenu in submenu.submenus" :key="bottomMenu.menuCode">{{bottomMenu.menuName}}</el-menu-item>
                     </el-submenu>
                     <el-submenu index="1-3" v-if="submenu.submenus.length&&submenu.menuName != '磁盘管理'" :key="submenu.menuCode" >
                         <span slot="title">{{submenu.menuName}}</span>
@@ -45,7 +45,6 @@ export default {
             activeRouteHref: '',
             isCollapse: true,
             activeMenuCode: '0000', //menuCode
-            noClose:false
         };
     },
     computed: {
@@ -73,6 +72,10 @@ export default {
             }else {
                 this.$router.push({name: index});
             }
+        },
+        saveParentMenu(saveParentMenu){
+            let submenuItemsStr = JSON.stringify(saveParentMenu);
+            localStorage.setItem('submenuItems', submenuItemsStr);
         },
         clickMenu(menu){
             this.submenus = menu.submenus;
@@ -119,10 +122,15 @@ export default {
                 let navlist = window.navList;
                 let that = this;
                 console.log();
+                let submenuItems = localStorage.getItem('submenuItems');
                 if(navlist && navlist.length){
                     this.activeRouteHref = this.parseRouterName();
 
                     console.log('this.activeRouteHref',this.activeRouteHref);
+                    if( 'app.overview' == this.activeRouteHref){
+                        if(submenuItems) localStorage.removeItem('submenuItems');
+                        console.log('removedItems',submenuItems);
+                    }
                     navlist.forEach( (menu) =>{
                         if(menu.submenus && menu.submenus.length){
                             // let hsSubmenu = false;
@@ -131,11 +139,6 @@ export default {
                                     return submenu.routeHref === this.activeRouteHref;
                                 }
                             });
-                            // if(this.activeRouteHref.indexOf('app.resources.network') > -1 || this.activeRouteHref.indexOf('app.resource.volume') > -1){
-                            //     this.noClose = true;
-                            // }else{
-                            //     this.noClose = false;
-                            // }
                             if(submenu) {
                                 that.activeMenuCode = menu.menuCode;
                                 console.log('that.activeMenuCode',that.activeMenuCode);
@@ -143,8 +146,14 @@ export default {
                                 let me = navlist.find( (me) => {
                                     return me.menuCode === that.activeMenuCode;
                                 });
+                                let submenuItemsStr = JSON.stringify(me.submenus);
+                                localStorage.setItem('submenuItems', submenuItemsStr);
                                 that.submenus = me.submenus;
                             }else{
+                                //从localStorage中读取条件并赋值给查询表单
+                                if (submenuItems) {
+                                    this.submenus = JSON.parse(submenuItems);
+                                }
                                 console.log('this.oooooo',this.activeRouteHref);
                                 that.activeMenuCode = '0000';
                             }
@@ -172,6 +181,7 @@ export default {
         }
     },
     mounted(){
+
         this.getMenus();
     }
 };

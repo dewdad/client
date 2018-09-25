@@ -90,6 +90,15 @@ export async function editRente(data) {
     let url = DEPT.editRente+data.id;
     let response = await http.put(url,data.data);
     return response;
+}/**
+ *修改租户配额
+ * @param {*}
+ */
+export async function changeRenterQuota(data) {
+    console.log('data',data);
+    let url = DEPT.changeRenterQuota;
+    let response = await http.put(url,data);
+    return response;
 }
 /**
  *查看配额和使用量
