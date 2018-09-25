@@ -89,7 +89,7 @@ const statusArr = [
 ];
 export default {
     data() {
-        let fields = [{field: 'name', label: '规则名称', inputval: '', tagType: 'INPUT'}];
+        let fields = [{field: 'ruleName', label: '规则名称', inputval: '', tagType: 'INPUT'}];
         let searchObj = {
             //分页
             paging: {
