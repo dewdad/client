@@ -51,7 +51,7 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{convertStatus(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
@@ -115,6 +115,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateMirror from './CreateMirror';
 import MirrorDetail from './MirrorDetail';
+import ZtStatus from '@/components/status/ZtStatus';
 import {searchMirrorList,delMirror} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -143,11 +144,50 @@ export default {
             {key: 'DELETED', value: '已删除'},
             {key: 'PENDING_DELETE', value: '删除中'}
         ];
+        let ECS_STATUS = [
+            {
+                text: '保存中',
+                value: 'saving',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '已排队',
+                value: 'queued',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '运行中',
+                value: 'active',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '破坏的',
+                value: 'killed',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '已删除',
+                value: 'deleted',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '删除中',
+                value: 'pending-delete',
+                className: 'color-warning',
+                icon: 'icon-overdue_people'
+            }
+        ];
         let imageVisibilityArr = [
             {key: 'public', value: '公有'},
             {key: 'private', value: '私有'},
         ];
         return {
+            ECS_STATUS,
             imageVisibilityArr,
             imageStatusArr,
             cols,
@@ -165,7 +205,8 @@ export default {
     components: {
         PageHeader,
         CreateMirror,
-        MirrorDetail
+        MirrorDetail,
+        ZtStatus
     },
     methods: {
         searchMirrorList(){

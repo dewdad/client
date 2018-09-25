@@ -66,7 +66,7 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{convertStatusSnapshot(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
@@ -113,7 +113,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-
+import ZtStatus from '@/components/status/ZtStatus';
 import {delSnapshot,searchSnapshotList} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -154,7 +154,65 @@ export default {
             {key: 'awaiting-transfer', value: '转让中'},
             {key: 'error_deleting', value: '删除时出错'},
         ];
+        let ECS_STATUS = [
+            {
+                text: '创建中',
+                value: 'creating',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '使用中',
+                value: 'in-use',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '可用',
+                value: 'available',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '转让中',
+                value: 'awaiting-transfer',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '备份中',
+                value: 'backing-up',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '删除中',
+                value: 'deleting',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '错误',
+                value: 'error',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '恢复时出错',
+                value: 'error_restoring',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '恢复中',
+                value: 'restoring',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+
+        ];
         return {
+            ECS_STATUS,
             statusArrVolume,
             searchCond,
             cols,
@@ -170,14 +228,17 @@ export default {
     },
     components: {
         PageHeader,
+        ZtStatus
 
     },
     methods: {
         searchSnapshotList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if([this.type] && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             searchSnapshotList(params).then(ret => {
                 $log('data', ret);

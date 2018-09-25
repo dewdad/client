@@ -6,25 +6,19 @@
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <!--<el-form-item>-->
-                        <!--<el-button type="primary" @click="createRole({},1)">-->
-                            <!--<span class="icon-zt_plus"></span>-->
-                            <!--新建角色-->
-                        <!--</el-button>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item>-->
-                        <!--<el-select placeholder="请选择" v-model="type">-->
-                            <!--<el-option label="角色名称" value="name"></el-option>-->
-                            <!--<el-option label="角色名称" value="name"></el-option>-->
-                            <!--<el-option label="角色名称" value="name"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="关键字">-->
-                        <!--<el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item>-->
-                        <!--<el-button class="ml10" size="small" type="primary" @click="getRoleList" icon="el-icon-search">搜索</el-button>-->
-                    <!--</el-form-item>-->
+                    <el-form-item>
+                        <el-select placeholder="请选择" v-model="type" @change="formInline.searchText = ''">
+                            <el-option label="部门名称" value="domain_name"></el-option>
+                            <el-option label="租户名称" value="project_name"></el-option>
+                            <el-option label="名称" value="name"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="关键字">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button class="ml10" size="small" type="primary" @click="ecsList" icon="el-icon-search">搜索</el-button>
+                    </el-form-item>
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="ecsList"></el-button>
                     </el-form-item>
@@ -75,14 +69,14 @@
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='status'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{getStatusText(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='creatTime'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column min-width="140" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10">{{scope.row.created | date}}</span>
                                 </template>
@@ -93,8 +87,8 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="bootEcs(scope.row,'start')" class="btn-linker" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' ">启动</a>
-                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' "></b>
+                                <a  @click="bootEcs(scope.row,'start')" class="btn-linker" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED' || scope.row.status == 'PAUSED'">启动</a>
+                                <b class="link-division-symbol" v-if="scope.row.status == 'SHUTOFF' || scope.row.status == 'STOPPED'|| scope.row.status == 'PAUSED' "></b>
                                 <a  @click="rebootEcs(scope.row)" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">重启</a>
                                 <b class="link-division-symbol" v-if="scope.row.status == 'ACTIVE' "></b>
                                 <a  @click="bootEcs(scope.row,'stop')" class="btn-linker" v-if="scope.row.status == 'ACTIVE' ">关机</a>
@@ -129,14 +123,11 @@
                 </div>
             </el-col>
         </el-row>
-        <!--<relate-auth ref="RelateAuth"></relate-auth>-->
-        <!--<create-role ref="CreateRole"></create-role>-->
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-// import RelateAuth from './RelateAuth';
-// import CreateRole from './CreateRole';
+import ZtStatus from '@/components/status/ZtStatus';
 import {ecsList,delEcs,rebootEcs,bootEcs,serverGetVNCConsole,Virtualmig} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -159,29 +150,143 @@ export default {
             { column: 'status', text: '状态', width: '5%' },
             { column: 'creatTime', text: '创建时间', width: '10%' }
         ];
+        const ECS_STATUS = [
+            {
+                text: '关机',
+                value: 'SHUTOFF',
+                className: 'color-danger',
+                icon: 'icon-workorder_attachmen'
+            },
+            {
+                text: '运行中',
+                value: 'active',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '运行中',
+                value: 'ACTIVE',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '暂停',
+                value: 'PAUSED',
+                className: 'color-danger',
+                icon: 'icon-workorder_attachmen'
+            },
+            {
+                text: '失败',
+                value: 'ERROR',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '待重启',
+                value: 'WAIT_REBOOT',
+                className: 'color-warning',
+                icon: 'zticon-running_people'
+            },
+            {
+                text: '创建中',
+                value: 'build',
+                className: 'color-primary',
+                type: 'progress'
+            },
+            {
+                text: '停止中',
+                value: 'SHUTDOWN',
+                className: 'color-danger',
+                type: 'progress'
+            },
+            {
+                text: '调整套餐中',
+                value: 'resize',
+                className: 'color-progress-warning',
+                type: 'progress'
+            },
+            {
+                text: '重启中',
+                value: 'hard_reboot',
+                className: 'color-success',
+                type: 'progress'
+            },
+            {
+                text: '重启中',
+                value: 'reboot',
+                className: 'color-success',
+                type: 'progress'
+            },
+            {
+                text: '启动中',
+                value: 'STARTUP',
+                className: 'color-success',
+                type: 'progress'
+            },
+            {
+                text: '重装中',
+                value: 'rebuild',
+                className: 'color-progress-info',
+                type: 'progress'
+            },
+            {
+                text: '确认中',
+                value: 'verify_resize',
+                className: 'color-danger',
+                type: 'progress'
+            },
+            {
+                text: '删除中',
+                value: 'deleted',
+                className: 'color-progress-warning',
+                type: 'progress'
+            },
+            {
+                text: '恢复中',
+                value: 'revert_resize',
+                className: 'color-progress-warning',
+                type: 'progress'
+            },
+            {
+                text: '挂起',
+                value: 'suspended',
+                className: 'color-primary',
+                icon: 'zticon-stop'
+            },
+            {
+                text: '未知',
+                value: 'unknown',
+                className: 'color-danger',
+                icon: 'zticon-stop'
+            }
+        ];
 
         return {
+            ECS_STATUS,
             cols,
             searchObj,
             formInline: {
-                data:'',
                 searchText:''
             },
-            type:'name',
+            type:'domain_name',
             tableData: []
 
         };
     },
     components: {
         PageHeader,
+        ZtStatus
+
 
     },
     methods: {
         ecsList(){
             let params = {
                 paging:this.searchObj.paging,
-                // [this.type]:this.formInline.searchText
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             ecsList(params).then(ret => {
                 $log('data', ret);
@@ -265,7 +370,8 @@ export default {
         //远程连接
         serverGetVNCConsole(item){
             serverGetVNCConsole(item.id).then(ret=>{
-                window.location.href = ret.data.url;
+                // window.location.href = ret.data.url;
+                window.open(ret.data.url);
             });
         },
         //云主机热迁移

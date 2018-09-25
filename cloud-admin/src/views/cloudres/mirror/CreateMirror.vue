@@ -19,8 +19,8 @@
                         <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
                 </el-form-item>
-                <el-form-item label="镜像名称" prop="diskFormat" :label-width="formLabelWidth">
-                    <el-select placeholder="搜索关键字" v-model="form.diskFormat" >
+                <el-form-item label="镜像格式" prop="diskFormat" :label-width="formLabelWidth">
+                    <el-select placeholder="镜像格式" v-model="form.diskFormat" >
                         <el-option v-for="item in diskFormats" :value="item.key" :label="item.value" :key="item.key"></el-option>
                     </el-select>
                 </el-form-item>
@@ -80,10 +80,10 @@ export default {
                     { required: true, message: '请输入名称', trigger: 'blur' }
                 ],
                 mirrortype: [
-                    { required: true, message: '请输入ID', trigger: 'blur' }
+                    { required: true, message: '请选择镜像类型', trigger: 'blur' }
                 ],
                 diskFormat: [
-                    { required: true, message: '请输入ID', trigger: 'blur' }
+                    { required: true, message: '请选择镜像格式', trigger: 'blur' }
                 ]
             }
         };
@@ -97,6 +97,14 @@ export default {
     methods: {
         show() {
             this.isShow = true;
+            this.form.name = '';
+            this.form.mirrortype = 1;
+            this.form.diskFormat = '';
+            this.form.public = '1';
+            this.form.isProtected = '1';
+            this.form.imageUrl = '';
+            this.form.fileList = [];
+            this.form.fileListArr = [];
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -135,7 +143,7 @@ export default {
                         }
                     }
 
-                    this.form.imageUrl = arr[0];
+                    this.form.imageUrl = arr[0] || '';
                     this.form.isProtected = this.form.isProtected == '1' ? true : false;
                     this.form.public = this.form.public == '1' ? true : false;
                     createMirror(this.form)

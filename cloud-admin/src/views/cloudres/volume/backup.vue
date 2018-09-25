@@ -66,7 +66,7 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{convertStatusBackup(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
@@ -105,6 +105,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
+import ZtStatus from '@/components/status/ZtStatus';
 import {searchBackupList,delBackup} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -134,12 +135,52 @@ export default {
             {key: 'restoring', value: '恢复中'},
             {key: 'error_restoring', value: '恢复时出错'}
         ];
+        let ECS_STATUS = [
+            {
+                text: '创建中',
+                value: 'creating',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '可用',
+                value: 'available',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '删除中',
+                value: 'deleting',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '错误',
+                value: 'error',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '恢复时出错',
+                value: 'error_restoring',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '恢复中',
+                value: 'restoring',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+
+        ];
         let searchCond = [
             {key: 'display_name', value: '名称'},
             {key: 'display_description', value: '描述'},
             {key: 'status', value: '状态'}
         ];
         return {
+            ECS_STATUS,
             searchCond,
             imageStatusArr,
             cols,
@@ -155,13 +196,16 @@ export default {
     },
     components: {
         PageHeader,
+        ZtStatus
     },
     methods: {
         searchBackupList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if([this.type] && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             searchBackupList(params).then(ret => {
                 $log('data', ret);
@@ -171,20 +215,6 @@ export default {
                     this.searchObj.paging.totalItems = resData.totalPages || 0;
                 }
             });
-        },
-        convertStatusBackup(status) {
-            if(status == '' || status == 'undefined')
-            {
-                return '未知';
-            }
-            status = status.toLocaleLowerCase();
-            for (let i = 0, ii = this.imageStatusArr.length; i < ii; i++) {
-                let item = this.imageStatusArr[i];
-                if (item.key == status) {
-                    return item.value;
-                }
-            }
-            return status;
         },
         calcSize(size) {
             if (size < 1024) {

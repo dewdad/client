@@ -66,7 +66,7 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{convertStatusSnapshot(scope.row.status)}}</span>
+                                    <zt-status :status="ECS_STATUS" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
                                 </template>
                             </el-table-column>
                         </template>
@@ -122,7 +122,7 @@
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
-
+import ZtStatus from '@/components/status/ZtStatus';
 import {searchCloudList,delCloud} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -175,7 +175,78 @@ export default {
             {key:'uploading',value:'上传中'},
             {key:'extending',value:'扩展中'},
         ];
+        let ECS_STATUS = [
+            {
+                text: '扩展中',
+                value: 'extending',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },{
+                text: '维修中',
+                value: 'maintenance',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },{
+                text: '恢复备份中',
+                value: 'restoring_backup',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            }, {
+                text: '下载中',
+                value: 'downloading',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            }, {
+                text: '创建中',
+                value: 'creating',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
+            },
+            {
+                text: '可用',
+                value: 'available',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '使用中',
+                value: 'in-use',
+                className: 'color-success',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '保留',
+                value: 'reserved',
+                className: 'color-danger',
+                icon: 'icon-running_people'
+            },
+            {
+                text: '删除中',
+                value: 'deleting',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '删除时出错',
+                value: 'error_deleting',
+                className: 'color-danger',
+                icon: 'icon-overdue_people'
+            },
+            {
+                text: '待重启',
+                value: 'WAIT_REBOOT',
+                className: 'color-warning',
+                icon: 'zticon-running_people'
+            },
+            {
+                text: '创建中',
+                value: 'build',
+                className: 'color-primary',
+                type: 'progress'
+            }
+        ];
         return {
+            ECS_STATUS,
             statusArrVolume,
             searchCond,
             cols,
@@ -191,14 +262,17 @@ export default {
     },
     components: {
         PageHeader,
+        ZtStatus
 
     },
     methods: {
         searchCloudList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if([this.type] && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             searchCloudList(params).then(ret => {
                 $log('data', ret);
@@ -208,16 +282,6 @@ export default {
                     this.searchObj.paging.totalItems = resData.totalPages || 0;
                 }
             });
-        },
-        convertStatusSnapshot(status) {
-            status = status.toLowerCase();
-            for (let i = 0, ii = this.statusArrVolume.length; i < ii; i++) {
-                let item = this.statusArrVolume[i];
-                if (item.key == status) {
-                    return item.value;
-                }
-            }
-            return status;
         },
         calcSize(size) {
             if (size < 1024) {
