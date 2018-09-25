@@ -37,7 +37,16 @@
                         <template v-if="col.column=='status'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.status == "ACTIVE"? "运行中":"关闭"}}</span>
+                                    <span  v-if="scope.row.status == 'ACTIVE'">
+                                        <zt-status :status="[{text: '运行中',value: 'ACTIVE',className: 'color-success',icon: 'icon-running_people'}]" :value="scope.row.status" class="text-nowrap status-column font12"></zt-status>
+                                    </span>
+                                    <span v-else>
+                                        <svg  class="zticon" aria-hidden="true">
+                                              <use href="#icon-overdue_people"></use>
+
+                                        </svg>
+                                        <span class="font12"> 关闭</span>
+                                    </span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -82,6 +91,7 @@
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreatePort from './CreatePort';
+import ZtStatus from '@/components/status/ZtStatus';
 import {searchPortList,delPort} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -114,7 +124,8 @@ export default {
     },
     components: {
         PageHeader,
-        CreatePort
+        CreatePort,
+        ZtStatus
 
     },
     methods: {

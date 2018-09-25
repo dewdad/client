@@ -79,30 +79,6 @@
                 <el-form-item label="备份大小(GB)：" prop="quota.backupSize" required>
                     <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.backupSize"></el-input-number>
                 </el-form-item>
-                <!--<div class="mb20 font16">-->
-                    <!--<i class="icon-new-配额"></i>-->
-                    <!--<span class="pl6">成员</span>-->
-                <!--</div>-->
-                <!--<el-form-item label="选择成员："   >-->
-                    <!--&lt;!&ndash;<el-button class="primary icon-zt_plus" style="cursor:pointer;padding:8px 12px;border:1px dashed #bbb;border-radius:3px;">  选择成员</el-button>&ndash;&gt;-->
-                <!--</el-form-item>-->
-                <!--<el-row>-->
-                    <!--<div class="mb10" v-if="selectedUser.length>0">已选择：{{selectedUser[0].name}} 等 <span class="text-success font16 ">{{selectedUser.length}}</span> 位成员</div>-->
-                    <!--<el-col :span="12" style="padding:10px;border:1px solid #BBB;height:400px;overflow-y: auto">-->
-                        <!--<div class="mb10">所有用户：</div>-->
-                        <!--<div class="item" v-for="(user,index) in allUsers" :key="user.id" v-if="allUsers.length>0">-->
-                            <!--<span>{{user.name}}</span>-->
-                            <!--<el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="chooseCur(index)">+</el-button>-->
-                        <!--</div>-->
-                    <!--</el-col>-->
-                    <!--<el-col :span="12" style="padding:10px;border:1px solid #BBB;border-left:0;height:400px;overflow-y: auto">-->
-                        <!--<div class="mb10">已选择用户：</div>-->
-                        <!--<div class="item" v-for="(user,index) in selectedUser" :key="user.id" v-if="selectedUser.length>0">-->
-                            <!--<span>{{user.name}}</span>-->
-                            <!--<el-button type="primary pull-right" size="small" style="font-size: 18px;" @click="delCur(index)">-</el-button>-->
-                        <!--</div>-->
-                    <!--</el-col>-->
-                <!--</el-row>-->
                 <div class="mt10" style="margin-left:180px;">
                     <el-button type="default" size="small" class="font12" @click="goBack">取 消</el-button>
                     <el-button type="primary" size="small" class="font12" @click="submitForm">提 交</el-button>
@@ -113,7 +89,8 @@
 </template>
 
 <script>
-import {selectAllUsers,createRenter} from '@/service/usermgr/deptmgr.js';
+import { mapState } from 'vuex';
+import {selectAllUsers,createRenter,changeRenterQuota} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'createRenter',
     components: {
@@ -204,6 +181,11 @@ export default {
             selectedUser:[]
         };
     },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
+    },
     methods:{
         //保存（提交）
         submitForm() {
@@ -219,18 +201,28 @@ export default {
                 if (valid) {
                     createRenter(param).then(ret => {
                         $log('result...', ret);
-                        if(ret.data.code === '0000'){
-                            this.$message({
-                                message: '保存成功',
-                                type: 'success'
+                        this.form.quota.projectId = ret.data.data.id;
+                        changeRenterQuota(this.form.quota)
+                            .then(res => {
+                                console.log('reds',res);
+                                if(ret.data.code === '0000'){
+                                    this.$message({
+                                        message: '保存成功',
+                                        type: 'success'
+                                    });
+                                    this.goBack();
+                                }else{
+                                    this.$alert('操作失败', '提示', {
+                                        type: 'error'
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                this.confirmBtn = false;
+                                this.$alert(err, '提示', {
+                                    type: 'error'
+                                });
                             });
-                            this.goBack();
-                        }else{
-                            this.$alert('操作失败', '提示', {
-                                type: 'error'
-                            });
-                        }
-
                     });
                 } else {
                     console.log('error submit!!');
@@ -241,8 +233,8 @@ export default {
         selectAllProject(){
             let param = {
                 limit:9999,
-                domainId:this.stateParams.item.id
             };
+            if(this.stateParams.item) param.domainId = this.stateParams.item.id;
             selectAllUsers(param).then(ret => {
                 $log('list', ret);
                 let resData = ret.data;
@@ -262,16 +254,42 @@ export default {
         },
         setOrigin(){
             console.log('stateParams.......',this.stateParams);
-            this.domainName = this.stateParams.item.name;
-            this.form.domainId = this.stateParams.item.id;
+            let createRenteParam = localStorage.getItem('createRenteParam');
+            if (createRenteParam != null) {
+                this.stateParams = JSON.parse(createRenteParam);
+            }
+            if(this.stateParams.item) this.domainName = this.stateParams.item.name;
+            if(this.stateParams.item) this.form.domainId = this.stateParams.item.id;
         },
         //返回到列表页面
         goBack(){
             window.history.back();
         }
     },
-
+    beforeRouteLeave(to, from, next){
+        console.log('to.name',to.name);
+        //打开详情页（或者下一个任意界面）之前，把筛选条件保存到localStorage，如果离开列表页并且打开的不是详情页则清除，也可以选择不清除
+        if (to.name == 'app.usrmgr.deptmgr') {
+            let createRenteParam = JSON.stringify(this.stateParams);
+            localStorage.setItem('createRenteParam', createRenteParam);
+        }else{
+            localStorage.removeItem('createRenteParam');
+        }
+        next();
+    },
     mounted() {
+        if(this.stateParams && this.stateParams.item){
+            let str = JSON.stringify(this.stateParams);
+            console.log('str',str);
+            localStorage.setItem('createRenteParam', str);
+
+        }
+        let createRenteParam = localStorage.getItem('createRenteParam');
+        if (createRenteParam) {
+            let json = JSON.parse(createRenteParam);
+            // let JSON = JSON.parse(createRenteParam);
+            if(json.item) this.stateParams = json;
+        }
         this.setOrigin();
         this.selectAllProject();
         

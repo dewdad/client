@@ -37,7 +37,7 @@
                             <el-input v-model="item.name" placeholder="输入名称" style="width:130px"></el-input>
                         </el-form-item>
                         <el-form-item label="值：" prop="code" style="display: inline-block">
-                            <el-input v-model="item.value" placeholder="输入值" style="width:220px"></el-input>
+                            <el-input v-model="item.value" placeholder="输入值" style="width:160px"></el-input>
                         </el-form-item>
                         <el-form-item label="排序：" prop="orderSeq" style="display: inline-block;width:210px;">
                             <el-input-number class="width-full" controls-position="right" :min="0" :max="100" v-model="item.orderSeq"></el-input-number>
@@ -240,6 +240,16 @@ export default {
 
     },
     created(){
+        if(this.stateParams && this.stateParams.item){
+            let str = JSON.stringify(this.stateParams);
+            localStorage.setItem('editConfig', str);
+
+        }
+        let editConfig = localStorage.getItem('editConfig');
+        if (editConfig) {
+            let json = JSON.parse(editConfig);
+            if(json.item) this.stateParams = json;
+        }
         this.setOriginData();
     },
     mounted(){

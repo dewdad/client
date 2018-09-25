@@ -157,6 +157,7 @@ export default {
             user: state => state.user.userInfo,
         }),
     },
+
     props: {},
     methods: {
         show(item,brunch,optype) {

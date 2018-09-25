@@ -161,6 +161,8 @@ export default {
                     this.isLoging = false;
                     let code = result.data.code;
                     if (code === '0000') {
+                        let submenuItems = localStorage.getItem('submenuItems');
+                        if(submenuItems) localStorage.removeItem('submenuItems');
                         // 记录token
                         this.$store.commit('SET_LOGIN_STATUS', {
                             status: true,
