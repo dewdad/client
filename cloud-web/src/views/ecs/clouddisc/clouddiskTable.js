@@ -183,7 +183,7 @@ export default {
          * @param {*} rowItem
          */
         editinstname(rowItem) {
-            this.$refs.EditName.show(rowItem).then(res => {
+            this.$refs.EditName.show({name: rowItem.name, id: rowItem.id}).then(res => {
                 this.getDiskList();
             });
         },

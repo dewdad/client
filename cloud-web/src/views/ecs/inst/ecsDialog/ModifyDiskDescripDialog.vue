@@ -8,17 +8,17 @@
             <!-- 磁盘名称 -->
             <zt-form-item label="磁盘名称" prop="name">
                 <el-input minlength="2" maxlength="128" size="small" v-model="rowItem.name"></el-input>
-                <div class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符。</div>
+                <div slot="help" class="input-help">只能由中文字符、英文字母、数字、下划线、中划线组成，且长度小于等于64个字符。</div>
             </zt-form-item>
             <!-- 磁盘描述 -->
             <zt-form-item label="磁盘描述" prop="remark">
                 <el-input maxlength="128" size="small" v-model="rowItem.remark"></el-input>
-                <div class="input-help">您最多可以输入128个字符。</div>
+                <div slot="help" class="input-help">您最多可以输入128个字符。</div>
             </zt-form-item>
         </zt-form>
         <span slot="footer" class="dialog-footer">            
-            <el-button type="info" class="font12" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" @click="confirm">{{ $t('common.ok') }}</el-button>
+            <el-button type="info" size="small" @click="isShow = false" :disabled="loading">取 消</el-button>
+            <el-button type="primary" size="small" @click="confirm" :loading="loading">{{ $t('common.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -30,7 +30,8 @@ export default {
         return {
             isShow: false,
             resolve: null,
-            reject: null,            
+            reject: null,
+            loading: false,        
             rowItem:{},
             rules: {
                 name: [
@@ -65,8 +66,8 @@ export default {
     },
     methods: {
         show(rowItem) {
-            let { id,name,remark} = rowItem;
-            this.rowItem = { id,name,remark};
+            let { id,name,description} = rowItem;
+            this.rowItem = { id,name, remark:description};
             this.isShow = true;
 
             return new Promise((resolve, reject) => {
@@ -94,6 +95,7 @@ export default {
             //表单校验
             this.$refs['rowItem'].validate((valid) => {
                 if (valid) {
+                    this.loading = true;
                     //提交后台
                     updateDisk(this.rowItem)
                         .then( res => {   
