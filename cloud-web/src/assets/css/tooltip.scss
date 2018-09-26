@@ -271,6 +271,7 @@
     font-size: 12px;
     line-height: 18px;
     text-align: justify;
+    word-break: break-all;
     min-width: auto;
     &[x-placement='top'] {
         .popper__arrow {
