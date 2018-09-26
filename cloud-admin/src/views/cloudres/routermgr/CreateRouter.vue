@@ -6,8 +6,8 @@
                     type="info"
                     :closable="false">
             </el-alert>
-            <el-form-item label="部门名称：" prop="name" :label-width="formLabelWidth" class="mt20">
-                <el-input placeholder="输入部门名称" v-model="form.name"></el-input>
+            <el-form-item label="路由名称：" prop="name" :label-width="formLabelWidth" class="mt20">
+                <el-input placeholder="输入路由名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="管理状态：" prop="adminStateUp" :label-width="formLabelWidth">
                 <el-select v-model="form.adminStateUp">

@@ -1,8 +1,8 @@
 <template>
     <el-dialog :title="optype == 1?'创建网络':'编辑网络'" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
-            <el-form-item label="名称 " prop="name" :label-width="formLabelWidth">
-                <el-input placeholder="输入名称" v-model="form.name"></el-input>
+            <el-form-item label="网络名称 " prop="name" :label-width="formLabelWidth">
+                <el-input placeholder="输入网络名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="网络类型 " prop="networkType" :label-width="formLabelWidth">
                 <el-select v-model="form.networkType">
@@ -152,6 +152,28 @@ export default {
                 this.form.name = item.name;
                 this.form.networkType = item.networkType == 'vxlan' ? 'VXLAN' : 'VLAN';
                 this.form.id = item.id;
+            }else{
+                this.form = {
+                    name:'',
+                    id:'',
+                    admin_state_up:'true',
+                    shared:'true',
+                    routerExternal:'true',
+                    networkType:'VXLAN',
+                    physicalNetwork:'',
+                    segmentId:'',
+                    subnet:{
+                        name:'',
+                        cidr:'',
+                        dHCPEnabled:'true',
+                        dnsNames:'',
+                        hostRoutes:'',
+                        gateway:'',
+                        noGateway:'true',
+                        pools:'',
+                        ipVersion:'4',
+                    }
+                };
             }
             console.log('optype',optype);
             return new Promise((resolve, reject) => {

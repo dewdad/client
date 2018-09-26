@@ -14,11 +14,12 @@
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
-                            <el-option label="内存>=" value="minRam"></el-option>
+                            <el-option label="内存(GB)>=" value="minRam"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                        <el-input-number  controls-position="right" :min="0"  class="width-full"  :max="999999999" v-model="formInline.searchText"></el-input-number>
+                         <span style="position:absolute;right:40px;top:0;color:#666;font-size:12px;">GB</span>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="modelList" icon="el-icon-search">搜索</el-button>
@@ -120,7 +121,7 @@ export default {
             searchObj,
             formInline: {
                 data:'',
-                searchText:''
+                searchText:0
             },
             type:'minRam',
             tableData: []
@@ -135,9 +136,12 @@ export default {
         modelList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
-            $log('params', params);
+            if(typeof this.formInline.searchText == 'number'){
+                params[this.type] = parseInt(this.formInline.searchText);
+            }else{
+                return;
+            }
             modelList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;

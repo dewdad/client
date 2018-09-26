@@ -98,7 +98,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="60" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=item.status" class="color999">删除</span>
+                                <!--<span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=scope.row.status" class="color999 font12">删除</span>-->
                                 <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'" class="btn-linker">删除</a>
                             </template>
                         </el-table-column>
@@ -191,6 +191,11 @@ export default {
                 value: 'restoring_backup',
                 className: 'color-warning',
                 icon: 'icon-recentcreation_peop'
+            },{
+                text: '恢复备份时出错',
+                value: 'error_restoring',
+                className: 'color-warning',
+                icon: 'icon-recentcreation_peop'
             }, {
                 text: '下载中',
                 value: 'downloading',
@@ -279,7 +284,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.resultList){
                     this.tableData = resData.resultList || [];
-                    this.searchObj.paging.totalItems = resData.totalPages || 0;
+                    this.searchObj.paging.totalItems = resData.totalRows || 0;
                 }
             });
         },

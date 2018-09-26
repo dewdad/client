@@ -203,6 +203,9 @@ export const API_MENU_MGR = {
 // 工单模块
 export const ORDER_MODULE = {
     myorderList: ORDER + '/getOrderList',//分页查询我的工单
+    getDoneOrderList: ORDER + '/getDoneOrderList',//分页查询已办工单
+    getTodoOrderList: ORDER + '/getTodoOrderList',//分页查询待办工单
+    complete: ORDER + '/complete',//分页查询待办工单
     createOrder: ORDER + '/create',//创建工单
     delOrder: ORDER + '/delete',
     transferList: ORDER + '/getUserList',

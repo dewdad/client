@@ -64,7 +64,7 @@
                                     <template v-if="col.column=='image_id'">
                                         <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column">
                                             <template slot-scope="scope">
-                                                {{scope.row.attachments[0].device === '/dev/vda' ? '系统盘' : '数据盘' }}
+                                                {{scope.row.attachments.length && scope.row.attachments[0].device === '/dev/vda' ? '系统盘' : '数据盘' }}
                                             </template>
                                         </el-table-column>
                                     </template>
@@ -144,7 +144,7 @@
                                     <template v-if="col.column=='image_id'">
                                         <el-table-column :prop="col.column" width="100" :label="col.text" :key="col.column">
                                             <template slot-scope="scope">
-                                               {{scope.row.attachments[0].device === '/dev/vda' ? '系统盘' : '数据盘' }}
+                                               {{scope.row.attachments.length && scope.row.attachments[0].device === '/dev/vda' ? '系统盘' : '数据盘' }}
                                             </template>
                                         </el-table-column>
                                     </template>
