@@ -65,10 +65,10 @@ export default {
         },
         // 内存配额
         ramVal() {
-            return parseFloat((this.tenantData.qRam / 1024).toFixed(2)) || 0;
+            return this.tenantData.qRam || 0;
         },
         ramUsage() {
-            return parseFloat((this.tenantData.RAM / 1024).toFixed(2)) || 0;
+            return this.tenantData.RAM || 0;
         },
         xData() {
             return this.xData_cpu.length >= this.xData_mem.length ? this.xData_cpu : this.xData_mem;
