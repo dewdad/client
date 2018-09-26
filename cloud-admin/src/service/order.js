@@ -12,6 +12,26 @@ export async function myorderList(data) {
         params: data
     });
     return response.data;
+}
+/**
+ *查询已办工单列表
+ * @param {*}
+ */
+export async function getDoneOrderList(data) {
+    let response = await http.get(ORDER_MODULE.getDoneOrderList, {
+        params: data
+    });
+    return response.data;
+}
+/**
+ *查询待办工单列表
+ * @param {*}
+ */
+export async function getTodoOrderList(data) {
+    let response = await http.get(ORDER_MODULE.getTodoOrderList, {
+        params: data
+    });
+    return response.data;
 }/**
  *查询附件并下载
  * @param {*}
@@ -30,6 +50,14 @@ export async function searchFile(data) {
 export async function createOrder(data) {
     console.log('data',data);
     let response = await http.post(ORDER_MODULE.createOrder,data);
+    return response.data;
+}/**
+ *完成工单
+ * @param {*}
+ */
+export async function complete(data) {
+    console.log('data',data);
+    let response = await http.put(ORDER_MODULE.complete,data);
     return response.data;
 }
 /**

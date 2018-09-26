@@ -212,8 +212,10 @@ export default {
         searchMirrorList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             searchMirrorList(params).then(ret => {
                 $log('data', ret);

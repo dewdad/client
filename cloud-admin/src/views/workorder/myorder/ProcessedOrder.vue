@@ -1,46 +1,26 @@
 <template>
     <div class="page-main">
         <page-header>
-            已处理工单
+            已办工单
         </page-header>
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
                     <el-form-item>
-                        <el-button type="primary" @click="createOrder({},1)">
-                            <span class="icon-zt_plus"></span>
-                            创建工单
-                        </el-button>
-                    </el-form-item>
-                    <!-- <el-form-item label="产品类型">
-                        <el-select v-model="formInline.moduleType" size="small" placeholder="请选择" value-key="value">
-                            <el-option
-                            v-for="item in moduleTypes"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
+                        <el-select placeholder="请选择" v-model="type" @change="formInline.searchText = ''">
+                            <el-option label="工单标题" value="orderTitle"></el-option>
+                            <el-option label="工单号" value="orderNO"></el-option>
+                            <el-option label="联系方式" value="phone"></el-option>
                         </el-select>
-                    </el-form-item> -->
-                    <el-form-item label="时间范围">
-                        <el-date-picker
-                            v-model="daterange"
-                            type="datetimerange"
-                            size="small"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['00:00:00','23:59:59']"
-                            value-format="yyyy-MM-dd HH:mm:ss">
-                        </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="工单编号">
-                        <el-input placeholder="搜索关键字" v-model="formInline.orderNO"></el-input>
+                    <el-form-item label="关键字">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="ml10" size="small" type="primary" @click="myorderList" icon="el-icon-search">搜索</el-button>
+                        <el-button class="ml10" size="small" type="primary" @click="getDoneOrderList" icon="el-icon-search">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="pull-right">
-                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="myorderList"></el-button>
+                        <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="getDoneOrderList"></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -109,52 +89,28 @@
                             </el-table-column>
                         </template>
                     </template>
-                    <!-- 操作 -->
-                    <template>
-                        <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
-                            <template slot-scope="scope">
-                                <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
-                                <b class="link-division-symbol" ></b>
-                                <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
-                                <b class="link-division-symbol" ></b>
-                                <a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>
-
-                            </template>
-                        </el-table-column>
-                    </template>
                 </el-table>
                 <!--分页-->
                 <div class="pagination">
                     <el-pagination background
-                   @current-change="currentChange"
-                   @size-change="handleSizeChange"
-                   :current-page="searchObj.paging.pageIndex"
-                   :page-sizes="[10, 20, 50, 100]"
-                   :page-size="searchObj.paging.limit"
-                   layout="sizes, prev, pager, next"
-                   :total="searchObj.paging.totalItems">
+                                   @current-change="currentChange"
+                                   @size-change="handleSizeChange"
+                                   :current-page="searchObj.paging.pageIndex"
+                                   :page-sizes="[10, 20, 50, 100]"
+                                   :page-size="searchObj.paging.limit"
+                                   layout="sizes, prev, pager, next"
+                                   :total="searchObj.paging.totalItems">
                     </el-pagination>
                 </div>
             </el-col>
         </el-row>
-        <create-order ref="CreateOrder"></create-order>
         <order-detail ref="OrderDetail"></order-detail>
-
-        <!-- 转交功能 -->
-        <transfer-dialog ref="TransferDialog"></transfer-dialog>
-        <!-- 补充工单 -->
-        <supplement-dialog ref="SupplementDialog"></supplement-dialog>
     </div>
 </template>
 <script>
-import PageHeader from '@/components/pageHeader/PageHeader';
-import CreateOrder from './CreateOrder';
 import OrderDetail from './OrderDetail';
-
-import TransferDialog from './../dialog/TransferDialog';
-import SupplementDialog from './../dialog/SupplementDialog';
-
-import {myorderList,delOrder} from '@/service/order.js';
+import PageHeader from '@/components/pageHeader/PageHeader';
+import {getDoneOrderList} from '@/service/order.js';
 export default {
     name: 'app',
 
@@ -196,16 +152,6 @@ export default {
                     {value: 15, label: '挂载磁盘'}
                 ]
             },
-            // {value: '2', label: '云数据库RDS',
-            //     orderTypes: [
-            //         {value: 20, label: '版本/规格'},
-            //         {value: 21, label: '只读实例'},
-            //         {value: 22, label: '监控与报警'},
-            //         {value: 23, label: '日志'},
-            //         {value: 24, label: '参数设置'},
-            //         {value: 25, label: '备份恢复'}
-            //     ]
-            // },
             {value: 3, label: '对象存储OSS',
                 orderTypes: [
                     {value: 30, label: '文件上传/下载'},
@@ -218,8 +164,6 @@ export default {
                     {value: 37, label: '镜像回源'}
                 ]
             },
-            // {value: '4', label: '云数据库Redis', orderTypes: []},
-            // {value: '5', label: '弹性伸缩', orderTypes: []},
             {value: 6, label: '专有网络VPC',
                 orderTypes: [
                     {value: 60, label: 'VPC使用场景'},
@@ -227,7 +171,7 @@ export default {
                     {value: 62, label: '对等连接'},
                     {value: 63, label: '虚拟防火墙'}
                 ]
-            },            
+            },
         ];
 
         return {
@@ -236,33 +180,33 @@ export default {
             moduleTypes,
             daterange: '',
             formInline: {
-                // orderNO:'',
-                // moduleType: ''
+                searchText: ''
             },
-            type:'orderNO',
+            type:'orderTitle',
             tableData: []
 
         };
     },
     components: {
         PageHeader,
-        CreateOrder,
-        OrderDetail,
-        TransferDialog,
-        SupplementDialog
+        OrderDetail
     },
     methods: {
-        myorderList(){
+        getDoneOrderList(){
             let params = {
-                paging:this.searchObj.paging,
-                ...this.formInline
+                paging:this.searchObj.paging
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
-            myorderList(params).then(ret => {
+            getDoneOrderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.records){
                     this.tableData = resData.records || [];
+                    console.log('resData',resData);
+                    console.log('resData.records',resData.records);
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
@@ -272,67 +216,16 @@ export default {
             const property = column['property'];
             return row[property] === value;
         },
-        createOrder(item,optype){
-            this.$refs.CreateOrder.show(item,optype)
-                .then(ret => {
-                    this.myorderList();
-                    return this.$alert('操作成功','提示');
-                })
-                .catch(err => {
-                    if (err) {
-                        console.log('Error', err);
-                    } else {
-                        console.log('取消');
-                    }
-                });
-        },
-        //工单详情
         showDetail(item){
             this.$refs.OrderDetail.show(item);
         },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
-            this.myorderList();
+            this.getDoneOrderList();
         },
         handleSizeChange (val) {
             this.searchObj.paging.limit = val;
-            this.myorderList();
-        },
-        /**
-         * 删除工单
-         */
-        del(item){
-            delOrder(item).then(ret=>{
-                this.myorderList();
-            });
-        },
-        delOrder(item) {
-            this.$confirm('确定要进行删除操作吗？', '删除', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.del(item.id);
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-        },
-        // 转交工单
-        transferOrder(row) {
-            this.$refs['TransferDialog'].show({...row})
-                .then((res) => {
-                    $log(res);
-                });
-        },
-        // 补充
-        createRole(row) {
-            this.$refs['SupplementDialog'].show({...row})
-                .then((res) => {
-                    $log(res);
-                });
+            this.getDoneOrderList();
         },
         // 解析产品类型取值
         getModuleTypeVal(val) {
@@ -350,7 +243,7 @@ export default {
     },
 
     mounted(){
-        this.myorderList();
+        this.getDoneOrderList();
     }
 };
 </script>

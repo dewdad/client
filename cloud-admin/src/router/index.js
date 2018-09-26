@@ -187,15 +187,15 @@ export default new Router({
                             },
                             component: () => import('@/views/workorder/myorder/myorder')
                         },{
-                            path: 'pendingOrder',
-                            name: 'app.workorder.PendingOrder',
+                            path: 'pendingorder',
+                            name: 'app.workorder.pendingorder',
                             meta: {
                                 title: '待处理工单'
                             },
                             component: () => import('@/views/workorder/myorder/PendingOrder')
                         },{
-                            path: 'processedOrder',
-                            name: 'app.workorder.ProcessedOrder',
+                            path: 'doneorder',
+                            name: 'app.workorder.doneorder',
                             meta: {
                                 title: '已处理工单'
                             },

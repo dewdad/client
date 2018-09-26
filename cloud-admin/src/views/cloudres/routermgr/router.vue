@@ -150,7 +150,7 @@ export default {
         let cols = [
             { column: 'domain_name', text:'部门' , width: '10%'},
             { column: 'project_name', text:'租户' , width: '5%'},
-            { column: 'name', text: '名称', width: '5%' },
+            { column: 'name', text: '路由名称', width: '5%' },
             { column: 'status', text: '状态', width: '5%' },
             { column: 'networkName', text: '外部网络', width: '10%' },
             { column: 'adminStateUp', text: '管理状态', width: '10%' },
