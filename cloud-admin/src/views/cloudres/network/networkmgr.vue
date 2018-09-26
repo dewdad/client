@@ -153,7 +153,7 @@ export default {
         let cols = [
             { column: 'dept', text:'部门' , width: '10%'},
             { column: 'renter', text:'租户' , width: '10%'},
-            { column: 'name', text: '名称', width: '10%' },
+            { column: 'name', text: '网络名称', width: '10%' },
             { column: 'net', text: '已连接的子网', width: '10%' },
             { column: 'share', text: '共享', width: '5%' },
             { column: 'outside', text: '外部', width: '5%' },

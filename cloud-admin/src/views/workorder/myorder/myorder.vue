@@ -12,29 +12,15 @@
                             创建工单
                         </el-button>
                     </el-form-item>
-                    <!-- <el-form-item label="产品类型">
-                        <el-select v-model="formInline.moduleType" size="small" placeholder="请选择" value-key="value">
-                            <el-option
-                            v-for="item in moduleTypes"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
+                    <el-form-item>
+                        <el-select placeholder="请选择" v-model="type" @change="formInline.searchText = ''">
+                            <el-option label="工单标题" value="orderTitle"></el-option>
+                            <el-option label="工单号" value="orderNO"></el-option>
+                            <el-option label="联系方式" value="phone"></el-option>
                         </el-select>
-                    </el-form-item> -->
-                    <el-form-item label="时间范围"> 
-                        <el-date-picker
-                            v-model="daterange"
-                            type="datetimerange"
-                            size="small"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
-                            :default-time="['00:00:00','23:59:59']"
-                            value-format="yyyy-MM-dd HH:mm:ss">
-                        </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="工单编号">
-                        <el-input placeholder="搜索关键字" v-model="formInline.orderNO"></el-input>
+                    <el-form-item label="关键字">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="myorderList" icon="el-icon-search">搜索</el-button>
@@ -236,10 +222,9 @@ export default {
             moduleTypes,
             daterange: '',
             formInline: {
-                // orderNO:'',
-                // moduleType: ''
+                searchText: ''
             },
-            type:'orderNO',
+            type:'orderTitle',
             tableData: []
 
         };
@@ -254,9 +239,11 @@ export default {
     methods: {
         myorderList(){
             let params = {
-                paging:this.searchObj.paging,
-                ...this.formInline
+                paging:this.searchObj.paging
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             myorderList(params).then(ret => {
                 $log('data', ret);

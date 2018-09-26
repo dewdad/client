@@ -9,6 +9,7 @@
                 <el-form-item label="源 " prop="mirrortype" :label-width="formLabelWidth">
                     <el-input placeholder="输入源" value="文件" disabled></el-input>
                     <el-upload
+                            ref="upload"
                             class="upload-demo mt10"
                             action="http://10.11.3.99:7100/fileProcess/upload"
                             :on-change="change"
@@ -105,6 +106,8 @@ export default {
             this.form.imageUrl = '';
             this.form.fileList = [];
             this.form.fileListArr = [];
+            console.log('this.form.fileList',this.form.fileList);
+            console.log('this.form.fileListArr',this.form.fileListArr);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -141,8 +144,8 @@ export default {
                         for(let i = 0;i < this.fileListArr.length ; i++){
                             arr.push(this.fileListArr[i].response.data[0]);
                         }
+                        this.$refs.upload.clearFiles();
                     }
-
                     this.form.imageUrl = arr[0] || '';
                     this.form.isProtected = this.form.isProtected == '1' ? true : false;
                     this.form.public = this.form.public == '1' ? true : false;

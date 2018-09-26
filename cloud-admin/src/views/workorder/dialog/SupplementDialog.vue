@@ -217,8 +217,6 @@ export default {
     }
     .supple-text{
         line-height: 20px;
-        min-height: 118px;
-        max-height: 118px;
         min-width:100%;
         max-width: 100%;
     }
