@@ -26,13 +26,13 @@
                                     <el-col>
                                         <div class="data--inner">
                                             <div class="text-right img-text-center color999">
-                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qCpu)}"></i>{{tenantData.qCpu || 0}}</div>
+                                                <i class="dot" :class="{'color-warning': getUsage(tenantData.CORES, tenantData.qCpu)}"></i>{{tenantData.qCpu || 0}}</div>
                                             <div style="margin-top:20px;">
                                                 <i class="iconfont icon-CPU-gailan" />
                                             </div>
-                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.INSTANCES, tenantData.qCpu)}">
-                                                <ICountUp :startVal="0" :endVal="tenantData.INSTANCES || 0" :duration="2" />
-                                                <i v-show="getUsage(tenantData.INSTANCES, tenantData.qCpu)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
+                                            <div class="number mt20" :class="{'color-warning': getUsage(tenantData.CORES, tenantData.qCpu)}">
+                                                <ICountUp :startVal="0" :endVal="tenantData.CORES || 0" :duration="2" />
+                                                <i v-show="getUsage(tenantData.CORES, tenantData.qCpu)" class="iconfont icon-wuuiconsuotanhao font12 color-danger" v-tooltip.right="{content:'即将到达上限', 'theme': 'is-light'}"></i>
                                             </div>
                                             <div class="font14 color999">CPU</div>
                                         </div>
