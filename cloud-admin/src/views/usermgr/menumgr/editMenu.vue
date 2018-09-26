@@ -203,7 +203,16 @@ export default {
             this.$router.push({name:'app.usrmgr.menumgr'});
         }
     },
-
+    beforeRouteLeave(to, from, next){
+        console.log('to.name',to.name);
+        //打开详情页（或者下一个任意界面）之前，把筛选条件保存到localStorage，如果离开列表页并且打开的不是详情页则清除，也可以选择不清除
+        if (to.name == 'app.usrmgr.menumgr') {
+            localStorage.removeItem('menuEdit');
+        }else{
+            localStorage.removeItem('menuEdit');
+        }
+        next();
+    },
     created() {
         if(this.stateParams && this.stateParams.rowItem){
             let str = JSON.stringify(this.stateParams);

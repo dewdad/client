@@ -106,7 +106,7 @@ export default {
                     $log(err);
                 });
         },
-        // 获得工单补充内容
+        // 获得工单图片
         searchFile(val) {
             let params = {
                 fileName: val

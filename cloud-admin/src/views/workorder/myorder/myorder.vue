@@ -6,12 +6,12 @@
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <el-form-item>
-                        <el-button type="primary" @click="createOrder({},1)">
-                            <span class="icon-zt_plus"></span>
-                            创建工单
-                        </el-button>
-                    </el-form-item>
+                    <!--<el-form-item>-->
+                        <!--<el-button type="primary" @click="createOrder({},1)">-->
+                            <!--<span class="icon-zt_plus"></span>-->
+                            <!--创建工单-->
+                        <!--</el-button>-->
+                    <!--</el-form-item>-->
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText = ''">
                             <el-option label="工单标题" value="orderTitle"></el-option>
@@ -101,9 +101,9 @@
                             <template slot-scope="scope">
                                 <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>
-                                <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
-                                <b class="link-division-symbol" ></b>
-                                <a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>
+                                <a  @click="createRole(scope.row,2)" class="btn-linker" >回复</a>
+                                <!--<b class="link-division-symbol" ></b>-->
+                                <!--<a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>-->
 
                             </template>
                         </el-table-column>
@@ -140,7 +140,7 @@ import OrderDetail from './OrderDetail';
 import TransferDialog from './../dialog/TransferDialog';
 import SupplementDialog from './../dialog/SupplementDialog';
 
-import {myorderList,delOrder} from '@/service/order.js';
+import {myorderList} from '@/service/order.js';
 export default {
     name: 'app',
 
@@ -182,16 +182,7 @@ export default {
                     {value: 15, label: '挂载磁盘'}
                 ]
             },
-            // {value: '2', label: '云数据库RDS',
-            //     orderTypes: [
-            //         {value: 20, label: '版本/规格'},
-            //         {value: 21, label: '只读实例'},
-            //         {value: 22, label: '监控与报警'},
-            //         {value: 23, label: '日志'},
-            //         {value: 24, label: '参数设置'},
-            //         {value: 25, label: '备份恢复'}
-            //     ]
-            // },
+
             {value: 3, label: '对象存储OSS',
                 orderTypes: [
                     {value: 30, label: '文件上传/下载'},
@@ -204,8 +195,6 @@ export default {
                     {value: 37, label: '镜像回源'}
                 ]
             },
-            // {value: '4', label: '云数据库Redis', orderTypes: []},
-            // {value: '5', label: '弹性伸缩', orderTypes: []},
             {value: 6, label: '专有网络VPC',
                 orderTypes: [
                     {value: 60, label: 'VPC使用场景'},
@@ -285,28 +274,28 @@ export default {
             this.searchObj.paging.limit = val;
             this.myorderList();
         },
-        /**
-         * 删除工单
-         */
-        del(item){
-            delOrder(item).then(ret=>{
-                this.myorderList();
-            });
-        },
-        delOrder(item) {
-            this.$confirm('确定要进行删除操作吗？', '删除', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.del(item.id);
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
-        },
+        // /**
+        //  * 删除工单
+        //  */
+        // del(item){
+        //     delOrder(item).then(ret=>{
+        //         this.myorderList();
+        //     });
+        // },
+        // delOrder(item) {
+        //     this.$confirm('确定要进行删除操作吗？', '删除', {
+        //         confirmButtonText: '确定',
+        //         cancelButtonText: '取消',
+        //         type: 'warning'
+        //     }).then(() => {
+        //         this.del(item.id);
+        //     }).catch(() => {
+        //         this.$message({
+        //             type: 'info',
+        //             message: '已取消删除'
+        //         });
+        //     });
+        // },
         // 转交工单
         transferOrder(row) {
             this.$refs['TransferDialog'].show({...row})
