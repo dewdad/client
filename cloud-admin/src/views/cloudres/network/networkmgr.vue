@@ -89,9 +89,8 @@
                                     <span v-else>
                                         <svg  class="zticon" aria-hidden="true">
                                               <use href="#icon-overdue_people"></use>
-
                                         </svg>
-                                        <span class="font12"> 关闭</span>
+                                        <span class="font12 color-danger"> 关闭</span>
                                     </span>
                                 </template>
                             </el-table-column>
@@ -160,45 +159,6 @@ export default {
             { column: 'status', text: '状态', width: '5%' },
             { column: 'manageStatus', text: '管理状态', width: '10%' }
         ];
-        // let ECS_STATUS = [
-        //     {
-        //         text: '创建中',
-        //         value: 'creating',
-        //         className: 'color-warning',
-        //         icon: 'icon-recentcreation_peop'
-        //     },
-        //     {
-        //         text: '可用',
-        //         value: 'available',
-        //         className: 'color-success',
-        //         icon: 'icon-running_people'
-        //     },
-        //     {
-        //         text: '删除中',
-        //         value: 'deleting',
-        //         className: 'color-danger',
-        //         icon: 'icon-overdue_people'
-        //     },
-        //     {
-        //         text: '错误',
-        //         value: 'error',
-        //         className: 'color-danger',
-        //         icon: 'icon-overdue_people'
-        //     },
-        //     {
-        //         text: '恢复时出错',
-        //         value: 'error_restoring',
-        //         className: 'color-danger',
-        //         icon: 'icon-overdue_people'
-        //     },
-        //     {
-        //         text: '恢复中',
-        //         value: 'restoring',
-        //         className: 'color-warning',
-        //         icon: 'icon-recentcreation_peop'
-        //     },
-        //
-        // ];
 
         return {
             cols,

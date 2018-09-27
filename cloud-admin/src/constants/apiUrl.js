@@ -175,15 +175,11 @@ export const API_UserAccount = {
     checkMobileCode: '/user/checkImageCode',
     pwdForget: USER_CONTROLLER + '/user/resetPassword',
     bindMail: USER_CONTROLLER + '/user/sendEmailValidate',
-    // bindMail: USER_CONTROLLER + '/user/bindMail', // 改成发送验证码
     pwdReset: USER_CONTROLLER + '/user/changePassword',
     activeMail: USER_CONTROLLER + '/user/activeMail',
     validateEmailCode: USER_CONTROLLER + '/user/validateEmailCode',
     uploadFile: USER_CONTROLLER + '/file/upload',
     getUploadFile: USER_CONTROLLER + '/file',
-    // userAuthApply: USER_CONTROLLER + '/userAuth/apply ',
-    // userAuthResult: USER_CONTROLLER + '/userAuth/{user_id}',
-    // userAuthMoneyConfirm: USER_CONTROLLER + '/userAuth/confirm ',
     getUserInfo: USER_CONTROLLER + '/user/{user_id}/info',
     getUserInfoDetail: USER_CONTROLLER + '/user/{user_id}/info',
     getUserDetail: USER_CONTROLLER + '/user/{user_id}',
@@ -208,6 +204,7 @@ export const ORDER_MODULE = {
     complete: ORDER + '/complete',//分页查询待办工单
     createOrder: ORDER + '/create',//创建工单
     delOrder: ORDER + '/delete',
+    delReply: ORDER + '/reply',
     transferList: ORDER + '/getUserList',
     searchFile: FILE + '/getFile',
     //  补充说明

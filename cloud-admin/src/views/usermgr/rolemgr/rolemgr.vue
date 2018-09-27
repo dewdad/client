@@ -140,8 +140,10 @@ export default {
         getRoleList(){
             let params = {
                 paging:this.searchObj.paging,
-                [this.type]:this.formInline.searchText
             };
+            if(this.type && this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
+            }
             $log('params', params);
             getRoleList(params).then(ret => {
                 $log('data', ret);

@@ -31,15 +31,15 @@
                     </el-form-item>
                     <div v-for="(item,index) in valueListForm.itemlist" :key="index">
                         <el-form-item label="编码：" prop="code" style="display: inline-block;">
-                            <el-input v-model="item.code" placeholder="输入编码" style="width:130px"></el-input>
+                            <el-input v-model="item.code" placeholder="输入编码" style="width:110px"></el-input>
                         </el-form-item>
-                        <el-form-item label="名称：" prop="name" style="display: inline-block">
-                            <el-input v-model="item.name" placeholder="输入名称" style="width:130px"></el-input>
+                        <el-form-item label="名称：" prop="name" style="display: inline-block;margin-left:15px">
+                            <el-input v-model="item.name" placeholder="输入名称" style="width:110px"></el-input>
                         </el-form-item>
-                        <el-form-item label="值：" prop="code" style="display: inline-block">
-                            <el-input v-model="item.value" placeholder="输入值" style="width:160px"></el-input>
+                        <el-form-item label="值：" prop="code" style="display: inline-block;margin-left:15px">
+                            <el-input v-model="item.value" placeholder="输入值" style="width:130px"></el-input>
                         </el-form-item>
-                        <el-form-item label="排序：" prop="orderSeq" style="display: inline-block;width:210px;">
+                        <el-form-item label="排序：" prop="orderSeq" style="display: inline-block;width:190px;margin-left:15px">
                             <el-input-number class="width-full" controls-position="right" :min="0" :max="100" v-model="item.orderSeq"></el-input-number>
                         </el-form-item>
                         <el-button type="primary" class="font12 ml20" @click="deleteCurrent(index)" size="small">删 除</el-button>
@@ -259,4 +259,7 @@ export default {
 };
 </script>
 <style scoped>
+    .el-form .el-form-item__label{
+        text-align:center !important;
+    }
 </style>

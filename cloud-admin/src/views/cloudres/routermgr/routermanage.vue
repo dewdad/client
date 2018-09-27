@@ -47,7 +47,7 @@
                                               <use href="#icon-overdue_people"></use>
 
                                         </svg>
-                                        <span class="font12"> 关闭</span>
+                                        <span class="font12 color-danger"> 关闭</span>
                                     </span>
                                 </template>
                             </el-table-column>

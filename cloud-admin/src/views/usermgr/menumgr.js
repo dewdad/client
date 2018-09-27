@@ -36,7 +36,7 @@ export default {
             },
             // 查询参数
             searchObj: {
-                menuType:'',
+                menuType:'1',
                 field: '', //'text'菜单名称 'code'菜单编码 
                 searchText:'',  
                 //分页
@@ -57,9 +57,14 @@ export default {
         search(){
             let param = {
                 paging:this.searchObj.paging,
-                menuType:this.searchObj.menuType,
-                [this.searchObj.field]:this.searchObj.searchText
             };
+            if(this.searchObj.field && this.searchObj.searchText){
+                param[this.searchObj.field] = this.searchObj.searchText;
+            }
+            if(this.searchObj.menuType){
+                param.menuType = this.searchObj.menuType;
+            }
+            this.dataList = [];
             getMenuList(param)
                 .then( res => {
                     if (res && res.code === this.CODE.SUCCESS_CODE) {

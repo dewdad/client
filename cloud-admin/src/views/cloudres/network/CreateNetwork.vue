@@ -78,12 +78,21 @@
             <el-button type="primary" class="font12" size="small" @click="confirm" :loading="confirmBtn">确 定</el-button>
         </span>
     </el-dialog>
+
 </template>
 <script>
 import { mapState } from 'vuex';
 import {editNetwork,createNetwork} from '@/service/cloudres.js';
 export default {
     data() {
+        let validateIp = function(rule, value, callback){
+            let reg = /^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\/\d{1,2})?(,(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\/\d{1,2})*$/;
+            if (!reg.test(value)) {
+                callback(new Error('请输入正确的IP格式'));
+            } else {
+                callback();
+            }
+        };
         return{
             formLabelWidth: '150px',
             isShow: false,
@@ -126,6 +135,7 @@ export default {
                     { required: true, message: '请输入段ID', trigger: 'blur' }
                 ],
                 'subnet.cidr': [
+                    { validator: validateIp, trigger: 'blur' },
                     { required: true, message: '请输入网络地址', trigger: 'blur' }
                 ]
             }
