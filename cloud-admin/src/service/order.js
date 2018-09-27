@@ -51,7 +51,17 @@ export async function createOrder(data) {
     console.log('data',data);
     let response = await http.post(ORDER_MODULE.createOrder,data);
     return response.data;
-}/**
+}
+/**
+ *回复工单
+ * @param {*}
+ */
+export async function delReply(data) {
+    console.log('data',data);
+    let response = await http.post(ORDER_MODULE.delReply,data);
+    return response.data;
+}
+/**
  *完成工单
  * @param {*}
  */

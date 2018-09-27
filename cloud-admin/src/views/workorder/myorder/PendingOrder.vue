@@ -119,6 +119,9 @@
         </el-row>
         <!-- 转交功能 -->
         <transfer-dialog ref="TransferDialog"></transfer-dialog>
+        <!--回复-->
+        <reply-dialog ref="ReplyDialog"></reply-dialog>
+        <!--详情-->
         <order-detail ref="OrderDetail"></order-detail>
     </div>
 </template>
@@ -126,6 +129,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 import OrderDetail from './OrderDetail';
 import TransferDialog from './../dialog/TransferDialog';
+import ReplyDialog from './../dialog/ReplyDialog';
 
 import {getTodoOrderList,complete} from '@/service/order.js';
 export default {
@@ -207,7 +211,8 @@ export default {
     components: {
         PageHeader,
         OrderDetail,
-        TransferDialog
+        TransferDialog,
+        ReplyDialog
     },
     methods: {
         getTodoOrderList(){
@@ -229,7 +234,7 @@ export default {
             });
         },
         reply(item){
-            this.$refs.OrderDetail.show(item);
+            this.$refs.ReplyDialog.show(item);
         },
         complete(item){
             let params = {

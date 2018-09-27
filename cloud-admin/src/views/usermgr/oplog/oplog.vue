@@ -234,10 +234,12 @@ export default {
             try {
                 let params = {
                     paging:this.searchObj.paging,
-                    [this.type]:this.formInline.searchText,
                     startDate:this.start_date,
                     endDate: this.end_date
                 };
+                if(this.type && this.formInline.searchText){
+                    params[this.type] = this.formInline.searchText;
+                }
                 console.log('formInline.date',this.formInline.date);
                 $log('params', params);
                 getLoglist(params).then(ret => {

@@ -35,12 +35,12 @@
                 </el-tooltip>
             </el-form-item>
             <el-form-item label="子网 " prop="subnetId" :label-width="formLabelWidth" v-if="form.chooseType == 'sub'">
-                <el-select v-model="form.subnetId" style="width:88%">
+                <el-select v-model="form.subnetId" style="width:88%" :required="form.chooseType == 'sub'">
                     <el-option v-for="item in subnets" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="固定IP地址 " prop="fixedIp" :label-width="formLabelWidth"  v-if="form.chooseType == 'fix'">
-                <el-input placeholder="输入固定IP地址" style="width:88%" v-model="form.fixedIp"></el-input>
+                <el-input placeholder="输入固定IP地址" style="width:88%" v-model="form.fixedIp" :required="form.chooseType == 'fix'"></el-input>
             </el-form-item>
             <el-form-item label="绑定VNIC " prop="vnic_type" :label-width="formLabelWidth">
                 <el-select v-model="form.vnic_type" style="width:88%">
