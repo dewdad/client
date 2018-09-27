@@ -103,7 +103,8 @@
                                             </span>
                                     <el-dropdown-menu slot="dropdown">
                                         <el-dropdown-item @click.native="distRouter(scope.row)">静态路由表</el-dropdown-item>
-                                        <el-dropdown-item @click.native="setGateWay(scope.row)">设置网关</el-dropdown-item>
+                                        <el-dropdown-item @click.native="clearGateWay(scope.row)" v-if="scope.row.networkName">清除网关</el-dropdown-item>
+                                        <el-dropdown-item @click.native="setGateWay(scope.row)" v-if="!scope.row.networkName">设置网关</el-dropdown-item>
                                         <el-dropdown-item @click.native="delRouter(scope.row)">删除</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
@@ -134,7 +135,7 @@ import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateRouter from './CreateRouter';
 import CreateGateway from './CreateGateway';
 import ZtStatus from '@/components/status/ZtStatus';
-import {routerList,delRouter} from '@/service/cloudres.js';
+import {routerList,delRouter,editRouter} from '@/service/cloudres.js';
 export default {
     name: 'app',
 
@@ -220,6 +221,33 @@ export default {
                 }
             }
             );
+        },
+        //清除路由
+        clearGateWay(item){
+            let copyItem = item;
+            copyItem.networkName = '';
+            copyItem.networkId = '';
+            let param = {
+                id:copyItem.id,
+                param:copyItem
+            };
+            editRouter(param)
+                .then(res => {
+                    console.log('redssssssss',res);
+                    if(res.code === '0000'){
+                        return this.$alert('操作成功','提示');
+                    }else{
+                        this.$alert('操作失败', '提示', {
+                            type: 'error'
+                        });
+                        return;
+                    }
+                })
+                .catch(err => {
+                    this.$alert(err, '提示', {
+                        type: 'error'
+                    });
+                });
         },
         //修改/创建路由
         editRouter(item,optype){

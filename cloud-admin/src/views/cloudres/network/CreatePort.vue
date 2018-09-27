@@ -61,8 +61,15 @@
 import { mapState } from 'vuex';
 import {editPort,createPort,seachSubnet} from '@/service/cloudres.js';
 export default {
-
     data() {
+        let validateIp = function(rule, value, callback){
+            let reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+            if (!reg.test(value)) {
+                callback(new Error('IP格式有误或为空'));
+            } else {
+                callback();
+            }
+        };
         let adminStateUps = [
             {key:'true',value:'UP'},
             {key:'false',value:'DOWN'},
@@ -106,6 +113,10 @@ export default {
                 ],
                 chooseType: [
                     { required: true, message: '请指定IP或子网', trigger: 'blur' }
+                ],
+                fixedIp: [
+                    { validator: validateIp, trigger: 'blur' },
+                    { required: false, message: '请输入固定IP地址', trigger: 'blur' }
                 ]
             }
         };
