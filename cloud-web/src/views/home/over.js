@@ -142,7 +142,7 @@ export default {
                         if (data.code && data.code === this.CODE.SUCCESS_CODE) {
                             let dataList = data.data || [];
                             this.instanceList = dataList.data;
-                            this.instance = dataList.data[0].id;
+                            this.instance = dataList.data[0] && dataList.data[0].id;
                             this.editMonitorData();
                         }
                     }
