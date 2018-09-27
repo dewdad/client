@@ -23,14 +23,14 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                    <span class="font12 mr10">{{scope.row.name || scope.row.id}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='fixedIp'">
+                        <template v-if="col.column=='mac'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.fixed_ips[0].ip_address}}</span>
+                                    <span class="font12 mr10">{{scope.row.mac_address}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -50,10 +50,10 @@
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='admin'">
+                        <template v-if="col.column=='device'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.admin_state_up?'UP':'DOWN'}}</span>
+                                    <span class="font12 mr10">{{scope.row.device_owner}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -108,8 +108,8 @@ export default {
         };
         let cols = [
             { column: 'name', text:'名称' , width: '15%'},
-            { column: 'fixedIp', text:'固定ip' , width: '15%'},
-            { column: 'device', text: '连接设备', width: '15%' },
+            { column: 'mac', text:'mac地址' , width: '15%'},
+            { column: 'device', text: '设备类型', width: '15%' },
             { column: 'status', text: '状态', width: '15%' },
             { column: 'admin', text: '管理状态', width: '15%' },
         ];
@@ -138,8 +138,8 @@ export default {
             searchPortList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData ){
-                    this.tableData = resData || [];
+                if(resData && resData.data){
+                    this.tableData = resData.data || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 

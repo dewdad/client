@@ -5,7 +5,7 @@
                 <el-input placeholder="输入网络名称" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="网络类型 " prop="networkType" :label-width="formLabelWidth">
-                <el-select v-model="form.networkType">
+                <el-select v-model="form.networkType" @change="changenetType(form.networkType)">
                     <el-option label="VXLAN" value="VXLAN"></el-option>
                     <el-option label="VLAN" value="VLAN"></el-option>
                 </el-select>
@@ -26,9 +26,9 @@
                 <el-radio v-model="form.shared" label="true">是</el-radio>
                 <el-radio v-model="form.shared" label="false">否</el-radio>
             </el-form-item>
-            <el-form-item label="是否为外部网络" prop="routerExternal" :label-width="formLabelWidth">
-                <el-radio v-model="form.routerExternal" label="true">是</el-radio>
-                <el-radio v-model="form.routerExternal" label="false">否</el-radio>
+            <el-form-item label="是否为外部网络" prop="routerExternal" :label-width="formLabelWidth" >
+                <el-radio v-model="form.routerExternal" label="true" disabled>是</el-radio>
+                <el-radio v-model="form.routerExternal" label="false" disabled>否</el-radio>
             </el-form-item>
 
             <el-form-item label="网络地址 " prop="subnet.cidr" :label-width="formLabelWidth">
@@ -41,8 +41,12 @@
                 <el-radio v-model="form.subnet.ipVersion" label="4">IPV4</el-radio>
                 <el-radio v-model="form.subnet.ipVersion" label="6">IPV6</el-radio>
             </el-form-item>
-            <el-form-item label="网关IP" prop="subnet.gateway" :label-width="formLabelWidth" v-if="form.subnet.noGateway == '1'">
-                <el-input placeholder="输入网关IP" v-model="form.subnet.gateway"></el-input>
+            <el-form-item label="网关IP" prop="subnet.gateway" :label-width="formLabelWidth" v-if="form.subnet.noGateway == 'false'">
+                <el-input placeholder="输入网关IP" v-model="form.subnet.gateway" style="width:88%"></el-input>
+                <el-tooltip class=" ml10" effect="light"  placement="right">
+                    <div slot="content">网关IP地址(例如 192.168.0.254)  <br/>缺省值是网络地址的第一个IP <br/>(例如 192.168.0.0/24的192.168.0.1, 2001:DB8::/48的2001:DB8::1).<br/>如果您要使用缺省值，保留为空白。<br/>如果您不想使用网关，勾选下面的'禁用网关'。</div>
+                    <i class="iconfont icon-iconfontwenhao1"></i>
+                </el-tooltip>
             </el-form-item>
             <el-form-item label="禁用网关" prop="subnet.noGateway" :label-width="formLabelWidth">
                 <el-radio v-model="form.subnet.noGateway" label="true">是</el-radio>
@@ -52,20 +56,20 @@
                 <el-radio v-model="form.subnet.dHCPEnabled" label="true">是</el-radio>
                 <el-radio v-model="form.subnet.dHCPEnabled" label="false">否</el-radio>
             </el-form-item>
-            <el-form-item label="分配地址池 " prop="subnet.pools" :label-width="formLabelWidth">
+            <el-form-item label="分配地址池 " prop="subnet.pools" :label-width="formLabelWidth" v-if="form.subnet.dHCPEnabled == 'true'">
                 <el-input placeholder="输入分配地址池" type="textarea" style="width:88%" v-model="form.subnet.pools"></el-input>
                 <el-tooltip class=" ml10" effect="light"  placement="right">
                     <div slot="content">IP地址分配池.<br/>每条记录是：开始IP,结束IP(例如 192.168.1.100,192.168.1.120)，<br/> 每行一条记录。</div>
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
             </el-form-item>
-            <el-form-item label="DNS服务器 " prop="subnet.dnsNames" :label-width="formLabelWidth">
+            <el-form-item label="DNS服务器 " prop="subnet.dnsNames" :label-width="formLabelWidth" v-if="form.subnet.dHCPEnabled == 'true'">
                 <el-input placeholder="输入DNS服务器" type="textarea" style="width:88%" v-model="form.subnet.dnsNames"></el-input>
                 <el-tooltip class=" ml10" effect="light" content="该子网的DNS服务器IP地址列表，每行一个。" placement="right">
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
             </el-form-item>
-            <el-form-item label="主机路由 " prop="subnet.hostRoutes" :label-width="formLabelWidth">
+            <el-form-item label="主机路由 " prop="subnet.hostRoutes" :label-width="formLabelWidth" v-if="form.subnet.dHCPEnabled == 'true'">
                 <el-input placeholder="输入子主机路由" type="textarea" style="width:88%" v-model="form.subnet.hostRoutes"></el-input>
                 <el-tooltip class=" ml10" effect="light"  placement="right">
                     <div slot="content">主机增加额外的路由. 记录格式是：目的CIDR, <br/>下一跳(例如192.168.200.0/24,10.56.1.254) ，<br/> 每行一条记录。</div>
@@ -168,7 +172,7 @@ export default {
                     id:'',
                     admin_state_up:'true',
                     shared:'true',
-                    routerExternal:'true',
+                    routerExternal:'false',
                     networkType:'VXLAN',
                     physicalNetwork:'',
                     segmentId:'',
@@ -192,9 +196,16 @@ export default {
             });
 
         },
+        changenetType(type){
+            console.log('type',type);
+            if(type === 'VXLAN'){
+                this.form.routerExternal = 'false';
+            }else{
+                this.form.routerExternal = 'true';
+            }
+        },
         hide() {
             this.isShow = false;
-
         },
         cancel() {
             this.hide();
