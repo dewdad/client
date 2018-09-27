@@ -10,14 +10,14 @@
             </zt-form-item>
             <zt-form-item label="短信验证码" class="flex" prop="messageCode">
                 <el-input size="small" v-model="ruleForm.messageCode" placeholder="请输入短信验证码"></el-input>
-                <mobile-code width="120px" height="32px" btn-text="获取验证码" :mobile="ruleForm.phone" btn-type="default"></mobile-code>
+                <!-- <mobile-code width="120px" height="32px" btn-text="获取验证码" :mobile="ruleForm.phone" btn-type="default"></mobile-code> -->
             </zt-form-item>
             <zt-form-item label="邮箱" prop="email">
                 <el-input size="small" :on-error="sendError" v-model="ruleForm.email" placeholder="请输入联系人邮箱"></el-input>
             </zt-form-item>
             <zt-form-item label="邮箱验证码" class="flex" prop="emailCode">
                 <el-input size="small" v-model="ruleForm.emailCode" placeholder="请输入邮箱验证码"></el-input>
-                <email-code style="width: 120px" class="ml10" :data="{email: ruleForm.email}"></email-code>
+                <!-- <email-code style="width: 120px" class="ml10" :data="{email: ruleForm.email}"></email-code> -->
             </zt-form-item>
         </zt-form>
 

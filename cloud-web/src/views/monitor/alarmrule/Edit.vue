@@ -112,7 +112,7 @@
                 </zt-form-item>
                 <zt-form-item label="通知方式" prop="">
                     <el-radio v-model="ruleForm.noticeType" label="1">邮箱</el-radio>
-                    <el-radio v-model="ruleForm.noticeType" label="2">手机+邮箱</el-radio>
+                    <el-radio v-model="ruleForm.noticeType" label="2">短信</el-radio>
                 </zt-form-item>
                 <zt-form-item prop="">
                     <el-button type="primary" size="small" @click="submit">保存</el-button>
@@ -228,13 +228,16 @@ export default {
                         this.ruleForm.alarmId = data.id;
                         this.ruleForm.alarm.resourceType = data.resourceType;
                         this.ruleForm.alarm.type = data.type;
-                        for (let inst of data.alarmInstances) {
-                            let obj = {
-                                instanceId: inst.instanceId,
-                                instanceName: inst.instanceName
-                            };
-                            this.ruleForm.alarm.instanceIds.push(obj);
+                        if (Array.isArray(data.alarmInstances)) {
+                            for (let inst of data.alarmInstances) {
+                                let obj = {
+                                    instanceId: inst.instanceId,
+                                    instanceName: inst.instanceName
+                                };
+                                this.ruleForm.alarm.instanceIds.push(obj);
+                            }
                         }
+                        
                         // let ruleItem = {
                         //     alarmTime: data.alarmRules[0].alarmTime,
                         //     comparisonOperator: data.alarmRules[0].comparisonOperator,

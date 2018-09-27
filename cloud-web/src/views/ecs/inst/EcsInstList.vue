@@ -64,7 +64,7 @@
                         <el-tooltip class="item" effect="light" :disabled="scope.row.status !== 'BUILD'" :content="scope.row.status === 'BUILD' ? '预计需要3-6分钟' : ''" placement="top">
                             <zt-status :status="ECS_STATUS" :value="scope.row['OS-EXT-STS:task_state'] === 'deleting' ? 'deleted' : scope.row.status" class="text-nowrap status-column"></zt-status>
                         </el-tooltip>
-                        <i v-if="scope.row.status === 'error'" v-tooltip="scope.row.fault.message" class="el-icon-warning ml5 color-danger"></i>
+                        <i v-if="scope.row.status === 'error'" v-tooltip="scope.row.fault && scope.row.fault.message" class="el-icon-warning ml5 color-danger"></i>
                         <!-- <i class="el-icon-warning" v-tooltip="''"></i> -->
                     </template>
                 </el-table-column>
