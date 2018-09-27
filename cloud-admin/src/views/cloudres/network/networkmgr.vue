@@ -35,7 +35,13 @@
             <el-col :span="24">
                 <el-table :data="tableData"  header-row-class-name="data-list">
                     <template v-for="col in cols">
-                        <!-- 部门 -->
+                        <template v-if="col.column=='name'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
                         <template v-if="col.column=='dept'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
@@ -47,17 +53,11 @@
                         <template v-if="col.column=='renter'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.domainName}}</span>
+                                    <span class="font12 mr10">{{scope.row.projectName}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='name'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
-                                </template>
-                            </el-table-column>
-                        </template>
+
                         <template v-if="col.column=='net'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
@@ -150,9 +150,10 @@ export default {
             },
         };
         let cols = [
+            { column: 'name', text: '网络名称', width: '10%' },
             { column: 'dept', text:'部门' , width: '10%'},
             { column: 'renter', text:'租户' , width: '10%'},
-            { column: 'name', text: '网络名称', width: '10%' },
+
             { column: 'net', text: '已连接的子网', width: '10%' },
             { column: 'share', text: '共享', width: '5%' },
             { column: 'outside', text: '外部', width: '5%' },

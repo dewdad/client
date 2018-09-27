@@ -104,7 +104,7 @@
                                 </template>
                                 <!--描述-->
                                 <template v-if="col.column=='descprition'">
-                                    <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.description}}</span>
                                         </template>
@@ -112,7 +112,7 @@
                                 </template>
                                 <!--创建时间-->
                                 <template v-if="col.column=='createtime'">
-                                    <el-table-column min-width="150" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.createTime | date }}</span>
                                         </template>
@@ -131,22 +131,29 @@
                             <template>
                                 <el-table-column label="操作"  key="op"  min-width="200" style="width:25%" class-name="option-snaplist">
                                     <template slot-scope="scope">
-                                        <a @click="viewUsage(scope.row,brunch)" class="btn-linker">查看使用量</a>
+                                        <a @click="changeRentQuota(scope.row,brunch)" class="btn-linker">修改配额</a>
                                         <b class="link-division-symbol"></b>
-                                        <el-dropdown>
-                                            <span class="btn-linker">
-                                                更多
-                                                <i class="el-icon-arrow-down el-icon--right"></i>
-                                            </span>
-                                            <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item @click.native="changeRentQuota(scope.row,brunch)">修改配额</el-dropdown-item>
-                                                <el-dropdown-item @click.native="manageMember(scope.row,brunch)">关联用户</el-dropdown-item>
-                                                <el-dropdown-item v-if="scope.row.status == 1" @click.native="disableProject(scope.row,brunch)">禁用租户</el-dropdown-item>
-                                                <el-dropdown-item v-if="scope.row.status == 0" @click.native="ableProject(scope.row,brunch)">启用租户</el-dropdown-item>
-                                                <el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>
-                                                <el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>
-                                            </el-dropdown-menu>
-                                        </el-dropdown>
+                                        <a @click="disableProject(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>
+                                        <a @click="ableProject(scope.row,brunch)" v-if="scope.row.status == 0" class="btn-linker">启用</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a @click="editRente(scope.row,brunch)" class="btn-linker">编辑</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a @click="delRenter(scope.row)" class="btn-linker">删除</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a @click="manageMember(scope.row,brunch)" class="btn-linker">关联用户</a>
+                                        <!--<el-dropdown>-->
+                                            <!--<span class="btn-linker">-->
+                                                <!--更多-->
+                                                <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                                            <!--</span>-->
+                                            <!--<el-dropdown-menu slot="dropdown">-->
+                                                <!--<el-dropdown-item @click.native="manageMember(scope.row,brunch)">关联用户</el-dropdown-item>-->
+                                                <!--<el-dropdown-item v-if="scope.row.status == 1" @click.native="disableProject(scope.row,brunch)">禁用租户</el-dropdown-item>-->
+                                                <!--<el-dropdown-item v-if="scope.row.status == 0" @click.native="ableProject(scope.row,brunch)">启用租户</el-dropdown-item>-->
+                                                <!--<el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>-->
+                                                <!--<el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>-->
+                                            <!--</el-dropdown-menu>-->
+                                        <!--</el-dropdown>-->
                                     </template>
                                 </el-table-column>
                             </template>
@@ -204,7 +211,7 @@
                                 </template>
                                 <!--创建时间-->
                                 <template v-if="col.column=='createtime'">
-                                    <el-table-column min-width="200" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.createTime | date }}</span>
                                         </template>
@@ -225,20 +232,12 @@
                                     <template slot-scope="scope">
                                         <a @click="EditUser(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
-                                        <a @click="resetPwd(scope.row,brunch)" class="btn-linker">重置密码</a>
+                                        <a @click="disableUser(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>
+                                        <a @click="ableUser(scope.row,brunch)" v-if="scope.row.status == 0" class="btn-linker">启用</a>
                                         <b class="link-division-symbol"></b>
-                                        <el-dropdown>
-                                            <span class="btn-linker">
-                                                更多
-                                                <i class="el-icon-arrow-down el-icon--right"></i>
-                                            </span>
-                                            <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item @click.native="userManageMember(scope.row,brunch)">关联租户</el-dropdown-item>
-                                                <el-dropdown-item v-if="scope.row.status == 1" @click.native="disableUser(scope.row)">禁用用户</el-dropdown-item>
-                                                <el-dropdown-item v-if="scope.row.status == 0" @click.native="ableUser(scope.row)">启用用户</el-dropdown-item>
-                                                <el-dropdown-item @click.native="delUser(scope.row)">删除用户</el-dropdown-item>
-                                            </el-dropdown-menu>
-                                        </el-dropdown>
+                                        <a @click="delUser(scope.row)" class="btn-linker">删除</a>
+                                        <b class="link-division-symbol"></b>
+                                        <a @click="userManageMember(scope.row,brunch)" class="btn-linker">关联租户</a>
                                     </template>
                                 </el-table-column>
                             </template>
