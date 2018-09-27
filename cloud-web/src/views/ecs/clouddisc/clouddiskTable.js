@@ -156,6 +156,7 @@ export default {
             }
             getDiskList(params)
                 .then(res => {
+                    this.loading = false;
                     if (res.code && res.code === this.CODE.SUCCESS_CODE) {
                         console.log('getDiskList', res);
                         let resData = res.data;
@@ -166,7 +167,7 @@ export default {
                         }
                     }
                 })
-                .finally(() => {
+                .catch(() => {
                     this.loading = false;
                 });
         },
