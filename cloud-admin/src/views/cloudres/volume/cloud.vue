@@ -9,7 +9,8 @@
 
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
-                            <el-option v-for="item in searchCond" :value="item.key" :label="item.value" :key="item.key"></el-option>
+                            <el-option v-for="item in searchCond1" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 2"></el-option>
+                            <el-option v-for="item in searchCond2" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 1"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
@@ -99,7 +100,7 @@
                         <el-table-column label="操作" key="op" min-width="60" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <!--<span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=scope.row.status" class="color999 font12">删除</span>-->
-                                <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'" class="btn-linker">删除</a>
+                                <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'|| scope.row.status=='error_restoring'" class="btn-linker">删除</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -121,6 +122,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ZtStatus from '@/components/status/ZtStatus';
 import {searchCloudList,delCloud} from '@/service/cloudres.js';
@@ -147,7 +149,13 @@ export default {
             { column: 'canstart', text: '可启动', width: '10%' },
         ];
 
-        let searchCond = [
+        let searchCond1 = [
+            {key: 'project_name', value: '租户'},
+            {key: 'display_name', value: '名称'},
+            {key: 'status', value: '状态'},
+            {key: 'size', value: '大小'}
+        ];
+        let searchCond2 = [
             {key: 'domain_name', value: '部门'},
             {key: 'project_name', value: '租户'},
             {key: 'display_name', value: '名称'},
@@ -253,7 +261,8 @@ export default {
         return {
             ECS_STATUS,
             statusArrVolume,
-            searchCond,
+            searchCond1,
+            searchCond2,
             cols,
             searchObj,
             formInline: {
@@ -264,6 +273,11 @@ export default {
             tableData: []
 
         };
+    },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
     },
     components: {
         PageHeader,

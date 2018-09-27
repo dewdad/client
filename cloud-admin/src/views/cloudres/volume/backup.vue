@@ -9,7 +9,7 @@
 
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
-                            <el-option v-for="item in searchCond" :value="item.key" :label="item.value" :key="item.key"></el-option>
+                            <el-option v-for="item in searchCond" :value="item.key" :label="item.value" :key="item.key" ></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
@@ -82,7 +82,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="delBackup(scope.row)"  v-if="scope.row.status=='available'" class="btn-linker">删除</a>
+                                <a  @click="delBackup(scope.row)"  v-if="scope.row.status=='available' || scope.row.status=='error_restoring'" class="btn-linker">删除</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -104,6 +104,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ZtStatus from '@/components/status/ZtStatus';
 import {searchBackupList,delBackup} from '@/service/cloudres.js';
@@ -197,6 +198,11 @@ export default {
     components: {
         PageHeader,
         ZtStatus
+    },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
     },
     methods: {
         searchBackupList(){

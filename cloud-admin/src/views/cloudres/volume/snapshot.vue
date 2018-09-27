@@ -9,7 +9,8 @@
 
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
-                            <el-option v-for="item in searchCond" :value="item.key" :label="item.value" :key="item.key"></el-option>
+                            <el-option v-for="item in searchCond1" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 2"></el-option>
+                            <el-option v-for="item in searchCond2" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 1"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
@@ -112,6 +113,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ZtStatus from '@/components/status/ZtStatus';
 import {delSnapshot,searchSnapshotList} from '@/service/cloudres.js';
@@ -137,7 +139,13 @@ export default {
             { column: 'desc', text: '描述', width: '10%' },
         ];
 
-        let searchCond = [
+        let searchCond1 = [
+            {key: 'project_name', value: '租户'},
+            {key: 'display_name', value: '名称'},
+            {key: 'display_description', value: '描述'},
+            {key: 'status', value: '状态'}
+        ];
+        let searchCond2 = [
             {key: 'domain_name', value: '部门'},
             {key: 'project_name', value: '租户'},
             {key: 'display_name', value: '名称'},
@@ -214,7 +222,8 @@ export default {
         return {
             ECS_STATUS,
             statusArrVolume,
-            searchCond,
+            searchCond1,
+            searchCond2,
             cols,
             searchObj,
             formInline: {
@@ -230,6 +239,11 @@ export default {
         PageHeader,
         ZtStatus
 
+    },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
     },
     methods: {
         searchSnapshotList(){
