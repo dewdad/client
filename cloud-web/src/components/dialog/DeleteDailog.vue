@@ -82,8 +82,9 @@ export default {
                 });
             }).then(() => {
                 this.hide();
+                this.loading = false;
                 this.resolve();
-            }).finally(() => {
+            }).catch(() => {
                 this.loading = false;
             });
             
