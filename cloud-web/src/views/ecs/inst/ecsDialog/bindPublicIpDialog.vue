@@ -2,6 +2,7 @@
     <el-dialog v-if="isShow" :title="dialogTitle" :visible.sync="isShow" width="600px" class="dlg-bindip" @close="cancel">
         <zt-form inline-message :model="ruleForm" label-width="73px" style="width:392px;" size="small"  ref="ruleForm" :show-message="false">
             <!-- 当前实例 -->
+            {{ecsInst}}
             <zt-form-item :label="$t('dialog.bindPublicip.currentInst')" class="lh-em1">
                 <span class="font12">{{get(ecsInst, 'name')||get(ecsInst, 'id')}}</span>
             </zt-form-item>
@@ -77,6 +78,7 @@ export default {
     },
     methods: {
         show(rowItem, opType) {
+            $log('aaa',rowItem);
             let { id, name, ip, floatIp } = { ...rowItem };
             this.ecsInst = { ecsId: id, name, ip, floatIp };
             this.opType = opType;
