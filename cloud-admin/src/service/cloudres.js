@@ -174,6 +174,16 @@ export async function createNetwork(data) {
     return response.data;
 }
 /**
+ *创建网络
+ * @param {*}
+ */
+export async function addInterface(data) {
+    console.log('data',data);
+    let url = NETWORK.addInterface;
+    let response = await http.post(url,data);
+    return response.data;
+}
+/**
  *删除网络
  * @param {*}
  */

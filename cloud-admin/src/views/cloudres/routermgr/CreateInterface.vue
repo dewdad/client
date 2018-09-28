@@ -7,12 +7,12 @@
                     :closable="false">
             </el-alert>
             <el-form-item label="子网：" prop="networkId" :label-width="formLabelWidth" class="mt20">
-                <el-select v-model="form.subnet">
+                <el-select v-model="form.networkId">
                     <el-option v-for="item in pull" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="IP地址："  prop="interface.fixedIp"  :label-width="formLabelWidth">
-                <el-input v-model="form.interface.fixedIp" style="width:88%" ></el-input>
+            <el-form-item label="IP地址："  prop="fixedIp"  :label-width="formLabelWidth">
+                <el-input v-model="form.fixedIp" style="width:88%" ></el-input>
                 <el-tooltip class=" ml10" effect="light" content="为创建的实例指定IP地址 (例如 192.168.0.254)." placement="right">
                     <i class="iconfont icon-iconfontwenhao1"></i>
                 </el-tooltip>
@@ -21,7 +21,7 @@
                 <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
             <el-form-item label="路由id："  :label-width="formLabelWidth">
-                <el-input v-model="form.id" disabled></el-input>
+                <el-input v-model="form.routerId" disabled></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -32,7 +32,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import {allSubnets,editRouter} from '@/service/cloudres.js';
+import {allSubnets,addInterface} from '@/service/cloudres.js';
 export default {
     data() {
         return{
@@ -45,14 +45,12 @@ export default {
             pull:[],
             item:{},
             form:{
-                subnet:'',
-                interface:{
-                    fixedIp:''
-                },
-                id:'',
+                networkId:'',
+                fixedIp:'',
+                routerId:'',
             },
             rules:{
-                subnet: [
+                networkId: [
                     { required: true, message: '请输选择子网', trigger: 'blur' }
                 ]
             }
@@ -68,9 +66,10 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
-            this.form.subnet = '';
-            this.form.id = item.id;
+            this.form.networkId = '';
+            this.form.routerId = item.id;
             this.form.name = item.name;
+            console.log('item',item);
             this.allSubnets();
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -110,15 +109,12 @@ export default {
             console.log('this.form',this.form);
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    let param = {
-                        id:this.item.id,
-                        param:this.form
-                    };
-                    editRouter(param)
+
+                    addInterface(this.form)
                         .then(res => {
                             console.log('redssssssss',res);
                             if(res.code === '0000'){
-                                this.resolve(param);
+                                this.resolve(this.form);
                                 this.hide();
                                 this.setting();
                                 this.confirmBtn = false;

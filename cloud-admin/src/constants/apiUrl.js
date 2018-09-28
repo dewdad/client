@@ -72,6 +72,7 @@ export const NETWORK = {
     floatIplist: ADMIN + '/floatIp/list',
     floatIpquota: ADMIN + '/floatIp/quotas',
     deleteInterface: ADMIN + '/router/deleteInterface',
+    addInterface: ADMIN + '/router/addInterface',
     disassociateFromPort: ADMIN + '/floatIp/disassociateFromPort/',
     delfloatIp: ADMIN + '/floatIp/',
     floatIpdetail: ADMIN + '/floatIp/',

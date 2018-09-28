@@ -30,55 +30,7 @@
                     <el-radio v-model="form.status" label='1'>是</el-radio>
                     <el-radio v-model="form.status" label='0'>否</el-radio>
                 </el-form-item>
-                <div class="mb20 font16">
-                    <i class="el-icon-tickets"></i>
-                    <span class="pl6">配额</span>
-                </div>
-                <el-form-item label="VCPU数量：" prop="quota.cpu"  >
-                    <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.cpu"></el-input-number>
-                </el-form-item>
-                <el-form-item label="实例：" prop="quota.instances" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.instances"></el-input-number>
-                </el-form-item>
-                <el-form-item label="卷：" prop="quota.volumes"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.volumes"></el-input-number>
-                </el-form-item>
-                <el-form-item label="卷快照：" prop="quota.snapshot"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.snapshot"></el-input-number>
-                </el-form-item>
-                <el-form-item label="卷及快照总大小(GB)：" prop="quota.volumeSize"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.volumeSize"></el-input-number>
-                </el-form-item>
-                <el-form-item label="内存(GB)：" prop="quota.ram"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.ram"></el-input-number>
-                </el-form-item>
-                <el-form-item label="安全组：" prop="quota.securityGroup"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.securityGroup"></el-input-number>
-                </el-form-item>
-                <el-form-item label="安全组规则：" prop="quota.securityGroupRule"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.securityGroupRule"></el-input-number>
-                </el-form-item>
-                <el-form-item label="浮动IP：" prop="quota.floatingIps"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.floatingIps"></el-input-number>
-                </el-form-item>
-                <el-form-item label="网络：" prop="quota.network" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.network"></el-input-number>
-                </el-form-item>
-                <el-form-item label="端口：" prop="quota.ports" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.ports"></el-input-number>
-                </el-form-item>
-                <el-form-item label="路由：" prop="quota.routers" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.routers"></el-input-number>
-                </el-form-item>
-                <el-form-item label="子网：" prop="quota.subnet" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.subnet"></el-input-number>
-                </el-form-item>
-                <el-form-item label="备份：" prop="quota.backup"  required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.backup"></el-input-number>
-                </el-form-item>
-                <el-form-item label="备份大小(GB)：" prop="quota.backupSize" required>
-                    <el-input-number class="width-full" controls-position="right" :min="0" :max="999999999" v-model="form.quota.backupSize"></el-input-number>
-                </el-form-item>
+
                 <div class="mt10" style="margin-left:180px;">
                     <el-button type="default" size="small" class="font12" @click="goBack">取 消</el-button>
                     <el-button type="primary" size="small" class="font12" @click="submitForm">提 交</el-button>
@@ -90,7 +42,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import {selectAllUsers,createRenter,changeRenterQuota} from '@/service/usermgr/deptmgr.js';
+import {selectAllUsers,createRenter} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'createRenter',
     components: {
@@ -107,23 +59,7 @@ export default {
                 domainId: '',
                 description: '',
                 status: '1',
-                quota:{
-                    cpu:20,
-                    instances:10,
-                    volumes:10,
-                    snapshot:10,
-                    volumeSize:1000,
-                    ram:50,
-                    securityGroup:10,
-                    securityGroupRule:100,
-                    floatingIps:50,
-                    network:10,
-                    ports:50,
-                    routers:10,
-                    subnet:10,
-                    backup:20,
-                    backupSize:1000
-                }
+
             },
             stateParams,
             fullscreenLoading: false,
@@ -131,51 +67,6 @@ export default {
                 'name':[
                     { required: true,message: '必填项',trigger: ['blur']}
                 ],
-                'quota.cpu': [
-                    { required: true, message: '必填项', trigger: 'blur' }
-                ],
-                'quota.instances': [
-                    { required: true, message: '必填项', trigger: 'blur' }
-                ],
-                'quota.volumes': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.snapshot': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.volumeSize': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.ram': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.securityGroup': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.securityGroupRule': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.floatingIps': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.network': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.ports': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.routers': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.subnet': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.backup': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ],
-                'quota.backupSize': [
-                    { required: true, message: '必填项', trigger: 'blur,submit' }
-                ]
             },
             allUsers:[],
             selectedUser:[]
@@ -190,7 +81,6 @@ export default {
         //保存（提交）
         submitForm() {
             let param = {
-                quota:this.form.quota,
                 status:this.form.status == '1' ? '1' : '0',
                 deptId:this.stateParams.item.id,
                 extendId:this.stateParams.item.extendId,
@@ -201,28 +91,11 @@ export default {
                 if (valid) {
                     createRenter(param).then(ret => {
                         $log('result...', ret);
-                        this.form.quota.projectId = ret.data.data.id;
-                        changeRenterQuota(this.form.quota)
-                            .then(res => {
-                                console.log('reds',res);
-                                if(ret.data.code === '0000'){
-                                    this.$message({
-                                        message: '保存成功',
-                                        type: 'success'
-                                    });
-                                    this.goBack();
-                                }else{
-                                    this.$alert('操作失败', '提示', {
-                                        type: 'error'
-                                    });
-                                }
-                            })
-                            .catch(err => {
-                                this.confirmBtn = false;
-                                this.$alert(err, '提示', {
-                                    type: 'error'
-                                });
-                            });
+                        this.$message({
+                            message: '租户创建成功，请及时修改配额。',
+                            type: 'success'
+                        });
+                        this.goBack();
                     });
                 } else {
                     console.log('error submit!!');

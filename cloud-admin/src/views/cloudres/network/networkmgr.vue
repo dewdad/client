@@ -107,9 +107,9 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="230" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="delNetwork(scope.row)" class="btn-linker">删除</a>
-                                <b class="link-division-symbol" ></b>
-                                <a  @click="createNetwork(scope.row,2)" class="btn-linker" >编辑</a>
+                                <a  @click="delNetwork(scope.row)" class="btn-linker" v-if="user.roleType == '2'">删除</a>
+                                <b class="link-division-symbol" v-if="user.roleType == '2'"></b>
+                                <a  @click="createNetwork(scope.row,2)" class="btn-linker" v-if="user.roleType == '2'">编辑</a>
                                 <b class="link-division-symbol" ></b>
                                 <router-link :to="{name:'app.resources.network.protmgr',params:{id:scope.row.id,item:scope.row,fromstate:'app.resources.network'}}" class="btn-linker">端口管理</router-link>
                             </template>
@@ -134,6 +134,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ZtStatus from '@/components/status/ZtStatus';
 import CreateNetwork from './CreateNetwork';
@@ -180,6 +181,11 @@ export default {
         ZtStatus
         // CreateRole
     },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
+    },
     methods: {
         networkList(){
             let params = {
@@ -193,6 +199,15 @@ export default {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.resultList){
+                    // let arr = [];
+                    // let roleType = parseInt(this.user.roleType);
+                    // for(let i = 0;i < resData.resultList.length;i++){
+                    //     let curRoleType = parseInt(resData.resultList[i].roleType);
+                    //     if(roleType < curRoleType){
+                    //         arr.push(resData.data[i]);
+                    //     }
+                    // }
+                    // this.tableData = arr || [];
                     this.tableData = resData.resultList || [];
                     this.totalItems = resData.totalRows || 0;
                 }

@@ -80,7 +80,7 @@ export default {
             this.selectedKey.push(data.id);
             console.log('this.selectedKey',this.selectedKey);
             this.deptTree();
-            this.getAdminOverviewFn();
+            this.getAdminOverviewFn(data.id);
             this.getTenantIntroFn();
         },
         //获取部门树
@@ -103,16 +103,32 @@ export default {
                     console.log('resData',resData);
                     this.departData = resData|| [];
                     if(tree && tree.id){
-                        console.log('tree....',tree);
-                        this.brunch = tree;
-                        this.selectedKey.push(tree.id);
+                        let treeId = tree.id;
+                        function GetSubJson(jsonData, destID, json) {
+                            for (let i = 0; i < jsonData.length; i++) {
+                                if (jsonData[i].id == destID)
+                                    json.push(jsonData[i]);
+                                else {
+                                    if (jsonData[i].hasOwnProperty("children")) {
+                                        GetSubJson(jsonData[i].children, destID, json);
+                                    }
+                                }
+                            }
+                        }
+                        let json = [];
+                        GetSubJson(resData, treeId, json);
+                        console.log('json',json);
+                        this.brunch = json[0];
+                        this.selectedKey.push(this.brunch.id);
+                        console.log('brunch......',this.brunch );
                     }else{
                         this.brunch = this.departData[0];
                         this.selectedKey.push(this.brunch.id);
                         // 记录当前部门分支
                         this.$store.commit('user/DEPTBRUNCH', this.brunch);
+                        this.getAdminOverviewFn(this.brunch.id);
                     }
-                    this.getAdminOverviewFn();
+
                     this.getTenantIntroFn();
 
                 }
@@ -130,7 +146,7 @@ export default {
         // 概览数据
         getAdminOverviewFn(id){
             let params = {
-                deptId: id ? id : this.brunch.id
+                deptId: id
             };
             getAdminOverview(params)
                 .then(res => {
