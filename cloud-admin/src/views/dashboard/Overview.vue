@@ -25,7 +25,7 @@
                             </div>
                             <h5 class="cloud-host__data">
                                 <div class="pull-left">
-                                    <span class="color-secondary font14 mb5 inline-block">近{{timeVal}}日警告线</span>
+                                    <span class="color-secondary font14 mb5 inline-block">近{{timeVal}}日创建云主机数</span>
                                     <br>
                                     <span class="font16">{{ecsTotal}}个</span>
                                 </div>
@@ -195,7 +195,7 @@ import {getAdminOverview, selectUsageByDate, selectUsageByMoth} from '@/service/
 export default {
     data() {
         return {
-            legendData: ['警告数'],
+            legendData: ['创建云主机数'],
             xData: [],
             seriesData: [],
             gridVal: {
