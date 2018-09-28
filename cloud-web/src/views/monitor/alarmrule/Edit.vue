@@ -111,8 +111,8 @@
                     <select-notice v-model="ruleForm.notices" :multiple="true" placeholder="请选择通知对象"></select-notice>
                 </zt-form-item>
                 <zt-form-item label="通知方式" prop="">
-                    <el-radio v-model="ruleForm.noticeType" label="1">邮箱</el-radio>
-                    <el-radio v-model="ruleForm.noticeType" label="2">短信</el-radio>
+                    <el-radio v-model="ruleForm.noticeType" label="0">邮箱</el-radio>
+                    <el-radio v-model="ruleForm.noticeType" label="1">短信</el-radio>
                 </zt-form-item>
                 <zt-form-item prop="">
                     <el-button type="primary" size="small" @click="submit">保存</el-button>
@@ -228,6 +228,7 @@ export default {
                         this.ruleForm.alarmId = data.id;
                         this.ruleForm.alarm.resourceType = data.resourceType;
                         this.ruleForm.alarm.type = data.type;
+                        this.ruleForm.noticeType = data.alarmRules && data.alarmRules[0].alarmNotices[0].noticeType;
                         if (Array.isArray(data.alarmInstances)) {
                             for (let inst of data.alarmInstances) {
                                 let obj = {
