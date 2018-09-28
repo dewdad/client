@@ -185,7 +185,10 @@ export default {
         },
         del(item){
             delExpand(item).then(ret=>{
-                this.getExpandList();
+                if(ret.code === '0000'){
+                    this.getExpandList();
+                    return this.$alert('操作成功','提示');
+                }
             });
         },
         currentChange(val){

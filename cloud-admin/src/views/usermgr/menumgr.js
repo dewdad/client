@@ -89,7 +89,12 @@ export default {
                     this.searchObj.paging.totalItems = 0;
                 });
         },
-
+        clearIndex(){
+            this.searchObj.searchText = '';
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
+        },
         //创建子菜单
         createSubmenu(rowItem){
             return this.$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:rowItem.menuCode}});

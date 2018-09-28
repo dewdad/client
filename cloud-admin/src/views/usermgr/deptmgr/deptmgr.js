@@ -128,8 +128,25 @@ export default {
                     this.deptTreeData = resData|| [];
                     if(tree && tree.id){
                         console.log('tree....',tree);
-                        this.brunch = tree;
-                        this.selectedKey.push(tree.id);
+                        let treeId = tree.id;
+                        function GetSubJson(jsonData, destID, json) {
+                            for (let i = 0; i < jsonData.length; i++) {
+                                if (jsonData[i].id == destID)
+                                    json.push(jsonData[i]);
+                                else {
+                                    if (jsonData[i].hasOwnProperty("children")) {
+                                        GetSubJson(jsonData[i].children, destID, json);
+                                    }
+                                }
+                            }
+                        }
+                        let json = [];
+                        GetSubJson(resData, treeId, json);
+                        console.log('json',json);
+                        this.brunch = json[0];
+                        this.selectedKey.push(this.brunch.id);
+                        console.log('brunch......',this.brunch );
+
                     }else{
                         this.brunch = this.deptTreeData[0];
                         this.selectedKey.push(this.brunch.id);
@@ -240,6 +257,7 @@ export default {
             if(optype === 2 && this.brunch.id === this.user.deptId){
                 return;
             }
+
             this.$refs.CreateDept.show(item,brunch,optype)
                 .then(ret => {
                     console.log('操作成功', ret);

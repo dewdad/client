@@ -58,7 +58,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button type="info" class="font12" size="small" @click="isShow = false">取 消</el-button>
-            <el-button type="primary" class="font12" size="small" @click="confirm" :loading="confirmBtn">确 定</el-button>
+            <el-button type="primary" class="font12" size="small" @click="confirm" >确 定</el-button>
         </span>
     </el-dialog>
 </template>
@@ -168,6 +168,7 @@ export default {
             console.log(this.user.roleType);
             if(optype === 2){
                 console.log('item',item);
+
                 this.form.id = item.id;
                 this.form.name = item.name;
                 if(item.quota) this.form.quota = item.quota;
@@ -259,9 +260,9 @@ export default {
                                     });
                                 });
                         }
+                        this.confirmBtn = false;
                         this.hide();
                         this.setting();
-                        this.confirmBtn = false;
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -309,6 +310,8 @@ export default {
                                     });
                                 });
                         }
+                        this.hide();
+                        this.setting();
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'

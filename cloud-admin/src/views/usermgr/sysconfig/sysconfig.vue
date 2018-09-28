@@ -187,7 +187,11 @@ export default {
         },
         del(item){
             delConfig(item).then(ret=>{
-                this.getConfigList();
+                if(ret.code === '0000'){
+                    this.getConfigList();
+                    return this.$alert('操作成功','提示');
+                }
+
             });
         },
         /**

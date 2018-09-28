@@ -189,7 +189,10 @@ export default {
         },
         del(id){
             delModel(id).then(ret=>{
-                this.modelList();
+                if(ret.code === '0000'){
+                    this.modelList();
+                    return this.$alert('操作成功','提示');
+                }
             });
         },
         /**

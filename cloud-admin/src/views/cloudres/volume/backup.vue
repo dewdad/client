@@ -13,8 +13,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'status'"></el-input>
-                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'status'" @change="clearIndex"></el-input>
+                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'" @change="clearIndex">
                             <el-option v-for="item in imageStatusArr" :value="item.key" :label="item.value" :key="item.key"></el-option>
                         </el-select>
                         <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'visibility'">
@@ -212,15 +212,20 @@ export default {
             if([this.type] && this.formInline.searchText){
                 params[this.type] = this.formInline.searchText;
             }
-            $log('params', params);
+            this.tableData = [];
             searchBackupList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.resultList){
                     this.tableData = resData.resultList || [];
-                    this.searchObj.paging.totalItems = resData.totalPages || 0;
+                    this.searchObj.paging.totalItems = resData.totalRows || 0;
                 }
             });
+        },
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
         },
         calcSize(size) {
             if (size < 1024) {
@@ -244,7 +249,10 @@ export default {
         },
         del(item){
             delBackup(item.id).then(ret=>{
-                this.searchBackupList();
+                if(ret.code === '0000'){
+                    this.searchBackupList();
+                    return this.$alert('操作成功','提示');
+                }
             });
         },
         /**

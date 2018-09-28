@@ -9,13 +9,13 @@
 
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
-                            <el-option v-for="item in searchCond1" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 2"></el-option>
-                            <el-option v-for="item in searchCond2" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 1"></el-option>
+                            <el-option v-for="item in searchCond1" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType == 3"></el-option>
+                            <el-option v-for="item in searchCond2" :value="item.key" :label="item.value" :key="item.key" v-if="user.roleType != 3"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'status'"></el-input>
-                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'status'" @change="clearIndex"></el-input>
+                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'" @change="clearIndex">
                             <el-option v-for="item in statusArrVolume" :value="item.key" :label="item.value" :key="item.key"></el-option>
                         </el-select>
                     </el-form-item>
@@ -292,6 +292,7 @@ export default {
             if([this.type] && this.formInline.searchText){
                 params[this.type] = this.formInline.searchText;
             }
+            this.tableData = [];
             $log('params', params);
             searchCloudList(params).then(ret => {
                 $log('data', ret);
@@ -301,6 +302,11 @@ export default {
                     this.searchObj.paging.totalItems = resData.totalRows || 0;
                 }
             });
+        },
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
         },
         calcSize(size) {
             if (size < 1024) {
@@ -324,7 +330,10 @@ export default {
         },
         del(item){
             delCloud(item.id).then(ret=>{
-                this.searchCloudList();
+                if(ret.code === '0000'){
+                    this.searchCloudList();
+                    return this.$alert('操作成功','提示');
+                }
             });
         },
         /**
