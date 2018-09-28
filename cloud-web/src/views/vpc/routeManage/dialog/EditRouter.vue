@@ -98,7 +98,7 @@ export default {
             this.isShow = false;
             this.ruleForm.routerName = '';
             this.ruleForm.outerNet = '';
-            this.ruleForm.manageState = 'UP';
+            this.ruleForm.manageState = true;
             this.routerId = '';
             this.$refs.ruleForm.clearValidate();
         },
