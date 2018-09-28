@@ -71,7 +71,7 @@
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="createInterface(scope.row)" class="btn-linker" >删除接口</a>
+                                <a  @click="delInterface(scope.row)" class="btn-linker" >删除接口</a>
                             </template>
                         </el-table-column>
                     </template>
@@ -97,7 +97,7 @@
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ZtStatus from '@/components/status/ZtStatus';
 import CreateInterface from './CreateInterface';
-import {searchPortList} from '@/service/cloudres.js';
+import {searchPortList,deleteInterface} from '@/service/cloudres.js';
 export default {
     name: 'app',
 
@@ -143,7 +143,7 @@ export default {
                 // paging:this.searchObj.paging,
                 deviceId:this.item.id
             };
-            $log('params', this.item);
+            $log('IIIIIIIIITEM', this.item);
             searchPortList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
@@ -168,6 +168,42 @@ export default {
                         console.log('取消');
                     }
                 });
+        },
+        del(item){
+            let param = [{
+                routerId:this.item.id,
+                portId:item.id,
+                subnetId:item.fixed_ips[0].subnet_id
+            }];
+            console.log('itemparam',item);
+            deleteInterface(param).then(ret=>{
+                if(ret.code === '0000'){
+                    this.searchPortList();
+                    return this.$alert('操作成功','提示');
+                }else{
+                    this.$alert('操作失败', '提示', {
+                        type: 'error'
+                    });
+                    return;
+                }
+            });
+        },
+        /**
+         * 删除接口
+         */
+        delInterface(item) {
+            this.$confirm('确定要进行删除操作吗？', '删除', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.del(item);
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         },
         goBack(){
             window.history.back();

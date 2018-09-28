@@ -236,33 +236,28 @@ export default {
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
                         this.form.quota.deptId = res.data.data.id;
-                        if(this.roleType == '1'){
-                            createQuota(this.form.quota)
-                                .then(res => {
-                                    console.log('reds',res);
-                                    if(res.data.code === '0000'){
-                                        this.resolve(this.form.quota);
-                                        this.hide();
-                                        this.setting();
-                                        this.confirmBtn = false;
-                                    }else{
-                                        this.$alert('操作失败', '提示', {
-                                            type: 'error'
-                                        });
-                                        this.confirmBtn = false;
-                                        return;
-                                    }
-                                })
-                                .catch(err => {
+                        createQuota(this.form.quota)
+                            .then(res => {
+                                console.log('reds',res);
+                                if(res.data.code === '0000'){
+                                    this.resolve(this.form.quota);
+                                    this.hide();
+                                    this.setting();
                                     this.confirmBtn = false;
-                                    this.$alert(err, '提示', {
+                                }else{
+                                    this.$alert('操作失败', '提示', {
                                         type: 'error'
                                     });
+                                    this.confirmBtn = false;
+                                    return;
+                                }
+                            })
+                            .catch(err => {
+                                this.confirmBtn = false;
+                                this.$alert(err, '提示', {
+                                    type: 'error'
                                 });
-                        }
-                        this.confirmBtn = false;
-                        this.hide();
-                        this.setting();
+                            });
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
@@ -286,32 +281,28 @@ export default {
                     if(res.data.code === '0000'){
                         this.resolve(this.form);
                         this.form.quota.deptId = this.form.id;
-                        if(this.roleType == '1'){
-                            changeDeptQuota(this.form.quota)
-                                .then(res => {
-                                    console.log('reds',res);
-                                    if(res.data.code === '0000'){
-                                        this.resolve(this.form.quota);
-                                        this.hide();
-                                        this.setting();
-                                        this.confirmBtn = false;
-                                    }else{
-                                        this.$alert('操作失败', '提示', {
-                                            type: 'error'
-                                        });
-                                        this.confirmBtn = false;
-                                        return;
-                                    }
-                                })
-                                .catch(err => {
+                        changeDeptQuota(this.form.quota)
+                            .then(res => {
+                                console.log('reds',res);
+                                if(res.data.code === '0000'){
+                                    this.resolve(this.form.quota);
+                                    this.hide();
+                                    this.setting();
                                     this.confirmBtn = false;
-                                    this.$alert(err, '提示', {
+                                }else{
+                                    this.$alert('操作失败', '提示', {
                                         type: 'error'
                                     });
+                                    this.confirmBtn = false;
+                                    return;
+                                }
+                            })
+                            .catch(err => {
+                                this.confirmBtn = false;
+                                this.$alert(err, '提示', {
+                                    type: 'error'
                                 });
-                        }
-                        this.hide();
-                        this.setting();
+                            });
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
