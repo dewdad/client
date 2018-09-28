@@ -2,6 +2,7 @@ import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateDept from './CreateDept';
 import QuotaAndUsage from './QuotaAndUsage';
 import ClientDetail from './ClientDetail';
+import CreateDeptQuota from './CreateDeptQuota';
 import ProjectDetail from './ProjectDetail';
 import ChangeQuota from './ChangeQuota';
 import EditRente from './EditRente';
@@ -86,7 +87,8 @@ export default {
         SelectMember,
         EditRente,
         EditUser,
-        UserSelectMember
+        UserSelectMember,
+        CreateDeptQuota
 
     },
     computed:{
@@ -252,13 +254,33 @@ export default {
 
             });
         },
-        //创建部门
+        //创建和修改部门
         createDept(item,brunch,optype){
             if(optype === 2 && this.brunch.id === this.user.deptId){
                 return;
             }
 
             this.$refs.CreateDept.show(item,brunch,optype)
+                .then(ret => {
+                    console.log('操作成功', ret);
+                    this.deptTree();
+                    return this.$alert('操作成功,请及时修改部门配额','提示');
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log('Error', err);
+                    } else {
+                        console.log('取消');
+                    }
+                });
+        },
+        //创建和修改部门配额
+        createDeptQuota(item,brunch,optype){
+            if(optype === 2 && this.brunch.id === this.user.deptId){
+                return;
+            }
+
+            this.$refs.CreateDeptQuota.show(item,brunch,optype)
                 .then(ret => {
                     console.log('操作成功', ret);
                     this.deptTree();

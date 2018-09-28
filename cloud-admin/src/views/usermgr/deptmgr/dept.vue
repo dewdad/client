@@ -23,6 +23,10 @@
                             <span class="fa fa-trash"></span> 删除</el-button>
                     </el-form-item>
                     <el-form-item>
+                        <el-button  @click="createDeptQuota(brunch,brunch,2)" :disabled="brunch.id === user.deptId">
+                            <span class="icon-zt_edit"></span> 修改部门配额</el-button>
+                    </el-form-item>
+                    <el-form-item>
                         <el-button @click="viewDept(brunch)" >
                             <span class="icon-zt_view"></span> 查看配额</el-button>
                     </el-form-item>
@@ -274,6 +278,8 @@
         <edit-user ref="EditUser"></edit-user>
         <!--关联租户-->
         <user-select-member ref="UserSelectMember"></user-select-member>
+        <!--创建和修改部门配额-->
+        <create-dept-quota ref="CreateDeptQuota"></create-dept-quota>
     </div>
 </template>
 <script src="./deptmgr.js"></script>

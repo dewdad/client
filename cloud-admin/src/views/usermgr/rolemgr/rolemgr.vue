@@ -97,6 +97,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import PageHeader from '@/components/pageHeader/PageHeader';
 import RelateAuth from './RelateAuth';
 import CreateRole from './CreateRole';
@@ -136,6 +137,11 @@ export default {
         RelateAuth,
         CreateRole
     },
+    computed:{
+        ...mapState({
+            user: state => state.user.userInfo,
+        }),
+    },
     methods: {
         getRoleList(){
             let params = {
@@ -149,7 +155,15 @@ export default {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.data){
-                    this.tableData = resData.data || [];
+                    let arr = [];
+                    let roleType = parseInt(this.user.roleType);
+                    for(let i = 0;i < resData.data.length;i++){
+                        let curRoleType = parseInt(resData.data[i].roleType);
+                        if(roleType < curRoleType){
+                            arr.push(resData.data[i]);
+                        }
+                    }
+                    this.tableData = arr || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
