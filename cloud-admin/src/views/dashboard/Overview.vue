@@ -16,10 +16,10 @@
                                     <div style="height: 20px;" class="font16">弹性云主机</div>
                                     <div style="line-height:28px;height:28px;">
                                         <span class="is-bold font25">{{usages.instances || 0 }}</span>个
-                                        <span style="margin-top:3px;" class="pull-right color-secondary">
+                                        <!-- <span style="margin-top:3px;" class="pull-right color-secondary">
                                             较上月同期：
                                             <span class="color-success">+{{addAmount || 0 }}个</span>
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +209,7 @@ export default {
                 {value: 3, label: '3天'},
                 {value: 7, label: '7天'}
             ],
-            timeVal: 1,
+            timeVal: 7,
             quota: {},
             usages: {},
             addAmount: '', // 较上月增加量
@@ -246,7 +246,7 @@ export default {
                     data:[
                         {value: this.usages.ram, name:'已使用'},
                         {
-                            value:parseInt(this.quota.ram - this.usages.ram) || 0,
+                            value: parseInt(this.quota.ram - this.usages.ram) >= 0 ? parseInt(this.quota.ram - this.usages.ram) : 0,
                             name:'可用',
                             itemStyle: {
                                 normal:{color:'#ebf3f7'},

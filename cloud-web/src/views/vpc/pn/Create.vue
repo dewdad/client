@@ -70,7 +70,7 @@ export default {
     data() {
         // 验证 IP 格式
         let cindr = function(rule, value, callback) {
-            if (value === '') {
+            if (value === '' || value === '.../') {
                 callback(new Error('请输入网段'));
             } else {
                 let [ipstr, port] = value.split('/');
