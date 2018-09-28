@@ -65,6 +65,7 @@ export default {
                     type: 'value',
                     axisLine: {show: false},
                     axisTick: {show: false},
+                    minInterval: 1,
                     splitNumber: 4, // 坐标轴的分割段数
                     axisLabel: {
                         formatter: '{value}' + this.yUnit // y轴坐标轴单位
