@@ -41,7 +41,7 @@ export default {
             }
         },
         input() {
-            this.format(event);
+            // this.format(event);
             this.emit();
         },
         emit() {
@@ -64,7 +64,7 @@ export default {
             this.index = index;
         },
         change(val) {
-            this.input(event);
+            this.input();
             if (!val) return;
             // 长度为3跳到下一个
             if (val.length === 3) {
