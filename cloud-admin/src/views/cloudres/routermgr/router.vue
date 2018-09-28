@@ -287,7 +287,7 @@ export default {
             });
         },
         /**
-         * 删除镜像
+         * 删除路由
          */
         delRouter(item) {
             this.$confirm('确定要进行删除操作吗？', '删除', {

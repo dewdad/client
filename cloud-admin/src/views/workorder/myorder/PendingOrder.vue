@@ -227,8 +227,8 @@ export default {
             myorderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData && resData.records){
-                    this.tableData = resData.records || [];
+                if(resData && resData.data){
+                    this.tableData = resData.data || [];
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 

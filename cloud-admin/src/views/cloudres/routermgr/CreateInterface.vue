@@ -54,9 +54,6 @@ export default {
             rules:{
                 subnet: [
                     { required: true, message: '请输选择子网', trigger: 'blur' }
-                ],
-                'interface.fixedIp': [
-                    { required: true, message: '请输选择子网', trigger: 'blur' }
                 ]
             }
         };

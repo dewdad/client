@@ -14,7 +14,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" @change="clearIndex"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="ecsList" icon="el-icon-search">搜索</el-button>
@@ -309,6 +309,11 @@ export default {
         returnName(item){
             for(let key in item){
                 return key;
+            }
+        },
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
             }
         },
         returnValue(item){
