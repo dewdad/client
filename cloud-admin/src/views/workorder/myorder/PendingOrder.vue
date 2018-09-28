@@ -131,7 +131,7 @@ import OrderDetail from './OrderDetail';
 import TransferDialog from './../dialog/TransferDialog';
 import ReplyDialog from './../dialog/ReplyDialog';
 
-import {getTodoOrderList,complete} from '@/service/order.js';
+import {myorderList,complete} from '@/service/order.js';
 export default {
     name: 'app',
 
@@ -217,13 +217,14 @@ export default {
     methods: {
         getTodoOrderList(){
             let params = {
-                paging:this.searchObj.paging
+                paging:this.searchObj.paging,
+                status:1
             };
             if(this.type && this.formInline.searchText){
                 params[this.type] = this.formInline.searchText;
             }
             $log('params', params);
-            getTodoOrderList(params).then(ret => {
+            myorderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.records){

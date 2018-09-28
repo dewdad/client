@@ -139,7 +139,7 @@ export async function searchSubnetList(data) {
  */
 export async function editNetwork(data) {
     console.log('data',data);
-    let url = NETWORK.editNetwork;
+    let url = NETWORK.editNetwork + data.id;
     let response = await http.put(url,data);
     return response.data;
 }

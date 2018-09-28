@@ -20,8 +20,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'name'"></el-input>
-                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'name'" @change="clearIndex"></el-input>
+                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'" @change="clearIndex">
                             <el-option v-for="item in imageStatusArr" :value="item.key" :label="item.value" :key="item.key"></el-option>
                         </el-select>
                         <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'visibility'">
@@ -44,7 +44,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <a class="font12 mr10 btn-linker" @click="showDetail(scope.row)">{{scope.row.name}}</a>
+                                    <a class="font12 mr10 btn-linker" @click="showDetail(scope.row)">{{scope.row.name || scope.row.id}}</a>
                                 </template>
                             </el-table-column>
                         </template>
@@ -226,6 +226,11 @@ export default {
                 }
             });
         },
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
+        },
         createMirror(){
             this.$refs.CreateMirror.show()
                 .then(ret => {
@@ -275,7 +280,11 @@ export default {
         },
         del(item){
             delMirror(item.id).then(ret=>{
-                this.searchMirrorList();
+                if(ret.code === '0000'){
+                    this.searchMirrorList();
+                    return this.$alert('操作成功','提示');
+                }
+
             });
         },
         /**

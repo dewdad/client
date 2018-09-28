@@ -20,7 +20,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText"></el-input>
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" @change="clearIndex"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="networkList" icon="el-icon-search">搜索</el-button>
@@ -194,12 +194,16 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.resultList){
                     this.tableData = resData.resultList || [];
-                    this.totalItems = resData.totalPages || 0;
+                    this.totalItems = resData.totalRows || 0;
                 }
 
             });
         },
-
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
+        },
         createNetwork(item,optype){
             this.$refs.CreateNetwork.show(item,optype)
                 .then(ret => {
@@ -234,7 +238,11 @@ export default {
         // },
         del(item){
             delNetwork(item.id).then(ret=>{
-                this.networkList();
+                if(ret.code === '0000'){
+                    this.networkList();
+                    return this.$alert('操作成功','提示');
+                }
+
             });
         },
         /**
