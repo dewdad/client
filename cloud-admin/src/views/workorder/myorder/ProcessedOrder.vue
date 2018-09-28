@@ -110,7 +110,7 @@
 <script>
 import OrderDetail from './OrderDetail';
 import PageHeader from '@/components/pageHeader/PageHeader';
-import {getDoneOrderList} from '@/service/order.js';
+import {myorderList} from '@/service/order.js';
 export default {
     name: 'app',
 
@@ -194,13 +194,14 @@ export default {
     methods: {
         getDoneOrderList(){
             let params = {
-                paging:this.searchObj.paging
+                paging:this.searchObj.paging,
+                status:2
             };
             if(this.type && this.formInline.searchText){
                 params[this.type] = this.formInline.searchText;
             }
             $log('params', params);
-            getDoneOrderList(params).then(ret => {
+            myorderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
                 if(resData && resData.records){

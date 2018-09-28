@@ -300,7 +300,7 @@ export default {
                 let resData = ret.data;
                 if(resData && resData.resultList){
                     this.tableData = resData.resultList || [];
-                    this.searchObj.paging.totalItems = resData.totalPages || 0;
+                    this.searchObj.paging.totalItems = resData.totalRows || 0;
                 }
 
             });
@@ -426,7 +426,11 @@ export default {
         },
         del(item){
             delEcs(item.id).then(ret=>{
-                this.ecsList();
+                if(ret.code === '0000'){
+                    this.ecsList();
+                    return this.$alert('操作成功','提示');
+                }
+
             });
         },
         /**
