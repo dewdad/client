@@ -220,19 +220,19 @@ export default {
         },
         confirm() {
             this.confirmBtn = true;
-            if (typeof this.form.subnet.pools !== 'undefined' && this.form.subnet.pools.toString() !== ''){
+            if (typeof this.form.subnet.pools !== 'undefined' && this.form.subnet.pools.toString() !== '' && this.form.subnet.dHCPEnabled == 'true'){
                 this.form.subnet.pools = this.form.subnet.pools.split('\n');
             }else{
                 this.form.subnet.pools = [''];
             }
 
-            if (typeof this.form.subnet.dnsNames !== 'undefined' && this.form.subnet.dnsNames.toString() !== ''){
+            if (typeof this.form.subnet.dnsNames !== 'undefined' && this.form.subnet.dnsNames.toString() !== '' && this.form.subnet.dHCPEnabled == 'true'){
                 this.form.subnet.dnsNames = this.form.subnet.dnsNames.split('\n');
             }else{
                 this.form.subnet.dnsNames = [''];
             }
 
-            if (typeof this.form.subnet.host_routes !== 'undefined' && this.form.subnet.host_routes.toString() !== ''){
+            if (typeof this.form.subnet.host_routes !== 'undefined' && this.form.subnet.host_routes.toString() !== '' && this.form.subnet.dHCPEnabled == 'true'){
                 this.form.subnet.hostRoutes = this.form.subnet.hostRoutes.split('\n');
             }else{
                 this.form.subnet.hostRoutes = [''];

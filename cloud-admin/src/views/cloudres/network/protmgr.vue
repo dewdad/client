@@ -23,7 +23,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name || scope.row.id}}</span>
+                                    <span class="font12 mr10">{{scope.row.id}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -107,7 +107,7 @@ export default {
             },
         };
         let cols = [
-            { column: 'name', text:'名称' , width: '15%'},
+            { column: 'name', text:'端口ID' , width: '15%'},
             { column: 'mac', text:'mac地址' , width: '15%'},
             { column: 'device', text: '设备类型', width: '15%' },
             { column: 'status', text: '状态', width: '15%' },

@@ -6,8 +6,8 @@
                     type="info"
                     :closable="false">
             </el-alert>
-            <el-form-item label="名称 " prop="name" class="mt20" :label-width="formLabelWidth">
-                <el-input placeholder="输入名称" v-model="form.name"></el-input>
+            <el-form-item label="端口ID " prop="id" class="mt20" :label-width="formLabelWidth">
+                <el-input  v-model="id" disabled></el-input>
             </el-form-item>
             <el-form-item label="管理状态 " prop="admin_state_up" :label-width="formLabelWidth">
                 <el-select v-model="form.admin_state_up">
@@ -94,6 +94,7 @@ export default {
             reject: null,
             confirmBtn: false,
             optype:1,
+            id:'',
             item:{},
             subnets:[],
             networkId:'',
@@ -108,9 +109,6 @@ export default {
                 fixedIp:''
             },
             rules:{
-                name: [
-                    { required: true, message: '请输入名称', trigger: 'blur' }
-                ],
                 chooseType: [
                     { required: true, message: '请指定IP或子网', trigger: 'blur' }
                 ],
@@ -145,6 +143,7 @@ export default {
                 this.form.chooseType = '';
             }else{
                 this.form.name = item.name;
+                this.id = item.id;
                 this.form.deviceId = item.device_id;
                 this.form.admin_state_up = item.admin_state_up + '';
                 this.form.deviceName = item.deviceName ? item.deviceName : '';

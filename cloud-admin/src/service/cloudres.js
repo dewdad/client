@@ -184,6 +184,15 @@ export async function delNetwork(data) {
     return response.data;
 }
 /**
+ *删除接口
+ * @param {*}
+ */
+export async function deleteInterface(data) {
+    var url = NETWORK.deleteInterface;
+    let response = await http.put(url,data);
+    return response.data;
+}
+/**
  *编辑端口
  *  * @param {*}
  */
