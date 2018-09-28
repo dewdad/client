@@ -57,9 +57,9 @@
             <template slot-scope="scope" >
                 <!-- <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
                 <b class="link-division-symbol"></b> -->
-                <a @click="updateNetwork(scope.row)">编辑</a>
+                <a @click="updateNetwork(scope.row)" :disabled="scope.row['router:external'] || scope.row.shared">编辑</a>
                 <b class="link-division-symbol"></b>
-                <a @click="deleteNetwork(scope.row)">删除</a>
+                <a @click="deleteNetwork(scope.row)" :disabled="scope.row['router:external'] || scope.row.shared">删除</a>
             </template>
         </el-table-column>
     </zt-table>
