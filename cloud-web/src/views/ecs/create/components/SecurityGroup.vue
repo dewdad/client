@@ -133,7 +133,11 @@
                                 </template>
                             </el-table-column>
                             <!-- 授权类型 -->
-                            <el-table-column prop="ethertype" label="授权类型"></el-table-column>
+                            <el-table-column prop="ethertype" label="授权类型">
+                                <template slot-scope="scope">
+                                    {{scope.row.remote_group_id ? '安全组访问' : '地址段访问'}}
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </div>
                 </div>
