@@ -25,7 +25,7 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
+                                    <span class="font12 mr10">{{scope.row.name || scope.row.id}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -147,8 +147,9 @@ export default {
             searchPortList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;
-                if(resData ){
-                    this.tableData = resData || [];
+                if(resData && resData.data){
+                    this.tableData = resData.data || [];
+                    this.searchObj.paging.totalItems = resData.total || 0;
 
                 }
 
