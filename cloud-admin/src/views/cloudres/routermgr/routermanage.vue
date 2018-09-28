@@ -158,7 +158,7 @@ export default {
         createInterface(){
             this.$refs.CreateInterface.show(this.item)
                 .then(ret => {
-                    this.modelList();
+                    this.searchPortList();
                     return this.$alert('操作成功','提示');
                 })
                 .catch(err => {

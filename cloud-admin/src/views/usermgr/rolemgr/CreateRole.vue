@@ -5,8 +5,8 @@
                 <el-input placeholder="输入角色名称" v-model="form.roleName"></el-input>
             </el-form-item>
             <el-form-item label="角色类型" prop="roleType" :label-width="formLabelWidth">
-                <el-radio v-model="form.roleType" label="2">部门管理员</el-radio>
-                <el-radio v-model="form.roleType" label="3">子部门管理员</el-radio>
+                <el-radio v-model="form.roleType" label="2" v-if="user.roleType != '2' && user.roleType != '3'">部门管理员</el-radio>
+                <el-radio v-model="form.roleType" label="3" v-if="user.roleType != '3'">子部门管理员</el-radio>
                 <el-radio v-model="form.roleType" label="4">用户</el-radio>
             </el-form-item>
             <el-form-item label="描述 " prop="description" :label-width="formLabelWidth">

@@ -43,8 +43,10 @@ export async function getDomainList(data) {
 /**
  * 概览-超级管理员版本查询概览
  */
-export async function getAdminOverview() {
-    let res = await http.get(OVERVIEW.getAdminOverview);
+export async function getAdminOverview(data) {
+    let res = await http.get(OVERVIEW.getAdminOverview,{
+        params:data
+    });
     return res && res.data;
 }
 
