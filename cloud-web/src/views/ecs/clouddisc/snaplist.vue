@@ -146,6 +146,7 @@ export default {
             params = params || this.searchObj.paging;
             getSnapshotList(params)
                 .then(res => {
+                    this.loading = false;
                     if (res && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data;
                         if (resData && resData.data) {
@@ -155,10 +156,8 @@ export default {
                     }
                 })
                 .catch(err => {
-                    $log(err);
-                })
-                .finally(() => {
                     this.loading = false;
+                    $log(err);
                 });
         },
         editSnap(row) {

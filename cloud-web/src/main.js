@@ -129,7 +129,7 @@ router.beforeEach(async (to, from, next) => {
     } else {
         // console.error(from.path, from.name);
         // console.error(to.path, to.name);
-    
+
         // 验证页面可以退出
         if (to.name === 'login') {
             store.dispatch('LOGOUT');
@@ -150,7 +150,7 @@ router.beforeEach(async (to, from, next) => {
             });
             return;
         }
-    
+
         // 登录状态下如果目标路由是登录或注册 直接跳转到控制台首页
         if (store.state.isLogined && !to.path.includes('exceptionlogin') && (to.path.includes('login') || to.path.includes('register')) && to.name !== 'register.success') {
             next('/app');
@@ -187,7 +187,7 @@ Object.keys(modules).map(key => {
     Vue.component(key, modules[key]);
 });
 
-import 'promise.prototype.finally';
+require('promise.prototype.finally').shim();
 
 /**
  * 监听resize

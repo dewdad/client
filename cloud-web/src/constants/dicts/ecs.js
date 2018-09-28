@@ -406,7 +406,7 @@ export const DISK_STATUS = [
     },
     {
         text: '删除错误',
-        value: 'error_deleting',
+        value: 'error-deleting',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -419,7 +419,7 @@ export const DISK_STATUS = [
     },
     {
         text: '备份失败',
-        value: 'error_backing-up',
+        value: 'error-backing-up',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -457,7 +457,7 @@ export const DISK_STATUS = [
     },
     {
         text: '扩容错误',
-        value: 'error_extending',
+        value: 'error-extending',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'
@@ -470,7 +470,7 @@ export const DISK_STATUS = [
     },
     {
         text: '回滚错误',
-        value: 'error_rollbacking',
+        value: 'error-rollbacking',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'

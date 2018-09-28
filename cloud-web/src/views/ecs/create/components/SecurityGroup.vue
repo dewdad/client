@@ -132,8 +132,18 @@
                                   <span v-else>所有</span>
                                 </template>
                             </el-table-column>
+                            <!-- 授权地址 -->
+                            <el-table-column prop="remote_ip_prefix" label="授权地址">
+                                <template slot-scope="scope">
+                                    {{scope.row.remote_ip_prefix === null || scope.row.remote_ip_prefix === '0.0.0.0/0' ? '所有' : scope.row.remote_ip_prefix}}
+                                </template>
+                            </el-table-column>
                             <!-- 授权类型 -->
-                            <el-table-column prop="ethertype" label="授权类型"></el-table-column>
+                            <el-table-column prop="ethertype" label="授权类型">
+                                <template slot-scope="scope">
+                                    {{scope.row.remote_group_id ? '安全组访问' : '地址段访问'}}
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </div>
                 </div>
