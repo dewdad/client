@@ -155,7 +155,7 @@ export default {
     computed: {
         myticketInfo () {
             return this.myticketList.filter(
-                item => item.id === this.$route.params.id
+                item => item.orderNO === this.$route.params.id
             )[0];
         },
         productType () {
@@ -181,7 +181,7 @@ export default {
         getOrder(){
             let data = {
                 pageIndex: 1,
-                id:this.$route.params.id
+                orderNO:this.$route.params.id,
             };           
             this.loading = true;
             getOrderList(data)
@@ -189,10 +189,17 @@ export default {
                     this.loading = false;              
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data || {};
-                        if(resData.records){
-                            this.myticketList = resData.records || [];
+                        if(resData.total){
+                            this.myticketList = resData.data;
                             this.getOrderDetail();
-                        }                        
+                        } else {
+                            this.$alert('您查询的工单不存在', {
+                                title: '提示',
+                                type: 'error'
+                            }).then(() => {
+                                this.$store.commit('SET_PAGE_LOAD_ERROR', '您查询的工单不存在');
+                            });
+                        }                       
                     }else {
                         $log(res.msg);
                     }                   
