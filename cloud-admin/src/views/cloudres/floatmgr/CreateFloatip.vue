@@ -12,7 +12,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="项目配额："  :label-width="formLabelWidth">
-                <el-progress :percentage="(parseInt(usage.current/usage.max)*100)||0"></el-progress>
+                <el-progress :percentage="percent"></el-progress>
                 <div>已使用 {{usage.current}}, 共{{usage.max}}</div>
             </el-form-item>
         </el-form>
@@ -35,6 +35,7 @@ export default {
             confirmBtn: false,
             optype:1,
             pull:[],
+            percent:0,
             usage:{},
             form:{
                 floatingNetworkId:''
@@ -84,9 +85,13 @@ export default {
             $log('params', params);
             floatIpquota(params).then(ret => {
                 $log('data', ret);
+
                 let resData = ret.data;
                 if(resData){
+
                     this.usage = resData || [];
+                    let percent = parseInt(this.usage.current / this.usage.max) * 100;
+                    this.percent = percent > 100 ? 100 : percent;
                 }
             });
         },
