@@ -192,7 +192,14 @@ export default {
                         if(resData.total){
                             this.myticketList = resData.data;
                             this.getOrderDetail();
-                        }                        
+                        } else {
+                            this.$alert('您查询的工单不存在', {
+                                title: '提示',
+                                type: 'error'
+                            }).then(() => {
+                                this.$store.commit('SET_PAGE_LOAD_ERROR', '您查询的工单不存在');
+                            });
+                        }                       
                     }else {
                         $log(res.msg);
                     }                   
