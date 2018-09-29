@@ -138,6 +138,9 @@ export default {
             this.item = item;
             this.brunch = brunch;
             console.log('item......',item);
+            if(item.quota){
+                this.form.quota = item.quota;
+            }
             this.getQuotaList();
             return new Promise((resolve, reject) => {
                 this.reject = reject;

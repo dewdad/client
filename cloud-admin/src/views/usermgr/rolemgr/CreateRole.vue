@@ -32,7 +32,7 @@ export default {
             confirmBtn: false,
             optype:1,
             form:{
-                roleType:'2',
+                roleType:'',
                 roleName:'',
                 description:''
             },
@@ -61,6 +61,14 @@ export default {
             if(optype !== 1){
                 this.form.roleType = item.roleType;
                 this.form.id = item.id;
+            }else{
+                if(this.user.roleType == '2'){
+                    this.form.roleType = '3';
+                }else if(this.user.roleType == '3'){
+                    this.form.roleType = '4';
+                }else if(this.user.roleType == '1'){
+                    this.form.roleType = '2';
+                }
             }
             this.form.roleName = item.roleName;
             this.form.description = item.description;

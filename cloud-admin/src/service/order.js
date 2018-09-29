@@ -53,6 +53,15 @@ export async function createOrder(data) {
     return response.data;
 }
 /**
+ *转交工单
+ * @param {*}
+ */
+export async function orderTODO(data) {
+    console.log('data',data);
+    let response = await http.put(ORDER_MODULE.orderTODO,data);
+    return response.data;
+}
+/**
  *回复工单
  * @param {*}
  */
