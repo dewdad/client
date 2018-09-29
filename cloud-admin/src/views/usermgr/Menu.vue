@@ -9,7 +9,7 @@
                 <el-col :span="8" ><el-button type="primary" size="small" @click="$router.push({name:'app.usrmgr.menumgr.edit',params:{opType:1,code:0}})"><span class="icon-zt_plus"></span>  新建一级菜单</el-button></el-col>
                 <el-col :span="16">
                     <div class="pull-right">
-                        <el-select class="width152" size="small" clearable v-model="searchObj.menuType" @change="clearIndex" placeholder="请选择菜单类型">
+                        <el-select class="width152" size="small" clearable v-model="searchObj.menuType"  @change="clearIndex" placeholder="请选择菜单类型">
                             <el-option label="用户" value="2" ></el-option>
                             <el-option label="管理员" value="1" ></el-option>
                         </el-select>

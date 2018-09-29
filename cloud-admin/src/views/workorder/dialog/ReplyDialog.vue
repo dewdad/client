@@ -12,7 +12,7 @@
                     <p>回复内容：{{item.suppleContent}}</p>
                     <p>{{item.createTime | date}}</p>
                     <span v-if="item.attachUrl">
-                        {{returnAttach(item.attachUrl)}}
+                        {{item.attachUrl}}
                         <a class="btn-link ml5" @click="searchFile(item.attachUrl)">查看</a>
                     </span>
                 </div>
@@ -91,7 +91,7 @@ export default {
                 if (valid) {
                     let param = {
                         orderNO:this.order.orderNO,
-                        replyContent:this.form.replyContent
+                        replyContent:this.form.suppleContent
                     };
                     delReply(param).then(ret=>{
                         if(ret.code === '0000'){
@@ -156,8 +156,10 @@ export default {
 <style lang="scss" scoped>
     .reply{
         border: 1px solid #999;
-        padding: 20px 10px;
+        padding: 10px;
         p{
+            line-height:1.6;
+            font-size:12px;
             margin: 0;
         }
     }

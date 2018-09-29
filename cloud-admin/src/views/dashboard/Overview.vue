@@ -114,7 +114,8 @@
                                         <span class="color-secondary font14">已使用</span>
                                     </div>
                                     <div class="text-r mt10">
-                                        <span class="font30 lh30">{{parseInt(quota.ram-usages.ram) || '0'}}</span>
+                                        <span class="font30 lh30" v-if="parseInt(quota.ram-usages.ram)>0">{{parseInt(quota.ram-usages.ram) || '0'}}</span>
+                                        <span class="font30 lh30" v-else>0</span>
                                         <br>
                                         <span class="color-secondary font14">可用</span>
                                     </div>

@@ -101,7 +101,7 @@
                             <template slot-scope="scope">
                                 <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
                                 <b class="link-division-symbol" ></b>
-                                <a  @click="createRole(scope.row,2)" class="btn-linker" >回复</a>
+                                <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
                                 <!--<b class="link-division-symbol" ></b>-->
                                 <!--<a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>-->
 

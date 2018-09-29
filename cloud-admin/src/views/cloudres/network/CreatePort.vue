@@ -6,9 +6,10 @@
                     type="info"
                     :closable="false">
             </el-alert>
-            <el-form-item label="端口ID " prop="id" class="mt20" :label-width="formLabelWidth">
+            <el-form-item label="端口ID " prop="id" class="mt20" v-if="optype != 1" :label-width="formLabelWidth">
                 <el-input  v-model="id" disabled></el-input>
             </el-form-item>
+            <div style="margin-top:20px" v-if="optype == 1"></div>
             <el-form-item label="管理状态 " prop="admin_state_up" :label-width="formLabelWidth">
                 <el-select v-model="form.admin_state_up">
                     <el-option v-for="item in adminStateUps" :key="item.key" :label="item.value" :value="item.key"></el-option>
@@ -75,7 +76,6 @@ export default {
             {key:'false',value:'DOWN'},
         ];
         let chooseTypeList = [
-            {key:'none',value:'未指定'},
             {key:'sub',value:'子网'},
             {key:'fix',value:'固定IP地址'}
         ];

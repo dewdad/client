@@ -120,6 +120,7 @@ export default {
                         console.log('json',json);
                         this.brunch = json[0];
                         this.selectedKey.push(this.brunch.id);
+                        this.getAdminOverviewFn(this.brunch.id);
                         console.log('brunch......',this.brunch );
                     }else{
                         this.brunch = this.departData[0];
@@ -177,7 +178,7 @@ export default {
         //显示当前租户的详情
         selTenant(id){
             this.selTenantId = id;
-            this.getAdminOverviewFn(id)
+            // this.getAdminOverviewFn(id)
         },
         // 
         getTenantIntroFn() {

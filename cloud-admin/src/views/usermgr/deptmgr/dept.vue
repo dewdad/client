@@ -234,6 +234,8 @@
                             <template>
                                 <el-table-column label="操作" key="op"  min-width="200" class-name="option-snaplist">
                                     <template slot-scope="scope">
+                                        <a @click="resetPwd(scope.row,brunch)" class="btn-linker">重置密码</a>
+                                        <b class="link-division-symbol"></b>
                                         <a @click="EditUser(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="disableUser(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>

@@ -13,7 +13,7 @@
         <!-- 搜索筛选栏 -->
         <div class="mt20 mb20 font12">
             <span class="mr10">产品类型：</span>
-            <el-select v-model="searchObj.moduleType" size="small" placeholder="请选择" value-key="value">
+            <el-select v-model="searchObj.moduleType" size="small" placeholder="请选择" clearable  value-key="value">
                 <el-option
                 v-for="item in moduleTypes"
                 :key="item.value"
@@ -23,12 +23,13 @@
             </el-select>
             <span class="ml10 mr10">时间范围：</span>
             <el-date-picker
+            style="width: 400px !important;"
             v-model="searchObj.daterange"
             type="datetimerange"
             size="small"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['00:00:00','23:59:59']"
+            :default-time="['00:00:00', '23:59:59']"
             value-format="yyyy-MM-dd HH:mm:ss">
             </el-date-picker>
             <span class="ml10 mr10">工单编号：</span>
@@ -96,7 +97,7 @@
                     <el-table-column label="操作" key="op" width="250">
                         <template slot-scope="scope">
                             <!-- 查看 -->
-                            <router-link :to="{ name: 'app.ticketSystem.info', params: { id: scope.row.id }}" class="color-primary finger-cursor" >查看</router-link>
+                            <router-link :to="{ name: 'app.ticketSystem.info', params: { id: scope.row.orderNO }}" class="color-primary finger-cursor" >查看</router-link>
                             <b class="link-division-symbol"></b>
                             <!-- 关闭 -->
                             <span @click="closeWork(scope.row.id)" class="color-primary finger-cursor">关闭</span>
@@ -134,10 +135,9 @@ export default {
     data() {
         let orderStatus = [
             {key:'' ,'text':'全部',value:''},
-            {key:1,'text':'待审核',value:'1'},
-            {key:2,'text':'处理中',value:'2'},
-            {key:3,'text':'待确认',value:'3'},
-            {key:4,'text':'已完成',value:'4'}
+            {key:1,'text':'待处理',value:'1'},
+            {key:2,'text':'已处理',value:'2'},
+            {key:3,'text':'已关闭',value:'3'}
         ];
         let cols = [
             { column: 'orderNO', text: '工单编号', width: '20%' },
@@ -235,10 +235,8 @@ export default {
                     this.loading = false;              
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data || {};
-                        if(resData.records){
-                            this.tableDataList = resData.records || [];
-                            this.searchObj.paging.totalItems = resData.total || 0;
-                        }                        
+                        this.tableDataList = resData.data || [];
+                        this.searchObj.paging.totalItems = resData.total;                       
                     }else {
                         $log(res.msg);
                     }                   

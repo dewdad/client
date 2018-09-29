@@ -57,6 +57,13 @@
                                 </template>
                             </el-table-column>
                         </template>
+                        <template v-if="col.column=='admin'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.admin_state_up?'UP':'DOWN'}}</span>
+                                </template>
+                            </el-table-column>
+                        </template>
                     </template>
                     <!-- 操作 -->
                     <template>
