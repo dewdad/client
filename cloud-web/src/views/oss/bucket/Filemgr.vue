@@ -27,7 +27,7 @@
         </el-row>
         <el-row>
             <el-col :span="24" class="font12">
-                <span v-if="currentPath === ''">全部文件，共{{fileNums}}个({{fileSize}})</span>
+                <!-- <span v-if="currentPath === ''">全部文件，共{{fileNums}}个({{fileSize}})</span> -->
                 <span v-if="currentPath !== ''">
                     <a href="javascript:;" class="font12" @click="returnLast">返回上一级</a>
                     <b class="link-division-symbol"></b>
@@ -158,7 +158,7 @@ export default {
     computed: {
         fileNums: function() {
             try {
-                return this.headerInfo.usage.rgwMain.num_objects;
+                return this.fileList.length;
             } catch (err) {
                 return 0;
             }
@@ -238,6 +238,7 @@ export default {
         // 搜索指定目录下的文件列表
         search(path = '') {
             this.loading = true;
+            path = path || this.currentPath;
             let post = {
                 prefix: path,
                 bucketId: this.bucketId,
@@ -299,7 +300,7 @@ export default {
         removeFileOne(file, type, index) {
             let files = [file];
             this.$refs.DeleteFileDialog.show(files, type).then(res => {
-                this.search();
+                this.search(this.currentPath);
             });
             // let tips = '您确定要删除所选文件吗？';
             // tips += `<br/>${fileName}`;
@@ -327,7 +328,7 @@ export default {
                 return;
             }
             this.$refs.DeleteFileDialog.show(this.multipleSelection, 'more').then(res => {
-                this.search();
+                this.search(this.currentPath);
             });
             // let tips = '您确定要删除所选文件吗？';
             // let fileName = [];
