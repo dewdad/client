@@ -235,8 +235,8 @@ export default {
                     this.loading = false;              
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data || {};
-                        if(resData.records){
-                            this.tableDataList = resData.records || [];
+                        if(resData.data){
+                            this.tableDataList = resData.data || [];
                             this.searchObj.paging.totalItems = resData.total || 0;
                         }                        
                     }else {

@@ -150,6 +150,23 @@ export default {
             this.isShow = true;
             this.item = item;
             this.brunch = brunch;
+            this.form.quota = {
+                cpu:200,
+                instances:100,
+                volumes:100,
+                snapshot:100,
+                volumeSize:10000,
+                ram:500,
+                securityGroup:100,
+                securityGroupRule:1000,
+                floatingIps:500,
+                network:100,
+                ports:500,
+                routers:100,
+                subnet:100,
+                backup:200,
+                backupSize:10000
+            };
             this.roleType = this.user.roleType;
             console.log(this.user.roleType);
             if(optype === 2){
