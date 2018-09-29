@@ -16,16 +16,18 @@
                 </p>
                 <p> <span>电话:</span> <span>{{item.mobile}}</span></p>
                 <p> <span>邮箱:</span> <span>{{item.email}}</span></p>
-                <p>
-                    <span>附件:</span>
-                    <span v-if="item.attach">
-                        {{returnAttach(item.attach)}}
-                        <a class="btn-link ml5" @click="searchFile(item.attach)">查看</a>
-                    </span>
-                    <span v-else>无</span>
-                </p>
+                <div class="clearfix">
+                    <div class="pull-left">附件:</div>
+                    <div v-if="item.attach" class="pull-left ml10">
+                        <p v-for="attach in attachArr" :key="attach">
+                        {{returnAttach(attach)}}
+                        <a class="btn-link ml5" @click="searchFile(attach)">查看</a>
+                        </p>
+                    </div>
+                    <span v-else class="pull-left">无</span>
+                </div>
             </div>
-            <hr>
+            <hr class="mt10">
             <p class="top mt20" >最新回复</p>
             <div class="reply mb10" v-for="(item, index) in replayData" :key="index">
                 <p>回复内容：{{item.suppleContent}}</p>
@@ -50,6 +52,7 @@ export default {
             resolve: null,
             reject: null,
             API_URL,
+            attachArr:[],
             item:{},
             replayData: []
         };
@@ -59,6 +62,10 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
+            this.item = item;
+            if(item.attach){
+                this.attachArr = item.attach.split(',');
+            }
             console.log('item',item);
             this.getOrderSupple(item.orderNO);
             return new Promise((resolve, reject) => {

@@ -209,8 +209,8 @@ export default {
                 .then((res) => {
                     $log(res);
                     let resData = res.data;
-                    if(resData && resData.data){
-                        this.tableData = resData.data || [];
+                    if(resData && resData.records){
+                        this.tableData = resData.records || [];
                         this.searchObj.paging.totalItems = resData.total || 0;
                     }
                 }).catch((err) => {

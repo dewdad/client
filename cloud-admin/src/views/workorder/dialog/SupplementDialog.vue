@@ -167,9 +167,11 @@ export default {
             supplement(params)
                 .then(res => {
                     if (res && res.data) {
-                        let data = res.data;
-                        $log(data);
-                        this.resolve(res);
+                        if(res.code === '0000'){
+                            this.resolve(res);
+                            return this.$alert('操作成功！','提示');
+                        }
+
                     }
                     this.loading = false;
                 })

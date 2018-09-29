@@ -91,7 +91,7 @@ export default {
         },
         clearIndex(){
             this.searchObj.searchText = '';
-            if([this.type] && this.formInline.searchText){
+            if([this.type] && this.searchObj.searchText){
                 this.searchObj.paging.pageIndex = 1;
             }
         },
