@@ -6,8 +6,8 @@
                     type="info"
                     :closable="false">
             </el-alert>
-            <el-form-item label="子网：" prop="networkId" :label-width="formLabelWidth" class="mt20">
-                <el-select v-model="form.networkId">
+            <el-form-item label="子网：" prop="subnetId" :label-width="formLabelWidth" class="mt20">
+                <el-select v-model="form.subnetId">
                     <el-option v-for="item in pull" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
@@ -45,12 +45,12 @@ export default {
             pull:[],
             item:{},
             form:{
-                networkId:'',
+                subnetId:'',
                 fixedIp:'',
                 routerId:'',
             },
             rules:{
-                networkId: [
+                subnetId: [
                     { required: true, message: '请输选择子网', trigger: 'blur' }
                 ]
             }
@@ -66,7 +66,7 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
-            this.form.networkId = '';
+            this.form.subnetId = '';
             this.form.routerId = item.id;
             this.form.name = item.name;
             console.log('item',item);

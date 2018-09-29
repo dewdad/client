@@ -178,7 +178,7 @@ export default {
         //显示当前租户的详情
         selTenant(id){
             this.selTenantId = id;
-            this.getAdminOverviewFn(id)
+            // this.getAdminOverviewFn(id)
         },
         // 
         getTenantIntroFn() {

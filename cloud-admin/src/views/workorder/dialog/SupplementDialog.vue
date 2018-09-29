@@ -158,7 +158,7 @@ export default {
         // 保存问题补充
         saveSupplement() {
             let params = {
-                orderAttach: this.uploadImgUrl[0],
+                attachUrl: this.uploadImgUrl[0],
                 orderId: this.myticketInfo.id,
                 orderNO: this.myticketInfo.orderNO,
                 suppleContent: this.ruleForm.supple
@@ -168,6 +168,7 @@ export default {
                 .then(res => {
                     if (res && res.data) {
                         if(res.code === '0000'){
+                            this.$refs.upload.clearFiles();
                             this.resolve(res);
                             return this.$alert('操作成功！','提示');
                         }
