@@ -23,12 +23,14 @@
             </el-select>
             <span class="ml10 mr10">时间范围：</span>
             <el-date-picker
+            style="width: 400px !important;"
             v-model="searchObj.daterange"
-            type="daterange"
+            type="datetimerange"
             size="small"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            value-format="yyyy-MM-dd">
+            :default-time="['00:00:00', '23:59:59']"
+            value-format="yyyy-MM-dd HH:mm:ss">
             </el-date-picker>
             <span class="ml10 mr10">工单编号：</span>
             <el-input class="workList mr10" v-model="searchObj.orderNO" size="small"></el-input>
@@ -133,10 +135,9 @@ export default {
     data() {
         let orderStatus = [
             {key:'' ,'text':'全部',value:''},
-            {key:1,'text':'待审核',value:'1'},
-            {key:2,'text':'处理中',value:'2'},
-            {key:3,'text':'待确认',value:'3'},
-            {key:4,'text':'已完成',value:'4'}
+            {key:1,'text':'待处理',value:'1'},
+            {key:2,'text':'已处理',value:'2'},
+            {key:3,'text':'已关闭',value:'3'}
         ];
         let cols = [
             { column: 'orderNO', text: '工单编号', width: '20%' },
@@ -234,10 +235,8 @@ export default {
                     this.loading = false;              
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                         let resData = res.data || {};
-                        if(resData.data){
-                            this.tableDataList = resData.data || [];
-                            this.searchObj.paging.totalItems = resData.total || 0;
-                        }                        
+                        this.tableDataList = resData.data || [];
+                        this.searchObj.paging.totalItems = resData.total;                       
                     }else {
                         $log(res.msg);
                     }                   
