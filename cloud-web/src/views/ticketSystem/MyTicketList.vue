@@ -13,7 +13,7 @@
         <!-- 搜索筛选栏 -->
         <div class="mt20 mb20 font12">
             <span class="mr10">产品类型：</span>
-            <el-select v-model="searchObj.moduleType" size="small" placeholder="请选择" value-key="value">
+            <el-select v-model="searchObj.moduleType" size="small" placeholder="请选择" clearable  value-key="value">
                 <el-option
                 v-for="item in moduleTypes"
                 :key="item.value"
@@ -24,12 +24,11 @@
             <span class="ml10 mr10">时间范围：</span>
             <el-date-picker
             v-model="searchObj.daterange"
-            type="datetimerange"
+            type="daterange"
             size="small"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            :default-time="['00:00:00','23:59:59']"
-            value-format="yyyy-MM-dd HH:mm:ss">
+            value-format="yyyy-MM-dd">
             </el-date-picker>
             <span class="ml10 mr10">工单编号：</span>
             <el-input class="workList mr10" v-model="searchObj.orderNO" size="small"></el-input>
@@ -96,7 +95,7 @@
                     <el-table-column label="操作" key="op" width="250">
                         <template slot-scope="scope">
                             <!-- 查看 -->
-                            <router-link :to="{ name: 'app.ticketSystem.info', params: { id: scope.row.id }}" class="color-primary finger-cursor" >查看</router-link>
+                            <router-link :to="{ name: 'app.ticketSystem.info', params: { id: scope.row.orderNO }}" class="color-primary finger-cursor" >查看</router-link>
                             <b class="link-division-symbol"></b>
                             <!-- 关闭 -->
                             <span @click="closeWork(scope.row.id)" class="color-primary finger-cursor">关闭</span>
