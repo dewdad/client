@@ -1,4 +1,3 @@
-
 import EcsInstDetailHeader from './DetailHeader';
 import ChartsLine from '@/components/charts/ChartsLine.vue';
 import EchartsLine from '@/components/charts/EchartsLine.vue';
@@ -8,15 +7,9 @@ import CustomImageDialog from '../ecsDialog/CustomImageDialog';
 import {mapGetters} from 'vuex';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 import CopyText from '@/components/copy/copyText';
-import {     
-    moniterEchartMetricData
-} from '@/service/ecs/overview';
+import {moniterEchartMetricData} from '@/service/ecs/overview';
 
-
-import { 
-    getInstanceDetail
-} from '@/service/ecs/detail/index';
-
+import {getInstanceDetail} from '@/service/ecs/detail/index';
 
 export default {
     name: 'EcsInstDetail',
@@ -29,16 +22,16 @@ export default {
         CopyText,
         EchartsLine
     },
-    data() { 
-        let stateParams = this.$route.params || {};     
+    data() {
+        let stateParams = this.$route.params || {};
         return {
             flavorId: '',
             ECS_STATUS,
             stateParams,
-            ecsInst: stateParams.item ? stateParams.item : {id:stateParams.id},
-            addresses:{},
-            instanceNet:{},
-            instDetailTop:{},
+            ecsInst: stateParams.item ? stateParams.item : {id: stateParams.id},
+            addresses: {},
+            instanceNet: {},
+            instDetailTop: {},
             seriesData_cpu: [],
             legendData_cpu: ['CPU使用率'],
             xData_cpu: [],
@@ -55,12 +48,12 @@ export default {
             lineStyle_net: ['#f60', '#7c84dc'],
             areaStyle_net: ['#ffcaa6', '#e1ae9e'],
             loadingBody: false,
-            
-            searchDate:'1h',
-            searchObj:{
-                startDate:'',
-                endDate:'',
-                dateRange:[]
+            loading: true,
+            searchDate: '1h',
+            searchObj: {
+                startDate: '',
+                endDate: '',
+                dateRange: []
             }
         };
     },
@@ -68,7 +61,7 @@ export default {
         getSecurityGroupName(val) {
             return val === 'default' ? '默认安全组' : val;
         },
-        selectDetailTime(){
+        selectDetailTime() {
             console.log(this.searchObj.dateRange);
             this.searchDate = '';
             this.searchObj.startDate = this.searchObj.dateRange[0];
@@ -77,121 +70,122 @@ export default {
             this.searchCharts('mem');
             this.searchCharts('net');
         },
-        dataChangeType(value){
+        dataChangeType(value) {
             this.searchObj.dateRange = [];
             console.log(value);
-            let now ,st;
-            switch(value){
-                case '1h':{  
+            let now, st;
+            switch (value) {
+                case '1h': {
                     now = new Date();
                     st = new Date(now);
-                    st.setHours(st.getHours() - 1); 
+                    st.setHours(st.getHours() - 1);
                     break;
                 }
-                case '6h':{  
-                    now = new Date();
-                    st = new Date(now);  
-                    st.setHours(st.getHours() - 6);                              
-                    break;
-                }
-                case '1d':{ 
-                    now = new Date();
-                    st = new Date(now);   
-                    st.setHours(st.getHours() - 24);                         
-                    break;
-                }
-                case '7d':{ 
-                    now = new Date();
-                    st = new Date(now); 
-                    st.setHours(st.getHours() - 7 * 24);                                
-                    break;
-                }
-                case '30d':{ 
-                    now = new Date();
-                    st = new Date(now);   
-                    st.setHours(st.getHours() - 24 * 30);                            
-                    break;
-                }
-                default:{
+                case '6h': {
                     now = new Date();
                     st = new Date(now);
-                    st.setHours(st.getHours() - 1); 
+                    st.setHours(st.getHours() - 6);
+                    break;
                 }
-            }  
+                case '1d': {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 24);
+                    break;
+                }
+                case '7d': {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 7 * 24);
+                    break;
+                }
+                case '30d': {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 24 * 30);
+                    break;
+                }
+                default: {
+                    now = new Date();
+                    st = new Date(now);
+                    st.setHours(st.getHours() - 1);
+                }
+            }
             this.searchObj.startDate = st;
             this.searchObj.endDate = now;
             this.searchObj.dateRange.push(st);
             this.searchObj.dateRange.push(now);
 
-
-            this.searchCharts('cpu');
-            this.searchCharts('mem');
-            this.searchCharts('net');
+            this.searchAll();
         },
-        async search (type) {
+        async search(type) {
             await this.getInstanceDetail(this.stateParams.id);
-            await this.searchCharts('mem');
-            await this.searchCharts('cpu');
-            await this.searchCharts('net');
+            await this.searchAll();
             if (type === 1) {
                 this.loadingBodyFn();
             }
         },
+        async searchAll() {
+            this.loading = true;
+            await this.searchCharts('mem');
+            await this.searchCharts('cpu');
+            await this.searchCharts('net');
+            this.loading = false;
+        },
         // 获取基本信息与配置信息
-        getInstanceDetail:function (instanceId) {
-            return getInstanceDetail(instanceId).then( (res) => {
-                if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
-                    console.warn('getInstanceDetail',res);                       
+        getInstanceDetail: function(instanceId) {
+            return getInstanceDetail(instanceId).then(res => {
+                if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
+                    console.warn('getInstanceDetail', res);
                     let ecsInst = res.data;
                     this.ecsInst = ecsInst;
-                    this.addresses = ecsInst.addresses.addresses;                               
-                } 
-            });            
+                    this.addresses = ecsInst.addresses.addresses;
+                }
+            });
         },
-        searchCharts:function (dataType) {
-            if(!this.searchObj.startDate || !this.searchObj.endDate)
-            {
+        searchCharts: function(dataType) {
+            if (!this.searchObj.startDate || !this.searchObj.endDate) {
                 let now = new Date();
                 let st = new Date(now);
-                st.setHours(st.getHours() - 1); 
+                st.setHours(st.getHours() - 1);
                 this.searchObj.startDate = st;
                 this.searchObj.endDate = now;
                 this.searchObj.dateRange.push(st);
                 this.searchObj.dateRange.push(now);
-            }  
-            let filters = this.$options.filters;  
+            }
+            let filters = this.$options.filters;
             let data = {
-                startTime: filters['date'](this.searchObj.startDate ,'YYYY-MM-DD HH:mm:ss'),
-                endTime: filters['date'](this.searchObj.endDate,'YYYY-MM-DD HH:mm:ss'),
+                startTime: filters['date'](this.searchObj.startDate, 'YYYY-MM-DD HH:mm:ss'),
+                endTime: filters['date'](this.searchObj.endDate, 'YYYY-MM-DD HH:mm:ss'),
                 dataType: dataType, //'cpu','mem','net'
                 instanceType: 'ecs',
                 //searchAllEcs: 'true',
                 instanceId: this.stateParams.id
             };
-            moniterEchartMetricData(data).then( (res) => {
-                if(res && res.code && res.code === this.CODE.SUCCESS_CODE){
+            moniterEchartMetricData(data).then(res => {
+                if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
                     let datas = res.data || [];
-                    switch(dataType){
-                        case 'cpu':{  
+                    switch (dataType) {
+                        case 'cpu': {
                             this.seriesData_cpu = datas;
                             this.xData_cpu = datas[0].xData;
                             break;
                         }
-                        case 'mem':{  
+                        case 'mem': {
                             this.seriesData_mem = datas;
-                            this.xData_mem = datas[0].xData;                                
+                            this.xData_mem = datas[0].xData;
                             break;
                         }
-                        case 'net':{ 
+                        case 'net': {
                             this.seriesData_net = datas;
-                            this.xData_net = datas[0].xData;                                 
+                            this.xData_net = datas[0].xData;
                             break;
                         }
-                        default:{}
-                    }    
-                }  
+                        default: {
+                        }
+                    }
+                }
             });
-            
         },
         loadingBodyFn() {
             this.loadingBody = true;
@@ -200,10 +194,10 @@ export default {
             }, 500);
         }
     },
-    created () {
-        this.stateParams = this.$route.params || {}; 
-        console.log('stateParams' + JSON.stringify(this.stateParams),this.stateParams.item );
-        this.search();      
+    created() {
+        this.stateParams = this.$route.params || {};
+        console.log('stateParams' + JSON.stringify(this.stateParams), this.stateParams.item);
+        this.search();
     },
     computed: {
         ...mapGetters(['userInfo']),
@@ -211,16 +205,14 @@ export default {
             let state = this.searchDate === '1h' || this.searchDate === '6h' || this.searchDate === '1d';
             return state;
         },
-        loading() {
-            return this.seriesData_cpu.length > 0 
-            && this.seriesData_mem.length > 0 
-            && this.seriesData_net.length > 0;
-        },
+        // loading() {
+        //     return this.seriesData_cpu.length > 0 && this.seriesData_mem.length > 0 && this.seriesData_net.length > 0;
+        // },
         // 默认安全组
         securityGroupName() {
             let security_groups = this.ecsInst.security_groups;
             let str = [];
-            for(let k in security_groups) {
+            for (let k in security_groups) {
                 str.push(security_groups[k].name);
             }
             return str.map(e => this.getSecurityGroupName(e)).join(',');
@@ -229,7 +221,7 @@ export default {
         // 私有网络
         vpcName() {
             let vpcNameStr = [];
-            for(let k in this.addresses) {
+            for (let k in this.addresses) {
                 vpcNameStr.push(k);
             }
             return vpcNameStr.join(',');
@@ -237,9 +229,9 @@ export default {
         // 浮动IP
         floatIP() {
             let floatIPStr = [];
-            for(let k in this.addresses) {
+            for (let k in this.addresses) {
                 let add2 = this.addresses[k];
-                for (let k2 in add2){
+                for (let k2 in add2) {
                     if (add2[k2]['OS-EXT-IPS:type'] === 'floating') {
                         floatIPStr.push(add2[k2]['addr']);
                     }
@@ -250,9 +242,9 @@ export default {
         // 私有IP
         privateIP() {
             let privateIPStr = [];
-            for(let k in this.addresses) {
+            for (let k in this.addresses) {
                 let add2 = this.addresses[k];
-                for (let k2 in add2){
+                for (let k2 in add2) {
                     if (add2[k2]['OS-EXT-IPS:type'] === 'fixed') {
                         privateIPStr.push(add2[k2]['addr']);
                     }
@@ -261,5 +253,4 @@ export default {
             return privateIPStr.join(',');
         }
     }
-
 };

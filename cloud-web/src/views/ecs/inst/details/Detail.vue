@@ -151,7 +151,7 @@
                     </div>
                 </el-col>
 
-                <el-col :span="17" style="width: 68.8%" v-loading="!loading">
+                <el-col :span="17" style="width: 68.8%" v-loading="loading">
                     <div class="panel panel-default" >
                         <!-- 时间段筛选 -->
                         <div class="panel-heading chart-heading">
