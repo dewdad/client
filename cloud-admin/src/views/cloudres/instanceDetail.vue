@@ -23,19 +23,19 @@
                 <el-col :span="12">
                     <el-form :inline="true" size="small">
                         <el-form-item>
-                            <el-button type="primary" @click="serverGetVNCConsole(item)">
+                            <el-button type="primary" @click="serverGetVNCConsole(item)" :disabled="item.status != 'ACTIVE'">
                                 <span class="iconfont icon-chaolianjie font12"></span>  远程连接</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="bootEcs(item,'start')">
+                            <el-button type="primary" @click="bootEcs(item,'start')" :disabled="item.status == 'ACTIVE'">
                                 <span class="iconfont icon-dashboard_icon_peop3 font12"></span> 开机</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary"  @click="bootEcs(item,'stop')">
+                            <el-button type="primary"  @click="bootEcs(item,'stop')" :disabled="item.status != 'ACTIVE'">
                                 <span class="iconfont icon-tingzhi font12"></span>  关机</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="rebootEcs(item)">
+                            <el-button type="primary" @click="rebootEcs(item)" :disabled="item.status != 'ACTIVE'">
                                 <span class="iconfont icon-zhongqi font12"></span>  重启</el-button>
                         </el-form-item>
                         <el-form-item class="pull-right">
@@ -335,7 +335,7 @@
 </template>
 
 <script>
-// import {createUser} from '@/service/usermgr/deptmgr.js';
+
 import EchartsLine from '@/components/charts/EchartsLine';
 import {getHostItem,getHostItemDetail,showVolumeDetails,getEcharts,rebootEcs,bootEcs,serverGetVNCConsole} from '@/service/cloudres.js';
 export default {
@@ -374,10 +374,9 @@ export default {
     beforeRouteLeave(to, from, next){
         //打开详情页（或者下一个任意界面）之前，把筛选条件保存到localStorage，如果离开列表页并且打开的不是详情页则清除，也可以选择不清除
         if (to.name == 'app.resources.instance') {
-            let condition = JSON.stringify(this.stateParams);
-            localStorage.setItem('condition', condition);
+            localStorage.removeItem('instanceDetail');
         }else{
-            localStorage.removeItem('condition');
+            localStorage.removeItem('instanceDetail');
         }
         next();
     },
@@ -482,14 +481,6 @@ export default {
             return outstr;
         },
         setOrigin(){
-            let param = localStorage.getItem('condition');
-            if(param){
-                this.stateParams = JSON.parse(param);
-                this.item = this.stateParams.item;
-            }else{
-                let condition = JSON.stringify(this.stateParams);
-                localStorage.setItem('condition', condition);
-            }
 
             getHostItem(this.item.id).then(ret => {
                 $log('getHostItem', ret);
@@ -620,10 +611,19 @@ export default {
     },
     created(){
         //从localStorage中读取条件并赋值给查询表单
-        let condition = localStorage.getItem('condition');
-        if (condition != null) {
-            this.stateParams = JSON.parse(condition);
+        if(this.stateParams && this.stateParams.item){
             this.item = this.stateParams.item;
+            let str = JSON.stringify(this.stateParams);
+            console.log('str',str);
+            localStorage.setItem('instanceDetail', str);
+        }
+        let instanceDetail = localStorage.getItem('instanceDetail');
+        if (instanceDetail) {
+            let json = JSON.parse(instanceDetail);
+            if(json.item){
+                this.stateParams = json;
+                this.item = this.stateParams.item;
+            }
         }
     }
 };

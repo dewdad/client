@@ -88,9 +88,10 @@ export default {
 
                 let resData = ret.data;
                 if(resData){
-
                     this.usage = resData || [];
-                    let percent = parseInt(this.usage.current / this.usage.max) * 100;
+                    let current = parseInt(this.usage.current);
+                    let max = parseInt(this.usage.max);
+                    let percent = (current / max) * 100;
                     this.percent = percent > 100 ? 100 : percent;
                 }
             });
