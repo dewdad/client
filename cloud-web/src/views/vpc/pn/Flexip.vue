@@ -113,7 +113,6 @@ export default {
                 this.isLoading = true;
                 let params = {
                     ...this.searchObj.paging,
-                    offset: 1,
                     statusroptionValue: 'all',
                     status: this.state
                 };
@@ -138,7 +137,7 @@ export default {
         getScreenVal(params) {
             $log('searchVal', params);
             this.searchObj.paging.pageIndex = params.pageIndex;
-            this.floatingIpAddressVal = params.fileds.name;
+            this.floatingIpAddressVal = params.name;
             this.fetchData();
         },
         // 绑定浮动Ip

@@ -23,6 +23,9 @@
                     {{scope.row.protocol || '所有'}}
                 </template>
             </el-table-column>
+            <!-- 以太网类型 -->
+            <el-table-column prop="ethertype" label="以太网类型">
+            </el-table-column>
             <!-- 端口范围 -->
             <el-table-column prop="protocol" label="端口范围">
                 <template slot-scope="scope">
