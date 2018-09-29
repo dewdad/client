@@ -208,7 +208,6 @@ export default {
     mounted() {
         if(this.stateParams && this.stateParams.item){
             let str = JSON.stringify(this.stateParams);
-            console.log('str',str);
             localStorage.setItem('createUserParam', str);
 
         }
