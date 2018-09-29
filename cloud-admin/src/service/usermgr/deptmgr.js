@@ -192,11 +192,9 @@ export async function editUser(data) {
  */
 export async function resetPwd(data) {
     let newPwd = await RSA.encrypt(data.newPwd);
-    let oldPwd = await RSA.encrypt(data.oldPwd);
     let confirmPwd = await RSA.encrypt(data.confirmPwd);
     let postdata = {
         newPwd:newPwd,
-        oldPwd:oldPwd,
         confirmPwd:confirmPwd,
         userId:data.userId,
         userName:data.username
