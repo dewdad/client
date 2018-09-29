@@ -12,7 +12,7 @@
                     <p>回复内容：{{item.suppleContent}}</p>
                     <p>{{item.createTime | date}}</p>
                     <span v-if="item.attachUrl">
-                        {{returnAttach(item.attachUrl)}}
+                        {{item.attachUrl}}
                         <a class="btn-link ml5" @click="searchFile(item.attachUrl)">查看</a>
                     </span>
                 </div>

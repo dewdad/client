@@ -38,10 +38,9 @@ export async function getTodoOrderList(data) {
  */
 export async function searchFile(data) {
     console.log('data',data);
-    let response = await http.get(ORDER_MODULE.searchFile, {
-        params: data
-    });
-    return response.data;
+    let encode = encodeURIComponent(data.fileName);
+    let url = API_URL + ORDER_MODULE.searchFile +'?fileName='+ encode;
+    window.open(url);
 }
 /**
  *创建工单
@@ -99,6 +98,16 @@ export async function transferList(data) {
     let response = await http.get(ORDER_MODULE.transferList, {
         params: data
     });
+    return response.data;
+}
+/**
+ * 获取工单详情
+ * @param {*}
+ */
+export async function detail(data) {
+    console.log('data',data);
+    let URL = ORDER_MODULE.detail + data;
+    let response = await http.get(URL);
     return response.data;
 }
 
