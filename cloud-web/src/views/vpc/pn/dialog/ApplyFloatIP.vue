@@ -79,6 +79,7 @@ export default {
                 this.loadingBtn = true;
                 confirmApplyFloatIP(params)
                     .then((ret) => {
+                        this.loadingBtn = false;
                         if (ret.code === '0000') {
                             console.warn('confirmApplyFloatIP', ret);
                             this.hide();
