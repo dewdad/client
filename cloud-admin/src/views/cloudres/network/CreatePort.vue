@@ -76,7 +76,6 @@ export default {
             {key:'false',value:'DOWN'},
         ];
         let chooseTypeList = [
-            {key:'none',value:'未指定'},
             {key:'sub',value:'子网'},
             {key:'fix',value:'固定IP地址'}
         ];
