@@ -113,7 +113,6 @@ export default {
                 this.isLoading = true;
                 let params = {
                     ...this.searchObj.paging,
-                    offset: 1,
                     statusroptionValue: 'all',
                     status: this.state
                 };

@@ -125,6 +125,9 @@
                                   <span v-else>所有</span>
                                 </template>
                             </el-table-column>
+                            <!-- 以太网类型 -->
+                            <el-table-column prop="ethertype" label="以太网类型">
+                            </el-table-column>
                             <!-- 端口范围 -->
                             <el-table-column prop="protocol" label="端口范围">
                                 <template slot-scope="scope">
