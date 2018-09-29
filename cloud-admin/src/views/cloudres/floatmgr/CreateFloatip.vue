@@ -12,7 +12,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="项目配额："  :label-width="formLabelWidth">
-                <el-progress :percentage="(usage.current/usage.max)*100||0"></el-progress>
+                <el-progress :percentage="(parseInt(usage.current/usage.max)*100)||0"></el-progress>
                 <div>已使用 {{usage.current}}, 共{{usage.max}}</div>
             </el-form-item>
         </el-form>

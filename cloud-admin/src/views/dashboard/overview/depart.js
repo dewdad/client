@@ -120,6 +120,7 @@ export default {
                         console.log('json',json);
                         this.brunch = json[0];
                         this.selectedKey.push(this.brunch.id);
+                        this.getAdminOverviewFn(this.brunch.id);
                         console.log('brunch......',this.brunch );
                     }else{
                         this.brunch = this.departData[0];

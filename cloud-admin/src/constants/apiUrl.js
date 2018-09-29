@@ -205,6 +205,7 @@ export const ORDER_MODULE = {
     getTodoOrderList: ORDER + '/getTodoOrderList',//分页查询待办工单
     complete: ORDER + '/complete',//分页查询待办工单
     createOrder: ORDER + '/create',//创建工单
+    orderTODO: ORDER + '/orderTODO',//创转交工单
     delOrder: ORDER + '/delete',
     delReply: ORDER + '/reply',
     transferList: ORDER + '/getUserList',

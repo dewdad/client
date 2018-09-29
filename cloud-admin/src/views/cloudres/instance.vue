@@ -100,8 +100,8 @@
                                             </span>
                                     <el-dropdown-menu slot="dropdown">
                                         <el-dropdown-item @click.native="delEcs(scope.row)">删除</el-dropdown-item>
-                                        <el-dropdown-item @click.native="serverGetVNCConsole(scope.row)">远程连接</el-dropdown-item>
-                                        <el-dropdown-item @click.native="bootEcs(scope.row,'pause')" v-if="scope.row.status != 'PAUSED'">暂停</el-dropdown-item>
+                                        <el-dropdown-item @click.native="serverGetVNCConsole(scope.row)" v-if="scope.row.status == 'ACTIVE'">远程连接</el-dropdown-item>
+                                        <el-dropdown-item @click.native="bootEcs(scope.row,'pause')" v-if="scope.row.status == 'ACTIVE'">暂停</el-dropdown-item>
                                         <el-dropdown-item @click.native="bootEcs(scope.row,'unpause')" v-if="scope.row.status == 'PAUSED'">解除暂停</el-dropdown-item>
                                         <!--<el-dropdown-item @click.native="Virtualmig(scope.row)">云主机热迁移</el-dropdown-item>-->
                                     </el-dropdown-menu>
