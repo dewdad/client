@@ -5,7 +5,7 @@
             <b class="leftBlueBox"></b>
             工单编号：{{myticketInfo && myticketInfo.orderNO}}
             <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" :disabled="myticketInfo.status != 1">补充</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" >补充</el-button>
                 <el-button type="info" size="small" icon="el-icon-delete" @click="deleteOrder()">
                     删除
                 </el-button>
@@ -28,7 +28,9 @@
                             <td><span>实例ID：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.resourceId}}</span></td>
                         </tr>
                         <tr>
-                            <td class="br"><span>状态：</span><span class="color333 ml10">待审核</span></td>
+                            <td class="br"><span>状态：</span>
+                                <span class="color333 ml10" >{{orderStatusVal[0].text}}</span>
+                            </td>
                             <td><span>产品类型：</span><span class="color333 ml10">{{productType[0] && productType[0].label}}</span></td>
                         </tr>
                         <tr>
@@ -39,6 +41,11 @@
                             <td class="br"><span>手机号码：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.mobile}}</span></td>
                             <td><span>邮箱：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.email}}</span></td>
                             
+                        </tr>
+                        <tr>
+                            <td class="br"><span>问题描述：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.remark}}</span></td>
+                            <td></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -60,13 +67,22 @@
                 <i class="iconfont icon-user_profile_people mr10"></i>补充记录
             </div>
             <div class="panel-body zt-panel-body-info">
-                <div class="ml20 mb20 mt20 supplementaryRecord" v-for="(item, index) in supplementList" :key="index">
+                <div class="ml20 mb20 mt20 supplementaryRecord" v-for="(item, index) in addData" :key="index">
                     <img src="@/assets/images/ecs/top-head.svg" width="50" alt="">
                     <ul class="font12 ml20 color999">
                         <li>补充说明：{{item.suppleContent}}</li>
                         <li>{{item.createTime | date}}</li>
                         <li v-if="item.attachUrl">附件：
-                            <p><a class="zt-detail font12" href="https://www.meitiyun.com/people-web/file/getFile.do?fileName=Hello+World.jsp">Hello+World.jsp</a></p>
+                            <div class=" mb10" v-for="(item, index) in addData" :key="index">
+                                <p>补充的内容：{{item.suppleContent}}</p>
+                                <p>补充时间：{{item.createTime | date}}</p>
+                                <div v-if="item.attachUrl">
+                                    <div v-for="(file,index) in addDataFile[index]" :key="index">
+                                        {{returnName(file)}}
+                                        <a class="btn-link ml5" @click="searchFile(file)">查看</a>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -92,11 +108,9 @@ import SupplementDialog from './SupplementDialog';
 export default {
     data() {
         let orderStatus = [
-            {key:'' ,'text':'全部',value:''},
-            {key:1,'text':'待审核',value:'1'},
-            {key:2,'text':'处理中',value:'2'},
-            {key:3,'text':'待确认',value:'3'},
-            {key:4,'text':'已完成',value:'4'}
+            {key:1,'text':'待处理',value:'1'},
+            {key:2,'text':'已处理',value:'2'},
+            {key:3,'text':'关闭',value:'3'},
         ];
         let moduleTypes = [
             {value: '1', label: '弹性云主机',
@@ -144,9 +158,10 @@ export default {
         ];
         return {
             myticketList: [],
+            addDataFile: [],
             orderStatus,
             moduleTypes,
-            supplementList: []
+            addData: []
         };
     },
     components: { 
@@ -170,6 +185,7 @@ export default {
                 item => item.value == this.myticketInfo.orderType
             );
         },
+
         orderStatusVal() {
             return this.orderStatus.filter(
                 item => item.key == this.myticketInfo.status
@@ -210,6 +226,12 @@ export default {
                 });
 
         },
+        // 获得工单图片
+        searchFile(val) {
+            let encode = encodeURIComponent(val);
+            let url = API_URL + '/fileProcess/getFile?fileName=' + encode;
+            return window.open(url);
+        },
         // 删除工单
         deleteOrder(id){
             this.$confirm('删除后，您将无法恢复和查看该工单，请谨慎操作。您确定要删除该工单吗?', '删除确认', {
@@ -236,6 +258,10 @@ export default {
                             
                 });
         },
+        returnName(file){
+            let item = file.split('/');
+            return item[item.length - 1];
+        },
         // 问题补充
         supplementFn() {
             console.warn(this.$refs['SupplementDialog']);
@@ -251,7 +277,16 @@ export default {
                 .then((ret) => {
                     console.warn(ret);
                     if(ret && ret.code && ret.code === this.CODE.SUCCESS_CODE) {
-                        this.supplementList = ret.data.supplement;
+                        this.addData = ret.data.supplement;
+                        if(this.addData){
+                            for(let i = 0;i < this.addData.length;i++){
+                                let arr = [];
+                                if(this.addData[i].attachUrl){
+                                    arr = this.addData[i].attachUrl.split(',');
+                                }
+                                this.addDataFile.push(arr);
+                            }
+                        }
                     }
                 })
                 .catch((err) => {

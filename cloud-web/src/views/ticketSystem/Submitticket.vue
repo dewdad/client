@@ -152,8 +152,6 @@ export default {
                     {value: 37, label: '镜像回源'},
                 ]
             },
-            // {value: '4', label: '云数据库Redis', orderTypes: []},
-            // {value: '5', label: '弹性伸缩', orderTypes: []},
             {value: '6', label: '专有网络VPC',
                 orderTypes: [
                     {value: 60, label: 'VPC使用场景'},

@@ -8,6 +8,7 @@ import RSA from '@/utils/RSA';
  * @param {*}
  */
 export async function deptTree(data) {
+    console.log('adasdasd',data);
     let response = await http.get(DEPT.deptTree, {
         params: data
     });

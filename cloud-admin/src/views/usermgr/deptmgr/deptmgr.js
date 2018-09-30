@@ -121,6 +121,7 @@ export default {
                 searchText:this.formInline.searchText
             };
             $log('params', params);
+            this.deptTreeData = [];
             deptTree(params).then(ret => {
                 $log('treedata', ret);
                 let resData = ret.data;
