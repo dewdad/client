@@ -10,7 +10,7 @@
             </el-form-item>
 
             <el-form-item label="用户名称" prop="username" :label-width="formLabelWidth">
-                <el-input placeholder="再次输入用户名称" v-model="form.username"></el-input>
+                <el-input placeholder="再次输入用户名称" v-model="form.username" disabled></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -62,6 +62,8 @@ export default {
             this.item = item;
             console.log('item',item);
             this.form.username = item.name;
+            this.form.confirmPwd = '';
+            this.form.newPwd = '';
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

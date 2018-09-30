@@ -5,7 +5,7 @@
             <b class="leftBlueBox"></b>
             工单编号：{{myticketInfo && myticketInfo.orderNO}}
             <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn">补充</el-button>                
+                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" :disabled="myticketInfo.status != 1">补充</el-button>
                 <el-button type="info" size="small" icon="el-icon-delete" @click="deleteOrder()">
                     删除
                 </el-button>

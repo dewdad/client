@@ -13,8 +13,8 @@
                     </el-form-item>
 
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'result'"></el-input>
-                        <el-select clearable v-model="formInline.searchText"  placeholder="请选择" v-if="type === 'result'">
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type !== 'result'" @change="clearIndex"></el-input>
+                        <el-select clearable v-model="formInline.searchText"  placeholder="请选择" v-if="type === 'result'" @change="clearIndex">
                             <el-option label="未知" value="0"></el-option>
                             <el-option label="成功" value="1"></el-option>
                             <el-option label="失败" value="2"></el-option>
@@ -259,7 +259,11 @@ export default {
             this.$refs.LogDetail.show(item);
 
         },
-
+        clearIndex(){
+            if([this.type] && this.formInline.searchText){
+                this.searchObj.paging.pageIndex = 1;
+            }
+        },
         currentChange(val){
             this.searchObj.paging.pageIndex = val;
             this.getLoglist();
