@@ -118,16 +118,26 @@ export default {
 
         },
         returnProblemType(type){
-            let item = this.problemType.filter(
-                item => item.value === type
-            );
-            return item[0].label;
+            console.log('returnProblemType',type);
+
+            if(type){
+                for(let i = 0;i < this.problemType.length;i++){
+                    if(this.problemType[i].value === type){
+                        return this.problemType[i].label;
+                    }
+                }
+            }
         },
         returnModuleType(type){
-            let item = this.moduleType.filter(
-                item => item.value === type
-            );
-            return item[0].label;
+            console.log('returnModuleType',type);
+            if(type){
+                for(let i = 0;i < this.moduleType.length;i++){
+                    if(this.moduleType[i].value === type){
+                        return this.moduleType[i].label;
+                    }
+                }
+            }
+
         },
         hide() {
             this.isShow = false;
