@@ -149,7 +149,7 @@
                                         <span class="color-secondary font12" >已使用</span>
                                     </div>
                                     <div class="text-r pt10" style="height: 47px;">
-                                        <div class="font18">96</div>
+                                        <div class="font18">{{ quota.volumeSize-usages.volumeSize|| '0'}}</div>
                                         <span class="color-secondary font12">可用</span>
                                     </div>
                                 </div>

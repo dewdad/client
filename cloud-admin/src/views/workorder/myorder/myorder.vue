@@ -98,9 +98,9 @@
                     <template>
                         <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
-                                <a  @click="transferOrder(scope.row)" class="btn-linker" >转交</a>
-                                <b class="link-division-symbol" ></b>
-                                <a  @click="createRole(scope.row,2)" class="btn-linker" >补充</a>
+                                <a  @click="transferOrder(scope.row)" class="btn-linker" v-if="scope.row.status == 1">转交</a>
+                                <b class="link-division-symbol" v-if="scope.row.status == 1"></b>
+                                <a  @click="reply(scope.row)" class="btn-linker" v-if="scope.row.status == 1">处理</a>
                                 <!--<b class="link-division-symbol" ></b>-->
                                 <!--<a  @click="delOrder(scope.row)" class="btn-linker" >删除</a>-->
 
@@ -124,7 +124,8 @@
         </el-row>
         <create-order ref="CreateOrder"></create-order>
         <order-detail ref="OrderDetail"></order-detail>
-
+        <!--回复-->
+        <reply-dialog ref="ReplyDialog"></reply-dialog>
         <!-- 转交功能 -->
         <transfer-dialog ref="TransferDialog"></transfer-dialog>
         <!-- 补充工单 -->
@@ -138,6 +139,7 @@ import OrderDetail from './OrderDetail';
 
 import TransferDialog from './../dialog/TransferDialog';
 import SupplementDialog from './../dialog/SupplementDialog';
+import ReplyDialog from './../dialog/ReplyDialog';
 
 import {myorderList} from '@/service/order.js';
 export default {
@@ -221,7 +223,8 @@ export default {
         CreateOrder,
         OrderDetail,
         TransferDialog,
-        SupplementDialog
+        SupplementDialog,
+        ReplyDialog
     },
     methods: {
         myorderList(){
@@ -240,6 +243,14 @@ export default {
                     this.searchObj.paging.totalItems = resData.total || 0;
                 }
 
+            });
+        },
+        reply(item){
+            this.$refs.ReplyDialog.show(item).then(ret => {
+                $log('data', ret);
+                if(ret && ret.suppleContent){
+                    this.myorderList();
+                }
             });
         },
         filterHandler(value, row, column) {

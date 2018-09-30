@@ -233,7 +233,12 @@ export default {
             });
         },
         reply(item){
-            this.$refs.ReplyDialog.show(item);
+            this.$refs.ReplyDialog.show(item).then(ret => {
+                $log('data', ret);
+                if(ret && ret.suppleContent){
+                    this.getTodoOrderList();
+                }
+            });
         },
         complete(item){
             let params = {
