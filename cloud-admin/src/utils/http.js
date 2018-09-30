@@ -193,6 +193,8 @@ http.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                 case 408:
+                    let submenu = localStorage.getItem('submenuItems');
+                    if(submenu) localStorage.removeItem('submenuItems');
                     store.dispatch('LOGOUT');
                     Router.push({name: 'login'});
                     break;
