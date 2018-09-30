@@ -69,16 +69,15 @@
                 <i class="iconfont icon-user_profile_people mr10"></i>补充记录
             </div>
             <div class="panel-body zt-panel-body-info">
-                <div class="ml20 mb20 mt20 supplementaryRecord" v-for="(item, index) in addData" :key="index">
-                    <img src="@/assets/images/ecs/top-head.svg" width="50" alt="">
+                <div class="ml20 mb20 mt20 supplementaryRecord" >
                     <ul class="font12 ml20 color999">
-                        <li>补充说明：{{item.suppleContent}}</li>
-                        <li>{{item.createTime | date}}</li>
-                        <li v-if="item.attachUrl">附件：
-                            <div class=" mb10" v-for="(item, index) in addData" :key="index">
+                        <li v-if="item.attachUrl" v-for="(item, index) in addData" :key="index" class="clearfix mb10" style="border-bottom:1px dashed #ddd">
+                            <img src="@/assets/images/ecs/top-head.svg" width="50" class="pull-left" alt="">
+                            <div class=" mb10 pull-left ml20" >
                                 <p>补充的内容：{{item.suppleContent}}</p>
                                 <p>补充时间：{{item.createTime | date}}</p>
-                                <div v-if="item.attachUrl">
+                                <p>附件：</p>
+                                <div v-if="item.attachUrl" style="margin-left: 35px;">
                                     <div v-for="(file,index) in addDataFile[index]" :key="index">
                                         {{returnName(file)}}
                                         <a class="btn-link ml5" @click="searchFile(file)">查看</a>
