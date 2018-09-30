@@ -82,8 +82,8 @@
                         <zt-upload multiple ref="upload"
                         :action="uploadAction"
                         :headers="uploadHeaders"
-                        :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
-                        :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT" 
+                        :accept="3"
+                        limit="3"
                         :file-list="fileList" 
                         :on-exceed="handleExceed" 
                         :on-change="handleChange"
@@ -93,8 +93,8 @@
                         :before-upload="beforeAvatarUpload">
                             <i class="el-icon-plus"></i>
                             <div slot="tip" class="el-upload__tip input-help ">
-                                {{ replaceParamVal("可上传{imageLimit}个 附件每个附件大小不得超过{maxsize}M。附件支持的格式有：{fileAccept}",
-                                [ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT,ZT_CONFIG.TS_IMAGE_SIZE_MAX,ZT_CONFIG.TS_IMAGE_ACCEPT]) }}
+                                {{ replaceParamVal("可上传3个 附件每个附件大小不得超过{maxsize}M。附件支持的格式有：{fileAccept}",
+                                [3,3,3]) }}
                             </div>
                         </zt-upload>  
                     </zt-form-item>
@@ -288,8 +288,8 @@ export default {
             }
         },
         handleExceed(files, fileList) {
-            let msg = $t('account.Auth.departAuth.material.validator.max');
-            this.$message.error(msg);
+            // let msg = $t('account.Auth.departAuth.material.validator.max');
+            this.$message.error('上传材料证明不能多于3张');
         },
         handleRemove(file, fileList) {
             this.fileList = fileList;
