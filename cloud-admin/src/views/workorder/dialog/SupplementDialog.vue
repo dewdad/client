@@ -20,7 +20,7 @@
                     :action="uploadAction" 
                     :headers="uploadHeaders"
                     :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
-                    :limit="1" 
+                    :limit="3"
                     :file-list="fileList" 
                     :on-exceed="handleExceed" 
                     :on-change="handleChange"
@@ -113,7 +113,7 @@ export default {
             });
         },
         handleExceed(files, fileList) {
-            let msg = '只能上传1个附件';
+            let msg = '只能上传3个附件';
             this.$message.error(msg);
         },
         //文件上传:回调函数======================start=============================
@@ -128,6 +128,7 @@ export default {
             this.fileList = fileList;
             if (res.code === '0000') {
                 let fileUrls = res.data || [];
+                console.log('fileUrls',fileUrls);
                 file.remoteFileId = fileUrls[0];
                 this.uploadImgUrl.push(fileUrls[0]);               
             }else{
@@ -158,7 +159,7 @@ export default {
         // 保存问题补充
         saveSupplement() {
             let params = {
-                attachUrl: this.uploadImgUrl[0],
+                attachUrl: this.uploadImgUrl.join(','),
                 orderId: this.myticketInfo.id,
                 orderNO: this.myticketInfo.orderNO,
                 suppleContent: this.ruleForm.supple

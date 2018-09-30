@@ -33,10 +33,11 @@
                 <p>补充的内容：{{item.suppleContent}}</p>
                 <p>补充时间：{{item.createTime | date}}</p>
                 <div v-if="item.attachUrl">
-                        {{returnAttach(item.attachUrl)}}
-                        <a class="btn-link ml5" @click="searchFile(item.attachUrl)">查看</a>
+                    <div v-for="(file,index) in addDataFile" :key="index">
+                        {{file}}
+                        <a class="btn-link ml5" @click="searchFile(file)">查看</a>
                     </div>
-
+                </div>
             </div>
             <hr class="mt10">
             <p class="top mt20" >最新回复</p>
@@ -62,7 +63,8 @@ export default {
             attachArr:[],
             item:{},
             replayData: [],
-            addData: []
+            addData: [],
+            addDataFile:[]
         };
     },
     props: {},
@@ -129,6 +131,16 @@ export default {
                         if(res.data){
                             this.replayData = res.data.orderReply;
                             this.addData = res.data.supplement;
+                            // this.addDataFile = res.data.supplement.attachUrl.split(',');
+                            // if(this.addData){
+                            //     for(let i =  0;i<this.addData.length;i++){
+                            //         let arr = [];
+                            //         if(this.addData[i].attachUrl){
+                            //
+                            //         }
+                            //     }
+                            // }
+                            console.log('this.addDataFile',this.addDataFile);
                         }
 
                     }else{
