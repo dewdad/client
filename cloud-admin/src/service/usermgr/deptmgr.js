@@ -199,7 +199,7 @@ export async function resetPwd(data) {
         userId:data.userId,
         userName:data.username
     };
-    let url = DEPT.resetPwd+data.userId+'/password';
+    let url = DEPT.resetPwd+data.userId+'/resetPassword';
     let response = await http.put(url, postdata);
     return response;
 }

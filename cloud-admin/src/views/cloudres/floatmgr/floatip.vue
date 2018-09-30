@@ -6,12 +6,12 @@
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <el-form-item>
-                    <el-button type="primary" @click="createFloatIp()">
-                    <span class="icon-zt_plus"></span>
-                    分配IP各项目
-                    </el-button>
-                    </el-form-item>
+                    <!--<el-form-item>-->
+                    <!--<el-button type="primary" @click="createFloatIp()">-->
+                    <!--<span class="icon-zt_plus"></span>-->
+                    <!--分配IP各项目-->
+                    <!--</el-button>-->
+                    <!--</el-form-item>-->
 
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="floatIplist"></el-button>

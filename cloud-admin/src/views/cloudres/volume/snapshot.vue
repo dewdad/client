@@ -91,7 +91,7 @@
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <!--<span   v-if="scope.row.status !='available' && scope.row.status !='in-use' && scope.row.status !='awaiting-transfer' && 'deleting'!=item.status" class="color999">删除</span>-->
-                                <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' || scope.row.status=='in-use'" class="btn-linker">删除</a>
+                                <a  @click="delCloud(scope.row)" v-if="scope.row.status=='available' " class="btn-linker">删除</a>
                             </template>
                         </el-table-column>
                     </template>
