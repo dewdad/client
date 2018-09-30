@@ -83,7 +83,7 @@
                         :action="uploadAction"
                         :headers="uploadHeaders"
                         :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
-                        :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT" 
+                        :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT"
                         :file-list="fileList" 
                         :on-exceed="handleExceed" 
                         :on-change="handleChange"
@@ -288,8 +288,8 @@ export default {
             }
         },
         handleExceed(files, fileList) {
-            let msg = $t('account.Auth.departAuth.material.validator.max');
-            this.$message.error(msg);
+            // let msg = $t('account.Auth.departAuth.material.validator.max');
+            this.$message.error('上传材料证明不能多于3张');
         },
         handleRemove(file, fileList) {
             this.fileList = fileList;
@@ -323,7 +323,7 @@ export default {
         .el-form {           
             .el-form-item {
                 .el-upload--picture{
-                    border:1px dashed #999;
+                    border:1px dashed #666;
                     width:120px;
                     i {
                         font-size: 40px;
