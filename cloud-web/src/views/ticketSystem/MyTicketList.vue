@@ -13,7 +13,7 @@
         <!-- 搜索筛选栏 -->
         <div class="mt20 mb20 font12">
             <span class="mr10">产品类型：</span>
-            <el-select v-model="searchObj.moduleType" size="small" placeholder="请选择" clearable  value-key="value">
+            <el-select v-model="searchObj.moduleType" size="small" style="width: 130px !important;" placeholder="请选择" clearable  value-key="value">
                 <el-option
                 v-for="item in moduleTypes"
                 :key="item.value"
@@ -23,7 +23,7 @@
             </el-select>
             <span class="ml10 mr10">时间范围：</span>
             <el-date-picker
-            style="width: 400px !important;"
+            style="width: 300px !important;"
             v-model="searchObj.daterange"
             type="datetimerange"
             size="small"

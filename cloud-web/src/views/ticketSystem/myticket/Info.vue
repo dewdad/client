@@ -5,7 +5,7 @@
             <b class="leftBlueBox"></b>
             工单编号：{{myticketInfo && myticketInfo.orderNO}}
             <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" :disable="myticketInfo.status !=1">补充</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" :disabled="myticketInfo.status != 1">补充</el-button>
                 <el-button type="info" size="small" icon="el-icon-delete" @click="deleteOrder()">
                     删除
                 </el-button>
@@ -46,7 +46,7 @@
                         </tr>
                         <tr>
                             <td class="br"><span>问题描述：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.remark}}</span></td>
-                            <td>{}}</td>
+                            <td></td>
 
                         </tr>
                     </tbody>
@@ -163,18 +163,14 @@ export default {
             addDataFile: [],
             orderStatus,
             moduleTypes,
-            addData: []
+            addData: [],
+            myticketInfo:{}
         };
     },
     components: { 
         SupplementDialog
     },
     computed: {
-        myticketInfo () {
-            return this.myticketList.filter(
-                item => item.orderNO === this.$route.params.id
-            )[0];
-        },
         productType () {
             if(!this.myticketInfo) return [];
             return this.moduleTypes.filter(
@@ -209,6 +205,9 @@ export default {
                         let resData = res.data || {};
                         if(resData.total){
                             this.myticketList = resData.data;
+                            this.myticketInfo = this.myticketList.filter(
+                                item => item.orderNO === this.$route.params.id
+                            )[0];
                             this.getOrderDetail();
                         } else {
                             this.$alert('您查询的工单不存在', {
@@ -298,6 +297,7 @@ export default {
     },
     async created(){
         await this.getOrder();
+
     }
 };
 </script>
