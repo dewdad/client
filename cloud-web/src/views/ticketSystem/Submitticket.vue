@@ -152,8 +152,6 @@ export default {
                     {value: 37, label: '镜像回源'},
                 ]
             },
-            // {value: '4', label: '云数据库Redis', orderTypes: []},
-            // {value: '5', label: '弹性伸缩', orderTypes: []},
             {value: '6', label: '专有网络VPC',
                 orderTypes: [
                     {value: 60, label: 'VPC使用场景'},
@@ -299,19 +297,19 @@ export default {
         beforeAvatarUpload(file, showError) {
             console.log(file);
 
-            const isJPG = ['image/jpeg', 'image/jpg', 'image/png'].includes(file.type);
+            // const isJPG = ['image/jpeg', 'image/jpg', 'image/png'].includes(file.type);
             const MiB = 1024 * 1024; //1MB 字节大小；
             const isLt8M = file.size < this.ZT_CONFIG.TS_IMAGE_SIZE_MAX * MiB;
-            if (!isJPG) {
-                let msg = $t('account.Auth.companyAuth.msg.imageAccept');
-                showError(msg);
-                //this.$message.error(msg);
-            }
+            // if (!isJPG) {
+            //     let msg = $t('account.Auth.companyAuth.msg.imageAccept');
+            //     showError(msg);
+            //     //this.$message.error(msg);
+            // }
             if (!isLt8M) {
                 let msg = $t('account.Auth.imageSizeTip') + this.ZT_CONFIG.TS_IMAGE_SIZE_MAX + $t('abbr.mb');
                 showError(msg);
             }
-            return isJPG && isLt8M;
+            return isLt8M;
         }
         //文件上传:回调函数======================end=============================
     }

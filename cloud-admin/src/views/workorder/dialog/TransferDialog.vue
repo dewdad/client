@@ -209,6 +209,7 @@ export default {
                 .then((res) => {
                     $log(res);
                     let resData = res.data;
+                    if(!res.data.records || res.data.records.length === 0) this.ruleForm.remark = '';
                     if(resData && resData.records){
                         this.tableData = resData.records || [];
                         this.searchObj.paging.totalItems = resData.total || 0;

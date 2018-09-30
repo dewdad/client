@@ -222,6 +222,7 @@ export default {
                 params[this.type] = this.formInline.searchText;
             }
             $log('params', params);
+            this.tableData = [];
             myorderList(params).then(ret => {
                 $log('data', ret);
                 let resData = ret.data;

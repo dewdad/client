@@ -149,10 +149,10 @@ export default {
             this.isShow = true;
             this.item = item;
             this.searchQuota();
-            if(item.usage && item.quota){
-                this.dept.usage = item.usage;
-                this.dept.quota = item.quota;
-            }
+            // if(item.usage && item.quota){
+            //     this.dept.usage = item.usage;
+            //     this.dept.quota = item.quota;
+            // }
             console.log('item',item);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -165,6 +165,8 @@ export default {
             searchQuota(this.item.id).then(ret => {
                 $log('list....searchByProjectId', ret);
                 let resData = ret.data;
+                this.dept.quota = {};
+                this.dept.usage = {};
                 if((resData && resData.quota) || (resData && resData.usage)){
                     this.dept.quota = resData.quota || [];
                     this.dept.usage = resData.usage || [];
