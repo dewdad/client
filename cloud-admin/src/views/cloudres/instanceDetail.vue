@@ -493,6 +493,11 @@ export default {
             getHostItemDetail(this.item.id).then(ret => {
                 $log('getHostItemDetail', ret);
                 let resData = ret.data;
+                if(resData.status == 'shutoff'){
+                    this.item.status = 'SHUTOFF';
+                }else if(resData.status == 'active'){
+                    this.item.status = 'ACTIVE';
+                }
                 if(resData){
                     if(resData['OS-EXT-AZ:availability_zone']) this.host.zone = resData['OS-EXT-AZ:availability_zone'];
                     if(resData['OS-EXT-SRV-ATTR:hypervisor_hostname']) this.host.hostname = resData['OS-EXT-SRV-ATTR:hypervisor_hostname'];

@@ -138,7 +138,7 @@
                                         <a @click="changeRentQuota(scope.row,brunch)" class="btn-linker">修改配额</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="disableProject(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>
-                                        <a @click="ableProject(scope.row,brunch)" v-if="scope.row.status == 0" class="btn-linker">启用</a>
+                                        <a @click="ableProject(scope.row,brunch)" v-if="scope.row.status == 2" class="btn-linker">启用</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="editRente(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>

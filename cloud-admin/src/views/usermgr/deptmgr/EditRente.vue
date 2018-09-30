@@ -69,7 +69,7 @@ export default {
             console.log('iiii',item);
             this.form.name = item.name;
             this.form.description = item.description;
-            this.form.status = item.status;
+            this.form.status = item.status + '';
             this.brunch = brunch;
             this.domainName = brunch.name;
             this.form.domainId = brunch.id;
