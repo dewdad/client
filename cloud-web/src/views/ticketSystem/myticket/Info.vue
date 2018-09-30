@@ -5,7 +5,7 @@
             <b class="leftBlueBox"></b>
             工单编号：{{myticketInfo && myticketInfo.orderNO}}
             <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" >补充</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="supplementFn" :disable="myticketInfo.status !=1">补充</el-button>
                 <el-button type="info" size="small" icon="el-icon-delete" @click="deleteOrder()">
                     删除
                 </el-button>
@@ -29,7 +29,9 @@
                         </tr>
                         <tr>
                             <td class="br"><span>状态：</span>
-                                <span class="color333 ml10" >{{orderStatusVal[0].text}}</span>
+                                <span class="color333 ml10" v-if="myticketInfo.status == 1">待处理</span>
+                                <span class="color333 ml10" v-if="myticketInfo.status == 2">已处理</span>
+                                <span class="color333 ml10" v-if="myticketInfo.status == 3">关闭</span>
                             </td>
                             <td><span>产品类型：</span><span class="color333 ml10">{{productType[0] && productType[0].label}}</span></td>
                         </tr>
@@ -44,7 +46,7 @@
                         </tr>
                         <tr>
                             <td class="br"><span>问题描述：</span><span class="color333 ml10">{{myticketInfo && myticketInfo.remark}}</span></td>
-                            <td></td>
+                            <td>{}}</td>
 
                         </tr>
                     </tbody>
@@ -186,11 +188,11 @@ export default {
             );
         },
 
-        orderStatusVal() {
-            return this.orderStatus.filter(
-                item => item.key == this.myticketInfo.status
-            );
-        }
+        // orderStatusVal() {
+        //     return this.orderStatus.filter(
+        //         item => item.key == this.myticketInfo.status
+        //     );
+        // }
     },
     methods: {
         //查询
