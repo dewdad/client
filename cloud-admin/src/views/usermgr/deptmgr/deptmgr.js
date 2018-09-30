@@ -113,13 +113,10 @@ export default {
         //获取部门树
         deptTree(){
             let params = {
-                pageIndex: 1,
-                limit: 999,
-                totalItems: 0,
-                roleType:this.user.roleType,
-                domain:this.user.deptId,
-                searchText:this.formInline.searchText
             };
+            if(this.formInline.searchText){
+                params.searchText = this.formInline.searchText;
+            }
             $log('params', params);
             this.deptTreeData = [];
             deptTree(params).then(ret => {

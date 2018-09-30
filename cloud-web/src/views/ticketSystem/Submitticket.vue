@@ -86,8 +86,8 @@
                         :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT" 
                         :file-list="fileList" 
                         :on-exceed="handleExceed" 
-                        :on-change="handleChange" 
-                        list-type="picture-card" 
+                        :on-change="handleChange"
+                        list-type="picture"
                         :on-success="handleAvatarSuccess" 
                         :on-remove="handleRemove" 
                         :before-upload="beforeAvatarUpload">
@@ -322,10 +322,14 @@ export default {
         padding: 20px 60px;
         .el-form {           
             .el-form-item {
-                .el-upload--picture-card i {
-                    font-size: 40px;
-                    font-weight: 700;
-                    line-height: 117px;
+                .el-upload--picture{
+                    border:1px dashed #999;
+                    width:120px;
+                    i {
+                        font-size: 40px;
+                        font-weight: 700;
+                        line-height: 117px;
+                    }
                 }
                 .el-upload__input {
                     display: none !important;
@@ -355,6 +359,11 @@ export default {
     }
     
 }
+    .el-upload-list--picture .el-upload-list__item.is-success{
+        display: inline-block !important;
+        width:auto !important;
+        margin-right:10px;
+    }
 </style>
 
 
