@@ -219,7 +219,7 @@ export default {
             });
         },
         confirm() {
-            this.confirmBtn = true;
+
             if (typeof this.form.subnet.pools !== 'undefined' && this.form.subnet.pools.toString() !== '' && this.form.subnet.dHCPEnabled == 'true'){
                 this.form.subnet.pools = this.form.subnet.pools.split('\n');
             }else{
@@ -239,6 +239,7 @@ export default {
             }
             this.$refs.form.validate((valid) => {
                 if (valid) {
+                    this.confirmBtn = true;
                     if(this.optype === 1){
                         this.createNetwork();
                     }else{

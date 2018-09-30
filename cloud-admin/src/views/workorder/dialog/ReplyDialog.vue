@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="回复" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
+    <el-dialog title="处理" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
             <el-form-item label="工单标题 "  :label-width="formLabelWidth">
                 <el-input disabled :value="order.title"></el-input>
@@ -8,15 +8,17 @@
                 <el-input disabled :value="order.orderDesc" type="textarea"></el-input>
             </el-form-item>
             <el-form-item label="补充 " :label-width="formLabelWidth">
-                <div class="reply mb10" v-for="(item, index) in replayData" :key="index" v-if="replayData.length>0">
-                    <p>回复内容：{{item.suppleContent}}</p>
-                    <p>{{item.createTime | date}}</p>
-                    <span v-if="item.attachUrl">
+                <div v-if="replayData.length>0">
+                    <div class="reply mb10" v-for="(item, index) in replayData" :key="index" >
+                        <p>回复内容：{{item.suppleContent}}</p>
+                        <p>{{item.createTime | date}}</p>
+                        <span v-if="item.attachUrl">
                         {{item.attachUrl}}
                         <a class="btn-link ml5" @click="searchFile(item.attachUrl)">查看</a>
                     </span>
+                    </div>
                 </div>
-                <div v-else class="font12 color333">
+                <div v-else class="font12 color999">
                     暂无补充内容
                 </div>
             </el-form-item>

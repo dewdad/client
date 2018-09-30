@@ -19,7 +19,7 @@
                     </el-form-item>
                     <el-form-item label="关键字">
                         <el-input-number  controls-position="right" :min="0"  class="width-full"  :max="999999999" v-model="formInline.searchText"></el-input-number>
-                         <span style="position:absolute;right:40px;top:0;color:#666;font-size:12px;">GB</span>
+                         <span style="position:absolute;right:40px;top:0;color:#666;font-size:12px;">MB</span>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="modelList" icon="el-icon-search">搜索</el-button>
@@ -89,13 +89,12 @@
             </el-col>
         </el-row>
         <create-model ref="CreateModel"></create-model>
-        <!--<create-role ref="CreateRole"></create-role>-->
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import CreateModel from './CreateModel';
-// import CreateRole from './CreateRole';
+
 import {modelList,delModel} from '@/service/cloudres.js';
 export default {
     name: 'app',
@@ -137,10 +136,8 @@ export default {
             let params = {
                 paging:this.searchObj.paging,
             };
-            if(typeof this.formInline.searchText == 'number'){
-                params[this.type] = parseInt(this.formInline.searchText);
-            }else{
-                return;
+            if(this.formInline.searchText){
+                params[this.type] = this.formInline.searchText;
             }
             modelList(params).then(ret => {
                 $log('data', ret);
@@ -153,7 +150,7 @@ export default {
             });
         },
         calcSize(size) {
-            size = size * 1024 * 1024 * 1024;
+            size = size * 1024 * 1024;
             if (size < 1024) {
                 return size + 'B';
             }

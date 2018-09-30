@@ -79,8 +79,8 @@
                     </zt-form-item>
 
                     <zt-form-item label="上传附件">    
-                        <zt-upload multiple ref="upload" 
-                        :action="uploadAction" 
+                        <zt-upload multiple ref="upload"
+                        :action="uploadAction"
                         :headers="uploadHeaders"
                         :accept="ZT_CONFIG.TS_IMAGE_ACCEPT"
                         :limit="ZT_CONFIG.TS_IMAGE_TOTAL_LIMIT" 
