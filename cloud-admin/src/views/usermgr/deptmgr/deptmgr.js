@@ -129,18 +129,18 @@ export default {
                     if(tree && tree.id){
                         console.log('tree....',tree);
                         let treeId = tree.id;
+                        let json = [];
                         function GetSubJson(jsonData, destID, json) {
                             for (let i = 0; i < jsonData.length; i++) {
                                 if (jsonData[i].id == destID)
                                     json.push(jsonData[i]);
                                 else {
-                                    if (jsonData[i].hasOwnProperty("children")) {
+                                    if (jsonData[i].hasOwnProperty("children") && jsonData[i].children.length > 0) {
                                         GetSubJson(jsonData[i].children, destID, json);
                                     }
                                 }
                             }
                         }
-                        let json = [];
                         GetSubJson(resData, treeId, json);
                         console.log('json',json);
                         this.brunch = json[0];
