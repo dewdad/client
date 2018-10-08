@@ -207,6 +207,7 @@ export default {
             let itemStr = JSON.stringify(rowItem);
             return this.$router.push({name:'app.cloudres.network.distrouter',params:{item:itemStr}});
         },
+        //设置网关
         setGateWay(item){
             this.$refs.CreateGateway.show(item).then(ret=>{
                 console.log('retfsdff',ret);
@@ -222,11 +223,12 @@ export default {
             }
             );
         },
-        //清除路由
+        //清除网关
         clearGateWay(item){
             let copyItem = item;
             copyItem.networkName = '';
             copyItem.networkId = '';
+            copyItem.opName = 'clearGateWay';
             let param = {
                 id:copyItem.id,
                 param:copyItem
@@ -235,6 +237,7 @@ export default {
                 .then(res => {
                     console.log('redssssssss',res);
                     if(res.code === '0000'){
+                        this.routerList();
                         return this.$alert('操作成功','提示');
                     }else{
                         this.$alert('操作失败', '提示', {
