@@ -142,7 +142,6 @@ export default {
                             }
                         }
                         GetSubJson(resData, treeId, json);
-                        console.log('json',json);
                         this.brunch = json[0];
                         this.selectedKey.push(this.brunch.id);
                         console.log('brunch......',this.brunch );
