@@ -204,6 +204,12 @@ export default {
                 text: '停止中',
                 value: 'SHUTDOWN',
                 className: 'color-danger',
+                type: 'icon-overdue_people'
+            },
+            {
+                text: '关闭',
+                value: 'RESIZED',
+                className: 'color-danger',
                 type: 'progress'
             },
             {
@@ -222,30 +228,6 @@ export default {
                 text: '重启中',
                 value: 'reboot',
                 className: 'color-success',
-                type: 'progress'
-            },
-            {
-                text: '启动中',
-                value: 'STARTUP',
-                className: 'color-success',
-                type: 'progress'
-            },
-            {
-                text: '重装中',
-                value: 'rebuild',
-                className: 'color-progress-info',
-                type: 'progress'
-            },
-            {
-                text: '确认中',
-                value: 'verify_resize',
-                className: 'color-danger',
-                type: 'progress'
-            },
-            {
-                text: '删除中',
-                value: 'deleted',
-                className: 'color-progress-warning',
                 type: 'progress'
             },
             {

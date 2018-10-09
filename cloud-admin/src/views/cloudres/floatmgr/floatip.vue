@@ -6,13 +6,6 @@
         <el-row class="mt20">
             <el-col :span="24">
                 <el-form :inline="true" :model="formInline" size="small">
-                    <!--<el-form-item>-->
-                    <!--<el-button type="primary" @click="createFloatIp()">-->
-                    <!--<span class="icon-zt_plus"></span>-->
-                    <!--分配IP各项目-->
-                    <!--</el-button>-->
-                    <!--</el-form-item>-->
-
                     <el-form-item class="pull-right">
                         <el-button type="primary" class=" search-refresh-btn icon-zt_refresh" @click="floatIplist"></el-button>
                     </el-form-item>
@@ -27,7 +20,6 @@
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10">{{scope.row.domain_name}}</span>
-
                                 </template>
                             </el-table-column>
                         </template>
@@ -73,11 +65,11 @@
                     <!-- 操作 -->
                     <template>
                         <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
-                            <template slot-scope="scope">
-                                <a  @click="removeIp(scope.row)" class="btn-linker" >释放IP</a>
-                                <b class="link-division-symbol" v-if="scope.row.status == 'UP'"></b>
-                                <a  @click="disConnectIp(scope.row)" v-if="scope.row.status == 'UP'">解绑IP</a>
-                            </template>
+                        <template slot-scope="scope">
+                            <a  @click="removeIp(scope.row)" class="btn-linker" >释放IP</a>
+                            <b class="link-division-symbol" v-if="scope.row.status == 'UP'"></b>
+                            <a  @click="disConnectIp(scope.row)" v-if="scope.row.status == 'UP'">解绑IP</a>
+                        </template>
                         </el-table-column>
                     </template>
                 </el-table>
@@ -95,7 +87,7 @@
                 </div>
             </el-col>
         </el-row>
-        <create-floatip ref="CreateFloatip"></create-floatip>
+    <create-floatip ref="CreateFloatip"></create-floatip>
     </div>
 </template>
 <script>
