@@ -210,41 +210,47 @@ export default {
                 text: '关闭',
                 value: 'RESIZED',
                 className: 'color-danger',
-                type: 'progress'
+                type: 'icon-overdue_people'
+            },
+            {
+                text: '删除',
+                value: 'DELETED',
+                className: 'color-danger',
+                type: 'icon-overdue_people'
             },
             {
                 text: '调整套餐中',
-                value: 'resize',
+                value: 'RESIZE',
                 className: 'color-progress-warning',
                 type: 'progress'
             },
             {
                 text: '重启中',
-                value: 'hard_reboot',
+                value: 'HARD_REBOOT',
                 className: 'color-success',
                 type: 'progress'
             },
             {
                 text: '重启中',
-                value: 'reboot',
+                value: 'REBOOT',
                 className: 'color-success',
                 type: 'progress'
             },
             {
-                text: '恢复中',
-                value: 'revert_resize',
+                text: '创建中',
+                value: 'BUILD',
                 className: 'color-progress-warning',
                 type: 'progress'
             },
             {
                 text: '挂起',
-                value: 'suspended',
+                value: 'SUSPENDED',
                 className: 'color-primary',
                 icon: 'zticon-stop'
             },
             {
                 text: '未知',
-                value: 'unknown',
+                value: 'UNKNOWN',
                 className: 'color-danger',
                 icon: 'zticon-stop'
             }
