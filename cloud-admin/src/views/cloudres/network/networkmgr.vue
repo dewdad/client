@@ -110,7 +110,7 @@
                                 <a  @click="delNetwork(scope.row)" class="btn-linker" v-if="user.roleType == '2'">删除</a>
                                 <b class="link-division-symbol" v-if="user.roleType == '2'"></b>
                                 <a  @click="createNetwork(scope.row,2)" class="btn-linker" v-if="user.roleType == '2'">编辑</a>
-                                <b class="link-division-symbol" ></b>
+                                <b class="link-division-symbol" v-if="user.roleType == '2'"></b>
                                 <router-link :to="{name:'app.resources.network.protmgr',params:{id:scope.row.id,item:scope.row,fromstate:'app.resources.network'}}" class="btn-linker">端口管理</router-link>
                             </template>
                         </el-table-column>
