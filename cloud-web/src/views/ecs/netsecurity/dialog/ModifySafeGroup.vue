@@ -3,12 +3,12 @@
         <div style="padding-right:150px;">
         <zt-form inline-message  ref="ruleForm" size="small" :model="form" label-width="100px" :rules="rules">
             <!-- 安全组名称 -->
-            <zt-form-item label="安全组名称"  prop="name">
+            <zt-form-item label="安全组名称"  prop="name" class="cdcd">
                 <el-input size="small" v-model="form.name" maxlength="64"></el-input>
                 <div class="input-help">长度限制为2-64个字符, 只能由中文字符、英文字母、数字、下划线、中划线组成</div>
             </zt-form-item>
             <!-- 安全组描述 -->
-            <zt-form-item label="安全组描述" class="mb0" prop="description">
+            <zt-form-item label="安全组描述" class="mb0 cdcd" prop="description">
                 <el-input size="small" v-model="form.description" maxlength="128"></el-input>
                 <div class="input-help">长度为2-128个字符，不能以http://或https://开头。</div>
             </zt-form-item>
@@ -149,6 +149,9 @@ export default {
 };
 </script>
 <style lang="scss">
+    .cdcd .el-form-item__error.el-form-item__error--inline{
+        margin-left:300px;
+    }
 .amendNameDialog {
     .wd403 {
         width: 403px; //85 + 318
