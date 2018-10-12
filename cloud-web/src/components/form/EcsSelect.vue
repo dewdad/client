@@ -59,7 +59,7 @@ export default {
             inputFocus: false,
             showHover: false,
             showOptions: false,
-            select: '',
+            select: '实例名称',
             selectOption: {}, // ESC 选择器 筛选条件。
             input: '',
             list
