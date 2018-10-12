@@ -129,15 +129,7 @@ export default {
             { column: 'faultType', text: '故障类型', width: '10%' },
             { column: 'phone', text: '联系方式', width: '10%' },
             { column: 'createTime', text: '创建时间', width: '10%' },
-            { column: 'status', text: '状态', width: '10%' ,
-                dropdowns: [
-                    {key: 0, 'text': '全部', 'state': true, value: ''},
-                    {key: 1, 'text': '待处理', 'state': false, value: '1'},
-                    {key: 2, 'text': '已处理', 'state': false, value: '2'},
-                    {key: 3, 'text': '关闭', 'state': false, value: '3'},
-
-                ]
-            },
+            { column: 'status', text: '状态', width: '10%' },
         ];
 
         let moduleTypes = [

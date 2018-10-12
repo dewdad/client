@@ -65,21 +65,21 @@ export default {
             data:[],
             form:{
                 quota:{
-                    cpu:0,
-                    instances:0,
-                    volumes:0,
-                    snapshot:0,
-                    volumeSize:0,
-                    ram:0,
-                    securityGroup:0,
-                    securityGroupRule:0,
-                    floatingIps:0,
-                    network:0,
-                    ports:0,
-                    routers:0,
-                    subnet:0,
-                    backup:0,
-                    backupSize:0
+                    cpu:10,
+                    instances:10,
+                    volumes:10,
+                    snapshot:10,
+                    volumeSize:100,
+                    ram:100,
+                    securityGroup:10,
+                    securityGroupRule:10,
+                    floatingIps:10,
+                    network:10,
+                    ports:10,
+                    routers:10,
+                    subnet:10,
+                    backup:10,
+                    backupSize:10
                 }
             },
             rules:{
@@ -168,7 +168,7 @@ export default {
             searchRentQuota(this.item.id).then(ret => {
                 $log('list....', ret);
                 let resData = ret.data;
-                if(resData){
+                if(resData && resData.id){
                     this.form.quota = resData || [];
                 }
             });

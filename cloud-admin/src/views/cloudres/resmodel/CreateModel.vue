@@ -7,7 +7,7 @@
             <el-form-item label="VCPU数量" prop="vcpus" :label-width="formLabelWidth">
                 <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.vcpus"></el-input-number>
             </el-form-item>
-            <el-form-item label="内存（GB）" prop="ram" :label-width="formLabelWidth">
+            <el-form-item label="内存（MB）" prop="ram" :label-width="formLabelWidth">
                 <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.ram"></el-input-number>
             </el-form-item>
 

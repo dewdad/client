@@ -5,7 +5,7 @@
                 show-checkbox
                 default-expand-all
                 node-key="menuCode"
-                :check-strictly="false"
+                :check-strictly="true"
                 :default-checked-keys="selectedKeys"
                 ref="tree"
                 highlight-current
