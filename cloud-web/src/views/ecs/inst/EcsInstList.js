@@ -376,7 +376,7 @@ export default {
             return !arr.find(e => e.toLowerCase() === status);
         },
         ecsSelect(val) {
-            // this.selectOption = Object.assign({}, this.selectOption, val.data);
+            this.selectOption = Object.assign({}, this.selectOption, val.data);
         },
         //查询列表数据
         setOptions(options) {

@@ -196,12 +196,12 @@ export default {
                 icon: 'icon-recentcreation_peop'
             },{
                 text: '恢复备份中',
-                value: 'restoring_backup',
+                value: 'restoring-backup',
                 className: 'color-warning',
                 icon: 'icon-recentcreation_peop'
             },{
                 text: '恢复备份时出错',
-                value: 'error_restoring',
+                value: 'error-restoring',
                 className: 'color-warning',
                 icon: 'icon-recentcreation_peop'
             }, {
@@ -247,13 +247,13 @@ export default {
             },
             {
                 text: '删除时出错',
-                value: 'error_deleting',
+                value: 'error-deleting',
                 className: 'color-danger',
                 icon: 'icon-overdue_people'
             },
             {
                 text: '待重启',
-                value: 'WAIT_REBOOT',
+                value: 'WAIT-REBOOT',
                 className: 'color-warning',
                 icon: 'zticon-running_people'
             },

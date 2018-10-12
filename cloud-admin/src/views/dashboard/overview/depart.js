@@ -85,16 +85,16 @@ export default {
         },
         //获取部门树
         deptTree(){
-            let params = {
-                pageIndex: 1,
-                limit: 999,
-                totalItems: 0,
-                roleType:this.user.roleType,
-                domain:this.deptbrunch.id,
-            };
-            $log('params', params);
+            // let params = {
+            //     pageIndex: 1,
+            //     limit: 999,
+            //     totalItems: 0,
+            //     roleType:this.user.roleType,
+            //     domain:this.deptbrunch.id,
+            // };
+            // $log('params', params);
             this.fullscreenLoading = true;
-            deptTree(params).then(ret => {
+            deptTree().then(ret => {
                 this.fullscreenLoading = false;
                 $log('treedata', ret);
                 let resData = ret.data;

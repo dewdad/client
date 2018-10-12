@@ -168,7 +168,7 @@ export default {
             searchRentQuota(this.item.id).then(ret => {
                 $log('list....', ret);
                 let resData = ret.data;
-                if(resData){
+                if(resData && resData.id){
                     this.form.quota = resData || [];
                 }
             });
