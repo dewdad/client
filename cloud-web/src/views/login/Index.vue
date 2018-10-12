@@ -225,7 +225,7 @@ export default {
                                     name: 'app'
                                 });
                             } else {
-                                window.location.href = '/admin';
+                                window.location.href = '/admin/';
                             }
                             
                         }
