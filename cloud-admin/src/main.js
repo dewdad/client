@@ -17,6 +17,8 @@ Vue.config.productionTip = false;
 // 取消 Vue 所有的日志与警告
 Vue.config.silent = process.env.NODE_ENV === 'production' ? true : false;
 
+require('promise.prototype.finally').shim();
+
 import {get} from '@/utils/utils';
 
 /**
