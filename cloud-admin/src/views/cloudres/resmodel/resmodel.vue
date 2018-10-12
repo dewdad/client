@@ -14,12 +14,12 @@
                     </el-form-item>
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type">
-                            <el-option label="内存(GB)>=" value="minRam"></el-option>
+                            <el-option label="内存(MB)>=" value="minRam"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
                         <el-input-number  controls-position="right" :min="0"  class="width-full"  :max="999999999" v-model="formInline.searchText"></el-input-number>
-                         <span style="position:absolute;right:40px;top:0;color:#666;font-size:12px;">MB</span>
+                         <!--<span style="position:absolute;right:40px;top:0;color:#666;font-size:12px;">MB</span>-->
                     </el-form-item>
                     <el-form-item>
                         <el-button class="ml10" size="small" type="primary" @click="modelList" icon="el-icon-search">搜索</el-button>
