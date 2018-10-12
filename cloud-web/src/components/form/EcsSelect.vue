@@ -59,7 +59,7 @@ export default {
             inputFocus: false,
             showHover: false,
             showOptions: false,
-            select: list[0].label,
+            select: list[1].label,
             selectOption: {}, // ESC 选择器 筛选条件。
             input: '',
             list

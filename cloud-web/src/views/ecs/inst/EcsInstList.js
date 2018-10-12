@@ -99,7 +99,8 @@ export default {
                     {key: 12, text: this.$t('common.state.awaitReboot'), state: false, value: 'WAIT_REBOOT'},
                     // {key: 4, text: this.$t('common.state.deleting'), state: false, value: 'DELETED'},
                     {key: 6, text: this.$t('common.state.restarting'), state: false, value: 'RESTARTING'},
-                    {key: 13, text: this.$t('common.state.stoping'), state: false, value: 'STOPING'}
+                    {key: 13, text: this.$t('common.state.stoping'), state: false, value: 'STOPING'},
+                    {key: 13, text: '确认中', state: false, value: 'verify_resize'}
                     //{key:7,'text':this.$t('common.state.rebuilding'),'state':false,value:'REBUILD'},
                     //{key:8,'text':this.$t('common.state.suspend'),'state':false,value:'SUSPENDED'},
                     // {key: 9, text: this.$t('common.state.reinstalling'), state: false, value: 'RELOAD'},
