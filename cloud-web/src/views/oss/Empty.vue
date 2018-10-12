@@ -25,6 +25,7 @@ export default {
             this.$refs.createBucketDailog.show().then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
                     // this.bucketList.push(res.result);
+                    this.$store.commit('oss/CHANGE_REFRESH_BUCKET');
                     this.$router.push({name: 'app.oss.bucket', params: {view: 'overview', bucketId: res.data.name}});
                 }
             });
