@@ -1,4 +1,4 @@
-var API_URL = 'http://10.11.3.99:7100';
+var API_URL = 'http://rc.csztcloud.cn/';
 var FILE_URL = API_URL + '/services-user/file/';
 // var ECS_WS_URL =  'wss://' + document.location.hostname + '/ws/ecs'; // http://192.168.1.73:9000
 var isHttps = document.location.protocol === 'https:';
