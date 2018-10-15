@@ -97,6 +97,7 @@ export default {
         confirm() {
             this.confirmBtn = true;
             console.log('this.form',this.form);
+            this.form.adminStateUp = this.item.admin_state_up ? 'true' : 'false';
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     let param = {
