@@ -85,7 +85,7 @@
                         </template>
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
-                            <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" :filters="col.dropdowns" :filter-method="filterHandler">
+                            <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" >
                                 <template slot-scope="scope">
                                     <span class="font12 mr10" v-if="scope.row.status == 1">待处理</span>
                                     <span class="font12 mr10" v-if="scope.row.status == 2">已处理</span>
