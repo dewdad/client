@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 09:53:24 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-17 11:15:42
+ * @Last Modified time: 2018-10-17 17:13:31
  */
 import http from '../utils/http';
 
@@ -14,6 +14,22 @@ import http from '../utils/http';
  */
 export async function getNavList() {
     let res = await http.get('server/sidebar-menu.json?t=' + Math.random());
+    let config = await http.get('/resources/systemConfig/list', {
+        params: {
+            code: 'wac_config'
+        }
+    });
+    $log(config);
+    if (config.data.data) {
+        let item = {
+            text: config.data.data.data[0].itemList[0].name,
+            icon: 'iconfont icon-icon_wac',
+            sref: config.data.data.data[0].itemList[0].value.trim(),
+            redirect: true
+        };
+        res.data.push(item);
+    }
+
     console.log(res);
     return process.env.VUE_APP_BUILD === 'pro' ? res.data.filter(e => e.evn === 'pro') : res.data;
 }
