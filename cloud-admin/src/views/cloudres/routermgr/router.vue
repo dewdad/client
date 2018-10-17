@@ -228,6 +228,7 @@ export default {
             let copyItem = item;
             copyItem.networkName = '';
             copyItem.networkId = '';
+            copyItem.adminStateUp = copyItem.admin_state_up ? 'true' : 'false';
             copyItem.opName = 'clearGateWay';
             let param = {
                 id:copyItem.id,

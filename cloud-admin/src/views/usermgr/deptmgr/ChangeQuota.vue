@@ -176,6 +176,7 @@ export default {
         confirm() {
             this.confirmBtn = true;
             console.log('this.form',this.form);
+            this.form.quota.projectId = this.item.id;
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     changeQuota(this.form.quota)
@@ -208,7 +209,6 @@ export default {
                 }
             });
         }
-
     }
 };
 </script>

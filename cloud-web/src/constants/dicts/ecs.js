@@ -86,6 +86,12 @@ export const ECS_STATUS = [
         type: 'progress'
     },
     {
+        text: '确认中',
+        value: 'VERIFY_RESIZE',
+        className: 'color-success',
+        type: 'progress'
+    },
+    {
         text: '重装中',
         value: 'rebuild',
         className: 'color-progress-info',
@@ -381,12 +387,6 @@ export const DISK_STATUS = [
         icon: 'zticon-recentcreation_peop'
     },
     {
-        text: '连接中',
-        value: 'attaching',
-        className: 'color-primary',
-        type: 'progress'
-    },
-    {
         text: '挂载中',
         value: 'in-user',
         className: 'color-primary',
@@ -425,31 +425,6 @@ export const DISK_STATUS = [
         type: 'font'
     },
     {
-        text: '恢复错误',
-        value: 'error-restoring',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '恢复中',
-        value: 'restoring-backup',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
-        text: '上传中',
-        value: 'uploading',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
-        text: '下载中',
-        value: 'downloading',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
         text: '扩容中',
         value: 'extending',
         className: 'color-progress-warning',
@@ -458,19 +433,6 @@ export const DISK_STATUS = [
     {
         text: '扩容错误',
         value: 'error-extending',
-        className: 'color-danger',
-        icon: 'icon-shibaibaocuo',
-        type: 'font'
-    },
-    {
-        text: '回滚中',
-        value: 'rollbacking',
-        className: 'color-progress-warning',
-        type: 'progress'
-    },
-    {
-        text: '回滚错误',
-        value: 'error-rollbacking',
         className: 'color-danger',
         icon: 'icon-shibaibaocuo',
         type: 'font'

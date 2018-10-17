@@ -168,7 +168,6 @@ http.interceptors.response.use(
         // token过期或错误 退出重新登录
         if (response.data && response.data.code === ERRCODE.INVALID_TOKEN) {
             // throttled_message(response.data.msg);
-            alert('fail');
             store.dispatch('LOGOUT');
             return;
         }

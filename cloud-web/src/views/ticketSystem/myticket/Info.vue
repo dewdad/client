@@ -71,7 +71,7 @@
             <div class="panel-body zt-panel-body-info">
                 <div class="ml20 mb20 mt20 supplementaryRecord" >
                     <ul class="font12 ml20 color999">
-                        <li v-if="item.attachUrl" v-for="(item, index) in addData" :key="index" class="clearfix mb10" style="border-bottom:1px dashed #ddd">
+                        <li v-if="item.suppleContent" v-for="(item, index) in addData" :key="index" class="clearfix mb10" style="border-bottom:1px dashed #ddd">
                             <img src="@/assets/images/ecs/top-head.svg" width="50" class="pull-left" alt="">
                             <div class=" mb10 pull-left ml20" >
                                 <p>补充的内容：{{item.suppleContent}}</p>
