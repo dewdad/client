@@ -413,6 +413,7 @@
     {
         "text": "应用容器WAC",
         "heading": true,
+        "hidden": true,
         "psref": "#",
         "sref": "app.wac",
         "icon": "iconfont icon-icon_wac",

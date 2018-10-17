@@ -134,6 +134,10 @@ export default {
     },
     methods: {
         handleSelect(index) {
+            if (index.indexOf('http://') !== -1 || index.indexOf('https://') !== -1) {
+                window.open(index);
+                return;
+            }
             this.$router.push({
                 name: index
             });
