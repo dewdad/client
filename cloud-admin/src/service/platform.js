@@ -90,7 +90,8 @@ export async function delPlatForm(data) {
 export async function editPlatForm(data) {
     console.log('data',data);
     let param = {
-        resource:data.resource
+        resource:data.resource,
+        endpoint:data.endpoint
     };
     var utl = PlatForm.editPlatForm + data.id;
     let response = await http.put(utl,param);

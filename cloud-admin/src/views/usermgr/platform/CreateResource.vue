@@ -4,6 +4,9 @@
             <el-form-item label="资源名称 " :label-width="formLabelWidth" prop="resource">
                 <el-input placeholder="输入资源名称" v-model="rescourceForm.resource" ></el-input>
             </el-form-item>
+            <el-form-item label="endpoint " :label-width="formLabelWidth" prop="endpoint">
+                <el-input placeholder="输入endpoint" v-model="rescourceForm.endpoint" ></el-input>
+            </el-form-item>
 
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -16,6 +19,14 @@
 import {addPlatForm,editPlatForm} from '@/service/platform.js';
 export default {
     data() {
+        let validateEndpoint = function(rule, value, callback){
+            let reg = /^(http|https):\/\//;
+            if (!reg.test(value)) {
+                callback(new Error('请输入以http或https开头的endpoint'));
+            } else {
+                callback();
+            }
+        };
         return{
             formLabelWidth: '110px',
             isShow: false,
@@ -27,11 +38,16 @@ export default {
             resouceNameShow:0,
             resourceItem:{},
             rescourceForm: {
-                resource: ''
+                resource: '',
+                endpoint: '',
             },
             rules:{
                 resource: [
                     { required: true, message: '请输入资源名称', trigger: 'blur' }
+                ],
+                endpoint: [
+                    { required: true, message: '请输入endpoint', trigger: 'blur' },
+                    {validator: validateEndpoint, trigger: 'blur' }
                 ],
             }
         };
@@ -42,7 +58,10 @@ export default {
             this.isShow = true;
             this.optype = optype;
             this.resourceItem = item;
-            this.rescourceForm.resource = item.resource;
+            if(item){
+                this.rescourceForm.resource = item.resource;
+                this.rescourceForm.endpoint = item.endpoint;
+            }
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -85,7 +104,8 @@ export default {
         //新建平台
         add(){
             let data = {
-                resource: this.rescourceForm.resource
+                resource: this.rescourceForm.resource,
+                endpoint: this.rescourceForm.endpoint
             };
             addPlatForm(data)
                 .then(res => {
@@ -105,6 +125,7 @@ export default {
         edit(item){
             let data = {
                 resource: this.rescourceForm.resource,
+                endpoint: this.rescourceForm.endpoint,
                 id:item.id
             };
             editPlatForm(data)
