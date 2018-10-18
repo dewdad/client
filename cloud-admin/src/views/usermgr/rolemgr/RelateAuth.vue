@@ -9,7 +9,8 @@
                 :default-checked-keys="selectedKeys"
                 ref="tree"
                 highlight-current
-                @node-click="handleNodeClick"
+                @check-change="handleCheckChange"
+                :filter-node-method="filterNode"
                 :props="defaultProps">
         </el-tree>
         <span slot="footer" class="dialog-footer">
@@ -64,6 +65,40 @@ export default {
         handleNodeClick(){
             console.log('treekeys',this.$refs.tree.getCheckedKeys());
         },
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+        handleCheckChange(data, checked, indeterminate) {
+            if(checked){
+                data.selected = true;
+                if(data.submenus.length > 0){
+                    for(let i = 0;i < data.submenus.length;i++){
+                        data.submenus[i].selected = true;
+                        if(data.submenus[i].submenus.length > 0){
+                            for(let j = 0;j < data.submenus[i].submenus[j].length;j++){
+                                data.submenus[i].submenus[j].selected = true;
+                            }
+                        }
+
+                    }
+                }
+            }else{
+                data.selected = false;
+                if(data.submenus.length > 0){
+                    for(let i = 0;i < data.submenus.length;i++){
+                        data.submenus[i].selected = false;
+                        if(data.submenus[i].submenus.length > 0){
+                            for(let j = 0;j < data.submenus[i].submenus[j].length;j++){
+                                data.submenus[i].submenus[j].selected = false;
+                            }
+                        }
+
+                    }
+                }
+            }
+            this.getSelectedKeys();
+        },
         //获取默认关联上的部门节点
         getSelectedKeys(){
             let data = this.data;
@@ -93,7 +128,7 @@ export default {
 
             }
             this.selectedKeys = keys;
-            console.log('this.selectedKeys',this.selectedKeys);
+            this.$refs.tree.setCheckedKeys(keys);//获取已经设置的资源后渲染
         },
         //获取被选择了的节点
         getKey() {
