@@ -10,6 +10,7 @@ const ORDER = '/resources/order';//工单
 const ADMIN = '/compute/admin';//管理
 const ME = '/compute';//图表
 const FILE = '/fileProcess';//文件流
+const FREE = '/identity/freeTrial';//免费试用
 
 
 // 登录模块
@@ -214,6 +215,13 @@ export const ORDER_MODULE = {
     //  补充说明
     supplement: 'resources/order/supplement',
     getSupplement: 'resources/order/getSupplement',
+};
+// 免费试用模块
+export const FREE_MODULE = {
+    freeList: FREE + '/list',//列表
+    createFreeTrial: FREE + '/apply',//申请用户免费
+    applyRequest: FREE + '/',//管理员审批
+
 };
 
 
