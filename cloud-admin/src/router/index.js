@@ -151,6 +151,14 @@ export default new Router({
                             component: () => import('@/views/usermgr/sysconfig/sysconfig'),
                         },
                         {
+                            path: 'experience',
+                            name: 'app.usrmgr.experience',
+                            meta: {
+                                title: '免费试用'
+                            },
+                            component: () => import('@/views/usermgr/experience/list'),
+                        },
+                        {
                             path: 'editConfig/:opType',
                             name: 'app.usrmgr.editConfig',
                             meta: {
