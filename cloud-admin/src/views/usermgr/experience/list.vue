@@ -63,7 +63,7 @@
                         </template>
 
                         <template v-if="col.column=='name'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10">{{scope.row.name}}</span>
                                 </template>
@@ -104,7 +104,7 @@
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" width="80" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <a  @click="applyRequest(scope.row)" class="btn-linker" v-if="scope.row.status == 1">审批</a>
                                 <!--<b class="link-division-symbol" v-if="scope.row.status == 1"></b>-->
