@@ -1,21 +1,22 @@
 <template>
     <el-dialog title="审批申请" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules" label-width="120px">
-            <!-- 标题 -->
-            <el-form-item label="审批描述" prop="approveRemark"  >
-                <el-input   v-model="form.approveRemark" placeholder="审批描述，不得超过100字!"></el-input>
-            </el-form-item>
             <!-- 是否通过 -->
             <el-form-item label="是否通过"  prop="status">
                 <el-radio v-model="form.status" :label="2">是</el-radio>
                 <el-radio v-model="form.status" :label="3">否</el-radio>
             </el-form-item>
+            <!-- 标题 -->
+            <el-form-item label="审批描述" prop="approveRemark"  v-if="form.status == 3">
+                <el-input   v-model="form.approveRemark" placeholder="审批描述，不得超过100字!"></el-input>
+            </el-form-item>
+
             <!-- 账户名 -->
-            <el-form-item label="账户名" prop="userName" >
+            <el-form-item label="账户名" prop="userName" v-if="form.status == 2">
                 <el-input clearable  v-model="form.userName" ></el-input>
             </el-form-item>
             <!-- 账户密码 -->
-            <el-form-item label="账户密码" prop="userPass" >
+            <el-form-item label="账户密码" prop="userPass" v-if="form.status == 2">
                 <el-input clearable  v-model="form.userPass" ></el-input>
             </el-form-item>
 
