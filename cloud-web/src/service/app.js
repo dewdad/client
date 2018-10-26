@@ -20,7 +20,7 @@ export async function getNavList() {
         }
     });
     $log(config);
-    if (config.data.data) {
+    if (config.data.data && config.data.data.data) {
         let item = {
             text: config.data.data.data[0].itemList[0].name,
             icon: 'iconfont icon-icon_wac',
