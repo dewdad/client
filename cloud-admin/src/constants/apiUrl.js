@@ -17,7 +17,7 @@ const FREE = '/identity/freeTrial';//免费试用
 export const API_LOGIN = {
     login: USER_CONTROLLER + '/auth/token',
     logOut: USER_CONTROLLER + '/auth/logout',
-    changePwd: USER_CONTROLLER + '/user/chgpwd',
+    changePwd: USER_CONTROLLER + '/user/',
 
 };
 // 云资源管理-主机

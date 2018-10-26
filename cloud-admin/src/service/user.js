@@ -53,8 +53,9 @@ export async function pwdChange(data) {
         userId:data.userId,
         userName:data.userName
     };
-    let response = await http.put(API_LOGIN.changePwd, postdata);
-    return response.code === '0000'&&response;
+    let url = API_LOGIN.changePwd + data.userId + '/password';
+    let response = await http.put(url, postdata);
+    return response;
 }
 /**
  * getModulus
