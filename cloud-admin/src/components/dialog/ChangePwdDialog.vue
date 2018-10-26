@@ -58,6 +58,9 @@ export default {
     methods: {
         show() {
             this.isShow = true;
+            this.form.newPwd = '';
+            this.form.oldPwd = '';
+            this.form.confirmPwd = '';
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -101,7 +104,8 @@ export default {
                     this.confirmBtn = true;
                     pwdChange(this.form)
                         .then(res => {
-                            if(res.code === '0000'){
+                            console.log('res',res);
+                            if(res.data.code === '0000'){
                                 this.resolve(this.form);
                                 this.hide();
                                 this.setting();
