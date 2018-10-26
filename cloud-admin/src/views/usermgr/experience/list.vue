@@ -16,10 +16,11 @@
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText = ''">
                             <el-option label="名称" value="name"></el-option>
                             <el-option label="状态" value="status"></el-option>
+                            <el-option label="电话" value="tel"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
-                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'name'" @change="clearIndex"></el-input>
+                        <el-input placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'name' || type == 'tel'" @change="clearIndex"></el-input>
                         <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'status'" @change="clearIndex">
                             <el-option v-for="item in approveStatus" :value="item.key" :label="item.value" :key="item.key"></el-option>
                         </el-select>
@@ -65,32 +66,20 @@
                         <template v-if="col.column=='name'">
                             <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.name}}</span>
-                                </template>
-                            </el-table-column>
-                        </template>
-                        <template v-if="col.column=='approveRemark'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.approveRemark}}</span>
+                                    <a class="font12 mr10" @click="showDetail(scope.row)">{{scope.row.name}}</a>
                                 </template>
                             </el-table-column>
                         </template>
 
-                        <template v-if="col.column=='userName'">
+
+                        <template v-if="col.column=='createDt'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.userName}}</span>
+                                    <span class="font12 mr10">{{scope.row.createDt | date}}</span>
                                 </template>
                             </el-table-column>
                         </template>
-                        <template v-if="col.column=='userPass'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
-                                <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.userPass}}</span>
-                                </template>
-                            </el-table-column>
-                        </template>
+
                         <!-- 状态 -->
                         <template v-if="col.column=='status'">
                             <el-table-column width="90" :prop="col.column" :label="col.text" :key="col.column" >
@@ -131,11 +120,13 @@
             </el-col>
         </el-row>
         <apply-request ref="ApplyRequest"></apply-request>
+        <apply-detail ref="ApplyDetail"></apply-detail>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/pageHeader/PageHeader';
 import ApplyRequest from './ApplyRequest';
+import ApplyDetail from './ApplyDetail';
 import {freeList} from '@/service/usermgr/free.js';
 export default {
     name: 'app',
@@ -159,10 +150,9 @@ export default {
             { column: 'email', text:'邮件地址' , width: '15%'},
             { column: 'name', text: '名称', width: '10%' },
             { column: 'tel', text: '电话', width: '10%' },
-            { column: 'approveRemark', text: '审批备注', width: '10%' },
+            { column: 'createDt', text: '创建时间', width: '10%' },
             { column: 'status', text: '审批状态', width: '10%' },
-            { column: 'userName', text: '演示账号名', width: '10%' },
-            { column: 'userPass', text: '账号密码', width: '10%' },
+
         ];
 
         let moduleTypes = [
@@ -215,7 +205,8 @@ export default {
     },
     components: {
         PageHeader,
-        ApplyRequest
+        ApplyRequest,
+        ApplyDetail,
     },
     methods: {
         freeList(){
@@ -245,6 +236,9 @@ export default {
                     return this.$alert('操作成功','提示');
                 }
             });
+        },
+        showDetail(item){
+            this.$refs.ApplyDetail.show(item);
         },
         filterHandler(value, row, column) {
             const property = column['property'];
