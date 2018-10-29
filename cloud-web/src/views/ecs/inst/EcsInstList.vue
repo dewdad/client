@@ -50,7 +50,7 @@
                         <ul>
                             <template v-for="(addresses, index) in scope.row.addresses.addresses">
                                 <li v-for="ip in addresses" :key="index + ip.addr" class="text-nowrap">
-                                    <span>{{index}}：</span>
+                                    <!-- <span>{{index}}：</span> -->
                                     {{ip.addr}}
                                     <span class="color-secondary"> {{ip['OS-EXT-IPS:type'] === 'fixed' ? '（内）' : '（外）'}}</span>
                                 </li>
@@ -83,7 +83,7 @@
                                         <span class="">{{$t('ecs.inst.list.bandWidth')}}: {{scope.row.bandWidth }}MB</span>
                                     </li> -->
                             <li v-if="!!scope.row.toCpu" class="">
-                                <span class="">{{$t('ecs.inst.list.configChanged')}}<br/> {{ scope.row.status == 'CHANGE' ? $t('common.state.rebootingAlias') : $t('common.state.awaitReboot')}} </span>
+                                <span class="">{{$t('ecs.inst.list.configChanged')}}<br /> {{ scope.row.status == 'CHANGE' ? $t('common.state.rebootingAlias') : $t('common.state.awaitReboot')}} </span>
                             </li>
                         </ul>
                     </template>
