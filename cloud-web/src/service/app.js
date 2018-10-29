@@ -2,10 +2,10 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 09:53:24 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-10-17 17:13:31
+ * @Last Modified time: 2018-10-29 10:56:56
  */
 import http from '../utils/http';
-
+import store from '../store';
 /**
  * 获取左侧菜单导航
  *
@@ -31,6 +31,12 @@ export async function getNavList() {
     }
 
     console.log(res);
+    return process.env.VUE_APP_BUILD === 'pro' ? res.data.filter(e => e.evn === 'pro') : res.data;
+}
+
+export async function getNavList1() {
+    let userInfo = store.getters.userInfo;
+    let res = await http.get('/identity/menu/getMenuListByRoleId?roleId=' + userInfo.roleId);
     return process.env.VUE_APP_BUILD === 'pro' ? res.data.filter(e => e.evn === 'pro') : res.data;
 }
 

@@ -14,6 +14,14 @@ export default [
                 component: () => import('@/views/rds/list/List.vue')
             },
             {
+                path: 'create',
+                name: 'app.rds.create',
+                component: () => import('@/views/rds/create/Index.vue'),
+                meta: {
+                    fullpage: true
+                }
+            },
+            {
                 path: 'inst/:id',
                 name: 'app.rds.inst',
                 redirect: '/app/rds/inst/:id/detail',
