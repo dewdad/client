@@ -159,7 +159,6 @@
     {
         "text": "云数据库RDS",
         "heading": true,
-        "hidden": true,
         "psref": "#",
         "sref": "app.rds",
         "icon": "iconfont icon-yunshujuRDS",

@@ -1,5 +1,8 @@
 <template>
-    <span class="region-select">
+    <el-radio-group v-model="region" size="small">
+        <el-radio-button :label="item.value" border v-tooltip.bottom="create && item.disabled ? '即将上线' : ''" v-for="item in list" :key="item.key" v-if="(showDisabled && item.disabled) || !item.disabled" :disabled="create && item.disabled">{{item.text}}</el-radio-button>
+    </el-radio-group>
+    <!-- <span class="region-select">
         <span class="region-select-item" v-for="item in list" :key="item.key">
             <el-button type="primary" class="width-full" :disabled="item.disabled" size="small">
                 {{item.text}}
@@ -8,14 +11,20 @@
                 <el-option v-for="el in item.respool" :key="el.key" :value="el.value" :label="el.text">{{el.text}}</el-option>
             </el-select>
         </span>
-    </span>
+    </span> -->
 </template>
 
 <script>
 import {get} from '@/utils/utils';
 export default {
     props: {
-        value: String
+        value: String,
+        showDisabled: true,
+        // 是否为创建页（需求创建页只能用第一个）
+        create: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
@@ -25,6 +34,7 @@ export default {
     },
     mounted() {
         this.$emit('input', this.region);
+        this.$emit('change', this.region);
     }
 };
 </script>

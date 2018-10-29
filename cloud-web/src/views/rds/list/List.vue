@@ -4,7 +4,7 @@
             实例列表
             <region-radio slot="content" v-model="region"></region-radio>
             <div slot="right">
-                <a type="primary" class="el-button el-button--small el-button--primary" target="_blank">创建实例</a>
+                <router-link :to="{name: 'app.rds.create'}" class="el-button el-button--small el-button--primary" target="_blank">创建实例</router-link>
                 <el-button type="info" size="small" v-tooltip.bottom="{content:'刷新', theme: 'is-light'}">
                     <i class="iconfont icon-icon-refresh"></i>
                 </el-button>

@@ -412,7 +412,7 @@ export default {
                             let dataList = data.data || [];
                             this.tableDataList = dataList.data;
                             $log(this.tableDataList);
-                            this.totalItems = data.total || 0;
+                            this.totalItems = data.data.total || 0;
                         }
                     }
                     self.loading = false;
