@@ -7,13 +7,13 @@
         <zt-form-item v-if="form.loginType==='2'" key="username" :label="$t('ecs.create.username')">
             {{default_username}}
         </zt-form-item>
-        <zt-form-item v-if="form.loginType==='2'" id="password1" key="password1" :label="$t('ecs.create.loginPassword')" prop="password1" :showRule="true" style="width:395px;" :class="{'hide-star': true, 'hide-message': form.password1 === ''}" has-help>
+        <zt-form-item v-if="form.loginType==='2' && !osType.includes('windows')" id="password1" key="password1" :label="$t('ecs.create.loginPassword')" prop="password1" :showRule="true" style="width:395px;" :class="{'hide-star': true, 'hide-message': form.password1 === ''}" has-help>
             <el-input v-model="form.password1" :type="showPwd1 ? 'text' : 'password'" :placeholder="$t('ecs.create.password.placeholder')|replaceParamVal([default_username])">
                 <i :class="pwdIcon1" slot="suffix" @click="togglePwd(1)"></i>
             </el-input>
             <!-- <span class="input-help text-nowrap">{{$t('ecs.create.password.tips')}}</span> -->
         </zt-form-item>
-        <zt-form-item v-if="form.loginType==='2'" id="password2" key="password2" :label="$t('ecs.create.confirmPassword')" prop="password2" style="width:395px;" :class="{'hide-star': true, 'hide-message': form.password2 === '', 'mb0': true}">
+        <zt-form-item v-if="form.loginType==='2' && !osType.includes('windows')" id="password2" key="password2" :label="$t('ecs.create.confirmPassword')" prop="password2" style="width:395px;" :class="{'hide-star': true, 'hide-message': form.password2 === '', 'mb0': true}">
             <el-input v-model="form.password2" :type="showPwd2 ? 'text' : 'password'" :placeholder="$t('ecs.create.password1.placeholder')|replaceParamVal([default_username])">
                 <i :class="pwdIcon2" slot="suffix" @click="togglePwd(2)"></i>
             </el-input>

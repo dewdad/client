@@ -163,7 +163,7 @@ export default {
                 server: {
                     flavorRef: this.createEcsFormData.flavorObj.id,
                     name: this.createEcsFormData.instance.instname,
-                    adminPass: this.createEcsFormData.keyPair.password1,
+                    adminPass: this.createEcsFormData.mirror.osType.toLowerCase().includes('windows') ? '' : this.createEcsFormData.keyPair.password1,
                     circle: '1_month',
                     block_device_mapping_v2: [
                         {
