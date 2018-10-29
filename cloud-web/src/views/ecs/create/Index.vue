@@ -197,9 +197,12 @@ export default {
                 availabilityZone: this.createEcsFormData.region || 'az1.dc1',
                 imageId: this.createEcsFormData.mirror.imageObj.id,
                 bandWidth: 0,
-                floatIpId: (this.createEcsFormData.broadBand.checked && this.createEcsFormData.broadBand.type !== 'isReady' && this.createEcsFormData.broadBand.ipAdd) ? this.createEcsFormData.broadBand.ipAdd.id : '',
+                floatIpId:
+                    this.createEcsFormData.broadBand.checked && this.createEcsFormData.broadBand.type !== 'isReady' && this.createEcsFormData.broadBand.ipAdd
+                        ? this.createEcsFormData.broadBand.ipAdd.id
+                        : '',
                 floatIpType: this.createEcsFormData.broadBand.checked ? this.createEcsFormData.broadBand.type : '新建',
-                loginCert: this.createEcsFormData.keyPair.loginType,
+                loginCert: this.createEcsFormData.keyPair.loginType
                 // ports: this.createEcsFormData.securityGroup.setType === '1' ? this.createEcsFormData.securityGroup.labelList.join(',') : this.createEcsFormData.securityGroup.ports.join(','),
                 // labels: []
                 // bill: [
@@ -245,7 +248,7 @@ export default {
             // } else {
             //     body.ports = '';
             // }
-            
+
             $log(body);
             this.creating = true;
             createECS(body)
