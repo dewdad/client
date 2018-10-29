@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 09:53:24 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-10-29 10:56:56
+ * @Last Modified time: 2018-10-29 12:00:16
  */
 import http from '../utils/http';
 import store from '../store';
@@ -20,7 +20,7 @@ export async function getNavList() {
         }
     });
     $log(config);
-    if (config.data.data && config.data.data.data) {
+    if (config.data.code === '0000' && config.data.data && config.data.data.data) {
         let item = {
             text: config.data.data.data[0].itemList[0].name,
             icon: 'iconfont icon-icon_wac',

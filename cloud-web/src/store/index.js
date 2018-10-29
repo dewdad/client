@@ -29,6 +29,8 @@ export default new Vuex.Store({
         pageLoadError: false,
         // 创建ECS实例表单数据
         createEcsFormData: {},
+        // 创建rds实例表单数据
+        createRdsFormData: {},
         resize: new Date().getTime(),
         showVerifyDialog: false,
         // 最后一次身份验证时间

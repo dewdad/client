@@ -9,7 +9,7 @@
                 </label>
             </div>
             <div class="create-form-item__content">
-                <div>
+                <!-- <div>
                     <el-radio-group v-model="form.netWorkType" size="small">
                         <el-radio-button label="1">专有网络</el-radio-button>
                     </el-radio-group>
@@ -21,12 +21,10 @@
                             <zt-icon icon="icon-iconfontwenhao1"></zt-icon>
                         </span>
                     </el-popover>
-                </div>
+                </div> -->
                 <div class="mt10">
                     <select-subnet v-if="created" v-model="form.netWorkInfo" @loading="checkNetLoading" ref="selectSubnet"></select-subnet>
-                    <span class="input-help pt0">如需使用其他私有网络，请选择已有私有网络或
-                        <router-link :to="{name: 'app.vpc.pn'}" target="_blank">前往控制台创建></router-link>
-                    </span>
+                   
                     <!-- <div class="network-info">
                         <el-row>
                             <el-col :span="10">
@@ -43,36 +41,41 @@
             </div>
         </el-card>
         <!-- 网络 end -->
-        <!-- 公网带宽 strat -->
-        <!-- <el-card class="box-card create-form-item" shadow="hover" v-loading="bandLoading" element-loading-spinner="el-icon-loading">
-            <div class="create-form-item__label">
-                <label>
-                    <zt-icon icon="icon-yunzhujichuangjian-gongwangkuandai"></zt-icon>
-                    {{$t('common.publicNet')}}
-                </label>
-            </div>
-            <div class="create-form-item__content">
-                <broad-band ref="broadBand" v-if="created" v-model="form.broadBand" @loading="checkBandLoading"></broad-band>
-            </div>
-        </el-card> -->
-        <!-- 公网带宽 end -->
-        <!-- 安全组 strat -->
+       <!-- 访问端口 strat -->
         <el-card class="box-card create-form-item" shadow="hover">
             <div class="create-form-item__label">
                 <label>
-                    <zt-icon icon="icon-chuangjianyunzhuji-anquanzu"></zt-icon>
-                    {{$t('common.securityGroup')}}
+                    <zt-icon icon="icon-yunzhujichuangjian-cunchu"></zt-icon>
+                    访问端口
                 </label>
             </div>
             <div class="create-form-item__content">
-                <security-group ref="securityGroup" v-if="created" v-model="form.securityGroup" osType="osType"></security-group>
+                <zt-form ref="portForm" :show-message="false" inline-message size="small" :model="form"  label-width="0" style="width:300px;">
+                    <zt-form-item  label="" class="hide-star" prop="port" >
+                        <el-input  v-model="form.port" placeholder="请输入访问端口" maxlength="64" :clearable="true"></el-input>
+                        <!-- <span class="input-help text-nowrap">{{$t('ecs.create.instname.tips')}}</span> -->
+                    </zt-form-item>
+                </zt-form>
             </div>
         </el-card>
-        <!-- 安全组 end -->
+        <!-- 访问端口 end -->
+        <!-- 访问凭证 strat -->
+        <el-card class="box-card create-form-item" shadow="hover" element-loading-spinner="el-icon-loading">
+            <div class="create-form-item__label">
+                <label>
+                    <zt-icon icon="icon-yunzhujichuangjian-miyuedui"></zt-icon>
+                    访问凭证
+                </label>
+            </div>
+            <div class="create-form-item__content">
+                <key-pair ref="keypair" v-model="form.keyPair"  ></key-pair>
+            </div>
+        </el-card>
+        <!-- 访问凭证 end -->
     </div>
 </template>
 <script>
-import BroadBand from './components/BroadBand';
+import KeyPair from './components/KeyPair';
 import SecurityGroup from './components/SecurityGroup';
 import SelectSubnet from './components/SelectSubnet';
 import {showErrAlert, scrollTo, isEmpty} from '@/utils/utils';
@@ -82,20 +85,21 @@ export default {
     data() {
         return {
             netLoading: false,
-            bandLoading: false,
+            keyLoading: false,
             created: false,
             firstValid: true,
             form: {
                 netWorkType: '1',
                 netWorkInfo: {},
                 broadBand: {},
-                securityGroup: {}
+                port: '3306',
+                keyPair: {}
             },
             errorField: ''
         };
     },
     components: {
-        BroadBand,
+        KeyPair,
         SecurityGroup,
         SelectSubnet
     },
@@ -107,15 +111,8 @@ export default {
     },
     computed: {
         ...mapState({
-            createEcsFormData: state => state.createEcsFormData
+            createRdsFormData: state => state.createRdsFormData
         }),
-        osType() {
-            try {
-                return this.createEcsFormData.mirror.osType.platformName.toLowerCase();
-            } catch (err) {
-                return '';
-            }
-        },
         zone: function() {
             let string = this.form.netWorkInfo.subNet && this.form.netWorkInfo.subNet.name;
             let zone = this.$options.filters.zone(string);
@@ -146,13 +143,14 @@ export default {
             return new Promise((resolve, reject) => {
                 this.$refs.selectSubnet.$refs.subNetForm.validate((valid, field) => {
                     if (valid) {
-                        // return resolve();
+                        return resolve();
                         // 验证公网带宽
-                        this.validSecurityGroup(resolve, reject);
+                        // this.validSecurityGroup(resolve, reject);
                     } else {
-                        this.showError(field);
+                        return resolve();
+                        // this.showError(field);
                     }
-                    this.firstValid = false;
+                    // this.firstValid = false;
                 });
             });
         },

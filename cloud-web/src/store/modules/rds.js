@@ -1,10 +1,15 @@
+import {getDataStoreType} from '@/service/rds/datastore';
 const rds = {
     namespaced: true,
     state: {
         instance: {},
-        instList: []
+        instList: [],
+        dataStoreType: {}
     },
     mutations: {
+        SET_DATASTORE(state, payload) {
+            state.dataStoreType = payload;
+        },
         SET_INSTANCE(state, payload) {
             state.instance = payload;
         },
@@ -16,6 +21,11 @@ const rds = {
             state.instList = [];
         }
     },
-    actions: {}
+    actions: {
+        async GET_DATASTORE({commit, state}, data) {
+            let res = await getDataStoreType();
+            state.dataStoreType = res;
+        }
+    }
 };
 export default rds;

@@ -126,11 +126,11 @@ export default {
     },
     computed: {
         ...mapState({
-            createEcsFormData: state => state.createEcsFormData
+            createRdsFormData: state => state.createRdsFormData
         }),
         osType: function() {
             try {
-                return this.createEcsFormData.mirror.osType ? this.createEcsFormData.mirror.osType : '';
+                return this.createRdsFormData.mirror.osType ? this.createRdsFormData.mirror.osType : '';
             } catch (err) {
                 $log(err);
                 return '';

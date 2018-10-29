@@ -28,7 +28,7 @@
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-quyu"></zt-icon>
-                    {{$t('common.area')}}
+                    可用区
                 </label>
             </div>
             <div class="create-form-item__content">
@@ -37,62 +37,22 @@
         </el-card>
         <!-- 区域选择 end -->
         <!-- 实例选择 strat -->
-        <el-card class="box-card create-form-item" shadow="hover" v-loading="flavorLoading" element-loading-spinner="el-icon-loading">
-            <div class="create-form-item__label">
-                <label>
-                    <zt-icon icon="icon-shili1"></zt-icon>
-                    {{$t('common.inst')}}
-                </label>
-                <div v-html="$t('ecs.create.flavor.descTxt')"></div>
-            </div>
-            <div id="flavor" class="create-form-item__content">
-                <flavor-table v-model="form.flavorObj" @loading="handleFlavorLoading"></flavor-table>
-                <div class="mt10 font12 color666">申请数量：
-                    <zt-input-number v-model="form.applyNumber" :tooltip="$t('ecs.create.maxApplyNumber')|replaceParamVal([form.applyMax])" size="small" suffix="台" :precision="0" controls-position="right" :min="1" :max="form.applyMax"></zt-input-number>
-                </div>
-            </div>
-        </el-card>
+        <flavor-table v-model="form.flavorObj"></flavor-table>
         <!-- 实例选择 end -->
-        <!-- 镜像 strat -->
-        <el-card class="box-card create-form-item" shadow="hover" v-loading="mirrorLoading" element-loading-spinner="el-icon-loading">
-            <div class="create-form-item__label">
-                <label>
-                    <zt-icon icon="icon-yunzhujichuangjian-jingxiang"></zt-icon>
-                    {{$t('common.image')}}
-                </label>
-            </div>
-            <div class="create-form-item__content">
-                <select-mirror ref="mirror" @loading="handleMirrorLoading" v-model="form.mirror"></select-mirror>
-            </div>
-        </el-card>
-        <!-- 镜像 end -->
         <!-- 存储 strat -->
         <el-card class="box-card create-form-item" shadow="hover">
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-yunzhujichuangjian-cunchu"></zt-icon>
-                    {{$t('common.storage')}}
+                    存储空间
                 </label>
-                <div v-html="$t('ecs.create.storage.descTxt')"></div>
             </div>
             <div class="create-form-item__content">
-                <storage ref="storage" v-model="form.storage"></storage>
+                <zt-input-number v-model="form.storage" size="small" :precision="0" :step="10" :suffix="$t('abbr.gb')" controls-position="right" :min="10" :max="500"></zt-input-number>
+                <!-- <storage ref="storage" v-model="form.storage"></storage> -->
             </div>
         </el-card>
         <!-- 存储 end -->
-        <!-- 密钥对 strat -->
-        <el-card class="box-card create-form-item" shadow="hover" v-loading="keyLoading" element-loading-spinner="el-icon-loading">
-            <div class="create-form-item__label">
-                <label>
-                    <zt-icon icon="icon-yunzhujichuangjian-miyuedui"></zt-icon>
-                    {{$t('common.logonCredentials')}}
-                </label>
-            </div>
-            <div class="create-form-item__content">
-                <key-pair ref="keypair" v-model="form.keyPair" @loading="handleLoading" :ostype="form.mirror.osType"></key-pair>
-            </div>
-        </el-card>
-        <!-- 密钥对 end -->
     </div>
 </template>
 <script>
@@ -159,10 +119,11 @@ export default {
             return new Promise((resolve, reject) => {
                 this.$refs.instname.$refs.instNameForm.validate((valid, field) => {
                     if (valid) {
-                        // return resolve();
-                        return this.validImage(resolve, reject);
+                        return resolve();
+                        // return this.validImage(resolve, reject);
                     } else {
-                        this.showError(field, this.$refs.instname.$refs);
+                        return resolve();
+                        // this.showError(field, this.$refs.instname.$refs);
                         // let keys = Object.keys(field);
                         // showErrAlert(field[keys[0]][0]['message'], () => {
                         //     this.$refs.instname.$refs.inputInstName.focus();
