@@ -178,7 +178,8 @@ export default {
             rowData.networkName = '';
             $log('clearGatewayFn', rowData);
             let params = {
-                ...rowData
+                ...rowData,
+                opName: 'clearGateway'
             };
             this.loading = true;
             editGateway(params)
