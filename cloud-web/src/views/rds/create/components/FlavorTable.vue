@@ -1,171 +1,179 @@
 <template>
-    <div style="width: 100%;position:relative;">
-        <!-- <div class="mb10">
-            <el-radio-group v-model="platform" size="small">
-                <el-radio-button v-for="plat in PLAT_FORM" :key="plat.text" :label="plat.value" :disabled="plat.disabled">{{plat.text}}</el-radio-button>
-            </el-radio-group>
-        </div> -->
-        <div class="mb10">
-            <el-radio-group v-model="flavor_type" size="small">
-                <el-radio-button v-for="flavor in FLAVOR_TYPE" :key="flavor.value" :label="flavor.value">{{flavor.label}}</el-radio-button>
-            </el-radio-group>
-        </div>
-        <el-table ref="singleTable" max-height="358" :loading="loading" class="data-list" :data="tableDataList" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;">
-            <el-table-column prop="id" label="" width="50" class-name="raido-column">
-                <template slot-scope="scope">
-                    <el-radio v-model="currentFlavor" :label="scope.row"></el-radio>
-                </template>
-            </el-table-column>
-            <el-table-column prop="types" :label="$t('common.flavor')" width="120">
-                <template slot-scope="scope">
-                    {{scope.row.types}}
-                    <el-popover placement="top" :title="tipsContent[flavor_type].title" :content="tipsContent[flavor_type].content" popper-class="el-popover--custom" width="318" trigger="hover">
-                        <span class="tips-help ml20" slot="reference">
-                            <zt-icon icon="icon-iconfontwenhao1 font16"></zt-icon>
-                        </span>
-                    </el-popover>
-                </template>
-            </el-table-column>
-            <el-table-column prop="name" :label="$t('common.instSpec')" min-width="150px">
-            </el-table-column>
-            <el-table-column prop="vCPU" :label="$t('abbr.vcpu')" width="80">
-                <template slot-scope="scope">
-                    {{scope.row.vCpu}} {{$t('abbr.vcpu')}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ram" :label="$t('common.memory')" width="80">
-                <template slot-scope="scope">
-                    {{scope.row.ram}} {{$t('abbr.gb')}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="cpuType" :label="$t('common.cpuType')" min-width="180px">
-            </el-table-column>
-            <el-table-column prop="cpuSpeed" :label="$t('common.cpuSpeed')" width="120px">
-                <template slot-scope="scope">
-                    {{scope.row.cpuSpeed}}
-                </template>
-            </el-table-column>
-            <!-- <el-table-column prop="band" :label="$t('common.wapNet')" width="80">
-                <template slot-scope="scope">
-                    {{scope.row.band || '8'}} Gbps
-                </template>
-            </el-table-column>
-            <el-table-column prop="price" :label="$t('ecs.create.priceColumn')" width="140px">
-                <template slot-scope="scope">
-                    -{{$t('common.priceUnit')}}
-                </template>
-            </el-table-column> -->
-        </el-table>
-        <div v-if="currentFlavor.id" class="mt15 font12">
-            <span class="color666">当前实例：</span>{{get(currentFlavor, 'types')}}，{{get(currentFlavor, 'vCpu')}} {{$t('abbr.vcpu')}} &nbsp;&nbsp;{{get(currentFlavor, 'ram')}} {{$t('abbr.gb')}}内存</div>
+    <div>
+        <el-card class="box-card create-form-item" shadow="hover" v-loading="loading" element-loading-spinner="el-icon-loading">
+            <div class="create-form-item__label">
+                <label>
+                    <zt-icon icon="icon-ic_create_basicconf"></zt-icon>
+                    基础配置
+                </label>
+            </div>
+            <div class="create-form-item__content">
+                <div  class="mb20">
+                    <el-radio-group v-model="form.databaseType" size="small">
+                        <el-radio-button label="MariaDB" border>MariaDB</el-radio-button>
+                        <el-radio-button v-for="(db, type) in dataStoreType" :key="type" :label="type" border></el-radio-button>
+                    </el-radio-group>
+                </div>
+                <div class="mb20">
+                    <el-radio-group v-model="form.databaseVersion" size="small">
+                        <el-radio-button label="5.6" border>5.6</el-radio-button>
+                        <el-radio-button label="5.7" border>5.7</el-radio-button>
+                        <el-radio-button v-for="db in dataStoreType[form.databaseType]" v-if="(isRead && db.name === get(instance, 'dataStoreInfo.version')) || !isRead" :key="db.name" :label="db.name" border>{{isRead ? 'MySQL ' + formateVersion(db.name) : formateVersion(db.name)}}</el-radio-button>
+                    </el-radio-group>
+                </div>
+                <div >
+                    <el-radio-group v-model="form.ha" size="small">
+                        <el-radio-button :label="true" border>高可用</el-radio-button>
+                        <el-radio-button :label="false" border>单机版</el-radio-button>
+                    </el-radio-group>
+                </div>
+            </div>
+        </el-card>
+        <el-card class="box-card create-form-item" shadow="hover"  element-loading-spinner="el-icon-loading">
+            <div class="create-form-item__label">
+                <label>
+                    <zt-icon icon="icon-ic_create_specificat"></zt-icon>
+                    配置规格
+                </label>
+            </div>
+            <div class="create-form-item__content">
+              <el-select v-model="form.currentFlavor" placeholder="请选择规格" size="small" popper-class="el-popper--small" value-key="id" style="width:300px;" class="mr10">
+                <el-option  label="1核 1GiB" >
+                </el-option>
+            </el-select>
+            </div>
+        </el-card>
     </div>
 </template>
 <script>
-import {getInstFlavor} from '@/service/ecs/list';
-import {PLAT_FORM, FLAVOR_TYPE} from '@/constants/dicts/ecs';
-const tipsContent = {
-    generalType: {
-        title: 'CPU / 内存比为 1:4',
-        content: '用于中小型数据库、需要一定内存的数据处理、缓存集群和其他企业应用程序的后端服务器场景'
-    },
-    largeCpuType: {
-        title: 'CPU / 内存比为 1:2',
-        content: '为重计算负载型应用场景设计，可适用于批量计算，Web 前端服务器，数据分析，游戏服务等场景'
-    },
-    largeMemoryType: {
-        title: 'CPU / 内存比为 1:8',
-        content: '为重内存负载型应用场景设计，可广泛适用于高性能数据库、数据分析与挖掘、内存数据库、分布式内存缓存、Hadoop、Spark群集以及其他企业大内存需求应用'
-    }
-};
+import {getReadFlavor} from '@/service/rds/datastore';
+import {isEmpty} from '@/utils/utils';
+import {mapState} from 'vuex';
 export default {
-    name: 'FlavorTable',
     data() {
         return {
-            PLAT_FORM,
-            FLAVOR_TYPE,
             loading: false,
-            platform: PLAT_FORM[0].value,
-            flavor_type: FLAVOR_TYPE[0].value,
-            tableData: {},
-            currentFlavor: {},
-            tipsContent
+            form: {
+                databaseType: 'MariaDB',
+                databaseVersion: '5.6',
+                ha: true,
+                currentFlavor: {},
+                applyNumber: 1
+            },
+            // dataStoreType: {}
+            readFlavorList: []
         };
     },
     props: {
-        value: Object,
-        filterId: {
-            type: String,
-            default: ''
+        value: Object
+    },
+    computed: {
+        ...mapState({
+            instance: state => state.rds.instance,
+            dataStoreType: state => state.rds.dataStoreType
+        }),
+        tableData: function() {
+            if (this.isRead) {
+                return this.readFlavorList.filter(item => {
+                    return item.type === this.flavorType;
+                });
+            }
+            if (!isEmpty(this.dataStoreType)) {
+                let obj = this.dataStoreType[this.form.databaseType].find(item => {
+                    return item.name === this.form.databaseVersion;
+                });
+                $log(obj);
+                if (obj !== undefined) {
+                    return obj.flavorList.filter(item => {
+                        return (
+                            item.type === this.flavorType &&
+                            ((this.form.ha && item.dataStoreType === 'ha') ||
+                                (!this.form.ha && item.dataStoreType !== 'ha' && item.dataStoreType !== 'rr') ||
+                                (this.isRead && item.dataStoreType === 'rr'))
+                        );
+                    });
+                } else {
+                    return [];
+                }
+            } else {
+                return [];
+            }
+        },
+        isRead: function() {
+            let route = this.$route;
+            if (route.name === 'app.rds.create.read') {
+                return true;
+            } else {
+                return false;
+            }
         }
     },
     watch: {
-        flavor_type: function(newval) {
-            this.currentFlavor = this.tableDataList.length ? this.tableDataList[0] : {};
+        // 类型及版本默认设置选中第一个
+        dataStoreType: function(newval) {
+            if (!isEmpty(newval)) {
+                let keys = Object.keys(newval);
+                this.form.databaseType = keys[0];
+                this.form.databaseVersion = newval[keys[0]][0].name;
+            }
         },
-        currentFlavor: function(newval) {
-            this.$emit('input', newval);
+        form: {
+            deep: true,
+            handler: function(newval) {
+                this.$emit('input', newval);
+            }
         },
-        loading: function(newval) {
-            this.$emit('loading', newval);
+        instance: {
+            deep: true,
+            handler: function(newval) {
+                if (!isEmpty(newval)) this.form.databaseVersion = this.instance.dataStoreInfo.version;
+            }
         },
-        tableDataList: function() {
-            this.currentFlavor = this.tableDataList.length ? this.tableDataList[0] : {};
-        }
-    },
-    computed: {
-        tableDataList: function() {
-            return this.tableData[this.flavor_type]
-                ? this.tableData[this.flavor_type].filter(item => {
-                    return item.id !== this.filterId;
-                })
-                : [];
+        tableData: function(newval) {
+            this.$nextTick(function() {
+                if (newval.length) this.form.currentFlavor = newval[0];
+            });
         }
     },
     created() {
-        this.getInstFlavor();
-        // this.currentFlavor = this.tableData[0];
+        this.getDataStoreType();
+        if (this.isRead) this.getReadFlavor();
     },
     methods: {
-        handleCurrentChange(val) {
-            this.currentFlavor = val;
+        /**
+         * 格式化数据库版本号
+         */
+        formateVersion(str) {
+            if (str) {
+                let arr = str.split('.');
+                arr.pop();
+                return arr.join('.');
+            }
+            return str;
         },
-        getInstFlavor() {
-            this.loading = true;
-            this.tableData = [];
-            getInstFlavor()
-                .then(res => {
-                    if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.tableData = res.data;
-                    }
-                })
-                .catch(err => {
-                    $log(err);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
+        handleCurrentChange(val) {
+            this.form.currentFlavor = val;
+        },
+        getDataStoreType() {
+            // this.loading = true;
+            // getDataStoreType()
+            //     .then(res => {
+            //         this.loading = false;
+            //         this.dataStoreType = res;
+            //         this.$store.commit('rds/SET_DATASTORE', res);
+            //     })
+            //     .catch(err => {
+            //         this.loading = false;
+            //     });
+            this.$store.dispatch('rds/GET_DATASTORE');
+        },
+        getReadFlavor() {
+            getReadFlavor().then(res => {
+                this.readFlavorList = res.result.result;
+            });
         }
     }
 };
 </script>
-<style scoped lang="scss">
-.el-radio-group .el-radio-button {
-    margin-right: 5px;
-}
-.tips-help {
-    display: inline-block;
-    height: 14px;
-    & > span {
-        display: none;
-    }
-}
-.el-table__row {
-    &:hover {
-        .tips-help {
-            & > span {
-                display: inline;
-            }
-        }
-    }
-}
+<style scoped>
 </style>

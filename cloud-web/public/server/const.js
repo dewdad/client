@@ -16,10 +16,11 @@ var SERVER_HOST = '10.11.1.173', //主服务器IP地址  //110.11.1.173
         regions: [
             {
                 key: 'bj1',
-                text: '北京可用区1',
+                text: '北京数据中心1',
                 value: 'az1.dc1',
                 classes: 'color-primary',
                 type: 'primary',
+                disabled: false,
                 respool: [
                     {
                         key: 1,
@@ -32,8 +33,24 @@ var SERVER_HOST = '10.11.1.173', //主服务器IP地址  //110.11.1.173
             },
             {
                 key: 'bj2',
-                text: '北京可用区2',
+                text: '北京数据中心2',
                 value: 'az1.dc2',
+                classes: 'btn-white',
+                disabled: true,
+                respool: [
+                    {
+                        key: 1,
+                        text: '暂不可用',
+                        value: 'az1.dc1',
+                        classes: 'color9',
+                        region: 'az1.dc2'
+                    }
+                ]
+            },
+            {
+                key: 'hd1',
+                text: '华东数据中心',
+                value: 'az1.dc3',
                 classes: 'btn-white',
                 disabled: true,
                 respool: [
@@ -50,7 +67,7 @@ var SERVER_HOST = '10.11.1.173', //主服务器IP地址  //110.11.1.173
         regions_radio: [
             {
                 key: 'bj1',
-                text: '北京可用区1',
+                text: '北京数据中心1',
                 value: 'az1.dc1',
                 active: true,
                 disabled: false,
@@ -58,11 +75,30 @@ var SERVER_HOST = '10.11.1.173', //主服务器IP地址  //110.11.1.173
             },
             {
                 key: 'bj2',
-                text: '北京可用区2',
+                text: '北京数据中心2',
+                value: 'az1.dc2',
+                active: false,
+                disabled: true,
+                classes: 'btn disabled citybtn mr6'
+            }
+        ],
+        net_regions: [
+            {
+                key: 'bj1',
+                text: '北京',
+                value: 'az1.dc1',
+                active: true,
+                disabled: false,
+                classes: 'btn citybtn mr6'
+            },
+            {
+                key: 'bj2',
+                text: '华东',
                 value: 'az1.dc2',
                 active: false,
                 disabled: true,
                 classes: 'btn disabled citybtn mr6'
             }
         ]
-    };
+    },
+    REGION = 'az1.dc1';

@@ -59,6 +59,14 @@ export default {
     SET_CREATE_ECS_FORM_DATA(state, data) {
         state.createEcsFormData = data;
     },
+    /**
+     * 设置 createRdsFormData
+     * @param {*} state
+     * @param {*} data
+     */
+    SET_CREATE_RDS_FORM_DATA(state, data) {
+        state.createRdsFormData = data;
+    },
     SET_RESIZE(state) {
         state.resize = new Date().getTime();
     },

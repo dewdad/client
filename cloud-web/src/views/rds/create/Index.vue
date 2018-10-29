@@ -78,10 +78,10 @@ export default {
     },
     computed: {
         ...mapState({
-            createEcsFormData: state => state.createEcsFormData
+            createRdsFormData: state => state.createRdsFormData
         }),
         dataDiskList() {
-            let dataDiskList = this.createEcsFormData.storage.dataDisk;
+            let dataDiskList = this.createRdsFormData.storage.dataDisk;
             let arr = [];
             for (let disk of dataDiskList) {
                 let obj = {
@@ -155,59 +155,59 @@ export default {
         },
         setValue() {
             let formData = Object.assign({}, this.dataOne, this.dataTwo);
-            this.$store.commit('SET_CREATE_ECS_FORM_DATA', formData);
+            this.$store.commit('SET_CREATE_RDS_FORM_DATA', formData);
         },
         doCreate() {
             if (this.creating) return;
             // 请求体
             let body = {
                 server: {
-                    flavorRef: this.createEcsFormData.flavorObj.id,
-                    name: this.createEcsFormData.instance.instname,
-                    adminPass: this.createEcsFormData.mirror.osType.toLowerCase().includes('windows') ? '' : this.createEcsFormData.keyPair.password1,
+                    flavorRef: this.createRdsFormData.flavorObj.id,
+                    name: this.createRdsFormData.instance.instname,
+                    adminPass: this.createRdsFormData.mirror.osType.toLowerCase().includes('windows') ? '' : this.createRdsFormData.keyPair.password1,
                     circle: '1_month',
                     block_device_mapping_v2: [
                         {
                             source_type: 'image',
                             destination_type: 'volume',
-                            uuid: this.createEcsFormData.mirror.imageObj.id,
+                            uuid: this.createRdsFormData.mirror.imageObj.id,
                             delete_on_termination: 'False',
                             boot_index: '0',
-                            volume_type: this.createEcsFormData.storage.sysDisk.type.value,
-                            volume_size: this.createEcsFormData.storage.sysDisk.size
+                            volume_type: this.createRdsFormData.storage.sysDisk.type.value,
+                            volume_size: this.createRdsFormData.storage.sysDisk.size
                         }
                     ],
                     security_groups: [
                         {
-                            name: this.createEcsFormData.securityGroup.currentSecurityGroup ? this.createEcsFormData.securityGroup.currentSecurityGroup.id : ''
+                            name: this.createRdsFormData.securityGroup.currentSecurityGroup ? this.createRdsFormData.securityGroup.currentSecurityGroup.id : ''
                         }
                     ],
                     networks: [
                         {
-                            uuid: this.createEcsFormData.netWorkInfo.netWork.id
+                            uuid: this.createRdsFormData.netWorkInfo.netWork.id
                         }
                     ],
                     availability_zone: 'az1.dc1',
-                    key_name: this.createEcsFormData.keyPair.keyname
+                    key_name: this.createRdsFormData.keyPair.keyname
                 },
-                instanceDescribe: this.createEcsFormData.instance.desc,
-                applyInstNum: this.createEcsFormData.applyNumber,
+                instanceDescribe: this.createRdsFormData.instance.desc,
+                applyInstNum: this.createRdsFormData.applyNumber,
                 dataDiskList: this.dataDiskList,
-                ecsName: this.createEcsFormData.instance.instname,
-                availabilityZone: this.createEcsFormData.region || 'az1.dc1',
-                imageId: this.createEcsFormData.mirror.imageObj.id,
+                ecsName: this.createRdsFormData.instance.instname,
+                availabilityZone: this.createRdsFormData.region || 'az1.dc1',
+                imageId: this.createRdsFormData.mirror.imageObj.id,
                 bandWidth: 0,
-                floatIpId: (this.createEcsFormData.broadBand.checked && this.createEcsFormData.broadBand.type !== 'isReady' && this.createEcsFormData.broadBand.ipAdd) ? this.createEcsFormData.broadBand.ipAdd.id : '',
-                floatIpType: this.createEcsFormData.broadBand.checked ? this.createEcsFormData.broadBand.type : '新建',
-                loginCert: this.createEcsFormData.keyPair.loginType,
-                // ports: this.createEcsFormData.securityGroup.setType === '1' ? this.createEcsFormData.securityGroup.labelList.join(',') : this.createEcsFormData.securityGroup.ports.join(','),
+                floatIpId: (this.createRdsFormData.broadBand.checked && this.createRdsFormData.broadBand.type !== 'isReady' && this.createRdsFormData.broadBand.ipAdd) ? this.createRdsFormData.broadBand.ipAdd.id : '',
+                floatIpType: this.createRdsFormData.broadBand.checked ? this.createRdsFormData.broadBand.type : '新建',
+                loginCert: this.createRdsFormData.keyPair.loginType,
+                // ports: this.createRdsFormData.securityGroup.setType === '1' ? this.createRdsFormData.securityGroup.labelList.join(',') : this.createRdsFormData.securityGroup.ports.join(','),
                 // labels: []
                 // bill: [
                 //     {
                 //         billType: 1
                 //     },
                 //     {
-                //         flavorId: this.createEcsFormData.flavorObj.id
+                //         flavorId: this.createRdsFormData.flavorObj.id
                 //     },
                 //     {
                 //         period: '1_month'
@@ -227,16 +227,16 @@ export default {
                 // ]
             };
             // 如果没有指定安全组
-            // if (isEmpty(this.createEcsFormData.securityGroup.currentSecurityGroup)) {
+            // if (isEmpty(this.createRdsFormData.securityGroup.currentSecurityGroup)) {
             //     // 如果是自定义端口
-            //     if (this.createEcsFormData.securityGroup.setType === '2') {
-            //         if (this.createEcsFormData.securityGroup.custom_port !== '') {
-            //             body.ports += ',' + this.createEcsFormData.securityGroup.custom_port;
+            //     if (this.createRdsFormData.securityGroup.setType === '2') {
+            //         if (this.createRdsFormData.securityGroup.custom_port !== '') {
+            //             body.ports += ',' + this.createRdsFormData.securityGroup.custom_port;
             //         }
-            //         if (this.createEcsFormData.securityGroup.custom_udp !== '') {
-            //             body.ports += ',' + this.createEcsFormData.securityGroup.custom_udp;
+            //         if (this.createRdsFormData.securityGroup.custom_udp !== '') {
+            //             body.ports += ',' + this.createRdsFormData.securityGroup.custom_udp;
             //         }
-            //         if (this.createEcsFormData.securityGroup.ping === '1') {
+            //         if (this.createRdsFormData.securityGroup.ping === '1') {
             //             body.ports += ',icmp';
             //         }
             //     } else {
