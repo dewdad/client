@@ -1,14 +1,29 @@
 <template>
     <el-dialog title="创建资源模板" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
+            <el-form-item label="规格族" prop="types" :label-width="formLabelWidth">
+                <el-select v-model="form.types" placeholder="请选择" >
+                    <el-option v-for="item in selectItems" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="名称 " prop="name" :label-width="formLabelWidth">
                 <el-input placeholder="输入名称" v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="VCPU数量" prop="vcpus" :label-width="formLabelWidth">
-                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.vcpus"></el-input-number>
+            <el-form-item label="VCPU数量" prop="vCpu" :label-width="formLabelWidth">
+                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.vCpu"></el-input-number>
             </el-form-item>
             <el-form-item label="内存（MB）" prop="ram" :label-width="formLabelWidth">
                 <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.ram"></el-input-number>
+            </el-form-item>
+            <el-form-item label="处理器型号" prop="cpuType" :label-width="formLabelWidth">
+                <el-input v-model="form.cpuType" placeholder="输入处理器型号"></el-input>
+            </el-form-item>
+            <el-form-item label="处理器主频（GHz）" prop="cpuSpeed" :label-width="formLabelWidth">
+                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.cpuSpeed"></el-input-number>
+            </el-form-item>
+            <el-form-item label="内网带宽（MB）" prop="brand" :label-width="formLabelWidth">
+                <el-input-number class="width-full" controls-position="right" :min="1" :max="999999999" v-model="form.brand"></el-input-number>
             </el-form-item>
 
         </el-form>
@@ -24,25 +39,52 @@ import {createModel} from '@/service/cloudres.js';
 export default {
     data() {
         return{
-            formLabelWidth: '120px',
+            formLabelWidth: '180px',
             isShow: false,
             resolve: null,
             reject: null,
             confirmBtn: false,
             form:{
+                types:'',
                 name:'',
-                vcpus:1,
-                ram:1
+                vCpu:1,
+                ram:1,
+                brand: 1,
+                cpuSpeed: 1,
+                cpuType: 'Intel Xeon E5-2650 v4',
             },
+            selectItems: [
+                {
+                    label: '通用型',
+                    value: '通用型'
+                },
+                {
+                    label: '计算型',
+                    value: '计算型'
+                },
+                {
+                    label: '内存型',
+                    value: '内存型'
+                }
+            ],
             rules:{
                 name: [
                     { required: true, message: '请输入名称', trigger: 'blur' }
                 ],
-                vcpu: [
+                vCpu: [
                     { required: true, message: '请输VCPU数量', trigger: 'submit' }
                 ],
                 ram: [
                     { required: true, message: '请输内存大小', trigger: 'submit' }
+                ],
+                brand: [
+                    { required: true, message: '输入内网带宽', trigger: 'submit' }
+                ],
+                cpuSpeed: [
+                    { required: true, message: '输入处理器主频', trigger: 'submit' }
+                ],
+                cpuType: [
+                    { required: true, message: '输入处理器型号', trigger: 'submit' }
                 ]
 
             }
@@ -57,15 +99,7 @@ export default {
     methods: {
         show() {
             this.isShow = true;
-            // this.optype = optype;
-            // console.log('item',item);
-            // if(optype !== 1){
-            //     this.form.roleType = item.roleType;
-            //     this.form.id = item.id;
-            // }
-            // this.form.roleName = item.roleName;
-            // this.form.description = item.description;
-            // console.log('optype',optype);
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

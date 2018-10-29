@@ -46,7 +46,7 @@
                         <template v-if="col.column=='vcpu'">
                             <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
-                                    <span class="font12 mr10">{{scope.row.vcpus}}</span>
+                                    <span class="font12 mr10">{{scope.row.vCpu}}</span>
                                 </template>
                             </el-table-column>
                         </template>
@@ -58,16 +58,44 @@
                             </el-table-column>
                         </template>
                         <template v-if="col.column=='public'">
-                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                            <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
                                 <template slot-scope="scope">
                                     <span class="font12 mr10">{{scope.row['os-flavor-access:is_public']?'是':'否'}}</span>
                                 </template>
                             </el-table-column>
                         </template>
+                         <template v-if="col.column=='brand'">
+                            <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.brand}}MB</span>
+                                </template>
+                            </el-table-column>
+                         </template>
+                          <template v-if="col.column=='types'">
+                            <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.types}}</span>
+                                </template>
+                            </el-table-column>
+                          </template>
+                           <template v-if="col.column=='cpuType'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.cpuType}}</span>
+                                </template>
+                            </el-table-column>
+                           </template>
+                            <template v-if="col.column=='cpuSpeed'">
+                            <el-table-column min-width="120" :prop="col.column" :label="col.text" :key="col.column">
+                                <template slot-scope="scope">
+                                    <span class="font12 mr10">{{scope.row.cpuSpeed}}GHz</span>
+                                </template>
+                            </el-table-column>
+                            </template>
                     </template>
                     <!-- 操作 -->
                     <template>
-                        <el-table-column label="操作" key="op" min-width="200" class-name="option-snaplist">
+                        <el-table-column label="操作" key="op" min-width="100" class-name="option-snaplist">
                             <template slot-scope="scope">
                                 <a  @click="delModel(scope.row.id)" class="btn-linker">删除资源模板</a>
                             </template>
@@ -112,7 +140,11 @@ export default {
             { column: 'name', text:'名称' , width: '10%'},
             { column: 'vcpu', text:'VCPU数量' , width: '10%'},
             { column: 'ram', text: '内存', width: '10%' },
-            { column: 'public', text: '公有', width: '10%' }
+            { column: 'public', text: '公有', width: '10%' },
+            { column: 'brand', text: '带宽', width: '10%' },
+            { column: 'types', text: '类型', width: '10%' },
+            { column: 'cpuType', text: '型号', width: '10%' },
+            { column: 'cpuSpeed', text: '主频', width: '10%' },
         ];
 
         return {
