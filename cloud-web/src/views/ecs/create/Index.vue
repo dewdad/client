@@ -28,7 +28,7 @@
             <el-button v-if="active===0" key="3" type="info" @click="upateActive(2)">{{$t('ecs.create.stepThree')}}</el-button>
             <el-button v-if="active===1" key="4" type="warning" @click="next(2)">{{$t('ecs.create.stepThree')}}</el-button>
             <el-button v-if="active===2" key="5" type="warning" @click="active = 1" :disabled="creating" plain>{{$t('ecs.create.preNet')}}</el-button>
-            <el-button v-if="active===2" key="6" type="warning" :plain="creating" @click="createInst" :loading="creating">{{creating ? '正在为您创建...' : '立即创建'}}</el-button>
+            <el-button v-if="active===2" key="6" type="warning" :plain="creating" @click="createInst" :disabled="!creating" :loading="creating">{{creating ? '正在为您创建...' : '立即创建'}}</el-button>
         </div>
     </div>
 </template>
@@ -158,6 +158,7 @@ export default {
             this.$store.commit('SET_CREATE_ECS_FORM_DATA', formData);
         },
         doCreate() {
+            if (this.creating) return;
             // 请求体
             let body = {
                 server: {
