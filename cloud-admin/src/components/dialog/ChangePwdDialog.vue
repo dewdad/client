@@ -61,6 +61,9 @@ export default {
             this.form.newPwd = '';
             this.form.oldPwd = '';
             this.form.confirmPwd = '';
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

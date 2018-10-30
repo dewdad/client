@@ -82,7 +82,9 @@ export default {
             this.brunch = brunch;
             this.domainName = brunch.name;
             this.form.deptId = brunch.id;
-            console.log('item......',item);
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
@@ -117,21 +119,30 @@ export default {
                 id:this.item.id
             };
             console.log('param',param);
-            editUser(param).then(ret => {
-                if(ret.data.code === '0000'){
-                    this.confirmBtn = false;
-                    this.hide();
-                    this.setting();
-                    this.$alert('操作成功','提示');
-                    return;
-                }else{
-                    this.$alert('操作失败', '提示', {
-                        type: 'error'
-                    });
-                    this.confirmBtn = false;
-                }
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    editUser(param).then(ret => {
+                        if(ret.data.code === '0000'){
+                            this.confirmBtn = false;
+                            this.hide();
+                            this.setting();
+                            this.$alert('操作成功','提示');
+                            return;
+                        }else{
+                            this.$alert('操作失败', '提示', {
+                                type: 'error'
+                            });
+                            this.confirmBtn = false;
+                        }
 
+                    });
+                } else {
+                    this.confirmBtn = false;
+                    console.log('error submit!!');
+                    return false;
+                }
             });
+
         },
 
     },

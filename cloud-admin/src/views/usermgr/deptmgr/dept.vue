@@ -138,26 +138,14 @@
                                         <a @click="changeRentQuota(scope.row,brunch)" class="btn-linker">修改配额</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="disableProject(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>
-                                        <a @click="ableProject(scope.row,brunch)" v-if="scope.row.status == 2" class="btn-linker">启用</a>
+                                        <a @click="ableProject(scope.row,brunch)" v-if="scope.row.status == 0" class="btn-linker">启用</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="editRente(scope.row,brunch)" class="btn-linker">编辑</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="delRenter(scope.row)" class="btn-linker">删除</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="manageMember(scope.row,brunch)" class="btn-linker">关联用户</a>
-                                        <!--<el-dropdown>-->
-                                            <!--<span class="btn-linker">-->
-                                                <!--更多-->
-                                                <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-                                            <!--</span>-->
-                                            <!--<el-dropdown-menu slot="dropdown">-->
-                                                <!--<el-dropdown-item @click.native="manageMember(scope.row,brunch)">关联用户</el-dropdown-item>-->
-                                                <!--<el-dropdown-item v-if="scope.row.status == 1" @click.native="disableProject(scope.row,brunch)">禁用租户</el-dropdown-item>-->
-                                                <!--<el-dropdown-item v-if="scope.row.status == 0" @click.native="ableProject(scope.row,brunch)">启用租户</el-dropdown-item>-->
-                                                <!--<el-dropdown-item @click.native="editRente(scope.row,brunch)">编辑租户</el-dropdown-item>-->
-                                                <!--<el-dropdown-item @click.native="delRenter(scope.row)">删除租户</el-dropdown-item>-->
-                                            <!--</el-dropdown-menu>-->
-                                        <!--</el-dropdown>-->
+
                                     </template>
                                 </el-table-column>
                             </template>

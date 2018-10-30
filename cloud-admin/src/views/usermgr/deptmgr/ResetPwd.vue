@@ -64,6 +64,11 @@ export default {
             this.form.username = item.name;
             this.form.confirmPwd = '';
             this.form.newPwd = '';
+            this.invalidPsd = false;
+            this.confirmBtn = false;
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

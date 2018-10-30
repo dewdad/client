@@ -99,7 +99,18 @@ export default {
     methods: {
         show() {
             this.isShow = true;
-
+            this.form = {
+                types:'',
+                name:'',
+                vCpu:1,
+                ram:1,
+                brand: 1,
+                cpuSpeed: 1,
+                cpuType: '',
+            };
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
