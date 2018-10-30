@@ -55,6 +55,9 @@ export default {
             this.expandForm.paramName = item.paramName;
             this.expandForm.paramVal = item.paramVal;
             this.expandForm.description = item.description;
+            this.$nextTick(() => {
+                this.$refs['expandForm'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

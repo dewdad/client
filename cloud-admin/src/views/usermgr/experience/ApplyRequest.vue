@@ -69,6 +69,15 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
+            this.form = {
+                approveRemark: '', //审批描述
+                status: 2, //是否通过
+                userName: '', //账户名
+                userPass: '', //账户密码
+            };
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

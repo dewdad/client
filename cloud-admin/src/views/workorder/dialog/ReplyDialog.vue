@@ -66,7 +66,11 @@ export default {
         show(item) {
             this.isShow = true;
             this.order = item;
+            this.form.suppleContent = '';
             this.getOrderSupple(item.orderNO);
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

@@ -150,7 +150,9 @@ export default {
                 this.form.vnic_type = item['binding:vnic_type'];
                 this.form.chooseType = '';
             }
-            console.log('optype',optype);
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

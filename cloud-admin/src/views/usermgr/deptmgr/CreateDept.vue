@@ -68,7 +68,9 @@ export default {
                 this.form.description = '';
             }
             this.optype = optype;
-
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
