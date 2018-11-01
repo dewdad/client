@@ -878,13 +878,15 @@ export default {
                             };
                             console.log('delECS data:::', data);
                             deleteEcsInstList(data).then(
-                                () => {
-                                    setTimeout(() => {
-                                        ret.loading = false;
-                                        ret.hide();
-                                        this.$message.success($t('common.successOpt'));
-                                        this.getEcsInstList({show: false});
-                                    }, 3000);
+                                res => {
+                                    if (res.code === '0000') {
+                                        setTimeout(() => {
+                                            ret.loading = false;
+                                            ret.hide();
+                                            this.$message.success($t('common.successOpt'));
+                                            this.getEcsInstList({show: false});
+                                        }, 3000);
+                                    }
                                 },
                                 () => {
                                     ret.loading = false;
