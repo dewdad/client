@@ -62,6 +62,9 @@ export default {
                 this.rescourceForm.resource = item.resource;
                 this.rescourceForm.endpoint = item.endpoint;
             }
+            this.$nextTick(() => {
+                this.$refs['rescourceForm'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

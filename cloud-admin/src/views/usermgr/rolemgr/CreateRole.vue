@@ -72,7 +72,9 @@ export default {
             }
             this.form.roleName = item.roleName;
             this.form.description = item.description;
-            console.log('optype',optype);
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

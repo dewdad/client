@@ -243,6 +243,12 @@ export default {
                 type: 'progress'
             },
             {
+                text: '创建中',
+                value: 'BUILDING',
+                className: 'color-progress-warning',
+                type: 'progress'
+            },
+            {
                 text: '挂起',
                 value: 'SUSPENDED',
                 className: 'color-primary',

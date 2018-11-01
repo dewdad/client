@@ -57,6 +57,9 @@ export default {
             this.AddPlatAuthForm.roleVal = item.roleVal;
             this.AddPlatAuthForm.name = item.name;
             this.platItem = item;
+            this.$nextTick(() => {
+                this.$refs['AddPlatAuthForm'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

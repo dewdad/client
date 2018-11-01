@@ -53,7 +53,9 @@ export default {
             this.isShow = true;
             this.item = item;
             this.getPlatformList();
-            console.log('item',item);
+            this.$nextTick(() => {
+                this.$refs['platAuthForm'].clearValidate();
+            });
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

@@ -106,6 +106,9 @@ export default {
             this.form.imageUrl = '';
             this.form.fileList = [];
             this.form.fileListArr = [];
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             console.log('this.form.fileList',this.form.fileList);
             console.log('this.form.fileListArr',this.form.fileListArr);
             return new Promise((resolve, reject) => {

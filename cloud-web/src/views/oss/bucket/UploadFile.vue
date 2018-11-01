@@ -11,11 +11,11 @@
                 <zt-form-item v-if="upload.dirtype === 'currentdir'" label="目录地址">
                     {{ upload.currentPath==="" ? "/":upload.currentPath}}
                 </zt-form-item>
-                <zt-form-item v-show="upload.dirtype === 'specifieddir'" label="目录地址" prop="dirname" :rules="rules">
-                    <el-input v-model="upload.dirname" placeholder="请输入目录名称"></el-input>
+                <zt-form-item v-show="upload.dirtype === 'specifieddir'" label="目录地址" prop="dirname" :rules="rules" >
+                    <el-input v-model="upload.dirname" placeholder="请输入目录名称" @change="dir"></el-input>
                 </zt-form-item>
                 <zt-form-item label="文件上传">
-                    <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders" :data="{prefix: upload.currentPath}" :auto-upload="autoUpload" multiple>
+                    <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :with-credentials="true" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders" :data="{prefix: upload.currentPath}" :auto-upload="autoUpload" multiple>
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或
                             <em>点击上传</em>支持多选</div>
@@ -70,7 +70,7 @@
     </el-dialog>
 </template>
 <script>
-import {uploadFile} from '@/service/oss/filemgr';
+// import {uploadFile} from '@/service/oss/filemgr';
 const percentageBg = require('@/assets/images/percentageBg.png');
 export default {
     name: 'UploadFile',
@@ -101,13 +101,14 @@ export default {
                 dirname: '',
                 currentPath: ''
             },
-            // uploadAction: API_URL + '/' + replaceParamVal(API_OSS.uploadFile, [this.bucketId]),
-            uploadAction: API_URL + '/fileProcess/upload',
+            // uploadAction: '/fileProcess/upload','/oss/bucket/' + this.bucketId + '/uploadFile'
+            uploadAction: '',
             uploadHeaders: {
-                'X-People-Token': this.$store.state.token
+                // 'X-People-Token': this.$store.state.token
             },
             reject: null,
             resolve: null,
+            PATH:'',
             rules: [{validator: validateDirname, trigger: 'blur'}],
             fileList: [
                 {
@@ -161,11 +162,21 @@ export default {
     methods: {
         show() {
             this.upload.currentPath = this.path;
+            if (this.upload.dirtype === 'currentdir' && this.path === ''){
+                this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=/';
+            }else if(this.upload.dirtype === 'currentdir' && this.path !== ''){
+                this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=' + this.path;
+            }
             this.isShow = true;
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;
             });
+        },
+        dir(){
+            if(this.upload.dirtype === 'specifieddir' && this.upload.dirname !== ''){
+                this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=' + this.upload.dirname + '/';
+            }
         },
         // 关闭弹框组件
         close() {
@@ -203,6 +214,7 @@ export default {
         // 传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
         beforeUpload(file) {
             this.uploading = this.allowUpload ? true : false;
+
             return this.allowUpload;
         },
         // 文件上传时的钩子
@@ -214,12 +226,12 @@ export default {
         onSuccess(response, file, fileList) {
             this.fileList = fileList;
             if (response.code === '0000') {
-                let dirname = this.upload.dirtype === 'currentdir' ? this.upload.currentPath : this.upload.dirname + '/';
-                uploadFile(this.bucketId, response.data, dirname).then(res => {
-                    if (res.code === '0000') {
-                        this.$emit('success');
-                    }
-                });
+                // let dirname = this.upload.dirtype === 'currentdir' ? this.upload.currentPath : this.upload.dirname + '/';
+                // uploadFile(this.bucketId, response.data, dirname).then(res => {
+                //     if (res.code === '0000') {
+                //         this.$emit('success');
+                //     }
+                // });
             }
             $log('上传完成', response, fileList);
         },

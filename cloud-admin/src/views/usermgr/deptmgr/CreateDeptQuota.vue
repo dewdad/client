@@ -168,7 +168,9 @@ export default {
                 backupSize:10000
             };
             this.roleType = this.user.roleType;
-            console.log(this.user.roleType);
+            this.$nextTick(() => {
+                this.$refs['form'].clearValidate();
+            });
             if(optype === 2){
                 console.log('item',item);
                 this.form.id = item.id;
