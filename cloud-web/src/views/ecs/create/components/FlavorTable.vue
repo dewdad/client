@@ -35,7 +35,7 @@
             </el-table-column>
             <el-table-column prop="ram" :label="$t('common.memory')" width="80">
                 <template slot-scope="scope">
-                    {{scope.row.ram}} {{$t('abbr.gb')}}
+                    {{scope.row.ram}} MB
                 </template>
             </el-table-column>
             <el-table-column prop="cpuType" :label="$t('common.cpuType')" min-width="180px">
