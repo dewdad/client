@@ -79,6 +79,17 @@ Vue.filter('convertByteSize', (size, decimal = 1, backType = 'array') => {
 });
 
 /**
+ * 将内存单位转换 M -> G
+ */
+Vue.filter('mTOg', size => {
+    if (size < 1024) {
+        return size + 'M';
+    } else {
+        return size / 1024 + 'G';
+    }
+});
+
+/**
  * 手机号码替换151****0000
  * @param mobile 手机号码
  */

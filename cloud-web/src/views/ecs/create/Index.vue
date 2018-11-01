@@ -185,7 +185,7 @@ export default {
                     ],
                     networks: [
                         {
-                            uuid: this.createEcsFormData.netWorkInfo.netWork.id
+                            uuid: this.createEcsFormData.netWorkInfo.subNet.network_id
                         }
                     ],
                     availability_zone: 'az1.dc1',

@@ -77,7 +77,7 @@
                                 <span class="text-nowrap">vCPU: {{scope.row.flavor && scope.row.flavor.vcpus}}{{ $t('common.cpuAlias') }}</span>
                             </li>
                             <li v-if="!scope.row.toCpu" class="">
-                                <span class="text-nowrap">{{$t('ecs.inst.list.memory')}}：{{scope.row.flavor && scope.row.flavor.ram/1024 }}G</span>
+                                <span class="text-nowrap">{{$t('ecs.inst.list.memory')}}：{{scope.row.flavor && scope.row.flavor.ram | mTOg }}</span>
                             </li>
                             <!-- <li v-if="scope.row.bandWidth && scope.row.bandWidth != 0 && !scope.row.toCpu" class="">
                                         <span class="">{{$t('ecs.inst.list.bandWidth')}}: {{scope.row.bandWidth }}MB</span>
