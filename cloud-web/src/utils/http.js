@@ -21,19 +21,19 @@ const env = process.env.NODE_ENV;
  * @param {*} data 源对象
  * @param {*} urlParams 生成的目录对象
  */
-function params(data, urlParams = {}) {    
+function params(data, urlParams = {}) {
     let newParams = urlParams;
     if (Object.prototype.toString.call(data) === '[object Object]') {
         for (const key of Object.keys(data)) {
-            let dataVal = data[key];         
-            if (Object.prototype.toString.call(dataVal) === '[object Object]') {              
-                let json = params(dataVal, newParams);              
-                newParams = Object.assign(newParams, json);                
+            let dataVal = data[key];
+            if (Object.prototype.toString.call(dataVal) === '[object Object]') {
+                let json = params(dataVal, newParams);
+                newParams = Object.assign(newParams, json);
             } else if (key !== '' && key !== 'totalItems' && dataVal !== '') {
-                newParams[key] = dataVal;              
-            } else {               
+                newParams[key] = dataVal;
+            } else {
             }
-        }    
+        }
         return newParams;
     } else {
         return {};

@@ -6,14 +6,14 @@
             <el-button type="primary" size="small" @click="createSubnet">
                 新建子网
             </el-button>
-            <el-button type="info" size="small">
+            <el-button type="info" size="small" @click="fetchData">
                 <i class="iconfont icon-icon-refresh"></i>
             </el-button>
         </div>
     </page-header>
     <!-- 提示框 -->
-    <el-alert :title="$t('security.assetslist.tips')" type="warning" :closable="false" class="mt10">
-    </el-alert>
+    <!-- <el-alert :title="$t('security.assetslist.tips')" type="warning" :closable="false" class="mt10">
+    </el-alert> -->
     <div class="page-body">
         <!-- 表格 -->
         <zt-table :data="listData" :search="true" :search-condition="fields" @search="getSubnetList" :paging="searchObj.paging">
@@ -50,13 +50,13 @@
 </div>
 </template>
 <script>
-import {getSubnetByNetId, deleteSubnet} from '@/service/ecs/network.js';
+import {getSubnetByNetId, deleteSubnet} from '@/service/v2.1/network.js';
 import Create from './CreateSubnet';
 import EditSubnet from './EditSubnet';
 
 let fields = [
-    { field: 'subnetId', label: '子网ID', tagType: 'INPUT' },
-    { field: 'subnetName', label: '子网名称', tagType: 'INPUT' }
+    { field: 'id', label: '子网ID', tagType: 'INPUT' },
+    { field: 'name', label: '子网名称', tagType: 'INPUT' }
 ];
 
 let searchObj = {
@@ -74,7 +74,7 @@ export default {
         return {
             inputval: '',
             vpcName: this.$route.params.name,
-            selestSearchOptionType: '',
+            selestSearchOptionType: {},
             fields,
             searchObj,
             pageIndex: 1,
@@ -85,23 +85,19 @@ export default {
     },
     methods: {
         editSubnet(row) {
-            let create = this.$refs.create;
-            if (create) {
-                create.show(row).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
+            let editSubnet = this.$refs.editSubnet;
+            if (editSubnet) {
+                editSubnet.show(row).then(ret => {
+                    this.fetchData();
                 });
             }
         },
         // 新建子网
         createSubnet(row) {
-            let editSubnet = this.$refs.editSubnet;
-            if (editSubnet) {
-                editSubnet.show(row).then(ret => {
-                    if (ret) {
-                        this.fetchData();
-                    }
+            let create = this.$refs.create;
+            if (create) {
+                create.show({vpcName: this.vpcName, vpcId:this.vpcId}).then(ret => {
+                    this.fetchData();
                 });
             }
         },
@@ -136,14 +132,9 @@ export default {
                 // 发送请求
                 let params = {
                     ...this.searchObj.paging,
-                    pnetId: 'vpc-28ijaat7y',
-                    vpcId: this.vpcId
+                    networkId: this.vpcId,
+                    ...this.selestSearchOptionType
                 };
-                // 搜索选项
-                if (this.selestSearchOptionType) {
-                    params[this.selestSearchOptionType] = this.inputval;
-                }
-
                 let ret = await getSubnetByNetId(params);
                 if (ret) {
                     $log('获取子网列表 <-', ret);
@@ -161,6 +152,8 @@ export default {
         // 抛出函数
         getSubnetList(params) {
             $log(params);
+            this.selestSearchOptionType = params;
+            this.fetchData();
         }
     },
     created() {

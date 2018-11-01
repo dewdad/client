@@ -32,9 +32,9 @@
                     <el-radio :label="false">否</el-radio>
                 </el-radio-group>
             </zt-form-item>
-             <zt-form-item v-if="data.setGateway" label="外部网关" prop="gateWayId" :rules="[{required: true, message: '请选择外部网关', trigger: ['blur', 'change']}]">
-                <el-select v-model="data.gateWayId" placeholder="请选择外部网关">
-                    <el-option v-for="item in netWorkList" :key="item.id" :label="item.id">{{item.name}}</el-option>
+             <zt-form-item v-if="data.setGateway" label="外部网关" prop="externalGateway" :rules="[{required: true, message: '请选择外部网关', trigger: ['blur', 'change']}]">
+                <el-select v-model="data.externalGateway" placeholder="请选择外部网关">
+                    <el-option v-for="item in netWorkList" :key="item.id" :value="item.id" :label="item.name">{{item.name}}</el-option>
                 </el-select>
             </zt-form-item>
         </zt-form>
@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import {createNetwork, updateNetwork, queryNetwork} from '@/service/ecs/network.js';
+import {createNetwork} from '@/service/v2.1/network.js';
+import {updateNetwork, queryNetwork} from '@/service/ecs/network.js';
 import IpInput from '@/components/form/IPInput.vue';
 
 function judgeSubnetIpValid(ip ,mask) {
@@ -105,7 +106,7 @@ export default {
                 version: 4,
                 DHCPVal: true,
                 setGateway: false,
-                gateWayId: ''
+                externalGateway: ''
             },
             rules: {
                 name: [
@@ -182,9 +183,13 @@ export default {
                     ipVersion: this.data.version,
                 }
             };
+            if (this.data.setGateway) {
+                params.subnet['externalGateway'] = this.data.externalGateway;
+            }
             createNetwork(params)
                 .then(ret => {
                     if (ret) {
+                        this.hide();
                         this.resolve(ret);
                     }
                 })
@@ -192,7 +197,6 @@ export default {
                     console.warn('创建VPC', error.message);
                 })
                 .finally(() => {
-                    this.hide();
                     this.loading = false;
                 });
         },

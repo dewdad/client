@@ -2,12 +2,12 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-01 10:00:23
+ * @Last Modified time: 2018-11-01 14:22:30
  * ecs模块 读取网络信息接口
  */
 
 import http from '@/utils/http';
-import {API_ECS} from '@/constants/apiUrl';
+import {API_ECS} from '@/constants/v2.1/apiUrl';
 import {replaceParamVal, get} from '@/utils/utils';
 import ERRCODE from '@/constants/code';
 
@@ -27,7 +27,7 @@ export async function getNetwork() {
  * @param {*} networkId
  */
 export async function getSubnetByNetId({...arg}) {
-    let res = await http.get(API_ECS.network.subnetList, {params: {...arg}});
+    let res = await http.get(replaceParamVal(API_ECS.network.subnetList, [arg.networkId]), {params: {...arg}});
     return res && res.data && res.data.code === ERRCODE.SUCCESS_CODE && res.data.data;
 }
 
@@ -206,7 +206,7 @@ export async function createNetwork({...arg}) {
  */
 export async function createSubnet({...arg}) {
     $log('GET /createSubnet ->', {...arg});
-    let ret = await http.post(API_ECS.network.subnet, {...arg});
+    let ret = await http.post(replaceParamVal(API_ECS.network.subnet, [arg.networkId]), {...arg});
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
 }
 
@@ -216,7 +216,7 @@ export async function createSubnet({...arg}) {
  */
 export async function updateSubnet({id, ...arg}) {
     $log('put /updateSubnet ->', {id, ...arg});
-    let ret = await http.put(replaceParamVal(API_ECS.network.subnetID, [id]), {...arg});
+    let ret = await http.post(replaceParamVal(API_ECS.network.subnetID, [id]), {...arg});
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE;
 }
 
