@@ -68,8 +68,8 @@
                             <template slot-scope="scope">
                                 <router-link :to="{name:'app.usrmgr.rolemgrUser',params:{roleId:scope.row.id,item:scope.row,fromstate:'app.usrmgr.rolemgr'}}" class="btn-linker">关联用户</router-link>
                                 <b class="link-division-symbol"></b>
-                                <a  @click="relateAuth(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin' && scope.row.roleType != 4">关联权限</a>
-                                <b class="link-division-symbol" v-if="scope.row.name != 'admin' && scope.row.roleType != 4"></b>
+                                <a  @click="relateAuth(scope.row)" class="btn-linker" v-if="user.roleType != 4">关联权限</a>
+                                <b class="link-division-symbol" v-if="user.roleType != 4"></b>
                                 <a  @click="createRole(scope.row,2)" class="btn-linker" v-if="scope.row.name != 'admin'">编辑</a>
                                 <b class="link-division-symbol" v-if="scope.row.name != 'admin'"></b>
                                 <a  @click="delRole(scope.row)" class="btn-linker" v-if="scope.row.name != 'admin'">删除</a>

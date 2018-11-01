@@ -164,6 +164,7 @@ export default {
                 server: {
                     flavorRef: this.createEcsFormData.flavorObj.id,
                     name: this.createEcsFormData.instance.instname,
+                    createType: 4,// 创建类型1:卷2:卷快照3:实例快照（暂时没有）4:镜像
                     adminPass: this.createEcsFormData.mirror.osType.toLowerCase().includes('windows') ? '' : this.createEcsFormData.keyPair.password1,
                     circle: '1_month',
                     block_device_mapping_v2: [
