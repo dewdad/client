@@ -17,6 +17,7 @@ import ZTTable from '@/components/ZTTable';
 import ZtTable from '@/components/table/ZtTable';
 import DeleteDailog from '@/components/dialog/DeleteDailog';
 // import ZTTableColumn from '@/components/ZTTable/src/table-column';
+import ZtColItem from '@/components/table/ZtColItem.vue';
 export default {
     'label-dropdown': LabelDropdown,
     'page-header': PageHeader,
@@ -35,5 +36,6 @@ export default {
     'zt-table': ZtTable,
     // 'zt-table-column': ZTTableColumn,
     'zt-status': ZtStatus,
-    'delete-dialog': DeleteDailog
+    'delete-dialog': DeleteDailog,
+    'zt-col-item': ZtColItem
 };
