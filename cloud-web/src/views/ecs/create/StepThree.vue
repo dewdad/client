@@ -56,9 +56,9 @@
                     <!-- <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'isReady'">
                         <span>{{$t('common.publicNetworkIP')}}：</span>{{get(createEcsFormData,'broadBand.ipAdd.ipAdd')}} / {{get(createEcsFormData,'broadBand.ipAdd.name')}}</el-col>
                     <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'newCreate'">
-                        <span>{{$t('common.publicNet')}}：</span>分配公网IP地址 / BGP(多线)</el-col>
+                        <span>{{$t('common.publicNet')}}：</span>分配公网IP地址 / BGP(多线)</el-col> -->
                     <el-col :span="8">
-                        <span>{{$t('common.subnet')}}：</span>{{get(createEcsFormData,'netWorkInfo.subNet.name')}}({{get(createEcsFormData,'netWorkInfo.subNet.subnet')||'-'}})</el-col> -->
+                        <span>{{$t('common.subnet')}}：</span>{{get(createEcsFormData,'netWorkInfo.subNet.name')}}</el-col>
                     <el-col :span="8">
                         <span>{{$t('common.securityGroup')}}：</span>{{get(createEcsFormData.securityGroup, 'currentSecurityGroup.name')||'默认安全组'}}</el-col>
                 </el-row>
