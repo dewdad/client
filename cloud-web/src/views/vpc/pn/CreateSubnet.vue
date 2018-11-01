@@ -1,39 +1,52 @@
 <template>
 <el-dialog :visible.sync="isShow" v-loading="loading" loading="empty">
     <div slot="title">新建子网</div>
+    {{vpcData}}
     <div class="pr130">
         <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
             <zt-form-item label="专有网络">
-                <el-input :value="vpcData.name" disabled></el-input>
+                <el-input :value="vpcData.vpcName" disabled></el-input>
             </zt-form-item>
             <zt-form-item label="名称" prop="name">
                 <el-input v-model="data.name"></el-input>
                 <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
             </zt-form-item>
-            <zt-form-item label="网段" prop="cindr">
-                <ip-input v-model="data.cindr" v-if="isShow"></ip-input>
+            <zt-form-item  label="网段" prop="cidr">
+                <ip-input v-model="data.cidr" v-if="isShow"></ip-input>
                 <span slot="help" class="input-help">
                     <span class="text-warning">创建后无法修改。</span><br>
                     <span class="text-break-all">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
                     例如：192.168.94.0/24
                 </span>
             </zt-form-item>
-            <zt-form-item label="描述">
-                <el-input v-model="data.remark"></el-input>
-                <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
+            <zt-form-item label="IP版本">
+                <el-radio-group v-model="data.ipVersion">
+                    <el-radio :label="4">IPV4</el-radio>
+                    <el-radio :label="6">IPV6</el-radio>
+                </el-radio-group>
             </zt-form-item>
+            <zt-form-item label="DHCP">
+                <el-radio-group v-model="data.dHCPEnabled">
+                    <el-radio :label="true">已激活</el-radio>
+                    <el-radio :label="false">未激活</el-radio>
+                </el-radio-group>
+            </zt-form-item>
+            <!-- <zt-form-item label="描述">
+                <el-input v-model="vpcData.remark"></el-input>
+                <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
+            </zt-form-item> -->
         </zt-form>
     </div>
     <span slot="footer" class="dialog-footer">
-        <el-button type="primary" class="font12" @click="confirm" :loading="loading">确 定</el-button>
-        <el-button type="info" class="font12" @click="hide">取 消</el-button>
+        <el-button type="info" size="small" @click="hide">取 消</el-button>
+        <el-button type="primary" size="small" @click="confirm" :loading="loading">确 定</el-button>
     </span>
 </el-dialog>
 </template>
 
 <script>
 import RegionSelect from '@/components/form/RegionSelect.vue';
-import {createSubnet, updateNetwork} from '@/service/ecs/network.js';
+import {createSubnet, updateNetwork} from '@/service/v2.1/network.js';
 import IpInput from '@/components/form/IPInput.vue';
 function judgeSubnetIpValid(ip ,mask) {
     //子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。
@@ -70,7 +83,7 @@ export default {
     },
     data() {
         // 验证 IP 格式
-        let cindr = function(rule, value, callback) {
+        let cidr = function(rule, value, callback) {
             if (value === '') {
                 callback(new Error('请输入网段'));
             } else {
@@ -90,8 +103,9 @@ export default {
             vpcData: {},
             data: {
                 name: `子网-${new Date().getTime()}`,
-                remark: '',
-                cindr: ''
+                cidr: '',
+                ipVersion: 4,
+                dHCPEnabled: true
             },
             rules: {
                 name: [
@@ -101,14 +115,14 @@ export default {
                         trigger: 'blur'
                     }
                 ],
-                cindr: [
+                cidr: [
                     {
                         required: true,
                         message: '请输入网段',
                         trigger: 'submit'
                     },
                     {
-                        validator: cindr,
+                        validator: cidr,
                         trigger: 'submit'
                     }
                 ]
@@ -122,19 +136,21 @@ export default {
         clear() {
             this.data.name = `子网-${new Date().getTime()}`;
             this.data.remark = '';
-            this.data.cindr = '';
+            this.data.cidr = '';
+            this.data.ipVersion = 4;
+            this.data.dHCPEnabled = true;
             this.$nextTick(() => {
                 this.$refs.form.resetFields();
             });
         },
         hide() {
             this.isShow = false;
-            this.reject('calcel');
+            // this.reject('calcel');
         },
         show(data) {
+            this.clear();
             this.isShow = true;
             this.vpcData = data;
-            this.clear();
             return new Promise((resolve, reject) => {
                 this.resolve = resolve;
                 this.reject = reject;
@@ -143,26 +159,21 @@ export default {
         createSubnet() {
             let params = {
                 name: this.data.name,
-                zone: this.vpcData.zone,
-                remark: this.data.remark,
-                vpcId: this.vpcData.hwId,
-                vpcIdLocal: this.vpcData.id,
-                subnet: this.data.cindr
+                networkId: this.vpcData.vpcId,
+                subnet: this.data
             };
             this.params = params;
             this.loading = true;
             createSubnet(params)
                 .then(ret => {
-                    if (ret) {
-                        this.resolve(ret);
-                    }
+                    this.hide();
+                    this.resolve(ret);
                 })
                 .catch(error => {
                     console.warn('创建VPC', error.message);
                 })
                 .finally(() => {
                     this.loading = false;
-                    this.hide();
                 });
         },
         updateNetwork() {

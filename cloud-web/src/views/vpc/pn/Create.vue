@@ -26,6 +26,17 @@
                     <el-radio :label="false">未激活</el-radio>
                 </el-radio-group>
             </zt-form-item>
+             <zt-form-item v-if="this.type === 'create'" label="设置网关">
+                <el-radio-group v-model="data.setGateway">
+                    <el-radio :label="true">是</el-radio>
+                    <el-radio :label="false">否</el-radio>
+                </el-radio-group>
+            </zt-form-item>
+             <zt-form-item v-if="data.setGateway" label="外部网关" prop="externalGateway" :rules="[{required: true, message: '请选择外部网关', trigger: ['blur', 'change']}]">
+                <el-select v-model="data.externalGateway" placeholder="请选择外部网关">
+                    <el-option v-for="item in netWorkList" :key="item.id" :value="item.id" :label="item.name">{{item.name}}</el-option>
+                </el-select>
+            </zt-form-item>
         </zt-form>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -36,7 +47,8 @@
 </template>
 
 <script>
-import {createNetwork, updateNetwork} from '@/service/ecs/network.js';
+import {createNetwork} from '@/service/v2.1/network.js';
+import {updateNetwork, queryNetwork} from '@/service/ecs/network.js';
 import IpInput from '@/components/form/IPInput.vue';
 
 function judgeSubnetIpValid(ip ,mask) {
@@ -92,7 +104,9 @@ export default {
                 name: '默认专有网络',
                 cindr: '',
                 version: 4,
-                DHCPVal: true
+                DHCPVal: true,
+                setGateway: false,
+                externalGateway: ''
             },
             rules: {
                 name: [
@@ -102,10 +116,11 @@ export default {
                 cindr: [
                     { required: true, message: '请输入网段', trigger: 'blur' },
                     { validator: cindr, trigger: 'submit' }
-                ]
+                ],
             },
             resolve: () => {},
-            reject: () => {}
+            reject: () => {},
+            netWorkList: []
         };
     },
     components: {
@@ -149,6 +164,7 @@ export default {
                 this.version = data.neutronSubnets && data.neutronSubnets[0].ip_version;
                 this.DHCPVal = data.neutronSubnets && data.neutronSubnets[0].enable_dhcp;
             } else {
+                this.queryNetwork();
                 this.clear();
             }
             return new Promise((resolve, reject) => {
@@ -167,9 +183,13 @@ export default {
                     ipVersion: this.data.version,
                 }
             };
+            if (this.data.setGateway) {
+                params.subnet['externalGateway'] = this.data.externalGateway;
+            }
             createNetwork(params)
                 .then(ret => {
                     if (ret) {
+                        this.hide();
                         this.resolve(ret);
                     }
                 })
@@ -177,7 +197,6 @@ export default {
                     console.warn('创建VPC', error.message);
                 })
                 .finally(() => {
-                    this.hide();
                     this.loading = false;
                 });
         },
@@ -225,6 +244,12 @@ export default {
                     console.log('error submit!!');
                     return false;
                 }
+            });
+        },
+        // 查询外部刚强
+        queryNetwork() {
+            queryNetwork({router_external: true}).then(res => {
+                this.netWorkList = res.data || [];
             });
         }
     }

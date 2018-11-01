@@ -327,6 +327,20 @@
                 ]
             },
             {
+                "text": "专有网络-子网管理",
+                "sref": "app.vpc.pn-subnet",
+                "hidden": true,
+                "heading": true,
+                "psref": "app.vpc",
+                "submenu": [
+                    {
+                        "text": "子网管理",
+                        "sref": "app.vpc.pn-subnet",
+                        "psref": "vpc.pn"
+                    }
+                ]
+            },
+            {
                 "text": "静态路由-详情",
                 "sref": "app.vpc.pn-staticRouter",
                 "hidden": true,

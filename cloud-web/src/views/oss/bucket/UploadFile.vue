@@ -225,13 +225,15 @@ export default {
         // 文件上传成功时的钩子
         onSuccess(response, file, fileList) {
             this.fileList = fileList;
-            if (response.code === '0000') {
+            if (response.code !== '0000') {
                 // let dirname = this.upload.dirtype === 'currentdir' ? this.upload.currentPath : this.upload.dirname + '/';
                 // uploadFile(this.bucketId, response.data, dirname).then(res => {
                 //     if (res.code === '0000') {
                 //         this.$emit('success');
                 //     }
                 // });
+                file['status'] = 'error';
+                file['percentage'] = 0;
             }
             $log('上传完成', response, fileList);
         },
@@ -253,6 +255,11 @@ export default {
         // 根据上传百分比动态设置背景
         setBackground({row, index}) {
             return {'background-image': 'url(' + percentageBg + ')', 'background-size': row.percentage + '% 100%', 'background-repeat': 'no-repeat'};
+        },
+        // 重新上传文件
+        reUpload(file, index) {
+            this.$refs.upload.uploadFiles[index].status = 'ready';
+            this.$refs.upload.submit();
         }
     }
 };

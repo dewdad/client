@@ -49,7 +49,12 @@ export default [
             {
                 path: 'pn/subnet/:id/:name',
                 name: 'app.vpc.pn-subnet', // 子网
-                component: pnSubnet
+                component: pnSubnet,
+                meta: {
+                    showBack: true,
+                    backUrl: 'app.vpc.pn',
+                    parentName: 'app.vpc.pn-subnet'
+                }
             },
             {
                 path: 'pn/flexip',
