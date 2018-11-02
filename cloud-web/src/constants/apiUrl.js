@@ -77,7 +77,7 @@ export const API_ECS = {
         editInstInfo: '/compute/server/editEcs/{instanceId}',
         deleteInst: '/compute/server/{instanceId}',
         getPortByEcsId: '/compute/floatip/associateToPort/{ecsId}/{ipId}',
-        getBindedPublicIpByEcsId: '/compute/floatip/list',
+        getBindedPublicIpByEcsId: '/compute/floatip/listServerIp/{ecsId}',
         getAllPortList: ECS_CTRL + '/servers/ports',
         resetPassword: ECS_CTRL + '/servers/{ecsId}/os-reset-password',
         flavorConfirm: '/compute/server/flavorConfirm/{ecsId}',
