@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-01 14:22:30
+ * @Last Modified time: 2018-11-02 14:50:41
  * ecs模块 读取网络信息接口
  */
 
@@ -178,7 +178,7 @@ export async function queryNetworkByID({vpcId}) {
  */
 export async function getNetworkCount({vpcId}) {
     $log('GET /networks ->', {vpcId});
-    let ret = await http.get(replaceParamVal(API_ECS.network.networkCount, [vpcId]));
+    let ret = await http.get(replaceParamVal(API_ECS.network.getRouterInfo, [vpcId]));
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 

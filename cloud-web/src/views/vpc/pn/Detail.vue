@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {getNetworkCount} from '@/service/ecs/network.js';
+import {getNetworkCount} from '@/service/v2.1/network.js';
 import {ECS_STATUS} from '@/constants/dicts/ecs.js';
 
 export default {
@@ -67,7 +67,7 @@ export default {
         return {
             data: {},
             countData: {},
-            isLoading: false,
+            isLoading: true,
             listData: [],
             ECS_STATUS
         };
@@ -93,6 +93,7 @@ export default {
                 getNetworkCount({vpcId}).then(ret => {
                     $log('getNetworkCount', ret);
                     this.countData = ret;
+                    this.isLoading = false;
                 });
             } else {
                 // TODO 没有ID 跳转列表页
