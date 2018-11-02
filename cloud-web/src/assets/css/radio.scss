@@ -33,6 +33,7 @@
         border-radius: 0;
         // min-width: 80px;
         text-align: center;
+        border-color: #c3c5c6;
         .is-checked {
             border-color: $--color-primary;
         }
@@ -70,8 +71,9 @@
 .header-radio-group {
     .el-radio {
         min-width: 60px;
-        padding: 6px 10px;
-        height: auto;
+        padding: 0px 10px;
+        height: 26px;
+        line-height: 24px;
         background: $--color-white;
 
         .el-radio__label {

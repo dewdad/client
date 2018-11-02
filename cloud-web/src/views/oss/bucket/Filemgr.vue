@@ -44,7 +44,7 @@
         <el-row>
             <el-col :span="24">
                 <el-table ref="fileTable" :data="fileList" v-loading="loading" stripe border empty-text="还没有上传文件" class="data-list mt10" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" width="55" :selectable="selectable">
+                    <el-table-column type="selection" width="60" :selectable="selectable">
                     </el-table-column>
                     <el-table-column label="文件名(Object Name)" :show-overflow-tooltip="true">
                         <template slot-scope="scope">

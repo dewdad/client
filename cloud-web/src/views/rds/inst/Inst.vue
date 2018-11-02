@@ -4,7 +4,7 @@
             <img src="@/assets/images/rds/rds_icon.svg" height="50" alt="">
             <div slot="content">
                 <div class="font16">{{get(rdsInst, 'instance.name')}}</div>
-                <div class="mt10 font12">
+                <!-- <div class="mt10 font12">
                     <label class="mr20">
                         <span class="color-secondary">状态：</span>
                         <zt-status :status="DICT_RDS.RDS_STATUS" :value="get(rdsInst, 'instance.status')"></zt-status>
@@ -12,7 +12,7 @@
                     <label>
                         <span class="color-secondary">创建时间：</span> {{get(rdsInst, 'instance.created')|date}}
                     </label>
-                </div>
+                </div> -->
             </div>
             <div slot="right">
                 <!-- <el-button type="info" size="small" icon="el-icon-delete">
@@ -41,7 +41,7 @@ export default {
     name: 'Inst',
     data() {
         return {
-            loading: true,
+            loading: false,
             DICT_RDS,
             instId: '',
             rdsInst: {}
@@ -51,11 +51,11 @@ export default {
         ZtStatus
     },
     computed: {},
-    activated() {
+    created() {
         this.rdsInst = {};
         try {
             this.instId = this.$route.params.id;
-            this.getInstInfo();
+            // this.getInstInfo();
         } catch (error) {
             this.$store.commit('SET_PAGE_LOAD_ERROR', '参数错误');
             throw new Error(error.toString());
@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         getInstInfo() {
-            this.loading = true;
+            this.loading = false;
             getInstInfo(this.instId)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {

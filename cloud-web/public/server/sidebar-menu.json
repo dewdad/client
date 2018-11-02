@@ -196,8 +196,23 @@
                 "hidden": true,
                 "submenu": [
                     {
-                        "text": "基本信息",
+                        "text": "云数据库详情",
                         "sref": "app.rds.inst.detail",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "数据库安全性",
+                        "sref": "app.rds.inst.whitelist",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "备份恢复",
+                        "sref": "app.rds.inst.backrecover",
+                        "psref": "rds.inst"
+                    },
+                    {
+                        "text": "参数设置",
+                        "sref": "app.rds.inst.paraset",
                         "psref": "rds.inst"
                     },
                     {
@@ -207,34 +222,21 @@
                         "hidden": true
                     },
                     {
-                        "text": "监控实例",
+                        "text": "性能监控",
                         "sref": "app.rds.inst.monitor",
                         "psref": "rds.inst"
                     },
                     {
                         "text": "日志管理",
                         "sref": "app.rds.inst.logmgr",
-                        "psref": "rds.inst"
-                    },
-                    {
-                        "text": "白名单",
-                        "sref": "app.rds.inst.whitelist",
-                        "psref": "rds.inst"
+                        "psref": "rds.inst",
+                        "hidden": true
                     },
                     {
                         "text": "性能优化",
                         "sref": "app.rds.inst.upperforman",
-                        "psref": "rds.inst"
-                    },
-                    {
-                        "text": "备份与恢复",
-                        "sref": "app.rds.inst.backrecover",
-                        "psref": "rds.inst"
-                    },
-                    {
-                        "text": "参数设置",
-                        "sref": "app.rds.inst.paraset",
-                        "psref": "rds.inst"
+                        "psref": "rds.inst",
+                        "hidden": true
                     }
                 ]
             }

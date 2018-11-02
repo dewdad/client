@@ -1,28 +1,31 @@
 <template>
-    <div class="mt10">
-        <page-header>
+    <div>
+        <!-- <page-header>
             监控实例
             <div slot="right">
                 <router-link :to="'app'" class="el-button el-button--small el-button--primary" target="_blank">
                     <i class="iconfont icon-shezhi"></i> 设置报警规则</router-link>
             </div>
-        </page-header>
-        <el-row class="mt20">
-            <el-col :span="24">
-                <zt-form :model="searchParams" ref="form" label-width="100px" size="small">
-                    <zt-form-item label="监控类型">
-                        <el-radio-group class="primary" v-model="searchParams.monitortype" size="small">
-                            <el-radio v-for="item in monitortypelist" :key="item.value" border :label="item.key">{{item.value}}</el-radio>
-                        </el-radio-group>
-                    </zt-form-item>
-                    <zt-form-item label="查询时间">
-                        <el-radio-group class="primary" v-model="searchParams.period" size="small" @change="timeChange">
+        </page-header> -->
+         <el-tabs v-model="searchParams.monitortype" @tab-click="handleClick">
+            <el-tab-pane v-for="item in monitortypelist" :key="item.value" :name="item.key" :label="item.value"></el-tab-pane>
+        </el-tabs>
+        <div class="panel panel-default ">
+                        <div class="panel-heading"> 监控信息 
+                            <div class="text-right header-radio-group panel-heading__right">
+                                <el-radio-group class="primary" v-model="searchParams.period" size="mini" @change="timeChange">
                             <el-radio v-for="item in timelist" :key="item.value" border :label="item.key">{{item.value}}</el-radio>
                         </el-radio-group>
-                    </zt-form-item>
-                </zt-form>
-            </el-col>
-        </el-row>
+                        <el-date-picker
+                        size="mini"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                        </el-date-picker>
+                                </div>
+                        </div>
+                        <div class="panel-body">
         <el-row class="mt20">
             <el-col :span="24" v-if="searchParams.monitortype === 1">
                 <section class="chart-box">
@@ -65,6 +68,9 @@
                 </section>
             </el-col>
         </el-row>
+        
+                        </div>
+                    </div>
     </div>
 </template>
 <script>
@@ -94,6 +100,7 @@ export default {
                 startTime: '',
                 endTime: ''
             },
+            daterange: [],
             cpumemUsedDatas: {
                 settings: {
                     // labelMap: {

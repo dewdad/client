@@ -640,6 +640,9 @@ body {
             }
             .panel-heading__right {
                 flex: 1;
+                position: relative;
+                display: flex;
+                align-items: center;
                 font-size: $--basic-font-small-size;
                 * {
                     font-size: inherit;
@@ -649,9 +652,12 @@ body {
                     color: $--color-primary;
                 }
                 .el-date-editor {
-                    position: absolute;
-                    top: 7px;
-                    right: 20px;
+                    // position: absolute;
+                    // top: 7px;
+                    // right: 20px;
+                    height: 26px;
+                    margin-left: 10px;
+                    border-color: #dcdfe6;
                     .el-range-separator {
                         width: 10%;
                     }
@@ -984,7 +990,7 @@ h5.title {
     color: #999;
 }
 .el-range-editor {
-    border-color: #b8c2cc !important;
+    border-color: #c3c5c6 !important;
 }
 .el-date-editor .el-range__close-icon {
     width: 18px;
@@ -996,9 +1002,8 @@ h5.title {
     flex-direction: column;
 }
 
-
 // 暂无数据
-.na-data{
+.na-data {
     height: 100%;
     display: flex;
     align-items: center;

@@ -11,69 +11,36 @@
                         <table class="table zt-table-info">
                             <tbody>
                                 <tr>
-                                    <td>实例ID：</td>
+                                    <td>云数据库ID：</td>
                                     <td>
                                         {{get(instance, 'localId')}}
                                     </td>
-                                    <td>名称：</td>
+                                    <td>云数据库名称：</td>
                                     <td>
                                         {{get(instance, 'name')}}
                                     </td>
-                                </tr>
-                                <tr>
                                     <td>区域：</td>
                                     <td>
                                         {{get(instance, 'region')}}
                                     </td>
+                                </tr>
+                                <tr>
                                     <td>实例类型：</td>
                                     <td>
                                         {{get(instance, 'type')|showTextByKey(DICT_RDS.INST_TYPE)}}
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>内网地址：</td>
+                                    <td>运行状态：</td>
                                     <td>
-                                        {{get(instance, 'hostname')||'-'}}
-                                        <el-tooltip content="内网地址只能在虚拟私有网内部使用。" transition="scale-in" placement="top" effect="light">
-                                            <span class="ml5">
-                                                <i class="iconfont icon-wenhao font14 color-primary"></i>
-                                            </span>
-                                        </el-tooltip>
+                                        <zt-status :status="DICT_RDS.RDS_STATUS" :value="get(rdsInst, 'instance.status')"></zt-status>
                                     </td>
-                                    <td>连接地址：</td>
-                                    <td> <template v-if="!unbingLoading && !bingLoading">
-                                        <template v-if="loading">
-                                            <i class="el-icon-loading"></i>
-                                        </template>
-                                        <template v-if="!get(floating, 'floating_ip_address') && !loading">
-                                            <a href="javascript:;" @click="applyIp" class="font12">申请连接IP</a>
-                                        </template>
-                                        <template v-else-if="get(floating, 'floating_ip_address') && !loading">
-                                            已开启({{get(floating, 'floating_ip_address')}})
-                                            <a href="javascript:;" @click="unbind" class="font12">解绑连接IP</a>
-                                        </template>
-                                        <el-popover content="申请连接IP地址时，请确认在安全规则中，该连接IP可被访问。" width="200" trigger="hover" transition="scale-in" placement="top">
-                                            <span class="ml5" slot="reference">
-                                                <i class="iconfont icon-wenhao font14 color-primary"></i>
-                                            </span>
-                                        </el-popover>
-                                        </template>
-                                        <template v-if="unbingLoading"> 
-                                            <span class="color-danger"><i class="el-icon-loading"></i> 正在解除绑定...</span>
-                                         </template>
-                                         <template v-if="bingLoading">
-                                             <span class="color-success"><i class="el-icon-loading"></i> 正在绑定...</span>
-                                         </template>
+                                    <td>创建时间：</td>
+                                    <td>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>数据库端口：</td>
-                                    <td>
-                                        {{get(instance, 'dbPort')}}
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    </td>
+                                    <td>描述：</td>
+                                    <td colspan="5"></td>
+
                                 </tr>
 
                             </tbody>
@@ -121,87 +88,57 @@
                         <table class="table zt-table-info">
                             <tbody>
                                 <tr>
-                                    <td>规格族：</td>
+                                    <td>实例规格：</td>
                                     <td>
                                         {{get(instance, 'flavor.type')}}
                                     </td>
-                                    <td>数据库类型：</td>
+                                    <td>数据库引擎：</td>
                                     <td>
                                         {{get(instance, 'dataStoreInfo.type')}} {{get(instance, 'dataStoreInfo.version')}}
                                     </td>
-                                    <td>CPU：</td>
+                                    <td>数据库版本：</td>
                                     <td>
                                         {{get(instance, 'flavor.cpu')}} 核
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>数据库内存：</td>
+                                    <td>实例类型：</td>
+                                    <td>
+                                        {{get(instance, 'flavor.type')}}
+                                    </td>
+                                    <td>总存储空间：</td>
+                                    <td>
+                                        {{get(instance, 'volume.size')}}G
+                                    </td>
+                                    <td>已用存储空间：</td>
+                                    <td>
+                                        {{get(instance, 'volume.used')}} G
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>服务端口：</td>
+                                    <td>
+                                        {{get(instance, 'flavor.type')}}
+                                    </td>
+                                    <td>私有网络：</td>
+                                    <td>
+                                        {{get(instance, 'dataStoreInfo.type')}} {{get(instance, 'dataStoreInfo.version')}}
+                                    </td>
+                                    <td>子网：</td>
+                                    <td>
+                                        {{get(instance, 'flavor.cpu')}} 核
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>私有IP：</td>
                                     <td>
                                         {{get(instance, 'flavor.mem')}} G
                                     </td>
-                                    <td>实例规格：</td>
+                                    <td>公网IP：</td>
                                     <td>
                                         {{get(instance, 'flavor.name')}}
                                     </td>
                                     <td colspan="2"></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="15">
-            <el-col :span="24">
-                <!-- 配置信息 -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="iconfont icon-usagestatistics_peo mr10"></i>使用量统计
-                    </div>
-                    <div class="panel-body zt-panel-body-info">
-                        <table class="table zt-table-info">
-                            <tbody>
-                                <tr>
-                                    <td>存储空间：</td>
-                                    <td>
-                                        已使用 {{get(instance, 'volume.used')}} G(共{{get(instance, 'volume.size')}} G)
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="15">
-            <el-col :span="24">
-                <!-- 配置信息 -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="iconfont icon-Paidinformation-fufeixin mr10"></i>付费信息
-                    </div>
-                    <div class="panel-body zt-panel-body-info">
-                        <table class="table zt-table-info">
-                            <tbody>
-                                <tr>
-                                    <td>付费方式：</td>
-                                    <td>
-                                        包年包月
-                                    </td>
-                                    <td>到期时间：</td>
-                                    <td>
-                                        到期
-                                    </td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
 
                             </tbody>
@@ -359,7 +296,7 @@ export default {
                 });
         },
         // 解绑链接IP
-        unbind(){
+        unbind() {
             this.$confirm('您确定要解绑外网地址：' + this.floating.floating_ip_address + '吗?', '解绑', {
                 type: 'warning'
             }).then(action => {
@@ -369,7 +306,8 @@ export default {
                         if (res.code === this.CODE.SUCCESS_CODE) {
                             return sleep(10000); // 成功后延迟10秒
                         }
-                    }).then(() =>{
+                    })
+                    .then(() => {
                         this.queryFloatIp('unbind');
                     })
                     .finally(() => {

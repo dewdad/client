@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-21 11:35:47 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-17 11:38:28
+ * @Last Modified time: 2018-11-02 09:27:01
  */
 
 import moment from 'moment';
@@ -453,3 +453,28 @@ export const operatorReplace = operator => {
     };
     return entitys[operator] ? entitys[operator] : '';
 };
+
+/**
+ * 获取RDS实例详情信息
+ *
+ * @export
+ * @param {*} dataStoreType 数据库实例
+ * @param {*} type 数据库类型
+ * @param {*} version 数据库版本
+ */
+import {isEmpty} from 'lodash';
+export function getRdsFlavorInfo(dataStoreType, type, version, flavorId) {
+    if (!isEmpty(dataStoreType)) {
+        let storeType = dataStoreType[type];
+        // 查询对应的版本信息
+        let versions = storeType.find(item => {
+            return item.name === version;
+        });
+        // 查询版本对应的规格列表
+        let falavorList = versions !== undefined ? versions.flavorList : [];
+        return falavorList.find(item => {
+            return item.id === flavorId;
+        });
+    }
+    return {};
+}
