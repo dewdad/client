@@ -1,7 +1,6 @@
 <template>
 <el-dialog :visible.sync="isShow" v-loading="loading" loading="empty">
     <div slot="title">新建子网</div>
-    {{vpcData}}
     <div class="pr130">
         <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
             <zt-form-item label="专有网络">

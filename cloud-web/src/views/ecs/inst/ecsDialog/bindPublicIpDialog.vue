@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-if="isShow" :title="dialogTitle" :visible.sync="isShow" width="600px" class="dlg-bindip" @close="cancel">
+    <el-dialog v-if="isShow" :title="dialogTitle" :visible="isShow" width="600px" class="dlg-bindip" @close="cancel">
         <zt-form inline-message :model="ruleForm" label-width="73px" style="width:392px;" size="small" ref="ruleForm" :show-message="false">
             <!-- 当前实例 -->
             <zt-form-item :label="$t('dialog.bindPublicip.currentInst')" class="lh-em1">
@@ -8,14 +8,14 @@
             <!-- 公网IP -->
             <zt-form-item label="浮动IP" prop="publicNet.id" class="mb0" :rules="rules">
                 <div>
-                    <el-select v-model="ruleForm.publicNet" :loading="loadingData" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" popper-class="el-popper--small">
-                        <el-option v-for="item in (opType === 1?publicNetData:bandedPublicNetData)" :key="item.id" :label="item.floatingIpAddress" :value="item">
+                    <el-select v-if="opType === 1" key="publicNetData" v-model="ruleForm.publicNet" :loading="loadingData" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" popper-class="el-popper--small">
+                        <el-option v-for="item in publicNetData" :key="item.id" :label="item.floatingIpAddress" :value="item">
                         </el-option>
                     </el-select>
-                    <!-- <el-select v-model="ruleForm.publicNet" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" v-if="opType === 2">
-                        <el-option v-for="item in bandedPublicNetData" :key="item.id" :label="item.ipAdd" :value="item">
+                    <el-select v-model="ruleForm.publicNet" key="bandedPublicNetData" size="small" :placeholder="$t('common.selectButtonTip')" value-key="id" v-if="opType === 2">
+                        <el-option v-for="item in bandedPublicNetData" :key="item.id" :label="item.floating_ip_address" :value="item">
                         </el-option>
-                    </el-select> -->
+                    </el-select>
                     <!-- <i v-show="opType === 1" class="font16 ml10 finger-cursor iconfont icon-Refreshshuaxin" @click="getUnbindPublicIP"></i> -->
                 </div>
                 <router-link v-show="opType === 1" :to="{name: 'app.vpc.pn-flexip'}" target="_blank" class="mt10 finger-cursor font12">{{$t('dialog.bindPublicip.goCreatePublicIP')}}</router-link>
@@ -106,11 +106,11 @@ export default {
             });
         },
         hide() {
-            (this.ruleForm = {
+            this.ruleForm = {
                 intranet: {}, //内网fixIp
                 publicNet: ''
-            }),
-            (this.loading = false);
+            },
+            this.loading = false;
             this.ecsInst = {};
             this.$refs['ruleForm'].resetFields();
             this.$refs['ruleForm'].clearValidate();
@@ -182,8 +182,7 @@ export default {
             return getBindedPublicIpByEcsId(ecsInst)
                 .then(res => {
                     if (res && res.code && res.code === this.CODE.SUCCESS_CODE) {
-                        this.bandedPublicNetData = res.data.data;
-                    } else {
+                        this.bandedPublicNetData = res.data;
                     }
                 })
                 .catch(err => {
