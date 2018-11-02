@@ -34,7 +34,7 @@
         // min-width: 80px;
         text-align: center;
         border-color: #c3c5c6;
-        .is-checked {
+        &.is-checked {
             border-color: $--color-primary;
         }
         .el-radio__input {
