@@ -1,6 +1,12 @@
 <template>
     <el-dialog title="创建资源模板" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
+            <el-form-item label="实例类型" prop="ecsType" :label-width="formLabelWidth">
+                <el-select v-model="form.ecsType" placeholder="请选择实例类型" >
+                    <el-option v-for="item in ecsTypes" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="规格族" prop="types" :label-width="formLabelWidth">
                 <el-select v-model="form.types" placeholder="请选择" >
                     <el-option v-for="item in selectItems" :key="item.value" :label="item.label" :value="item.value">
@@ -47,6 +53,7 @@ export default {
             form:{
                 types:'',
                 name:'',
+                ecsType:'ECS',
                 vCpu:1,
                 ram:1,
                 brand: 1,
@@ -67,12 +74,28 @@ export default {
                     value: '内存型'
                 }
             ],
+            ecsTypes: [
+                {
+                    label: 'ECS',
+                    value: 'ECS'
+                },
+                {
+                    label: 'RDS',
+                    value: 'RDS'
+                }
+            ],
             rules:{
                 name: [
                     { required: true, message: '请输入名称', trigger: 'blur' }
                 ],
                 vCpu: [
                     { required: true, message: '请输VCPU数量', trigger: 'submit' }
+                ],
+                types: [
+                    { required: true, message: '请选择规格族', trigger: 'submit' }
+                ],
+                ecsType: [
+                    { required: true, message: '请选择实例类型', trigger: 'submit' }
                 ],
                 ram: [
                     { required: true, message: '请输内存大小', trigger: 'submit' }
