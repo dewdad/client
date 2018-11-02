@@ -1,55 +1,67 @@
 <template>
     <div class="mt10">
-        <page-header>
+        <div class="font14">
             白名单设置
-            <div slot="right">
-                <el-button type="primary" size="small" icon="el-icon-plus" @click="isShow = true">添加的白名单分组</el-button>
-            </div>
-        </page-header>
+        </div>
+        <div class="mt10">
+            <el-radio label="1">禁止所有地址访问</el-radio>
+            <el-radio label="2">允许所有地址访问</el-radio>
+            <el-radio label="2">指定IP或安全组</el-radio>
+        </div>
         <el-row v-loading="loading">
             <el-col :span="24">
-                <transition-group name="fade" tag="div">
-                    <!-- 分组列表循环 -->
-                    <div v-for="(item, index) in whiteList" :key="item.groupName" class="panel panel-default mt20">
+                    <div class="panel panel-default mt20">
                         <div class="panel-heading">
-                            <i class="iconfont icon-head_workorder_peop mr10"></i>{{item.groupName}}
-                            <div class="text-right panel-heading__right">
-                                <a href="javascript:;" @click="deleteWhite(item.id, item.groupName, index)">删除</a>
-                                <b class="link-division-symbol"></b>
-                                <a href="javascript:;" @click="editGroup(item.id, item.groupName, item.whiteList)">修改</a>
-                                <b class="link-division-symbol"></b>
-                                <a href="javascript:;" @click="clearWhite(item)">清空</a>
-                            </div>
+                            <i class="el-icon-arrow-down"></i> IP白名单
                         </div>
                         <div class="panel-body">
-                            <el-row :gutter="20">
-                                <el-col v-for="white in item.whiteList" :key="white.ipAddress" :xs="3" :lg="3">
-                                    {{white.ipAddress}}
-                                </el-col>
-                                <el-col :span="24" v-if="item.whiteList.length === 0">
+                            <!-- <el-row :gutter="20">
+                                <el-col :span="24" v-if="whiteList.length === 0">
                                     <span class="color-secondary">该分组下暂无IP，请先添加。</span>
                                 </el-col>
-                            </el-row>
+                            </el-row> -->
+                            <div style="padding-bottom: 20px;border-bottom: 1px solid #d1d4d8">
+                            <span class="mr20">IP地址段</span>
+                            <el-tag type="info" size="small" closable>10.11.0.2</el-tag>
+                            <el-tag size="small" @click.native="isShow=true" dashed><i class="el-icon-plus"></i> 添加</el-tag>
+                            <el-tag  size="small" dashed type="danger">清除所有</el-tag>
+                            </div>
                         </div>
                     </div>
-                </transition-group>
+                    <div class="panel panel-default mt20">
+                        <div class="panel-heading">
+                            <i class="el-icon-arrow-down"></i> 安全组白名单
+                        </div>
+                        <div class="panel-body">
+                            <!-- <el-row :gutter="20">
+                                <el-col :span="24" v-if="whiteList.length === 0">
+                                    <span class="color-secondary">该分组下暂无IP，请先添加。</span>
+                                </el-col>
+                            </el-row> -->
+                            <div style="padding-bottom: 20px;border-bottom: 1px solid #d1d4d8">
+                            <span class="mr20">安全组</span>
+                             <el-select  placeholder="请选择安全组" size="small">
+                                    <el-option
+                                    label="安全组">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div class="mt20 text-right">
+                                <el-button type="primary" size="small">提交</el-button>
+                            </div>
+                        </div>
+                    </div>
             </el-col>
         </el-row>
         <!-- 添加白名单分组弹框 -->
-        <el-dialog v-if="isShow" :title="myForm.id ? '修改白名单分组' : '添加白名单分组'" :visible.sync="isShow" :append-to-body="true" :close-on-click-modal="false" @close="isShow=false" :before-close="beforeClose">
-            <div class="form" style="padding-right:100px;">
-                <zt-form v-loading="isSubmit" loading="empty" ref="myForm" :rules="rules" label-width="100px" :model="myForm" size="small" inline-message>
-                    <zt-form-item label="分组名称" prop="groupName">
-                        <el-input v-model="myForm.groupName" placeholder="请输入分组名称"></el-input>
-                    </zt-form-item>
-                    <zt-form-item label="组内白名单" prop="ipAddress">
-                        <el-input type="textarea" :resize="'none'" :rows="6" v-model="myForm.ipAddress" placeholder="请输入组内白名单"></el-input>
-                        <span slot="help" class="input-help">
-                            <a href="javascript:;" class="font12">加载ECS内网IP</a>
-                            <span class="pull-right">还可以添加{{inputLengh}}个白名单</span>
-                        </span>
-                        <span slot="help" class="input-help">
-                            指定IP地址：192.168.0.1 允许192.168.0.1的IP地址访问RDS<br/> 指定IP段：192.168.0.0/24 允许从192.168.0.1到192.168.0.255的IP地址访问RDS<br/> 多个IP设置，用英文逗号隔开，如192.168.0.1,192.168.0.0/24
+        <el-dialog v-if="isShow" title="添加IP地址" width="500px" :visible.sync="isShow" :append-to-body="true" :close-on-click-modal="false" @close="isShow=false" :before-close="beforeClose">
+            <div class="form" >
+                <zt-form v-loading="isSubmit" loading="empty" ref="myForm" :rules="rules" label-width="80px" :model="myForm" size="small" >
+                   
+                    <zt-form-item label="IP地址" prop="ipAddress">
+                        <el-input type="textarea" :resize="'none'" :rows="6" v-model="myForm.ipAddress" placeholder="请输入IP地址，多个IP以“，”隔开"></el-input>
+                        <!-- <span slot="help" class="input-help">
+                            指定IP地址：192.168.0.1 允许192.168.0.1的IP地址访问RDS<br /> 指定IP段：192.168.0.0/24 允许从192.168.0.1到192.168.0.255的IP地址访问RDS<br /> 多个IP设置，用英文逗号隔开，如192.168.0.1,192.168.0.0/24
                         </span>
                         <span slot="help" class="input-help">
                             <a>如何定位本地IP</a>
@@ -57,13 +69,13 @@
                         <span slot="help" class="input-help">
                             <el-alert type="warning" title="新名单将于1分钟后生效" :closable="false">
                             </el-alert>
-                        </span>
+                        </span> -->
                     </zt-form-item>
                 </zt-form>
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="confirm" :loading="isSubmit" :disabled="isSubmit" size="small">确定</el-button>
                 <el-button type="info" @click="isShow=false" :disabled="isSubmit" size="small">取消</el-button>
+                <el-button type="primary" @click="confirm" :loading="isSubmit" :disabled="isSubmit" size="small">确定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -116,27 +128,19 @@ export default {
             callback();
         };
         return {
-            loading: true,
+            loading: false,
             isShow: false,
             isSubmit: false,
             whiteList: [],
             myForm: {
                 id: '',
-                groupName: '',
                 ipAddress: ''
             },
             rules: {
-                groupName: [
-                    {
-                        required: true,
-                        message: '请输入分组名称',
-                        trigger: ['blur', 'change']
-                    }
-                ],
                 ipAddress: [
                     {
                         required: true,
-                        message: '请输入组内白名单',
+                        message: '请输入IP地址',
                         trigger: ['blur', 'change']
                     },
                     {validator: validateIP, trigger: 'blur'}
@@ -171,7 +175,7 @@ export default {
         }
     },
     created() {
-        this.getWhiteList();
+        // this.getWhiteList();
     },
     methods: {
         getWhiteList() {

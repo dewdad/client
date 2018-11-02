@@ -1,8 +1,8 @@
 <template>
     <div class="mt10">
-        <page-header class="page-header-second">
+        <!-- <page-header class="page-header-second">
             参数设置
-        </page-header>
+        </page-header> -->
         <el-row>
             <el-col :span="24">
                 <div class="search-box">

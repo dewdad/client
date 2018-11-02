@@ -22,6 +22,14 @@ export default [
                 }
             },
             {
+                path: 'create/readonly/:id',
+                name: 'app.rds.create.readonly',
+                component: () => import('@/views/rds/create/Index.vue'),
+                meta: {
+                    fullpage: true
+                }
+            },
+            {
                 path: 'inst/:id',
                 name: 'app.rds.inst',
                 redirect: '/app/rds/inst/:id/detail',

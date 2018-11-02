@@ -1,5 +1,7 @@
 <template>
     <div class="create-form">
+        <!-- 主实例信息 -->
+        <inst-info ></inst-info>
         <!-- 实例名称 start -->
         <el-card class="box-card create-form-item create-form-item__name" shadow="hover">
             <div class="create-form-item__label">
@@ -57,6 +59,7 @@
 </template>
 <script>
 import RegionSelect from '@/components/form/RegionSelect';
+import InstInfo from './components/InstInfo';
 import ZtInputNumber from '@/components/ZTInput-number/index.js';
 import InstName from './components/InstName';
 import FlavorTable from './components/FlavorTable';
@@ -95,7 +98,8 @@ export default {
         ZtInputNumber,
         SelectMirror,
         Storage,
-        KeyPair
+        KeyPair,
+        InstInfo
     },
     watch: {
         form: {
