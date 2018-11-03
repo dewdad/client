@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-07-23 15:27:52 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-08-17 11:08:28
+ * @Last Modified time: 2018-11-03 11:14:56
  * 数据字典
  */
 
@@ -75,7 +75,7 @@ export const DICT_RDS = {
         }
     ],
     // 监控类型
-    MONITOR_TYPE: [{key: 1, value: '资源监控'}, {key: 2, value: '引擎监控'}],
+    MONITOR_TYPE: [{key: 'first', value: '资源监控'}, {key: 'second', value: '引擎监控'}],
     // 查询时间段
     TIMELIST: [{key: 1, value: '1小时'}, {key: 2, value: '1天'}, {key: 3, value: '7天'}, {key: 4, value: '1个月'}],
     // 备份状态
