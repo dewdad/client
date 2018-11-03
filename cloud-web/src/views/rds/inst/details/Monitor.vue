@@ -12,17 +12,8 @@
         </el-tabs>
         <div class="panel panel-default ">
             <div class="panel-heading"> 监控信息
-                <div class="text-right header-radio-group panel-heading__right">
-                    <el-radio-group class="primary" v-model="searchParams.period" size="mini" @change="timeChange">
-                        <!-- <el-radio v-for="item in timelist" :key="item.value" border :label="item.key">{{item.value}}</el-radio> -->
-                        <el-radio border name="1小时" label="1h">1小时</el-radio>
-                        <el-radio border name="6小时" label="6h">6小时</el-radio>
-                        <el-radio border name="1天" label="1d">1天</el-radio>
-                        <el-radio border name="7天" label="7d">7天</el-radio>
-                        <el-radio border name="30天" label="30d">30天</el-radio>
-                    </el-radio-group>
-                    <el-date-picker size="mini" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-                    </el-date-picker>
+                <div class="text-right panel-heading__right">
+                    <date-time-group @getTime="getTime"></date-time-group>
                 </div>
             </div>
             <div class="panel-body">
@@ -113,7 +104,7 @@ import {DICT_RDS} from '@/constants/dicts/rds';
 import {dateFormat} from '@/utils/utils';
 import {resourcesMoniterData, engineMoniterData} from '@/service/rds/monitor';
 import EchartsLine from '@/components/charts/EchartsLine.vue';
-
+import DateTimeGroup from '@/components/form/DateTimeGroup';
 export default {
     name: 'Monitor',
     data() {
@@ -151,7 +142,8 @@ export default {
         };
     },
     components: {
-        EchartsLine
+        EchartsLine,
+        DateTimeGroup
     },
     computed: {
         ...mapState({
@@ -234,31 +226,10 @@ export default {
                     this.loading = false;
                 });
         },
-        // 时间选择改变时执行
-        timeChange(value) {
-            let date = new Date();
-            this.searchParams.startTime = dateFormat(date, 'YYYY-MM-DD HH:mm:ss');
-            switch (value) {
-                case '1h':
-                    date.setHours(date.getHours() - 1); // 1小时内
-                    break;
-                case '6h':
-                    date.setHours(date.getHours() - 6); // 6小时内
-                    break;
-                case '1d':
-                    date.setDate(date.getDate() - 1); // 1天内
-                    break;
-                case '7d':
-                    date.setDate(date.getDate() - 7); // 7天内
-                    break;
-                case '30d':
-                    date.setMonth(date.getMonth() - 1); // 1个月内
-                    break;
-                default:
-                    date.setDate(date.getDate() - 1);
-                    break;
-            }
-            this.searchParams.endTime = dateFormat(date, 'YYYY-MM-DD HH:mm:ss');
+        // 获取筛选的时间
+        getTime(params) {
+            this.searchParams.startTime = params.startTime;
+            this.searchParams.endTime = params.endTime;
         }
     }
 };
