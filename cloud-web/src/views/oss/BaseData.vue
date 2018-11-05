@@ -2,15 +2,15 @@
     <div class="baseData oss-box" style="border-bottom:1px solid #e8e8e8;">
         <div class="oss-box-content">
             <div class="oss-box-content__inner">
-                <el-row :gutter="20">
-                    <el-col :span="span">
+                <el-row :gutter="20" class="flex">
+                    <el-col class="flex1">
                         <!-- 存储容量 -->
                         <div class="title">{{$t('oss.overview.storageSize')}}</div>
                         <div class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.usedCap[0])" :duration="2" :decimals="0" /> {{baseData.usedCap[1]}}
                         </div>
                     </el-col>
-                    <el-col :span="span" style="border-right:none">
+                    <el-col class="flex1" style="border-right:none">
                         <div class="title monthRequest">
                             流出流量
                         </div>
@@ -19,7 +19,7 @@
                         </div>
                         <!-- <div class="font12 lh32">上月外网流出流量：256MB</div> -->
                     </el-col>
-                    <el-col :span="span" >
+                    <el-col class="flex1" >
                         <div class="title monthRequest">
                            流入流量
                         </div>
@@ -27,7 +27,7 @@
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.transferIn[0])" :duration="2" /> {{baseData.transferIn[1]}}
                         </div>
                     </el-col>
-                    <el-col :span="span" style="border-right:none">
+                    <el-col class="flex1" style="border-right:none">
                         <div class="title monthRequest">
                             读月请求次数
                         </div>
@@ -36,7 +36,7 @@
                         </div>
                         <!-- <div class="font12 lh32">上月请求次数：15次</div> -->
                     </el-col>
-                    <el-col :span="span">
+                    <el-col class="flex1">
                         <div class="title monthRequest">
                             写请求次数
                         </div>
@@ -45,7 +45,7 @@
                         </div>
                         <!-- <div class="font12 lh32">上月请求次数：15次</div> -->
                     </el-col>
-                    <el-col v-if="showFileNums" :span="span">
+                    <el-col v-if="showFileNums" class="flex1">
                         <div class="title">{{$t('oss.overview.fileNums')}}</div>
                         <div class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.objNum)" :duration="2" /> 个
