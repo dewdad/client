@@ -254,7 +254,6 @@
         "submenu": [
             {
                 "text": "概览",
-                "hidden": true,
                 "sref": "app.oss.overview",
                 "psref": "app.oss"
             },

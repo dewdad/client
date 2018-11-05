@@ -37,6 +37,12 @@
                 <el-tab-pane label="数据监控" name="basicdata"></el-tab-pane>
             </el-tabs> -->
             <el-row>
+            <el-col :span="24">
+                <!-- 基础数据 -->
+                <base-data :show-file-nums="true" ref="baseData" :headerInfo="headerInfo"></base-data>
+            </el-col>
+              </el-row>
+            <el-row class="mt10">
                 <el-col :span="24">
                     <transition name="fade-in-linear">
                         <!-- 当 `currentView` 改变时，组件也跟着改变 -->
@@ -81,7 +87,7 @@ import Basicdata from './Basicdata.vue';
 import {getBucket, getBucketBasic, deleteBucket, setBucketPrivacy} from '@/service/oss';
 import {sleep} from '@/utils/utils';
 import {KEY_AUTH_CODE_FLAG} from '@/constants/const';
-
+import BaseData from '../BaseData.vue';
 export default {
     name: 'Index',
     data() {
@@ -117,7 +123,8 @@ export default {
         PageHeader,
         Overview,
         Filemgr,
-        MobileCodeDialog
+        MobileCodeDialog,
+        BaseData
     },
     watch: {
         // 监听路由参数变化 view参数变化时动态显示不同的组件

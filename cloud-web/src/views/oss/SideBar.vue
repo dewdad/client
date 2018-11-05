@@ -178,9 +178,9 @@ export default {
                         if (this.bucketList.length === 0) {
                             this.$router.push({name: 'app.oss.empty'});
                         } else {
-                            if (!this.$route.params.bucketId) {
-                                this.$router.push({name: 'app.oss.bucket', params: {view: 'overview', bucketId: this.bucketList[0].name}});
-                            }
+                            // if (!this.$route.params.bucketId) {
+                            //     this.$router.push({name: 'app.oss.bucket', params: {view: 'overview', bucketId: this.bucketList[0].name}});
+                            // }
                         }
                         console.log('bucketList', this.bucketList);
                         // this.oldBucketList = res.result;

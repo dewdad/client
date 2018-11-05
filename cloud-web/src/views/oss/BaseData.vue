@@ -1,9 +1,6 @@
 <template>
-    <div class="baseData oss-box">
-        <div class="oss-box-header">{{$t('oss.overview.baseData')}}</div>
+    <div class="baseData oss-box" style="border-bottom:1px solid #e8e8e8;">
         <div class="oss-box-content">
-            <el-alert :title="$t('oss.overviewTips')" type="warning" :closable="false">
-            </el-alert>
             <div class="oss-box-content__inner">
                 <el-row :gutter="20">
                     <el-col :span="span">
@@ -12,49 +9,46 @@
                         <div class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.usedCap[0])" :duration="2" :decimals="0" /> {{baseData.usedCap[1]}}
                         </div>
-                        <div class="font12 lh32">&nbsp;</div>
                     </el-col>
-                    <el-col :span="span">
+                    <el-col :span="span" style="border-right:none">
                         <div class="title monthRequest">
-                            {{$t('oss.overview.monthFlow')}}
-                            <span class="pull-right">
-                                <el-select v-model="flowType" placeholder="请选择" size="small">
-                                    <el-option label="流入" value="in">
-                                    </el-option>
-                                    <el-option label="流出" value="out">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                            流出流量
                         </div>
-                        <div v-if="flowType === 'in'" class="data">
-                            <ICountUp :startVal="0" :endVal="parseInt(baseData.transferIn[0])" :duration="2" /> {{baseData.transferIn[1]}}
-                        </div>
-                        <div v-if="flowType === 'out'" class="data">
+                        <div class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.transferOut[0])" :duration="2" /> {{baseData.transferOut[1]}}
                         </div>
                         <!-- <div class="font12 lh32">上月外网流出流量：256MB</div> -->
                     </el-col>
-                    <el-col :span="span">
+                    <el-col :span="span" >
                         <div class="title monthRequest">
-                            {{$t('oss.overview.monthRequest')}}
-                            <span class="pull-right">
-                                <el-select v-model="methodType" placeholder="请选择" size="small">
-                                    <el-option label="PUT" value="PUT">
-                                    </el-option>
-                                    <el-option label="GET" value="GET">
-                                    </el-option>
-                                </el-select>
-                            </span>
+                           流入流量
                         </div>
                         <div class="data">
-                            <ICountUp :startVal="0" :endVal="methodType === 'PUT' ? parseInt(baseData.hitPut) : parseInt(baseData.hitGet)" :duration="2" /> 次
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.transferIn[0])" :duration="2" /> {{baseData.transferIn[1]}}
+                        </div>
+                    </el-col>
+                    <el-col :span="span" style="border-right:none">
+                        <div class="title monthRequest">
+                            读月请求次数
+                        </div>
+                        <div class="data">
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.hitGet)" :duration="2" /> 次
+                        </div>
+                        <!-- <div class="font12 lh32">上月请求次数：15次</div> -->
+                    </el-col>
+                    <el-col :span="span">
+                        <div class="title monthRequest">
+                            写请求次数
+                        </div>
+                        <div class="data">
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.hitPut)" :duration="2" /> 次
                         </div>
                         <!-- <div class="font12 lh32">上月请求次数：15次</div> -->
                     </el-col>
                     <el-col v-if="showFileNums" :span="span">
                         <div class="title">{{$t('oss.overview.fileNums')}}</div>
                         <div class="data">
-                            <ICountUp :startVal="0" :endVal="parseInt(baseData.objNum)" :duration="2" />
+                            <ICountUp :startVal="0" :endVal="parseInt(baseData.objNum)" :duration="2" /> 个
                         </div>
                     </el-col>
                 </el-row>
@@ -72,7 +66,7 @@ export default {
     data() {
         return {
             loading: true,
-            span: 8,
+            span: 4,
             flowType: 'in',
             methodType: 'PUT',
             baseData: {
@@ -111,7 +105,7 @@ export default {
         }
     },
     created() {
-        if (this.showFileNums) this.span = 6;
+        if (this.showFileNums) this.span = 4;
         this.init();
         // alert(this.$options.filters['convertByteSize'](1024000000))
     },
