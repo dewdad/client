@@ -14,12 +14,14 @@
         <div class="page-body">
             <!-- 表格 -->
             <zt-table @filterVal="filterHandler" :loading="isLoading" :data="tableData" :search="true" :search-condition="fields" @search="getScreenVal" :paging="searchObj.paging" size="small">
-                <el-table-column prop="title" label="VPCID/名称" :min-width="180">
+                <el-table-column prop="title" label="ID" :min-width="180">
                     <template slot-scope="scope">
-                        <div>
                             <span class="font12">{{scope.row.floatingNetworkId}}</span>
-                        </div>
-                        <div>{{scope.row.networkName}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="网络名称">
+                    <template slot-scope="scope">
+                        {{scope.row.networkName}}
                     </template>
                 </el-table-column>
                 <el-table-column label="IP地址">
@@ -39,11 +41,11 @@
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column label="绑定实例" :min-width="50">
+                <!-- <el-table-column label="绑定实例" :min-width="50">
                     <template slot-scope="scope">
                         <span>{{scope.row.subnets}}</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column prop="name" label="操作" :min-width="90" class-name="option-column">
                     <template slot-scope="scope">
                         <a @click="bindFlexFn(scope.row)" :disabled="scope.row.fixedIpAddress !== null">绑定</a>
