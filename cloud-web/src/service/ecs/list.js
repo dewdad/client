@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-05 16:59:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-02 17:52:50
+ * @Last Modified time: 2018-11-05 11:08:53
  * ecs模块 列表页面
  */
 
@@ -63,12 +63,13 @@ export async function modifyVncPwd({ecsId, password1, password2}) {
 /**获取实例规格 *
  * @param {*} data  *
  */
-export async function getInstFlavor({sysCode = 'iamge', isSensitive = 0} = {}) {
+export async function getInstFlavor({instanceType = 'ECS', limit = 999, pageIndex = 1} = {}) {
     let url = API_ECS.flavors.getFlavors;
     let res = await http.get(url, {
         params: {
-            sysCode,
-            isSensitive
+            instanceType,
+            limit,
+            pageIndex
         }
     });
     return res && res.data;

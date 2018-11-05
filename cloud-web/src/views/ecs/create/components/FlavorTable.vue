@@ -7,7 +7,7 @@
         </div> -->
         <div class="mb10">
             <el-radio-group v-model="flavor_type" size="small">
-                <el-radio-button v-for="flavor in FLAVOR_TYPE" :key="flavor.value" :label="flavor.value">{{flavor.label}}</el-radio-button>
+                <el-radio-button v-for="flavor in FLAVOR_TYPE" :key="flavor.value" :label="flavor.label">{{flavor.label}}</el-radio-button>
             </el-radio-group>
         </div>
         <el-table ref="singleTable" max-height="358" :loading="loading" class="data-list" :data="tableDataList" highlight-current-row @current-change="handleCurrentChange" style="width: 100%;">
@@ -19,11 +19,11 @@
             <el-table-column prop="types" :label="$t('common.flavor')" width="120">
                 <template slot-scope="scope">
                     {{scope.row.types}}
-                    <el-popover placement="top" :title="tipsContent[flavor_type].title" :content="tipsContent[flavor_type].content" popper-class="el-popover--custom" width="318" trigger="hover">
+                    <!-- <el-popover placement="top" :title="tipsContent[flavor_type].title" :content="tipsContent[flavor_type].content" popper-class="el-popover--custom" width="318" trigger="hover">
                         <span class="tips-help ml20" slot="reference">
                             <zt-icon icon="icon-iconfontwenhao1 font16"></zt-icon>
                         </span>
-                    </el-popover>
+                    </el-popover> -->
                 </template>
             </el-table-column>
             <el-table-column prop="name" :label="$t('common.instSpec')" min-width="150px">
@@ -85,8 +85,8 @@ export default {
             FLAVOR_TYPE,
             loading: false,
             platform: PLAT_FORM[0].value,
-            flavor_type: FLAVOR_TYPE[0].value,
-            tableData: {},
+            flavor_type: FLAVOR_TYPE[0].label,
+            tableData: [],
             currentFlavor: {},
             tipsContent
         };
@@ -114,11 +114,9 @@ export default {
     },
     computed: {
         tableDataList: function() {
-            return this.tableData[this.flavor_type]
-                ? this.tableData[this.flavor_type].filter(item => {
-                    return item.id !== this.filterId;
-                })
-                : [];
+            return this.tableData.filter(item => {
+                return item.types === this.flavor_type;
+            });
         }
     },
     created() {
@@ -135,7 +133,7 @@ export default {
             getInstFlavor()
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.tableData = res.data;
+                        this.tableData = res.data.data || [];
                     }
                 })
                 .catch(err => {

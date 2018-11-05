@@ -99,7 +99,7 @@ export const API_ECS = {
         updateNotice: '/monitor/alarmNotice/{id}'
     },
     flavors: {
-        getFlavors: '/compute/server/getFlavorGroup',
+        getFlavors: '/compute/flavor/list',
         getFlavorsDetail: ECS_CTRL + '/flavors/{flavorId}/detail'
     },
     vnc: {
