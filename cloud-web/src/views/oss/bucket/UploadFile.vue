@@ -163,7 +163,7 @@ export default {
         show() {
             this.upload.currentPath = this.path;
             if (this.upload.dirtype === 'currentdir' && this.path === ''){
-                this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=/';
+                this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=';
             }else if(this.upload.dirtype === 'currentdir' && this.path !== ''){
                 this.uploadAction = API_URL + '/oss/bucket/' + this.bucketId + '/uploadFile?prefix=' + this.path;
             }
