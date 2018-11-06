@@ -112,6 +112,11 @@ export default {
                         required: true,
                         message: '请输入子网名称',
                         trigger: 'blur'
+                    },
+                    {
+                        pattern: /^[a-zA-Z0-9_-]*$/,
+                        message: '子网名称格式错误',
+                        trigger: 'blur'
                     }
                 ],
                 cidr: [
