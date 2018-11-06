@@ -3,33 +3,33 @@
 .el-aside {
     background: $--color-sideBar-nav;
     top: 50px;
-    bottom: 0px;    
+    bottom: 0px;
     transition: width 0.3s;
     overflow: hidden;
-    z-index: 1000;  
-    overflow-y: auto;  
+    z-index: 1000;
+    overflow-y: auto;
 
     a {
         font-size: 12px !important;
         color: #ddd !important;
     }
-   
+
     .el-menu {
         border-right: 0;
         text-align: left;
         background: #001529;
         color: #cfcfd1;
         em {
-            font-size:14px;
+            font-size: 14px;
             vertical-align: middle;
-            margin-right:5px;
+            margin-right: 5px;
         }
         .el-menu-item {
             height: 40px;
             line-height: 40px;
-            font-size:14px;    
-            color:#cfcfd1;        
-            &.is-active {                    
+            font-size: 14px;
+            color: #cfcfd1;
+            &.is-active {
                 //color: #fff !important;
                 //border-right: 4px solid #2d8cf0 !important;
             }
@@ -39,66 +39,69 @@
                 background: #000c17;
             }
         }
-        
+
         .el-submenu {
-            .el-menu-item {             
-                padding-left:50px !important;                
+            .el-menu-item {
+                padding-left: 50px !important;
             }
             .el-submenu__title {
                 height: 40px;
                 line-height: 40px;
-                font-size:14px;
+                font-size: 14px;
                 color: #cfcfd1;
                 &:hover {
                     background: #000c17;
                     color: #fff;
                 }
-            }                       
-        }       
+            }
+        }
     }
 
     .sidebar-menu {
         float: left;
         width: $--basic-sidebar-menu-width;
-        height: 100%;  
-        background: #30364c;  
-         
-        .el-menu {              
+        height: 100%;
+        background: #30364c;
+
+        .el-menu {
             text-align: left;
             background: #30364c;
-            color: #cfcfd1;   
-            .el-menu-item { 
-                color: #fff;               
+            color: #cfcfd1;
+            .el-menu-item {
+                color: #fff;
                 &:hover,
-                &.is-active {                    
+                &:focus,
+                &.is-active {
                     background: #2d8cf0;
                 }
-            }       
+            }
         }
-        transition: width .3s;
+        transition: width 0.3s;
         &.sidebar-menu--collapse {
-            width: $--basic-sidebar-menu-width-collapse !important;              
-        }        
+            width: $--basic-sidebar-menu-width-collapse !important;
+        }
     }
-    .sidebar-submenu {    
-        display: inline-block; 
+    .sidebar-submenu {
+        // display: inline-block;
         width: $--basic-sidebar-submenu-width;
-        height: 100%; 
+        height: 100%;
+        overflow: hidden;
         background: #ededed;
-        .el-menu {               
+        .el-menu {
             background: #ededed;
-            color: #333; 
-            .el-menu-item { 
-                color: #333;               
+            color: #333;
+            .el-menu-item {
+                color: #333;
                 &:hover,
+                &:focus,
                 &.is-active {
                     color: #0d7ef2;
                     background: #fff;
                 }
-            }     
-        }   
+            }
+        }
         &.sidebar-submenu--collapse {
             width: $--basic-sidebar-submenu-width-collapse;
-        }     
+        }
     }
 }
