@@ -4,7 +4,7 @@
             <el-menu :default-active="activeMenuCode" @select="handleSelect">           
                 <template v-for="(menu) in menuList" >
                     <el-menu-item  :index="menu.menuCode" :key="menu.menuCode" @click="clickMenu(menu)">
-                        <em :class="menu.menuIcon"></em>
+                        <em v-if="menu.menuIcon"  :class="menu.menuIcon"></em>
                         <span v-if="!isCollapse" slot="title">{{menu.menuName}}</span>   
                     </el-menu-item> 
                 </template> 
@@ -17,7 +17,7 @@
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
-                        <em :class="submenu.menuIcon"></em>
+                        <em v-if="submenu.menuIcon" :class="submenu.menuIcon"></em>
                         <span slot="title">{{submenu.menuName}}</span>
                     </el-menu-item>
                     <el-submenu index="1-4" v-if="submenu.submenus.length&&submenu.menuName != '网络'" :key="submenu.menuCode" >

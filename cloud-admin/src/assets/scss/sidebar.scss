@@ -70,6 +70,7 @@
             .el-menu-item {
                 color: #fff;
                 &:hover,
+                &:focus,
                 &.is-active {
                     background: #2d8cf0;
                 }
@@ -92,6 +93,7 @@
             .el-menu-item {
                 color: #333;
                 &:hover,
+                &:focus,
                 &.is-active {
                     color: #0d7ef2;
                     background: #fff;
