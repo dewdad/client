@@ -15,7 +15,7 @@
                     <el-input v-model="upload.dirname" placeholder="请输入目录名称" @change="dir"></el-input>
                 </zt-form-item>
                 <zt-form-item label="文件上传">
-                    <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :with-credentials="true" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders" :data="{prefix: upload.currentPath}" :auto-upload="autoUpload" multiple>
+                    <el-upload ref="upload" class="upload-demo" :on-progress="onProgress" :with-credentials="true" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :show-file-list="false" drag :action="uploadAction" :headers="uploadHeaders"  :auto-upload="autoUpload" multiple>
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或
                             <em>点击上传</em>支持多选</div>
@@ -234,6 +234,8 @@ export default {
                 // });
                 file['status'] = 'error';
                 file['percentage'] = 0;
+            } else {
+                this.$emit('success');
             }
             $log('上传完成', response, fileList);
         },
