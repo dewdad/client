@@ -42,6 +42,11 @@ export default {
                         required: true,
                         message: '请输入专有网络名称',
                         trigger: 'blur'
+                    },
+                    {
+                        pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_-]*$/,
+                        message: '子网名称格式错误',
+                        trigger: 'blur'
                     }
                 ]
             },
