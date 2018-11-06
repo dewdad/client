@@ -103,7 +103,10 @@ export default [
             {
                 path: 'changeconfig/:id',
                 name: 'app.ecs.changeconfig',
-                component: Changeconfig
+                component: Changeconfig,
+                meta: {
+                    activeIndex: 'app.ecs.list'
+                }
             },
             {
                 path: 'lablemgr',

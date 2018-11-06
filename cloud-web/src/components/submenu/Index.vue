@@ -7,7 +7,7 @@
             <el-menu ref="submenu" :default-active="activeIndex" @select="handleSelect" unique-opened>
                 <template v-for="(nav, index) in subMenuList">
                     <template v-if="showNav(nav)">
-                        <el-submenu v-if="nav.submenu" :index="nav.sref" :key="index">
+                        <el-submenu v-if="nav.submenu.length" :index="nav.sref" :key="index">
                             <template slot="title">
                                 <i class="el-icon-caret-bottom"></i>
                                 <span>{{nav.text}}</span>

@@ -159,6 +159,7 @@ router.beforeEach(async (to, from, next) => {
         // 如果来源路由是登录或注册 或者浏览器刷新 加载侧边栏菜单
         if (from.name === 'login' || from.name === 'register.reg' || from.name === null) {
             let navList = await getNavList();
+            $log('navList', navList);
             // 只获取一级菜单
             window.navList = navList;
         }

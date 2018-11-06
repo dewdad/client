@@ -216,6 +216,7 @@ http.interceptors.response.use(
                     //     throttled_message(exception.timeout);
                     // }
                     store.dispatch('LOGOUT');
+                    router.push({name: 'login'});
                     break;
                 case 403:
                     //router.push('error/403')
