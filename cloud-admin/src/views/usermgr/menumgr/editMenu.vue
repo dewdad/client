@@ -65,8 +65,8 @@
                 <!-- d菜单类型 -->
                 <el-form-item label="菜单类型" prop="menuType">
                     <el-radio-group v-model="menu.menuType">
-                        <el-radio label="1">管理员</el-radio>
-                        <el-radio label="2">用户</el-radio>
+                        <el-radio :label="1">管理员</el-radio>
+                        <el-radio :label="2">用户</el-radio>
                     </el-radio-group>
                 </el-form-item>
 
@@ -97,7 +97,7 @@ export default {
             routeHref: '',
             routeUrl: '',
             orderBy: 1,
-            menuType: '1',
+            menuType: 1,
             status: 1,
             isNew : 'new',
         };
