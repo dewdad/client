@@ -60,7 +60,7 @@ export default {
     name: 'Layout',
     data() {
         return {
-            activeIndex: '',
+            activeIndex: 'app.home',
             moduleName: '',
             isCollapse: true,
             openDelay: 300
@@ -100,6 +100,9 @@ export default {
             return 'left-xs';
         },
         subMenuList: function() {
+            if (this.$route.name === 'app.home') {
+                return [];
+            }
             let obj = getSubMenu(this.$route.matched);
             this.setData(obj);
             return obj.subMenu;
@@ -127,7 +130,7 @@ export default {
             }
         },
         hasSubMenu: function(newval) {
-            if (!newval) {
+            if (!newval && this.$route.name !== 'app.home') {
                 this.activeIndex = '';
             }
         }
