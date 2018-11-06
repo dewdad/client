@@ -113,7 +113,7 @@ export default {
                     { required: true, message: '请输入专有网络名称', trigger: 'blur' },
                     { min: 1, max: 48, message: '长度为2-48个字符', trigger: 'blur' },
                     {
-                        pattern: /^[a-zA-Z0-9_-]*$/,
+                        pattern: /^[\u4e00-\u9fa5a-zA-Z0-9_-]*$/,
                         message: '专有网络名称格式错误',
                         trigger: 'blur'
                     }
