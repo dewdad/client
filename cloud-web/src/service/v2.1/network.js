@@ -2,7 +2,7 @@
  * @Author: sunersheng 
  * @Date: 2018-07-23 15:39:00 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-02 14:50:41
+ * @Last Modified time: 2018-11-06 14:04:41
  * ecs模块 读取网络信息接口
  */
 
@@ -214,9 +214,8 @@ export async function createSubnet({...arg}) {
  * 更新子网 PUT /network/subnet/{subnetId}
  * @param name 根据服务器名称查询
  */
-export async function updateSubnet({id, ...arg}) {
-    $log('put /updateSubnet ->', {id, ...arg});
-    let ret = await http.post(replaceParamVal(API_ECS.network.subnetID, [id]), {...arg});
+export async function updateSubnet({id, name}) {
+    let ret = await http.put(replaceParamVal(API_ECS.network.subnetID, [id]) + '?name=' + name);
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE;
 }
 
@@ -233,11 +232,11 @@ export async function deleteSubnet({id}) {
 /**
  * 更新网络 POST /networks
  * @param name 名称
- * @param vpcId 区域
+ * @param id id
  */
-export async function updateNetwork({name, vpcId, remark}) {
-    $log('GET /networks ->', {name, vpcId, remark});
-    let ret = await http.put(replaceParamVal(API_ECS.network.networkID, [vpcId]), {name, vpcId, remark});
+export async function updateNetwork({name, id, remark}) {
+    $log('GET /networks ->', {name, id, remark});
+    let ret = await http.put(replaceParamVal(API_ECS.network.networkID, [id]) + '?name=' + name);
     return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.data;
 }
 

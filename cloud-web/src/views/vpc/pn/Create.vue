@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import {createNetwork} from '@/service/v2.1/network.js';
-import {updateNetwork, queryNetwork} from '@/service/ecs/network.js';
+import {createNetwork, updateNetwork} from '@/service/v2.1/network.js';
+import { queryNetwork} from '@/service/ecs/network.js';
 import IpInput from '@/components/form/IPInput.vue';
 
 function judgeSubnetIpValid(ip ,mask) {
@@ -206,15 +206,9 @@ export default {
             let params = {
                 id: this.row.id,
                 name: this.data.name,
-                subnet: {
-                    cidr: this.data.cindr,
-                    dHCPEnabled: this.data.DHCPVal,
-                    ipVersion: this.data.version,
-                }
             };
-            params.vpcId = this.row.id;
             this.loading = true;
-            updateNetwork(params)
+            updateNetwork({...params})
                 .then(ret => {
                     if (ret) {
                         this.resolve(ret);

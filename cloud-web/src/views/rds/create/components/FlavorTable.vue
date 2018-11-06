@@ -47,6 +47,7 @@
 </template>
 <script>
 import {getReadFlavor} from '@/service/rds/datastore';
+// import {getInstFlavor} from '@/service/ecs/list';
 import {isEmpty} from '@/utils/utils';
 import {mapState} from 'vuex';
 export default {

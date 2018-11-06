@@ -74,10 +74,9 @@ export default {
             });
         },
         updateSubnet() {
-            let params = Object.assign({}, this.row, this.data);
             // params.id = this.row.id;
             this.loading = true;
-            updateSubnet(params)
+            updateSubnet({id:this.row.id, name: this.data.name})
                 .then(ret => {
                     if (ret) {
                         this.hide();
