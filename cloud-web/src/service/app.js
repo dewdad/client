@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-27 09:53:24 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-01 09:44:11
+ * @Last Modified time: 2018-11-06 16:23:20
  */
 import http from '../utils/http';
 import store from '../store';
@@ -12,7 +12,7 @@ import store from '../store';
  * @export
  * @returns
  */
-export async function getNavList() {
+export async function getNavList1() {
     let res = await http.get('server/sidebar-menu.json?t=' + Math.random());
     let config = await http.get('/resources/systemConfig/list', {
         params: {
@@ -34,10 +34,43 @@ export async function getNavList() {
     return process.env.VUE_APP_BUILD === 'pro' ? res.data.filter(e => e.evn === 'pro') : res.data;
 }
 
-export async function getNavList1() {
+/**
+ * 将获取到的二级菜单做参数转换
+ */
+const getSubMenu = submenu => {
+    let arr = [];
+    if (Array.isArray(submenu)) {
+        submenu.forEach(element => {
+            let sub = {
+                text: element.menuName,
+                hidden: element.isNew !== 'new' || element.menuName.includes('隐藏'),
+                sref: element.routeHref,
+                icon: element.menuIcon,
+                submenu: getSubMenu(element.submenus)
+            };
+            arr.push(sub);
+        });
+    }
+    return arr;
+};
+
+export async function getNavList() {
     let userInfo = store.getters.userInfo;
     let res = await http.get('/identity/menu/getMenuListByRoleId?roleId=' + userInfo.roleId);
-    return process.env.VUE_APP_BUILD === 'pro' ? res.data.filter(e => e.evn === 'pro') : res.data;
+    let navList = [];
+    if (res && res.data) {
+        res.data.forEach(element => {
+            let nav = {
+                text: element.menuName,
+                hidden: element.isNew !== 'new' || element.menuName.includes('隐藏'),
+                sref: element.routeHref,
+                icon: element.menuIcon,
+                submenu: getSubMenu(element.submenus)
+            };
+            navList.push(nav);
+        });
+    }
+    return navList;
 }
 
 /**

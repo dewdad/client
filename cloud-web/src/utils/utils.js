@@ -2,7 +2,7 @@
  * @Author: wenfang 
  * @Date: 2018-06-21 11:35:47 
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-02 09:27:01
+ * @Last Modified time: 2018-11-06 16:17:07
  */
 
 import moment from 'moment';
@@ -133,7 +133,7 @@ export const getSubMenu = matched => {
     // 当前路由
     let currentRouter = matched[matched.length - 1];
     // 设置当前路由对应的一级菜单选中状态
-    let activeIndex = matched[1].name;
+    let activeIndex = matched[1].activeIndex || matched[1].name;
     // 当前模块名称
     let moduleName = '';
     let subMenu = [];
