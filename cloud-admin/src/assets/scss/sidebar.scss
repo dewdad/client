@@ -7,7 +7,7 @@
     transition: width 0.3s;
     overflow: hidden;
     z-index: 1000;
-    overflow-y: auto;
+    // overflow-y: auto;
 
     a {
         font-size: 12px !important;
@@ -83,7 +83,7 @@
     }
     .sidebar-submenu {
         // display: inline-block;
-        width: $--basic-sidebar-submenu-width;
+        width: 150px;
         height: 100%;
         overflow: hidden;
         background: #ededed;
