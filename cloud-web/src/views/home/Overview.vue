@@ -170,7 +170,7 @@
                             <div class="info-box-head">已申请资源</div>
                             <div class="info-box-content products-flex">
                                 <el-row :gutter="10">
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="products">
                                             <router-link :to="{ name: 'app.vpc.pn'}">
                                                 <div class="products-inner img-text-center">
@@ -181,7 +181,7 @@
                                             </router-link>
                                         </div>
                                     </el-col>
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="products">
                                             <router-link :to="{ name: 'app.ecs.netsecurity.safegrp'}">
                                                 <div class="products-inner img-text-center">
@@ -192,7 +192,7 @@
                                             </router-link>
                                         </div>
                                     </el-col>
-                                    <el-col :span="6">
+                                    <!-- <el-col :span="6">
                                         <div class="products">
                                             <router-link :to="{ name: 'app.vpc.pn-routeManage'}">
                                                 <div class="products-inner img-text-center">
@@ -202,8 +202,8 @@
                                                 </div>
                                             </router-link>
                                         </div>
-                                    </el-col>
-                                    <el-col :span="6">
+                                    </el-col> -->
+                                    <el-col :span="8">
                                         <div class="products">
                                             <router-link :to="{ name: 'app.vpc.pn-flexip'}">
                                                 <div class="products-inner img-text-center" style="border-right: 0;">
