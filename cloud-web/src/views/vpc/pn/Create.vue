@@ -189,7 +189,7 @@ export default {
                 }
             };
             if (this.data.setGateway) {
-                params.subnet['externalGateway'] = this.data.externalGateway;
+                params['externalGateway'] = this.data.externalGateway;
             }
             createNetwork(params)
                 .then(ret => {
