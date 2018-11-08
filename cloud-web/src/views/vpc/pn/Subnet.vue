@@ -14,9 +14,9 @@
     <!-- 提示框 -->
     <!-- <el-alert :title="$t('security.assetslist.tips')" type="warning" :closable="false" class="mt10">
     </el-alert> -->
-    <div class="page-body">
+    <div class="page-body" v-loading="deleteing">
         <!-- 表格 -->
-        <zt-table :data="listData" :search="true" :search-condition="fields" @search="getSubnetList" :paging="searchObj.paging">
+        <zt-table :data="listData" :loading="loading"  :search="true" :search-condition="fields" @search="getSubnetList" :paging="searchObj.paging">
             <el-table-column label="子网ID/名称" :min-width="110" show-overflow-tooltip>
                 <template slot-scope="scope">
                     <div class="text-nowrap">{{scope.row.id}}</div>
@@ -72,6 +72,8 @@ export default {
     components: {Create, EditSubnet},
     data() {
         return {
+            loading: false,
+            deleteing: false,
             inputval: '',
             vpcName: this.$route.params.name,
             selestSearchOptionType: {},
@@ -109,6 +111,7 @@ export default {
                 type: 'danger'
             })
                 .then(() => {
+                    this.deleteing = true;
                     return deleteSubnet({
                         id: row.id
                     });
@@ -116,11 +119,14 @@ export default {
                 .then(ret => {
                     $log('deleteSubnet ret <-', ret);
                     if (ret) {
+                        this.deleteing = false;
+                        this.$message.success('删除成功');
                         this.fetchData();
                     }
                 })
                 .catch((error) => {
                     // 取消
+                    this.deleteing = false;
                     $log('deleteSubnet', error.message);
                 });
         },
@@ -129,6 +135,7 @@ export default {
             try {
                 this.total = 0;
                 this.listData = [];
+                this.loading = true;
                 // 发送请求
                 let params = {
                     ...this.searchObj.paging,
@@ -136,6 +143,7 @@ export default {
                     ...this.selestSearchOptionType
                 };
                 let ret = await getSubnetByNetId(params);
+                this.loading = false;
                 if (ret) {
                     $log('获取子网列表 <-', ret);
                     let dataList = ret.data;
@@ -145,6 +153,7 @@ export default {
                     throw new Error('无数据。');
                 }
             } catch (error) {
+                this.loading = false;
                 console.error('fetechInfo 失败', error.message);
                 this.listData = [];
             }
