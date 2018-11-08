@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <page-header>
-            专有网络
+            专有网络列表
             <div slot="content" class="pull-right">
                 <el-button type="primary" size="small" @click="create">
                     创建专有网络
@@ -17,7 +17,7 @@
                 <el-table-column prop="title" label="VPCID/名称" min-width="300px">
                     <template slot-scope="scope">
                         <div>
-                                <span class="font12">{{scope.row.id}}</span>
+                            <span class="font12">{{scope.row.id}}</span>
                         </div>
                         <div>{{scope.row.name}}</div>
                     </template>
@@ -32,16 +32,16 @@
                         <span>{{scope.row.networkName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="管理状态">
+                <!-- <el-table-column label="管理状态">
                     <template slot-scope="scope">
                         <span class="color-success" v-if="scope.row.adminStateUp">UP</span>
                         <span class="color-danger" v-else>DOWN</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="操作" :min-width="90" class-name="option-column">
                     <template slot-scope="scope">
-                         <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
-                <b class="link-division-symbol"></b> 
+                        <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
+                        <b class="link-division-symbol"></b>
                         <a @click="updateNetwork(scope.row)" :disabled="scope.row['router:external'] || scope.row.shared">编辑</a>
                         <b class="link-division-symbol"></b>
                         <a @click="deleteNetwork(scope.row)" :disabled="scope.row['router:external'] || scope.row.shared">删除</a>
