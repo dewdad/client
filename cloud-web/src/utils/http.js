@@ -201,7 +201,6 @@ http.interceptors.response.use(
             // });
             throttled_alert(response.data.msg);
         }
-
         // todo...
         console.log(response.config.url + ': ', response);
         return Promise.resolve(response);
@@ -216,7 +215,6 @@ http.interceptors.response.use(
                     //     throttled_message(exception.timeout);
                     // }
                     store.dispatch('LOGOUT');
-                    router.push({name: 'login'});
                     break;
                 case 403:
                     //router.push('error/403')

@@ -24,7 +24,6 @@
                 </div> -->
                 <div class="mt10">
                     <select-subnet v-if="created" v-model="form.netWorkInfo" @loading="checkNetLoading" ref="selectSubnet"></select-subnet>
-                   
                     <!-- <div class="network-info">
                         <el-row>
                             <el-col :span="10">
@@ -41,7 +40,7 @@
             </div>
         </el-card>
         <!-- 网络 end -->
-       <!-- 访问端口 strat -->
+        <!-- 访问端口 strat -->
         <el-card class="box-card create-form-item" shadow="hover">
             <div class="create-form-item__label">
                 <label>
@@ -50,9 +49,17 @@
                 </label>
             </div>
             <div class="create-form-item__content">
-                <zt-form ref="portForm" :show-message="false" inline-message size="small" :model="form"  label-width="0" style="width:300px;">
-                    <zt-form-item  label="" class="hide-star" prop="port" >
-                        <el-input  v-model="form.port" placeholder="请输入访问端口" maxlength="64" :clearable="true"></el-input>
+                <zt-form ref="portForm" :show-message="false" inline-message size="small" :model="form" label-width="0" style="width:300px;">
+                    <zt-form-item label="" class="hide-star mb0" prop="port" :rules="[{
+                        required: true,
+                        message: '请填写访问端口',
+                        trigger: ['submit']
+                    }, {
+                        pattern: /^\d+$/,
+                        message: '端口只能为数值',
+                        trigger: ['submit', 'change']
+                    }]">
+                        <el-input v-model="form.port" placeholder="请输入访问端口" maxlength="5" :clearable="true"></el-input>
                         <!-- <span class="input-help text-nowrap">{{$t('ecs.create.instname.tips')}}</span> -->
                     </zt-form-item>
                 </zt-form>
@@ -68,7 +75,7 @@
                 </label>
             </div>
             <div class="create-form-item__content">
-                <key-pair ref="keypair" v-model="form.keyPair"  ></key-pair>
+                <key-pair ref="keypair" v-model="form.keyPair"></key-pair>
             </div>
         </el-card>
         <!-- 访问凭证 end -->
@@ -78,7 +85,7 @@
 import KeyPair from './components/KeyPair';
 import SecurityGroup from './components/SecurityGroup';
 import SelectSubnet from './components/SelectSubnet';
-import {showErrAlert, scrollTo, isEmpty} from '@/utils/utils';
+import {showErrAlert, scrollTo} from '@/utils/utils';
 import {mapState} from 'vuex';
 export default {
     name: 'StepTwo',
@@ -91,7 +98,6 @@ export default {
             form: {
                 netWorkType: '1',
                 netWorkInfo: {},
-                broadBand: {},
                 port: '3306',
                 keyPair: {}
             },
@@ -143,43 +149,36 @@ export default {
             return new Promise((resolve, reject) => {
                 this.$refs.selectSubnet.$refs.subNetForm.validate((valid, field) => {
                     if (valid) {
-                        return resolve();
-                        // 验证公网带宽
-                        // this.validSecurityGroup(resolve, reject);
+                        // 验证端口
+                        this.validPort(resolve, reject);
                     } else {
-                        return resolve();
-                        // this.showError(field);
+                        this.showError(field);
                     }
                     // this.firstValid = false;
                 });
             });
         },
-        // 验证公网带宽
-        validBand(resolve, reject) {
-            if (this.$refs.broadBand.brand.type === 'isReady') {
-                this.$refs.broadBand.$refs.floatIpForm.validate((valid, field) => {
-                    if (valid) {
-                        return this.validSecurityGroup(resolve, reject);
-                    } else {
-                        this.showError(field);
-                    }
-                });
-            } else {
-                return this.validSecurityGroup(resolve, reject);
-            }
+        // 验证端口
+        validPort(resolve, reject) {
+            this.$refs.portForm.validate((valid, field) => {
+                if (valid) {
+                    return this.validKeyPair(resolve, reject);
+                } else {
+                    this.showError(field);
+                }
+            });
         },
-        // 验证安全组
-        validSecurityGroup(resolve, reject) {
-            if (isEmpty(this.$refs.securityGroup.form.currentSecurityGroup)) {
-                showErrAlert('请选择安全组', () => {
-                    scrollTo('#select-security', {
-                        offset: -200
-                    });
-                    // if (refs) refs[keys[0]].focus();
-                });
-            } else {
-                return resolve();
-            }
+        /**
+         * 验证密钥对
+         */
+        validKeyPair(resolve, reject) {
+            this.$refs.keypair.$refs.keyPairform.validate((valid, field) => {
+                if (valid) {
+                    return resolve();
+                } else {
+                    this.showError(field);
+                }
+            });
         },
         /**
          * 显示错误信息并滚动到指定元素
@@ -187,22 +186,14 @@ export default {
         showError(field, refs) {
             let keys = Object.keys(field);
             let offset = -200; // 偏移量
-            if (keys[0] === this.errorField) {
-                // 如果不是第一次验证 弹框显示错误信息
-                showErrAlert(field[keys[0]][0]['message'], () => {
-                    scrollTo('#' + keys[0], {
-                        offset
-                    });
-                    // if (refs) refs[keys[0]].focus();
-                });
-                this.errorField = '';
-            } else {
-                this.errorField = keys[0];
+            // 如果不是第一次验证 弹框显示错误信息
+            showErrAlert(field[keys[0]][0]['message'], () => {
                 scrollTo('#' + keys[0], {
                     offset
                 });
                 // if (refs) refs[keys[0]].focus();
-            }
+            });
+            this.errorField = '';
         }
     }
 };

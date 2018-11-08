@@ -20,17 +20,17 @@
                     <el-col :span="12">
                         <span>可用区：</span>{{zone|zone}}</el-col>
                     <el-col :span="12">
-                        <span>数据库引擎：</span></el-col>
+                        <span>数据库引擎：</span>{{get(createRdsFormData, 'flavorObj.databaseType')}}</el-col>
                     <el-col :span="12">
-                        <span>版本：</span></el-col>
+                        <span>版本：</span>{{get(createRdsFormData, 'flavorObj.databaseVersion')}}</el-col>
                     <el-col :span="12">
-                        <span>系列：</span></el-col>
+                        <span>系列：</span>高可用</el-col>
                     <el-col :span="12">
-                        <span>CPU：</span></el-col>
+                        <span>CPU：</span>{{get(createRdsFormData, 'flavorObj.currentFlavor.vCpu')}} 核</el-col>
                     <el-col :span="24">
-                        <span>存储空间：</span></el-col>
+                        <span>存储空间：</span>{{get(createRdsFormData, 'volume_size')}} GB</el-col>
                     <el-col :span="24">
-                        <span>描述：</span></el-col>
+                        <span>描述：</span>{{get(createRdsFormData, 'instance.desc')}}</el-col>
                 </el-row>
                 <div class="config-item mt10">
                     <div>{{$t('ecs.create.netAndSafe')}}
@@ -39,13 +39,13 @@
                 </div>
                 <el-row class="mt5">
                     <el-col :span="12">
-                        <span>私有网络：</span>net-m5ev5xnotzcyqbv/私有网咯-55631245245</el-col>
+                        <span>私有网络：</span>{{get(createRdsFormData, 'netWorkInfo.netWork.name')}}</el-col>
                     <el-col :span="12">
-                        <span>子网：</span>net-m5ev5xnotzcyqbv/私有网咯-55631245245</el-col>
+                        <span>子网：</span>{{get(createRdsFormData, 'netWorkInfo.subNet.name')}}</el-col>
                     <el-col :span="12">
-                        <span>子网网段：</span>net-m5ev5xnotzcyqbv/私有网咯-55631245245</el-col>
+                        <span>子网网段：</span>{{get(createRdsFormData, 'netWorkInfo.subNet.cidr')}}</el-col>
                     <el-col :span="12">
-                        <span>访问端口：</span>net-m5ev5xnotzcyqbv/私有网咯-55631245245</el-col>
+                        <span>访问端口：</span>{{get(createRdsFormData, 'port')}}</el-col>
                 </el-row>
             </div>
         </el-card>
