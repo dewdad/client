@@ -1,7 +1,7 @@
 <template>
     <div class="page-main">
         <page-header>
-            专有网络
+            专有网络列表
             <div slot="content" class="pull-right">
                 <el-button type="primary" size="small" @click="create">
                     创建专有网络
