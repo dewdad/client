@@ -1,8 +1,8 @@
 <template>
     <el-dialog title="创建资源模板" :visible.sync="isShow" width="600px"  class="CreateRole" v-dialogDrag>
         <el-form size="small" :model="form" ref="form" :rules="rules">
-            <el-form-item label="实例类型" prop="ecsType" :label-width="formLabelWidth">
-                <el-select v-model="form.ecsType" placeholder="请选择实例类型" >
+            <el-form-item label="实例类型" prop="instanceType" :label-width="formLabelWidth">
+                <el-select v-model="form.instanceType" placeholder="请选择实例类型" >
                     <el-option v-for="item in ecsTypes" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
@@ -53,7 +53,7 @@ export default {
             form:{
                 types:'',
                 name:'',
-                ecsType:'ECS',
+                instanceType:'ECS',
                 vCpu:1,
                 ram:1,
                 brand: 1,
@@ -94,7 +94,7 @@ export default {
                 types: [
                     { required: true, message: '请选择规格族', trigger: 'submit' }
                 ],
-                ecsType: [
+                instanceType: [
                     { required: true, message: '请选择实例类型', trigger: 'submit' }
                 ],
                 ram: [
