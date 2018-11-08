@@ -14,7 +14,7 @@
         <div class="page-body">
             <!-- 表格 -->
             <zt-table :loading="isLoading" :data="tableData" @search="getVpcList" :paging="searchObj.paging">
-                <el-table-column prop="title" label="VPCID/名称" >
+                <el-table-column prop="title" label="VPCID/名称" min-width="300px">
                     <template slot-scope="scope">
                         <div>
                                 <span class="font12">{{scope.row.id}}</span>
