@@ -11,7 +11,6 @@
     </zt-form>
 </template>
 <script>
-import {INST_NAME} from '@/constants/regexp';
 export default {
     name: 'InstName',
     data() {
@@ -37,7 +36,7 @@ export default {
                         trigger: ['submit', 'blur']
                     },
                     {
-                        pattern: INST_NAME,
+                        pattern: /^[[\u4e00-\u9fa5a-zA-Z0-9_]+$/,
                         show: true,
                         tipsMessage: this.$t('valid.name.regex'),
                         message: '实例名称格式不正确',
@@ -60,7 +59,7 @@ export default {
         }
     },
     created() {
-        this.form.instname = '云数据库-' + new Date().valueOf();
+        this.form.instname = '云数据库_' + new Date().valueOf();
     }
 };
 </script>

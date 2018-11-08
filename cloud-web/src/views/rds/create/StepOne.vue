@@ -1,7 +1,7 @@
 <template>
     <div class="create-form">
         <!-- 主实例信息 -->
-        <inst-info ></inst-info>
+        <!-- <inst-info ></inst-info> -->
         <!-- 实例名称 start -->
         <el-card class="box-card create-form-item create-form-item__name" shadow="hover">
             <div class="create-form-item__label">
@@ -39,10 +39,10 @@
         </el-card>
         <!-- 区域选择 end -->
         <!-- 实例选择 strat -->
-        <flavor-table v-model="form.flavorObj"></flavor-table>
+        <flavor-table ref="flavor" v-model="form.flavorObj"></flavor-table>
         <!-- 实例选择 end -->
         <!-- 存储 strat -->
-        <el-card class="box-card create-form-item" shadow="hover">
+        <el-card class="box-card create-form-item mt10" shadow="hover">
             <div class="create-form-item__label">
                 <label>
                     <zt-icon icon="icon-yunzhujichuangjian-cunchu"></zt-icon>
@@ -50,7 +50,7 @@
                 </label>
             </div>
             <div class="create-form-item__content">
-                <zt-input-number v-model="form.storage" size="small" :precision="0" :step="10" :suffix="$t('abbr.gb')" controls-position="right" :min="10" :max="500"></zt-input-number>
+                <zt-input-number v-model="form.volume_size" size="small" :precision="0" :step="10" :suffix="$t('abbr.gb')" controls-position="right" :min="10" :max="500"></zt-input-number>
                 <!-- <storage ref="storage" v-model="form.storage"></storage> -->
             </div>
         </el-card>
@@ -66,7 +66,7 @@ import FlavorTable from './components/FlavorTable';
 import SelectMirror from './components/SelectMirror';
 import Storage from './components/Storage';
 import KeyPair from './components/KeyPair';
-import {showErrAlert, scrollTo, isEmpty} from '@/utils/utils';
+import {showErrAlert, scrollTo} from '@/utils/utils';
 const applyMax = ZT_ECS_APPLY_MAX;
 export default {
     name: 'StepOne',
@@ -85,7 +85,7 @@ export default {
                 mirror: {},
                 applyMax,
                 flavorObj: {},
-                storage: {},
+                volume_size: 10,
                 keyPair: {}
             },
             errorField: ''
@@ -123,15 +123,13 @@ export default {
             return new Promise((resolve, reject) => {
                 this.$refs.instname.$refs.instNameForm.validate((valid, field) => {
                     if (valid) {
-                        return resolve();
-                        // return this.validImage(resolve, reject);
+                        return this.validImage(resolve, reject);
                     } else {
-                        return resolve();
-                        // this.showError(field, this.$refs.instname.$refs);
-                        // let keys = Object.keys(field);
-                        // showErrAlert(field[keys[0]][0]['message'], () => {
-                        //     this.$refs.instname.$refs.inputInstName.focus();
-                        // });
+                        this.showError(field, this.$refs.instname.$refs);
+                        let keys = Object.keys(field);
+                        showErrAlert(field[keys[0]][0]['message'], () => {
+                            this.$refs.instname.$refs.inputInstName.focus();
+                        });
                     }
                 });
             });
@@ -140,38 +138,13 @@ export default {
          * 验证实例
          */
         validImage(resolve, reject) {
-            if (!isEmpty(this.form.flavorObj)) {
-                return this.validMirror(resolve, reject);
-            } else {
-                showErrAlert('请选择实例', () => {
-                    // 如果是未选择镜像，根据数据盘数量动态计算偏移量
-                    scrollTo('#flavor', {
-                        offset: -200
-                    });
-                });
-            }
-        },
-        /**
-         * 验证镜像
-         */
-        validMirror(resolve, reject) {
-            this.$refs.mirror.$refs.imageForm.validate((valid, field) => {
-                if (valid) {
-                    return this.validKeyPair(resolve, reject);
-                } else {
-                    this.showError(field);
-                }
-            });
-        },
-        /**
-         * 验证密钥对
-         */
-        validKeyPair(resolve, reject) {
-            this.$refs.keypair.$refs.keyPairform.validate((valid, field) => {
+            this.$refs.flavor.$refs.flavorForm.validate((valid, field) => {
                 if (valid) {
                     return resolve();
                 } else {
-                    this.showError(field);
+                    this.showError(field, this.$refs.flavor.$refs);
+                    let keys = Object.keys(field);
+                    showErrAlert(field[keys[0]][0]['message']);
                 }
             });
         },

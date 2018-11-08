@@ -1,8 +1,8 @@
 /*
- * @Author: wenfang 
- * @Date: 2018-07-21 15:54:57 
+ * @Author: wenfang
+ * @Date: 2018-07-21 15:54:57
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-07-25 10:22:58
+ * @Last Modified time: 2018-11-08 15:12:07
  */
 
 // eslint-disable-next-line
@@ -11,7 +11,7 @@ import http from '@/utils/http';
 import {replaceParamVal, isEmpty} from '@/utils/utils';
 
 // eslint-disable-next-line
-import {API_RDS} from '@/constants/apiUrl';
+import {API_RDS, API_PASS} from '@/constants/apiUrl';
 
 /**
  * rds实例列表
@@ -22,7 +22,7 @@ import {API_RDS} from '@/constants/apiUrl';
  * @param {*} name 名称
  */
 export const getList = async ({pageIndex = 1, limit = 20, begin_create_time = '', end_create_time = '', name = '', status = '', type = ''} = {}) => {
-    let res = await http.get(API_RDS.list, {
+    let res = await http.get(API_PASS.list, {
         params: {
             pageIndex,
             begin_create_time,
@@ -69,15 +69,39 @@ export const serverAction = async (instance_id, {volume = '', flavorRef = '', re
 
 /**
  * 创建快照
- * @param {*} instance_id 
- * @param {*} name 
- * @param {*} description 
+ * @param {*} instance_id
+ * @param {*} name
+ * @param {*} description
  */
 export const createSnapShot = async (instance_id, name, description) => {
     let res = await http.post(API_RDS.snapshot, {
-        instance:instance_id,
+        instance: instance_id,
         name: name,
         description: description
+    });
+    return res && res.data;
+};
+
+/** 
+ * 创建RDS
+ * {
+    "stack_name":"cd",
+    "template_id":"163475b1-0312-4c30-916a-1dc8b743f016",
+    "parameters": {
+         "private_network":"a0cce4aa-fa08-4bae-800a-0b707453c201",
+         "private_network": "f86c0eea-af1d-45ae-a60d-6624a4d73607",
+         "volume_size":"1",
+         "Flavor": "7fc45612-7ec9-4704-a098-def7241438d5"
+    },
+    "mysql_parameters":{
+        "mysql_port": "3305",
+        "mysql_pwd":"123456"
+    }
+}
+*/
+export const createRds = async (data = {}) => {
+    let res = await http.post(API_PASS.create, {
+        ...data
     });
     return res && res.data;
 };

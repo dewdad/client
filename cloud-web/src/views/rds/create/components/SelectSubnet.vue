@@ -2,7 +2,7 @@
     <div class="subNetForm">
     <zt-form ref="subNetForm" :inline="true" :show-message="false" inline-message size="small" :model="form" :rules="rules" label-width="0">
         <zt-form-item label="" id="netWork" class="mb10 hide-star" prop="netWork">
-            <el-select v-model="form.netWork" key="newWork" :placeholder="$t('form.input.network')" :popper-append-to-body="false" value-key="name" size="small" class="mr10" >
+            <el-select v-model="form.netWork" key="newWork" :placeholder="$t('form.input.network')" :popper-append-to-body="false" value-key="name" size="small" @change="getSubnetByNetId(form.netWork.id)" class="mr10">
                 <el-option v-for="net in netWorkList" :key="net.id" :label="net.name" :value="net">
                 </el-option>
             </el-select>
@@ -10,7 +10,7 @@
         </zt-form-item>
         <zt-form-item label="" id="subNet" class="mb10 hide-star" prop="subNet">
             <el-select v-model="form.subNet" ref="subNet" key="subnet" :placeholder="$t('form.input.subnet')" :popper-append-to-body="false" value-key="name" size="small" class="mr10">
-                <el-option v-for="sub in form.netWork.neutronSubnets" :key="sub.name"  :label="sub.name" :value="sub">
+                <el-option v-for="sub in subNetList" :key="sub.name"  :label="sub.name" :value="sub">
                 </el-option>
             </el-select>
             <i class="el-icon-refresh" v-tooltip="{content: $t('common.clickRefresh'), theme: 'is-light'}" @click="getSubnetByNetId('')"></i>
@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-import {getNetwork, getSubnetByNetId} from '@/service/ecs/network';
+import {getNetwork, getSubnetByNetId} from '@/service/v2.1/network';
 import {isEmpty} from '@/utils/utils';
 export default {
     name: 'SlectSubnet',
@@ -110,7 +110,7 @@ export default {
                     this.netWorkList = res.data.data;
                     if (!isEmpty(this.netWorkList)) {
                         this.form.netWork = this.netWorkList[0];
-                        // this.getSubnetByNetId(this.form.netWork.id);
+                        this.getSubnetByNetId(this.form.netWork.id);
                     } else {
                         this.loading = false;
                     }
@@ -123,13 +123,12 @@ export default {
             let id = netWorkId || this.form.netWork.id;
             if (typeof id === undefined) return;
             this.loading = true;
-            getSubnetByNetId(id)
+            this.form.subNet = '';
+            getSubnetByNetId({networkId: id})
                 .then(res => {
-                    if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.subNetList = res.result.records;
-                        $log('subnetlist', this.subNetList);
-                        if (!isEmpty(this.subNetList)) this.form.subNet = this.subNetList[0];
-                    }
+                    this.subNetList = res.data;
+                    $log('subnetlist', this.subNetList);
+                    if (!isEmpty(this.subNetList)) this.form.subNet = this.subNetList[0];
                 })
                 .finally(() => {
                     this.loading = false;

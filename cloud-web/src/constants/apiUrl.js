@@ -446,3 +446,11 @@ export const API_TICKET = {
 
     completeOrder: '/resources/order/complete'
 };
+
+export const API_PASS = {
+    create: '/compute/paasInst/',
+    detail: '/compute/paasInst/detail/{id}',
+    list: '/compute/paasInst/list',
+    play: '/compute/paasInst/play',
+    delete: '/compute/paasInst/{id}'
+};

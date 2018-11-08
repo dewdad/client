@@ -174,9 +174,9 @@ Vue.filter('showTextByKey', (val, items, itemkeyname = 'value', itemtextname = '
 Vue.filter('zone', (val, type = 'string') => {
     if (isEmpty(val)) return '';
     if (type === 'array') {
-        return ['北京可用区1', '资源池A'];
+        return ['北京数据中心1', '资源池A'];
     }
-    return '北京可用区1 资源池A';
+    return '北京数据中心1';
 });
 
 /**

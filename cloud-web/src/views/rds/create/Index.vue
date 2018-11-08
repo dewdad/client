@@ -19,7 +19,7 @@
         <!-- 网络配置 -->
         <step-two ref="steptwo" v-model="dataTwo" v-show="active===1" :active="active"></step-two>
         <!-- 确认规格 -->
-        <step-three ref="stepthree" v-show="active===2" :active="active"></step-three>
+        <step-three ref="stepthree" v-if="active===2" :active="active"></step-three>
         <!-- 按钮区 -->
         <div class="create-footer">
             <!-- <span class="pull-left color999">公网带宽：52Mbps 按固定带宽</span>  -->
@@ -28,13 +28,13 @@
             <el-button v-if="active===0" key="3" type="info" @click="upateActive(2)">{{$t('ecs.create.stepThree')}}</el-button>
             <el-button v-if="active===1" key="4" type="warning" @click="next(2)">{{$t('ecs.create.stepThree')}}</el-button>
             <el-button v-if="active===2" key="5" type="warning" @click="active = 1" :disabled="creating" plain>{{$t('ecs.create.preNet')}}</el-button>
-            <el-button v-if="active===2" key="6" type="warning" :plain="creating" @click="createInst" :disabled="!creating" :loading="creating">{{creating ? '正在为您创建...' : '立即创建'}}</el-button>
+            <el-button v-if="active===2" key="6" type="warning" :plain="creating" @click="createInst"  :loading="creating">{{creating ? '正在为您创建...' : '立即创建'}}</el-button>
         </div>
     </div>
 </template>
 <script>
-import {addClass, removeClass} from '@/utils/utils';
-import {createECS} from '@/service/ecs/list';
+import {addClass, removeClass, get} from '@/utils/utils';
+import {createRds} from '@/service/rds/list';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
@@ -161,98 +161,28 @@ export default {
             if (this.creating) return;
             // 请求体
             let body = {
-                server: {
-                    flavorRef: this.createRdsFormData.flavorObj.id,
-                    name: this.createRdsFormData.instance.instname,
-                    adminPass: this.createRdsFormData.mirror.osType.toLowerCase().includes('windows') ? '' : this.createRdsFormData.keyPair.password1,
-                    circle: '1_month',
-                    block_device_mapping_v2: [
-                        {
-                            source_type: 'image',
-                            destination_type: 'volume',
-                            uuid: this.createRdsFormData.mirror.imageObj.id,
-                            delete_on_termination: 'False',
-                            boot_index: '0',
-                            volume_type: this.createRdsFormData.storage.sysDisk.type.value,
-                            volume_size: this.createRdsFormData.storage.sysDisk.size
-                        }
-                    ],
-                    security_groups: [
-                        {
-                            name: this.createRdsFormData.securityGroup.currentSecurityGroup ? this.createRdsFormData.securityGroup.currentSecurityGroup.id : ''
-                        }
-                    ],
-                    networks: [
-                        {
-                            uuid: this.createRdsFormData.netWorkInfo.netWork.id
-                        }
-                    ],
-                    availability_zone: 'az1.dc1',
-                    key_name: this.createRdsFormData.keyPair.keyname
+                'stack_name': get(this.createRdsFormData,'instance.instname'),
+                'template_id':get(this.createRdsFormData,'flavorObj.ha'),
+                'parameters': {
+                    'private_network':get(this.createRdsFormData, 'netWorkInfo.subNet.id'),
+                    'public_network': get(this.createRdsFormData, 'netWorkInfo.netWork.id'),
+                    'volume_size':get(this.createRdsFormData, 'volume_size'),
+                    'Flavor': get(this.createRdsFormData,'flavorObj.currentFlavor.id')
                 },
-                instanceDescribe: this.createRdsFormData.instance.desc,
-                applyInstNum: this.createRdsFormData.applyNumber,
-                dataDiskList: this.dataDiskList,
-                ecsName: this.createRdsFormData.instance.instname,
-                availabilityZone: this.createRdsFormData.region || 'az1.dc1',
-                imageId: this.createRdsFormData.mirror.imageObj.id,
-                bandWidth: 0,
-                floatIpId: (this.createRdsFormData.broadBand.checked && this.createRdsFormData.broadBand.type !== 'isReady' && this.createRdsFormData.broadBand.ipAdd) ? this.createRdsFormData.broadBand.ipAdd.id : '',
-                floatIpType: this.createRdsFormData.broadBand.checked ? this.createRdsFormData.broadBand.type : '新建',
-                loginCert: this.createRdsFormData.keyPair.loginType,
-                // ports: this.createRdsFormData.securityGroup.setType === '1' ? this.createRdsFormData.securityGroup.labelList.join(',') : this.createRdsFormData.securityGroup.ports.join(','),
-                // labels: []
-                // bill: [
-                //     {
-                //         billType: 1
-                //     },
-                //     {
-                //         flavorId: this.createRdsFormData.flavorObj.id
-                //     },
-                //     {
-                //         period: '1_month'
-                //     },
-                //     {
-                //         count: 1
-                //     },
-                //     {
-                //         bandWidth: 4
-                //     },
-                //     {
-                //         sata: 20
-                //     },
-                //     {
-                //         sata: 20
-                //     }
-                // ]
+                'mysql_parameters':{
+                    'mysql_port': get(this.createRdsFormData,'port'),
+                    'mysql_pwd':get(this.createRdsFormData,'keyPair.password1')
+                }
             };
-            // 如果没有指定安全组
-            // if (isEmpty(this.createRdsFormData.securityGroup.currentSecurityGroup)) {
-            //     // 如果是自定义端口
-            //     if (this.createRdsFormData.securityGroup.setType === '2') {
-            //         if (this.createRdsFormData.securityGroup.custom_port !== '') {
-            //             body.ports += ',' + this.createRdsFormData.securityGroup.custom_port;
-            //         }
-            //         if (this.createRdsFormData.securityGroup.custom_udp !== '') {
-            //             body.ports += ',' + this.createRdsFormData.securityGroup.custom_udp;
-            //         }
-            //         if (this.createRdsFormData.securityGroup.ping === '1') {
-            //             body.ports += ',icmp';
-            //         }
-            //     } else {
-            //         body.ports += ',icmp';
-            //     }
-            // } else {
-            //     body.ports = '';
-            // }
             
             $log(body);
             this.creating = true;
-            createECS(body)
+            createRds(body)
                 .then(res => {
                     if (res.code === this.CODE.SUCCESS_CODE) {
-                        this.$message.success('弹性云主机创建成功');
-                        this.$router.push({name: 'app.ecs.list'});
+                        this.$store.commit('SET_CREATE_RDS_FORM_DATA', {});
+                        this.$message.success('创建成功');
+                        this.$router.push({name: 'app.rds.list'});
                     } else {
                         this.creating = false;
                     }
