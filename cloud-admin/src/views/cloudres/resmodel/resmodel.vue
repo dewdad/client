@@ -15,12 +15,12 @@
                     <el-form-item>
                         <el-select placeholder="请选择" v-model="type" @change="formInline.searchText=''">
                             <el-option label="内存(MB)>=" value="minRam"></el-option>
-                            <el-option label="实例类型" value="ecsType"></el-option>
+                            <el-option label="实例类型" value="instanceType"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键字">
                         <el-input-number  controls-position="right" :min="0"  class="width-full"  :max="999999999" v-if="type == 'minRam'" v-model="formInline.searchText"></el-input-number>
-                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'ecsType'" @change="clearIndex">
+                        <el-select placeholder="搜索关键字" v-model="formInline.searchText" v-if="type == 'instanceType'" @change="clearIndex">
                             <el-option v-for="item in ecsTypes" :value="item.label" :label="item.value" :key="item.label"></el-option>
                         </el-select>
                     </el-form-item>
