@@ -17,9 +17,7 @@
                 <el-table-column prop="title" label="VPCID/名称" >
                     <template slot-scope="scope">
                         <div>
-                            <router-link :to="{name: 'app.vpc.pn-detail', params: {id: scope.row.id}}">
                                 <span class="font12">{{scope.row.id}}</span>
-                            </router-link>
                         </div>
                         <div>{{scope.row.name}}</div>
                     </template>

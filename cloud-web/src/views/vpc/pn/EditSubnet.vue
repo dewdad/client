@@ -2,7 +2,7 @@
     <el-dialog :visible.sync="isShow" v-loading="loading" loading="empty">
         <div slot="title">编辑子网</div>
         <div class="pr130">
-            <zt-form size="small" :model="data" :rules="rules" ref="form" label-width="140px" :inline-message="true">
+            <zt-form size="small" :model="data" :rules="rules" ref="edform" label-width="140px" :inline-message="true">
                 <zt-form-item label="子网名称" prop="name">
                     <el-input v-model="data.name"></el-input>
                     <span slot="help" class="input-help">只能由中文、英文字母、数字、下划线、中划线组成，长度小于48个字符。</span>
@@ -59,16 +59,14 @@ export default {
         clear() {
             this.data.name = '';
             this.data.remark = '';
-            this.$nextTick(() => {
-                this.$refs.form.resetFields();
-            });
+            this.$refs.edform.clearValidate();
         },
         hide() {
             this.isShow = false;
+            this.clear();
         },
         show(data) {
             $log('show', data);
-            this.clear();
             this.isShow = true;
             this.row = data;
             this.data.name = data.name;
