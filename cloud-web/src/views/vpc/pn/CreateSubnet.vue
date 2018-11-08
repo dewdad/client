@@ -14,7 +14,6 @@
                     <ip-input v-model="data.cidr" v-if="isShow"></ip-input>
                     <span slot="help" class="input-help">
                         <span class="text-warning">创建后无法修改。</span><br>
-                        <span class="text-break-all">子网网段必须属于下面三类：10.0.0.0/8~28，172.16.0.0/12~28，192.168.0.0/16~28。</span><br>
                         例如：192.168.94.0/24
                     </span>
                 </zt-form-item>

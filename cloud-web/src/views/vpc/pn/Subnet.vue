@@ -105,7 +105,7 @@ export default {
         },
         deleteSubnet(row) {
             $log('删除数据', row);
-            this.$confirm(`您确定要删除ID为:${row.id}的子网吗？`, '删除', {
+            this.$confirm(`您确定要删除子网:${row.name} 吗？`, '删除', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'danger'
