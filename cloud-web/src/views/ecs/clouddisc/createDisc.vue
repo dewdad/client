@@ -109,7 +109,7 @@ import {addClass, removeClass} from '@/utils/utils';
 import ZtInputNumber from '@/components/ZTInput-number/index.js';
 import {STORAGE_TYPES} from '@/constants/dicts/ecs';
 import {INST_NAME} from '@/constants/regexp';
-import {createDisk} from '@/service/ecs/disk/disk';
+import {createDisk, getVolumeType} from '@/service/ecs/disk/disk';
 export default {
     data() {
         return {
@@ -156,7 +156,18 @@ export default {
     components: {
         ZtInputNumber
     },
+    async created() {
+        await this.getVolumeType();
+    },
     methods: {
+        getVolumeType() {
+            return getVolumeType().then(res => {
+                if (res) {
+                    this.STORAGE_TYPES = res;
+                    this.sysDisk.type = this.STORAGE_TYPES[0];
+                }
+            });
+        },
         createInst() {
             this.$refs.instNameForm.validate(valid => {
                 if (valid) {

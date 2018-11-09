@@ -120,7 +120,8 @@ export const API_ECS = {
         resizeDisk: '/compute/disk/resize/{disk_id}/{size}', //云盘扩容
         getBackupList: '/compute/disk/getBackupList', // 云盘备份列表，
         deleteBackup: '/compute/disk/backup/{id}', // 删除云盘备份
-        restoreBackup: '/compute/disk/restoreBackup' // 恢复云盘备份
+        restoreBackup: '/compute/disk/restoreBackup', // 恢复云盘备份,
+        volumeTypeList: '/compute/disk/volumeType/list'
     },
     snapshot: {
         createSnapshot: '/compute/disk/createSnapshots',
