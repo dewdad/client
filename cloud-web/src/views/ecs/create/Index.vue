@@ -87,7 +87,8 @@ export default {
                 let obj = {
                     diskPerformance: disk.diskPerformance.value,
                     diskSize: disk.diskSize,
-                    diskNum: disk.diskNum
+                    diskNum: disk.diskNum,
+                    volume_type: disk.diskPerformance.value
                 };
                 arr.push(obj);
             }

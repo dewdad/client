@@ -85,6 +85,7 @@
 <script>
 import ZtInputNumber from '@/components/ZTInput-number/index.js';
 import {STORAGE_TYPES} from '@/constants/dicts/ecs';
+import {getVolumeType} from '@/service/ecs/disk/disk';
 import {mapState} from 'vuex';
 export default {
     name: 'Storage',
@@ -121,7 +122,8 @@ export default {
             this.sysDisk.size = newval;
         }
     },
-    created() {
+    async created() {
+        await this.getVolumeType();
         this.setValue();
     },
     computed: {
@@ -167,6 +169,14 @@ export default {
         }
     },
     methods: {
+        getVolumeType() {
+            return getVolumeType().then(res => {
+                if (res) {
+                    this.STORAGE_TYPES = res;
+                    this.sysDisk.type = this.STORAGE_TYPES[0];
+                }
+            });
+        },
         /**
          * 添加数据盘
          */
@@ -175,7 +185,7 @@ export default {
                 return;
             }
             let obj = {
-                diskPerformance: STORAGE_TYPES[0],
+                diskPerformance: this.STORAGE_TYPES[0],
                 diskSize: 20,
                 diskNum: 1,
                 max: this.maxApplyNumber

@@ -1,8 +1,8 @@
 /*
- * @Author: sunersheng 
- * @Date: 2018-07-05 16:59:00 
+ * @Author: sunersheng
+ * @Date: 2018-07-05 16:59:00
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-19 17:42:07
+ * @Last Modified time: 2018-11-08 19:53:16
  * ecs模块-云盘
  */
 
@@ -168,4 +168,26 @@ export async function restoreBackup({backupId, volumeId}) {
 export async function createDisk(data) {
     let res = await http.post(API_ECS.disk.disk, data);
     return res && res.data;
+}
+
+/**
+ * 获取磁盘类型
+ *
+ * @export
+ */
+export async function getVolumeType() {
+    let res = await http.get(API_ECS.disk.volumeTypeList);
+    if (res && res.data && res.data.code === '0000') {
+        let data = res.data.data || [];
+        let arr = [];
+        data.forEach(element => {
+            arr.push({
+                value: element.name,
+                label: element.description
+            });
+        });
+        return arr;
+    } else {
+        return false;
+    }
 }
