@@ -164,8 +164,8 @@ export default {
                 'stack_name': get(this.createRdsFormData,'instance.instname'),
                 'template_id':get(this.createRdsFormData,'flavorObj.ha'),
                 'parameters': {
-                    'private_network':get(this.createRdsFormData, 'netWorkInfo.subNet.id'),
-                    'public_network': get(this.createRdsFormData, 'netWorkInfo.netWork.id'),
+                    'private_network':get(this.createRdsFormData, 'netWorkInfo.subNet.network_id'),
+                    // 'public_network': get(this.createRdsFormData, 'netWorkInfo.netWork.id'),
                     'volume_size':get(this.createRdsFormData, 'volume_size'),
                     'Flavor': get(this.createRdsFormData,'flavorObj.currentFlavor.id')
                 },

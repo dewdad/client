@@ -2,7 +2,7 @@
  * @Author: wenfang
  * @Date: 2018-07-21 15:54:57
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-08 15:12:07
+ * @Last Modified time: 2018-11-09 15:13:21
  */
 
 // eslint-disable-next-line
@@ -22,9 +22,12 @@ import {API_RDS, API_PASS} from '@/constants/apiUrl';
  * @param {*} name 名称
  */
 export const getList = async ({pageIndex = 1, limit = 20, begin_create_time = '', end_create_time = '', name = '', status = '', type = ''} = {}) => {
+    let offset = (pageIndex - 1) * limit;
     let res = await http.get(API_PASS.list, {
         params: {
             pageIndex,
+            limit,
+            offset,
             begin_create_time,
             end_create_time,
             name,
