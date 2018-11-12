@@ -82,7 +82,7 @@ export default {
                 enable_dhcp:true
             };
             allSubnets(param).then(ret => {
-                $log('data', ret);
+                $log('datasunnet', ret);
                 let resData = ret.data;
                 if(resData ){
                     this.pull = resData || [];
@@ -109,7 +109,10 @@ export default {
             console.log('this.form',this.form);
             this.$refs.form.validate((valid) => {
                 if (valid) {
-
+                    let network = this.pull.find( (me) => {
+                        return me.id === this.form.subnetId;
+                    });
+                    this.form.network_id = network.network_id;
                     addInterface(this.form)
                         .then(res => {
                             console.log('redssssssss',res);
