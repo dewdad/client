@@ -132,7 +132,7 @@ export default {
         getEcsInstListFn() {
             let params = {
                 pageIndex: 1,
-                limit: 9999,
+                limit: 5,
                 status: 'active'
             };
             getEcsInstList(params)

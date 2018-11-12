@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="baseData oss-box" style="border-bottom:1px solid #e8e8e8;">
         <div class="oss-box-content">
             <div class="oss-box-content__inner">
@@ -29,7 +30,7 @@
                     </el-col>
                     <el-col class="flex1" style="border-right:none">
                         <div class="title monthRequest">
-                            读月请求次数
+                            读请求次数
                         </div>
                         <div class="data">
                             <ICountUp :startVal="0" :endVal="parseInt(baseData.hitGet)" :duration="2" /> 次
@@ -54,13 +55,20 @@
                 </el-row>
             </div>
         </div>
+       
+    </div>
+     <div v-if="!showFileNums" class="mt20">
+            <h3 class="font16">BUCKET统计排行榜</h3>
+            <top :bucketList="countData"></top>
+        </div>
     </div>
 </template>
 <script>
-import {getOssSpace, getBucket} from '@/service/oss';
+import {getOssSpace, getBucketUsage} from '@/service/oss';
 import ERRCODE from '@/constants/code';
 import {isEmpty} from '@/utils/utils';
 import ICountUp from 'vue-countup-v2';
+import Top from './Top.vue';
 export default {
     name: 'BaseData',
     data() {
@@ -76,11 +84,13 @@ export default {
                 hitPut: 0,
                 hitGet: 0,
                 objNum: 0
-            }
+            },
+            countData: {}
         };
     },
     components: {
-        ICountUp
+        ICountUp,
+        Top
     },
     props: {
         showFileNums: {
@@ -113,17 +123,7 @@ export default {
         init() {
             if (this.$route.params.bucketId && this.$route.params.bucketId !== '') {
                 // 如果是单个桶 查询桶数据
-                if (!isEmpty(this.headerInfo) && this.headerInfo.usage.rgwMain) {
-                    // this.getBucket(this.$route.params.bucketId);
-                    this.baseData.usedCap = this.$options.filters['convertByteSize'](this.headerInfo.usage.rgwMain.size);
-                    // this.baseData.transferIn = this.$options.filters['convertByteSize'](this.headerInfo.transferIn);
-                    // this.baseData.hitPut = this.headerInfo.hitPut;
-                    // this.baseData.hitGet = this.headerInfo.hitGet;
-                    this.baseData.objNum = this.headerInfo.usage.rgwMain.num_objects;
-                } else {
-                    this.baseData.usedCap = [0, ''];
-                    this.baseData.objNum = 0;
-                }
+                this.getBucketUsage(this.$route.params.bucketId);
             } else {
                 // 查询总概览数据
                 this.getSpaceData();
@@ -136,6 +136,8 @@ export default {
                     this.loading = false;
                     if (res.code === ERRCODE.SUCCESS_CODE) {
                         this.setData(res.data);
+                        this.countData = res.data;
+
                     }
                 })
                 .catch(() => {
@@ -143,20 +145,29 @@ export default {
                 });
         },
         // 查询桶当前月份的统计数据
-        getBucket(bucketId) {
-            getBucket(bucketId).then(res => {
+        getBucketUsage(bucketId) {
+            getBucketUsage(bucketId).then(res => {
                 if (res.code === this.CODE.SUCCESS_CODE) {
                     this.setData(res.data);
                 }
             });
         },
         setData(data) {
-            this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap);
-            this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn);
-            this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut);
-            this.baseData.hitPut = data.hitPut;
-            this.baseData.hitGet = data.hitGet;
-            this.baseData.hitDel = data.hitDel;
+            if (this.$route.params.bucketId) {
+                this.baseData.objNum = data.fileNum;
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.size);
+                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.putSize);
+                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.getSize);
+                this.baseData.hitPut = data.putNum;
+                this.baseData.hitGet = data.getNum;
+            } else {
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap);
+                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn);
+                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut);
+                this.baseData.hitPut = data.hitPut;
+                this.baseData.hitGet = data.hitGet;
+                this.baseData.hitDel = data.hitDel;
+            }
         }
     }
 };
