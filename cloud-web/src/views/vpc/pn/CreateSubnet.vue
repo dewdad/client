@@ -96,7 +96,7 @@ export default {
                 let ip = ipstr.split('.');
                 if (
                     (this.data.ipVersion === 4 && port && ip.length === 4 && ip.every(e => e >= 0) && judgeSubnetIpValid(ip, port)) ||
-                    (this.data.ipVersion === 6 && value.length <= 50 && /^[a-z0-9]+(:[a-z0-9]+)+\/\d+$/.test(value))
+                    (this.data.ipVersion === 6 && value.length <= 50 && /^[a-zA-Z0-9]+(:[a-zA-Z0-9]+)+(:{2}([a-zA-Z0-9]+)?)?(:[a-zA-Z0-9]+)*\/\d+$/.test(value))
                 ) {
                     callback();
                 } else {
