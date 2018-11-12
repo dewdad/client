@@ -6,7 +6,7 @@
                     <el-col :span="16">
                         <el-alert title="提示：数据统计稍有延时。" type="warning" show-icon :closable="false">
                         </el-alert>
-                        <div class="info-box data-count mt10">
+                        <div class="info-box data-count mt10" style="height:172px">
                             <div class="info-box-content">
                                 <el-row :gutter="0">
                                     <el-col>
@@ -285,7 +285,7 @@
                     height: 100%;
                     width: 100%;
                     background: #fff;
-                    padding: 26px 13px;
+                    padding: 15px 13px;
                     .dot {
                         display: inline-block;
                         width: 6px;
