@@ -150,6 +150,9 @@ export default {
                 this.data.name = '默认专有网络';
                 this.$refs.form.resetFields();
             }
+        },
+        'data.version': function() {
+            this.data.cindr = '';
         }
     },
     methods: {
