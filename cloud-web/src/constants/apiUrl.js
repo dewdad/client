@@ -238,6 +238,7 @@ export const API_ECS = {
 export const API_OSS = {
     // GET /ossSpace 获取命名空间信息-首页加载总概览
     ossSpace: '/oss/user/usage',
+    bucketUsage: '/oss/user/{bucketName}/usage',
     // 获取命名空间秘钥接口
     getAuthKeys: OSS_CONTROLLER + '/ossSpace/authKeys',
     createAuthKey: OSS_CONTROLLER + '/ossSpace/authKeys',

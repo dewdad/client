@@ -4,7 +4,9 @@
             <el-col :span="24">
                 <el-row :gutter="20" style="height:218px;">
                     <el-col :span="16">
-                        <div class="info-box data-count">
+                        <el-alert title="提示：数据统计稍有延时。" type="warning" show-icon :closable="false">
+                        </el-alert>
+                        <div class="info-box data-count mt10">
                             <div class="info-box-content">
                                 <el-row :gutter="0">
                                     <el-col>
@@ -176,7 +178,7 @@
                                                 <div class="products-inner img-text-center">
                                                     <i class="iconfont icon-wangluo-gailan"></i>
                                                     <span class="font14 products-name">网络</span>
-                                                    <div class="products-count pull-right">{{tenantData.NETWORK || '0'}}</div>
+                                                    <div class="products-count pull-right">{{tenantData.ROUTER || '0'}}</div>
                                                 </div>
                                             </router-link>
                                         </div>

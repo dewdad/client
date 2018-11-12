@@ -38,7 +38,7 @@
                         <span class="color-danger" v-else>DOWN</span>
                     </template>
                 </el-table-column> -->
-                <el-table-column label="操作" :min-width="90" class-name="option-column">
+                <el-table-column label="操作" :min-width="140" class-name="option-column">
                     <template slot-scope="scope">
                         <router-link :to="{name: 'app.vpc.pn-subnet', params: {id: scope.row.id, name: scope.row.name } }">管理子网</router-link>
                         <b class="link-division-symbol"></b>

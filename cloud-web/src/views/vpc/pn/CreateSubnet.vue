@@ -10,18 +10,25 @@
                     <el-input v-model="data.name"></el-input>
                     <span slot="help" class="input-help">描述长度为2-64个字符，不能以http://和https://开头。</span>
                 </zt-form-item>
-                <zt-form-item label="网段" prop="cidr">
+                 <zt-form-item label="IP版本">
+                    <el-radio-group v-model="data.ipVersion">
+                        <el-radio :label="4">IPV4</el-radio>
+                        <el-radio :label="6">IPV6</el-radio>
+                    </el-radio-group>
+                </zt-form-item>
+                <zt-form-item v-if="data.ipVersion === 4" key="IPV4" label="网段" prop="cidr">
                     <ip-input v-model="data.cidr" v-if="isShow"></ip-input>
                     <span slot="help" class="input-help">
                         <span class="text-warning">创建后无法修改。</span><br>
                         例如：192.168.94.0/24
                     </span>
                 </zt-form-item>
-                <zt-form-item label="IP版本">
-                    <el-radio-group v-model="data.ipVersion">
-                        <el-radio :label="4">IPV4</el-radio>
-                        <el-radio :label="6">IPV6</el-radio>
-                    </el-radio-group>
+                <zt-form-item v-if="data.ipVersion === 6" key="IPV6" label="网段" prop="cidr">
+                    <el-input v-model="data.cidr" maxlength="50"></el-input>
+                    <span slot="help" class="input-help">
+                        <span class="color-warning lh20">创建后无法修改。</span><br>
+                        <span class="lh20">例如：0:0:0:0:0:0:0:1/48</span>
+                    </span>
                 </zt-form-item>
                 <zt-form-item label="DHCP">
                     <el-radio-group v-model="data.dHCPEnabled">
@@ -81,13 +88,16 @@ export default {
     },
     data() {
         // 验证 IP 格式
-        let cidr = function(rule, value, callback) {
+        const cidr = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入网段'));
             } else {
                 let [ipstr, port] = value.split('/');
                 let ip = ipstr.split('.');
-                if (port && ip.length === 4 && ip.every(e => e >= 0) && judgeSubnetIpValid(ip, port)) {
+                if (
+                    (this.data.ipVersion === 4 && port && ip.length === 4 && ip.every(e => e >= 0) && judgeSubnetIpValid(ip, port)) ||
+                    (this.data.ipVersion === 6 && value.length <= 50 && /^[a-z0-9]+(:[a-z0-9]+)+\/\d+$/.test(value))
+                ) {
                     callback();
                 } else {
                     callback(new Error('格式不正确'));
@@ -169,8 +179,10 @@ export default {
             this.loading = true;
             createSubnet(params)
                 .then(ret => {
-                    this.hide();
-                    this.resolve(ret);
+                    if (ret.code === '0000') {
+                        this.hide();
+                        this.resolve(ret);
+                    }
                 })
                 .catch(error => {
                     console.warn('创建VPC', error.message);

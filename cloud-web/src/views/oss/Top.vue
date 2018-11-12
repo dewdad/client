@@ -13,9 +13,9 @@
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
                                         <div class="mb5 flex" >
-                                            <div class="flex1 text-ellipsis"><a>{{item.name}}</a> 
+                                            <div class="flex1 text-ellipsis"><a>{{item[0]}}</a> 
                                             </div>
-                                            <span class="top-list--content__number">{{item.transferOut}} MB</span>
+                                            <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="primary"></el-progress>
                                     </span>
@@ -31,14 +31,14 @@
                         <div class="title ">流入流量
                         </div>
                         <div class="top-list">
-                            <ul v-if="!!requestTop">
-                                <li v-for="(item, index) in requestTop" :key="index" class="animated fadeIn">
+                            <ul v-if="!!putTop">
+                                <li v-for="(item, index) in putTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
                                         <div class="mb5 flex" >
-                                            <div class="flex1 text-ellipsis" ><a>{{item.name}}</a> 
+                                             <div class="flex1 text-ellipsis"><a>{{item[0]}}</a> 
                                             </div>
-                                            <span class="top-list--content__number">{{item.transferIn}} MB</span>
+                                            <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="primary"></el-progress>
                                     </span>
@@ -60,9 +60,9 @@
                                     <span class="top-list--content">
                                         <div class="mb5 flex">
                                         <div class="flex1 text-ellipsis" >
-                                        <a>{{item.name}}</a> 
+                                        <a>{{item[0]}}</a> 
                                         </div>
-                                        <span class="top-list--content__number">{{item.use}} MB</span>
+                                        <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                             </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="warning"></el-progress>
                                     </span>
@@ -78,15 +78,15 @@
                             文件数量
                         </div>
                         <div class="top-list">
-                            <ul v-if="!!requestTop">
+                            <ul v-if="!!fileTop">
                                 <li v-for="(item, index) in fileTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
                                          <div class="mb5 flex">
                                         <div class="flex1 text-ellipsis" >
-                                            <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item.id, 'name': item.name}}">{{item.name}}</router-link> 
+                                            <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link> 
                                             </div>
-                                            <span class="top-list--content__number">{{item.fileNums}}</span>
+                                            <span class="top-list--content__number">{{item[1]}}</span>
                                         </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="success"></el-progress>
                                     </span>
@@ -111,43 +111,6 @@ export default {
         return {
             loading: false,
             methodType: 'GET',
-            bucketList: [
-                {
-                    name: 'zt-bucket001',
-                    transferOut: 86,
-                    transferIn: 100,
-                    use: 24.86,
-                    fileNums: 32
-                },
-                {
-                    name: 'zt-bucket002',
-                    transferOut: 75,
-                    transferIn: 95,
-                    use: 16,
-                    fileNums: 21
-                },
-                {
-                    name: 'zt-bucket003',
-                    transferOut: 50,
-                    transferIn: 76,
-                    use: 12.15,
-                    fileNums: 17
-                },
-                {
-                    name: 'zt-bucket004',
-                    transferOut: 32,
-                    transferIn: 32,
-                    use: 5,
-                    fileNums: 12
-                },
-                {
-                    name: 'zt-bucket005',
-                    transferOut: 12,
-                    transferIn: 5,
-                    use: 2,
-                    fileNums: 3
-                }
-            ],
             dataItem:'2',
             form:{
                 startTime:'',
@@ -155,22 +118,18 @@ export default {
             }
         };
     },
+    props: {
+        bucketList: {
+            type: Object,
+            default: () => { return {};}
+        }
+    },
     computed: {
         requestTop: function() {
-            return this.bucketList.slice(0, 5);
-            // if(this.bucketList.length > 0){
-            //     let bucketList = cloneDeep(this.bucketList);
-            //     if (this.methodType === 'PUT') {
-            //         bucketList.sort((a, b) => {
-            //             return b.hitPut - a.hitPut;
-            //         });
-            //     } else {
-            //         bucketList.sort((a, b) => {
-            //             return b.hitGet - a.hitGet;
-            //         });
-            //     }
-            //     return bucketList.slice(0, 5);
-            // }
+            return this.bucketList.listGet;
+        },
+        putTop: function() {
+            return this.bucketList.listPut;
         },
         usedCapTop: function() {
             // if(this.bucketList.length > 0){
@@ -180,17 +139,10 @@ export default {
             //     });
             //     return bucketList.slice(0, 5);
             // }
-            return this.bucketList.slice(0, 5);
+            return this.bucketList.listSize;
         },
         fileTop: function() {
-            // if(this.bucketList.length > 0){
-            //     let bucketList = cloneDeep(this.bucketList);
-            //     bucketList.sort((a, b) => {
-            //         return b.objNum - a.objNum;
-            //     });
-            //     return bucketList.slice(0, 5);
-            // }
-            return this.bucketList.slice(0, 5);
+            return this.bucketList.listFileNum;
         }
     },
     created() {

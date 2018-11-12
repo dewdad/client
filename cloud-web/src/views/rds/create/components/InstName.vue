@@ -30,15 +30,15 @@ export default {
                         min: 2,
                         max: 64,
                         show: true,
-                        tipsMessage: this.$t('valid.name.length'),
+                        tipsMessage: '2-64位',
                         message: '实例名称格式不正确',
                         // message: '名称输入有误',
                         trigger: ['submit', 'blur']
                     },
                     {
-                        pattern: /^[[\u4e00-\u9fa5a-zA-Z0-9_]+$/,
+                        pattern: /^[a-zA-Z][a-zA-Z0-9 _.-]{2,64}$/,
                         show: true,
-                        tipsMessage: this.$t('valid.name.regex'),
+                        tipsMessage: '必须以ASCII字母开头, 只能包含字母，数字，下划线，句点和连字符',
                         message: '实例名称格式不正确',
                         // message: '名称输入有误',
                         trigger: ['submit', 'blur']
@@ -59,7 +59,6 @@ export default {
         }
     },
     created() {
-        this.form.instname = '云数据库_' + new Date().valueOf();
     }
 };
 </script>
