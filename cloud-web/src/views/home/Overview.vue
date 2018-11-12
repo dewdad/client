@@ -100,13 +100,13 @@
                                         <span class="pull-right">{{allOrder.myorderCount}}</span>
                                     </div>
                                 </router-link>
-                                <router-link :to="{ name: 'app.ticketSystem.myTicket'}">
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket', params: {status: '1'}}">
                                     <div class="todo-task mt10">
                                         未处理工单
                                         <span class="pull-right">{{allOrder.todoOrderCount}}</span>
                                     </div>
                                 </router-link>
-                                <router-link :to="{ name: 'app.ticketSystem.myTicket'}">
+                                <router-link :to="{ name: 'app.ticketSystem.myTicket', params: {status: '2'}}">
                                     <div class="todo-task mt10">
                                         已处理工单
                                         <span class="pull-right">{{allOrder.doneOrderCount}}</span>

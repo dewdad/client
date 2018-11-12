@@ -215,7 +215,13 @@ export default {
             cols,
             orderStatus,
         };
-    },    
+    },
+    created() {
+        if (this.$route.params.status) {
+            this.searchObj.status = this.$route.params.status;
+        }
+        this.search();
+    }, 
     methods: {
         //查询
         search(){
@@ -347,10 +353,6 @@ export default {
             }).catch(() => {         
             });
         }
-    },
-
-    created(){
-        this.search();
     }
 };
 </script>
