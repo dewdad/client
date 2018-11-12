@@ -17,7 +17,7 @@
                     <a class="font12" @click="dialogVisible = true">修改</a>
                 </label>
                 <label class="mr20 ">
-                    <span class="color-secondary">创建时间：</span>{{headerInfo.mtime|date('YYYY-MM-DD HH:mm')}}</label>
+                    <span class="color-secondary">创建时间：</span>{{headerInfo.creationDate|date('YYYY-MM-DD HH:mm')}}</label>
                 <el-button v-if="!get(headerInfo, 'usage.rgwMain.num_objects')" type="info" size="small" @click="deleteBucket">
                     删除空间
                 </el-button>
