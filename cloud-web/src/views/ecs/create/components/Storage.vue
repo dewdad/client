@@ -142,7 +142,7 @@ export default {
             return this.osType.toLowerCase().includes('windows') ? true : false;
         },
         sizeRange: function() {
-            let minSize = this.isWindows ? 50 : 20;
+            let minSize = this.isWindows ? this.createEcsFormData.mirror.imageObj.min_disk : 20;
             $log(minSize);
             return [minSize, 500];
         },

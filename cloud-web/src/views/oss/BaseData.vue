@@ -8,7 +8,7 @@
                         <!-- 存储容量 -->
                         <div class="title">{{$t('oss.overview.storageSize')}}</div>
                         <div class="data">
-                            <ICountUp :startVal="0" :endVal="parseInt(baseData.usedCap[0])" :duration="2" :decimals="0" /> {{baseData.usedCap[1]}}
+                            <ICountUp :startVal="0" :endVal="parseFloat(baseData.usedCap[0])" :duration="2" :decimals="1" /> {{baseData.usedCap[1]}}
                         </div>
                     </el-col>
                     <el-col class="flex1" style="border-right:none">
@@ -16,7 +16,7 @@
                             流出流量
                         </div>
                         <div class="data">
-                            <ICountUp :startVal="0" :endVal="parseInt(baseData.transferOut[0])" :duration="2" /> {{baseData.transferOut[1]}}
+                            <ICountUp :startVal="0" :endVal="parseFloat(baseData.transferOut[0])" :decimals="1" :duration="2" /> {{baseData.transferOut[1]}}
                         </div>
                         <!-- <div class="font12 lh32">上月外网流出流量：256MB</div> -->
                     </el-col>
@@ -25,7 +25,7 @@
                            流入流量
                         </div>
                         <div class="data">
-                            <ICountUp :startVal="0" :endVal="parseInt(baseData.transferIn[0])" :duration="2" /> {{baseData.transferIn[1]}}
+                            <ICountUp :startVal="0" :endVal="parseFloat(baseData.transferIn[0])" :decimals="1" :duration="2" /> {{baseData.transferIn[1]}}
                         </div>
                     </el-col>
                     <el-col class="flex1" style="border-right:none">
@@ -155,13 +155,13 @@ export default {
         setData(data) {
             if (this.$route.params.bucketId) {
                 this.baseData.objNum = data.fileNum;
-                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.size);
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.size * 1024);
                 this.baseData.transferIn = this.$options.filters['convertByteSize'](data.putSize);
                 this.baseData.transferOut = this.$options.filters['convertByteSize'](data.getSize);
                 this.baseData.hitPut = data.putNum;
                 this.baseData.hitGet = data.getNum;
             } else {
-                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap);
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap * 1024);
                 this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn);
                 this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut);
                 this.baseData.hitPut = data.hitPut;

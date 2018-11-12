@@ -57,7 +57,7 @@
             </el-table-column> -->
         </el-table>
         <div v-if="currentFlavor.id" class="mt15 font12">
-            <span class="color666">当前实例：</span>{{get(currentFlavor, 'types')}}，{{get(currentFlavor, 'vCpu')}} {{$t('abbr.vcpu')}} &nbsp;&nbsp;{{get(currentFlavor, 'ram')}} {{$t('abbr.gb')}}内存</div>
+            <span class="color666">当前实例：</span>{{get(currentFlavor, 'types')}}，{{get(currentFlavor, 'vCpu')}} {{$t('abbr.vcpu')}} &nbsp;&nbsp;{{parseInt(get(currentFlavor, 'ram')/1024)}} {{$t('abbr.gb')}}内存</div>
     </div>
 </template>
 <script>
