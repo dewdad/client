@@ -53,9 +53,6 @@
                         content: '\E60B';
                     }
                 }
-                &.highlight {
-                    color: $--table-head-color;
-                }
             }
             &:nth-last-child(2) {
                 .cell {
