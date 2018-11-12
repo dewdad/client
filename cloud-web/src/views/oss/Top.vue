@@ -3,7 +3,7 @@
         <div class="oss-box-content" v-loading="loading">
             <div class="oss-box-content__inner mt5" style="padding: 0 10px;">
                 <el-row :gutter="20">
-                    <el-col :span="6"  border>
+                    <el-col :span="6" border>
                         <!-- 存储容量 -->
                         <div class="title ">流出流量
                         </div>
@@ -12,8 +12,9 @@
                                 <li v-for="(item, index) in requestTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
-                                        <div class="mb5 flex" >
-                                            <div class="flex1 text-ellipsis"><a>{{item[0]}}</a> 
+                                        <div class="mb5 flex">
+                                            <div class="flex1 text-ellipsis">
+                                                <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
                                             <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
@@ -26,7 +27,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="6"  border>
+                    <el-col :span="6" border>
                         <!-- 存储容量 -->
                         <div class="title ">流入流量
                         </div>
@@ -35,8 +36,9 @@
                                 <li v-for="(item, index) in putTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
-                                        <div class="mb5 flex" >
-                                             <div class="flex1 text-ellipsis"><a>{{item[0]}}</a> 
+                                        <div class="mb5 flex">
+                                            <div class="flex1 text-ellipsis">
+                                                <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
                                             <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
@@ -49,21 +51,21 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="6"  border>
+                    <el-col :span="6" border>
                         <div class="title monthRequest ml10">
                             存储容量
                         </div>
                         <div class="top-list">
                             <ul v-if="!!usedCapTop">
-                                <li v-for="(item, index) in usedCapTop" :key="index" class="animated fadeIn" >
+                                <li v-for="(item, index) in usedCapTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
                                         <div class="mb5 flex">
-                                        <div class="flex1 text-ellipsis" >
-                                        <a>{{item[0]}}</a> 
-                                        </div>
-                                        <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
+                                            <div class="flex1 text-ellipsis">
+                                                <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
+                                            <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
+                                        </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="warning"></el-progress>
                                     </span>
                                 </li>
@@ -82,9 +84,9 @@
                                 <li v-for="(item, index) in fileTop" :key="index" class="animated fadeIn">
                                     <span class="top-list--index">{{index+1}}</span>
                                     <span class="top-list--content">
-                                         <div class="mb5 flex">
-                                        <div class="flex1 text-ellipsis" >
-                                            <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link> 
+                                        <div class="mb5 flex">
+                                            <div class="flex1 text-ellipsis">
+                                                <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
                                             <span class="top-list--content__number">{{item[1]}}</span>
                                         </div>
@@ -111,17 +113,19 @@ export default {
         return {
             loading: false,
             methodType: 'GET',
-            dataItem:'2',
-            form:{
-                startTime:'',
-                endTime:'',
+            dataItem: '2',
+            form: {
+                startTime: '',
+                endTime: ''
             }
         };
     },
     props: {
         bucketList: {
             type: Object,
-            default: () => { return {};}
+            default: () => {
+                return {};
+            }
         }
     },
     computed: {
@@ -167,15 +171,13 @@ export default {
                     console.log(err);
                 });
         },
-        selTime(value){
+        selTime(value) {
             this.getData();
-            console.log('value',this.dataItem);
-
+            console.log('value', this.dataItem);
         }
-
     },
-    watch:{
-        'dataItem': function(newval) {
+    watch: {
+        dataItem: function(newval) {
             let nowday = new Date();
             switch (newval) {
                 case '0':
@@ -194,15 +196,14 @@ export default {
                     break;
             }
             this.form.endTime = new Date().getTime();
-
-        },
-    },
+        }
+    }
 };
 </script>
 <style scoped lang="scss">
-    .overview-card {
-        border:none;
-    }
+.overview-card {
+    border: none;
+}
 .top-list {
     margin-top: 20px;
     margin-left: 10px;
@@ -222,9 +223,9 @@ export default {
         overflow: hidden;
     }
     &--content__number {
-       display: inline-block;
-       text-align:right;
-       margin-left:20px;
+        display: inline-block;
+        text-align: right;
+        margin-left: 20px;
         color: #999;
     }
 }
