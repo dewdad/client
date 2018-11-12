@@ -170,6 +170,7 @@ export default {
                 let resData = ret.data;
                 if(resData){
                     this.roleLists = resData.data || [];
+                    if(this.roleLists.length > 0) this.form.roleId = this.roleLists[0].id;
                 }
 
             });

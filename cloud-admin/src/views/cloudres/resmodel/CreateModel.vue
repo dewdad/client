@@ -123,7 +123,8 @@ export default {
         show() {
             this.isShow = true;
             this.form = {
-                types:'',
+                instanceType:'ECS',
+                types:'通用型',
                 name:'',
                 vCpu:1,
                 ram:1,

@@ -183,7 +183,7 @@ export default {
                         dnsNames:'',
                         hostRoutes:'',
                         gateway:'',
-                        noGateway:'true',
+                        noGateway:'false',
                         pools:'',
                         ipVersion:'4',
                     }

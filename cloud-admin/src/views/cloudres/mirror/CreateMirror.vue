@@ -100,7 +100,7 @@ export default {
             this.isShow = true;
             this.form.name = '';
             this.form.mirrortype = 1;
-            this.form.diskFormat = '';
+            this.form.diskFormat = 'ISO';
             this.form.public = '1';
             this.form.isProtected = '1';
             this.form.imageUrl = '';

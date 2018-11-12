@@ -137,10 +137,10 @@ export default {
             if(optype === 1){
                 this.form.name = '';
                 this.form.deviceId = '';
-                this.form.admin_state_up = '';
+                this.form.admin_state_up = 'true';
                 this.form.deviceName = '';
-                this.form.vnic_type = '';
-                this.form.chooseType = '';
+                this.form.vnic_type = '正常';
+                this.form.chooseType = 'sub';
             }else{
                 this.form.name = item.name;
                 this.id = item.id;
