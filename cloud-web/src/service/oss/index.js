@@ -1,8 +1,8 @@
 /*
- * @Author: wenfang 
- * @Date: 2018-07-13 10:44:50 
+ * @Author: wenfang
+ * @Date: 2018-07-13 10:44:50
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-09-06 18:03:41
+ * @Last Modified time: 2018-11-12 10:22:05
  * oss对象存储API服务
  */
 import http from '@/utils/http';
@@ -14,6 +14,14 @@ import {replaceParamVal} from '@/utils/utils';
  */
 export async function getOssSpace() {
     let res = await http.get(API_OSS.ossSpace);
+    return res && res.data;
+}
+
+/**
+ * 查询单个桶概览信息
+ */
+export async function getBucketUsage(bucketId) {
+    let res = await http.get(replaceParamVal(API_OSS.bucketUsage, [bucketId]));
     return res && res.data;
 }
 
