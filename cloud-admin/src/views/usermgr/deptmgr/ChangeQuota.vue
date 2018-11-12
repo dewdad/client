@@ -133,13 +133,30 @@ export default {
     },
     props: {},
     methods: {
-        show(item,brunch) {
+        show(item) {
             this.isShow = true;
             this.item = item;
-            this.brunch = brunch;
             console.log('item......',item);
             if(item.quota){
                 this.form.quota = item.quota;
+            }else{
+                this.form.quota = {
+                    cpu:10,
+                    instances:10,
+                    volumes:10,
+                    snapshot:10,
+                    volumeSize:100,
+                    ram:100,
+                    securityGroup:10,
+                    securityGroupRule:10,
+                    floatingIps:10,
+                    network:10,
+                    ports:10,
+                    routers:10,
+                    subnet:10,
+                    backup:10,
+                    backupSize:10
+                };
             }
             this.getQuotaList();
             return new Promise((resolve, reject) => {

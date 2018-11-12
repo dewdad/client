@@ -37,15 +37,19 @@
                 </div>
             </el-form>
         </div>
+        <!--修改配额-->
+        <change-quota ref="ChangeQuota"></change-quota>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import {selectAllUsers,createRenter} from '@/service/usermgr/deptmgr.js';
+import ChangeQuota from './ChangeQuota';
 export default {
     name: 'createRenter',
     components: {
+        ChangeQuota
     },
     data() {
         let stateParams = this.$route.params || {};
@@ -78,6 +82,19 @@ export default {
         }),
     },
     methods:{
+        //修改配额
+        changeRentQuota(item){
+            this.$refs.ChangeQuota.show(item).then(ret=>{
+                if(ret){
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.goBack();
+                }
+            }
+            );
+        },
         //保存（提交）
         submitForm() {
             let param = {
@@ -90,12 +107,11 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     createRenter(param).then(ret => {
-                        $log('result...', ret);
-                        this.$message({
-                            message: '租户创建成功，请及时修改配额。',
-                            type: 'success'
-                        });
-                        this.goBack();
+                        $log('createRenter...', ret);
+                        if(ret.data.code === '0000'){
+                            console.log('ret.data.data',ret.data.data);
+                            this.changeRentQuota(ret.data.data);
+                        }
                     });
                 } else {
                     console.log('error submit!!');

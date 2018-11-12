@@ -115,11 +115,11 @@ export default {
                 .then(res => {
                     console.log('reds',res);
                     if(res.data.code === '0000'){
-                        this.resolve(this.form);
+                        this.resolve(res.data.data);
                         this.confirmBtn = false;
                         this.hide();
                         this.setting();
-                        this.$alert('操作成功,请及时修改部门配额');
+                        // this.$alert('操作成功,请及时修改部门配额');
                     }else{
                         this.$alert('操作失败', '提示', {
                             type: 'error'
