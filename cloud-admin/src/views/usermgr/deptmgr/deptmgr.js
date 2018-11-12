@@ -259,9 +259,9 @@ export default {
 
             this.$refs.CreateDept.show(item,brunch,optype)
                 .then(ret => {
-                    console.log('操作成功', ret);
+                    this.createDeptQuota(ret,ret,1);
                     this.deptTree();
-                    return this.$alert('操作成功,请及时修改部门配额','提示');
+                    // return this.$alert('操作成功,请及时修改部门配额','提示');
                 })
                 .catch(err => {
                     if (err) {
@@ -276,7 +276,6 @@ export default {
             if(optype === 2 && this.brunch.id === this.user.deptId){
                 return;
             }
-
             this.$refs.CreateDeptQuota.show(item,brunch,optype)
                 .then(ret => {
                     console.log('操作成功', ret);
