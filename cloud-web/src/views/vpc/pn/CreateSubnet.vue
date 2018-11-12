@@ -144,6 +144,11 @@ export default {
             reject: () => {}
         };
     },
+    watch: {
+        'data.ipVersion': function() {
+            this.data.cidr = '';
+        }
+    },
     computed: {},
     methods: {
         clear() {
