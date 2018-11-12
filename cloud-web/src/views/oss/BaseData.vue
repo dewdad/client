@@ -155,15 +155,15 @@ export default {
         setData(data) {
             if (this.$route.params.bucketId) {
                 this.baseData.objNum = data.fileNum;
-                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.size);
-                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.putSize);
-                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.getSize);
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.size * 1024);
+                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.putSize * 1024);
+                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.getSize * 1024);
                 this.baseData.hitPut = data.putNum;
                 this.baseData.hitGet = data.getNum;
             } else {
-                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap);
-                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn);
-                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut);
+                this.baseData.usedCap = this.$options.filters['convertByteSize'](data.usedCap * 1024);
+                this.baseData.transferIn = this.$options.filters['convertByteSize'](data.transferIn * 1024);
+                this.baseData.transferOut = this.$options.filters['convertByteSize'](data.transferOut * 1024);
                 this.baseData.hitPut = data.hitPut;
                 this.baseData.hitGet = data.hitGet;
                 this.baseData.hitDel = data.hitDel;
