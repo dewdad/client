@@ -77,6 +77,7 @@ export default {
                     if (res.code === '0000') {
                         return resolve();
                     } else {
+                        this.hide();
                         return reject();
                     }
                 });
