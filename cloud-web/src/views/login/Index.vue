@@ -11,14 +11,14 @@
             </div>
             <div class="login-box">
                 <div class="login-box--inner">
-                    <div class="logo"><img src="@/assets/images/logo.png"></div>
+                    <div class="logo"><a href="http://cloud.szzt.com.cn/"><img src="@/assets/images/logo.png"></a></div>
                     <div class="login-box--form">
                         <el-alert v-if="errorMsg !==''" :title="errorMsg" class="mb20" type="error" :closable="false" show-icon>
                         </el-alert>
                         <el-form autocomplete="off" ref="pwdForm" :model="user" label-width="0" v-loading="isLoging" :rules="rules" element-loading-spinner="el-icon-loading" :show-message="false">
-                            <el-form-item label="" class="mb10">
+                            <!-- <el-form-item label="" class="mb10">
                                您可以申请试用获取体验账户，<a href="http://cloud.szzt.com.cn/#/register/reg" target="_blank">立即申请</a>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item label="" prop="userName" :class="{'is-nomal': errorInput === ''}">
                                 <input type="text" id="username" style="display: none;" disabled autocomplete="off" />
                                 <input type="password" id="password" style="display: none;" disabled autocomplete="off" />
