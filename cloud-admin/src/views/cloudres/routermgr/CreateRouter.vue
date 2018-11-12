@@ -71,7 +71,7 @@ export default {
                 this.form.adminStateUp = item.admin_state_up ? 'true' : 'false';
             }else{
                 this.form.name = '';
-                this.form.adminStateUp = '';
+                this.form.adminStateUp = 'true';
             }
             this.optype = optype;
             this.$nextTick(() => {

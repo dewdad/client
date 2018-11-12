@@ -44,6 +44,13 @@ import { mapState } from 'vuex';
 import {createModel} from '@/service/cloudres.js';
 export default {
     data() {
+        let validateRam = function(rule, value, callback){
+            if (value < 512) {
+                callback(new Error('内存不能小于512M'));
+            } else {
+                callback();
+            }
+        };
         return{
             formLabelWidth: '180px',
             isShow: false,
@@ -98,7 +105,8 @@ export default {
                     { required: true, message: '请选择实例类型', trigger: 'submit' }
                 ],
                 ram: [
-                    { required: true, message: '请输内存大小', trigger: 'submit' }
+                    { required: true, message: '请输内存大小', trigger: 'submit' },
+                    { validator: validateRam, trigger: 'blur' }
                 ],
                 brand: [
                     { required: true, message: '输入内网带宽', trigger: 'submit' }
@@ -123,10 +131,11 @@ export default {
         show() {
             this.isShow = true;
             this.form = {
-                types:'',
+                instanceType:'ECS',
+                types:'通用型',
                 name:'',
                 vCpu:1,
-                ram:1,
+                ram:512,
                 brand: 1,
                 cpuSpeed: 1,
                 cpuType: '',

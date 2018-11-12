@@ -86,6 +86,7 @@ export default {
                 let resData = ret.data;
                 if(resData ){
                     this.pull = resData || [];
+                    if(this.pull.length > 0) this.form.subnetId = this.pull[0].id;
                 }
             });
         },
@@ -112,7 +113,7 @@ export default {
                     let network = this.pull.find( (me) => {
                         return me.id === this.form.subnetId;
                     });
-                    this.form.network_id = network.network_id;
+                    this.form.networkId = network.network_id;
                     addInterface(this.form)
                         .then(res => {
                             console.log('redssssssss',res);
