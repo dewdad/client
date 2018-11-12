@@ -16,7 +16,7 @@
                                             <div class="flex1 text-ellipsis">
                                                 <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
-                                            <span class="top-list--content__number">{{item[1]*1024|convertByteSize(1, 'string')}}</span>
+                                            <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="primary"></el-progress>
                                     </span>
@@ -40,7 +40,7 @@
                                             <div class="flex1 text-ellipsis">
                                                 <router-link :to="{'name': 'app.oss.bucket', 'params': {'view': 'overview', 'bucketId': item[0], 'name': item[0]}}">{{item[0]}}</router-link>
                                             </div>
-                                            <span class="top-list--content__number">{{item[1]*1024|convertByteSize(1, 'string')}}</span>
+                                            <span class="top-list--content__number">{{item[1]|convertByteSize(1, 'string')}}</span>
                                         </div>
                                         <el-progress :show-text="false" :text-inside="true" :stroke-width="14" :percentage="100/(index+1)" linear theme="primary"></el-progress>
                                     </span>
