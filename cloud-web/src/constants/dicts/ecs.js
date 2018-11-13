@@ -5,7 +5,7 @@ export const ESC_SEARCH_TYPE = [
     {value: 'ip', label: '公网IP', placehold: '请输入IP'},
     // {value: 'floatingIp', label: '弹性公网IP', placehold: '请输入弹性公网IP精确查询'},
     {value: 'image', label: '镜像ID', placehold: '请输入镜像ID精确查询'},
-    {value: 'flavor', label: '模版ID', placehold: '请输入模版ID精确查询'},
+    // {value: 'flavor', label: '模版ID', placehold: '请输入模版ID精确查询'},
     // {value: 'groupId', label: '安全组ID', placehold: '请输入安全组ID精确查询'},
     // {value: 'vpcId', label: '私有网络ID', placehold: '请输入虚拟专有网络ID精确查询'},
     // {value: 'subnetId', label: '子网ID', placehold: '请输入子网ID精确查询'},
