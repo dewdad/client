@@ -2,7 +2,7 @@ export const ESC_SEARCH_TYPE = [
     // {value: '', label: '自动识别', placehold: '选择实例属性项搜索，或者输入关键字识别搜索'},
     {value: 'uuid', label: '实例ID', placehold: '输入实例ID精确查询'},
     {value: 'name', label: '实例名称', placehold: '请输入实例名称'},
-    {value: 'ip', label: '公网IP', placehold: '请输入IP'},
+    {value: 'ip', label: '内网IP', placehold: '请输入IP'},
     // {value: 'floatingIp', label: '弹性公网IP', placehold: '请输入弹性公网IP精确查询'},
     {value: 'image', label: '镜像ID', placehold: '请输入镜像ID精确查询'},
     // {value: 'flavor', label: '模版ID', placehold: '请输入模版ID精确查询'},
