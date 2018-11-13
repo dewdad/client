@@ -152,7 +152,7 @@ export default {
                     securityGroupRule:10,
                     floatingIps:10,
                     network:10,
-                    ports:10,
+                    ports:50,
                     routers:10,
                     subnet:10,
                     backup:10,
