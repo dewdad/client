@@ -157,7 +157,7 @@ export default {
                     case 'name':
                         return this.orderBy ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
                     case 'date':
-                        return this.orderBy ? a.createTime - b.createTime : b.createTime - a.createTime;
+                        return this.orderBy ? a.creationDate - b.creationDate : b.creationDate - a.creationDate;
                 }
             });
         },
