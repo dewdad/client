@@ -159,15 +159,15 @@
                         <div class="panel-heading chart-heading">
                             <i class="iconfont icon-Monitoringinformati mr5 color-title"></i>
                             <span class="color-title">{{ $t('ecs.inst.details.title.monitorInfo') }}</span>
-                            <el-radio-group v-model="searchDate" @change="dataChangeType" size="mini" class="pull-right header-radio-group ml80">
-                                <el-radio border name="1小时" label="1h">1小时</el-radio>
-                                <el-radio border name="6小时" label="6h">6小时</el-radio>
-                                <el-radio border name="1天" label="1d">1天</el-radio>
-                                <el-radio border name="7天" label="7d">7天</el-radio>
-                                <el-radio border name="30天" label="30d">30天</el-radio>
-                            </el-radio-group>
 
                             <div class="text-right panel-heading__right">
+                                <el-radio-group v-model="searchDate" @change="dataChangeType" size="mini" class="pull-right header-radio-group ">
+                                    <el-radio border name="1小时" label="1h">1小时</el-radio>
+                                    <el-radio border name="6小时" label="6h">6小时</el-radio>
+                                    <el-radio border name="1天" label="1d">1天</el-radio>
+                                    <el-radio border name="7天" label="7d">7天</el-radio>
+                                    <el-radio border name="30天" label="30d">30天</el-radio>
+                                </el-radio-group>
                                 <el-date-picker type="datetimerange" format="yyyy-MM-dd HH:mm" prefix-icon="el-icon-date" class="date-screen" @change="selectDetailTime" v-model="searchObj.dateRange" size="mini" align="right" unlink-panels :range-separator="$t('common.to')" :clearable="false" :start-placeholder="$t('common.beginDate')" :end-placeholder="$t('common.endDate')">
                                 </el-date-picker>
                             </div>
