@@ -217,20 +217,21 @@ export default {
                         });
                         // 记录用户信息
                         this.$store.commit('user/SET_USERINFO', result.data);
-
-                        let redirect = this.$route.query.c;
-                        if (!isEmpty(redirect)) {
-                            // 如果路由中存在redirect参数 跳转到redirect对应的页面
-                            this.$router.push(redirect);
-                        } else {
-                            if (result.data.roleType === '4') {
+                        if (result.data.roleType === '4') {
+                            let redirect = this.$route.query.c;
+                            if (!isEmpty(redirect)) {
+                                // 如果路由中存在redirect参数 跳转到redirect对应的页面
+                                this.$router.push(redirect);
+                            } else {
                                 this.$router.push({
                                     name: 'app'
                                 });
-                            } else {
-                                window.location.href = '/admin/';
                             }
+                            
+                        } else {
+                            window.location.href = '/admin/';
                         }
+                        
                     } else {
                         this.errorMsg = result.msg;
                         // 记录失败次数

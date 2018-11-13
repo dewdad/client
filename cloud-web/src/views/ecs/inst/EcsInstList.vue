@@ -59,7 +59,7 @@
                     </template>
                 </el-table-column>
                 <!-- 状态 -->
-                <el-table-column :filter-multiple="false" prop="status" :label="getLabel('status')" :filters="getDropdown('status')" :filtered-value="[status]" min-width="80">
+                <el-table-column :filter-multiple="false" prop="status" :label="getLabel('status')" :filters="getDropdown('status')"  min-width="80">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="light" :disabled="scope.row.status !== 'BUILD'" :content="scope.row.status === 'BUILD' ? '预计需要3-6分钟' : ''" placement="top">
                             <zt-status :status="ECS_STATUS" :value="scope.row['OS-EXT-STS:task_state'] === 'deleting' ? 'deleted' : scope.row.status" class="text-nowrap status-column"></zt-status>

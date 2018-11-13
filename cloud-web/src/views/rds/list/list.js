@@ -23,21 +23,13 @@ const tableColums = [
         // 数据过滤的选项是否多选
         filterMultiple: false,
         // 选中的数据过滤项
-        filteredValue: [''],
         // 数据过滤的选项
-        filters: [
-            {
-                text: '全部',
-                value: ''
-            },
-            ...DICT_RDS.RDS_STATUS
-        ]
+        filters: [...DICT_RDS.RDS_STATUS]
     },
     {
         prop: 'type',
         label: '实例类型',
         filterMultiple: false,
-        filteredValue: [''],
         render: true,
         filters: [
             {

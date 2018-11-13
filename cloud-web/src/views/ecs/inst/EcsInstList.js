@@ -286,10 +286,10 @@ export default {
         clearInterval(this.task);
     },
     created() {
-        // 每30秒查询一次
+        // 每3秒查询一次
         this.task = setInterval(() => {
             this.getEcsInstList({show: false});
-        }, 30000);
+        }, 3000);
     },
     watch: {
         options: {
@@ -607,10 +607,12 @@ export default {
                                 .then(async res => {
                                     if (res.code === '0000') {
                                         await sleep(5000);
-                                        ret.loading = false;
                                         ret.hide();
+                                        ret.loading = false;
                                         this.$message.success($t('common.successOpt'));
                                         this.getEcsInstList();
+                                    } else {
+                                        ret.loading = false;
                                     }
                                 })
                                 .catch(err => {

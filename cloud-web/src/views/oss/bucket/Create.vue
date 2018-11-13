@@ -35,7 +35,7 @@ export default {
             resolve: null,
             bucket: {
                 name: '',
-                rwAuth: 'false'
+                rwAuth: 'true'
             },
             rules: {
                 name: [
@@ -75,7 +75,7 @@ export default {
             // 重置bucket表单值
             this.bucket = {
                 name: '',
-                rwAuth: 'false'
+                rwAuth: 'true'
             };
         },
         cancel() {

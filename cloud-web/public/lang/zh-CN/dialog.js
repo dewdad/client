@@ -13,14 +13,14 @@ export default {
         "unbindLinkip":"解绑连接IP地址"
     },
 
-    //绑定公网IP
+    //绑定浮动IP
     "bindPublicip":{
         "currentInst":"当前实例",
         "selectExisted":"选择已有",
-        "goCreatePublicIP":"去创建公网IP",
-        "":"绑定公网IP",
-        "":"解绑公网IP",
-        "isEmpty":"请选择公网IP"   
+        "goCreatePublicIP":"去创建浮动IP",
+        "":"绑定浮动IP",
+        "":"解绑浮动IP",
+        "isEmpty":"请选择浮动IP"   
     },
 
     //删除ecs云主机实例
@@ -74,18 +74,18 @@ export default {
     //远程连接指导
     telnetGuide:{
         title:"远程连接指导",
-        noIpTitle:"没有绑定公网IP或者连接IP的云服务器",
+        noIpTitle:"没有绑定浮动IP或者连接IP的云服务器",
         byVncLogin:"通过vnc登录",
         byOtherHostLogin:"通过另一台可以远程登录的云服务器间接登录",
-        telnet:"远程登录进入另一台带公网IP或者连接IP的云服务器",    
+        telnet:"远程登录进入另一台带浮动IP或者连接IP的云服务器",    
         bySelfhostToTargetHost:"通过该台云服务器登录目标云服务器",
 
         linuxHost:"Linux系统的云服务器",
-        bindPublicIP:"绑定公网IP",
+        bindPublicIP:"绑定浮动IP",
         openSSHClient:"打开SSH客户端",
-        inputPubIPAndPort:"输入公网IP地址、端口",
+        inputPubIPAndPort:"输入浮动IP地址、端口",
         inputUserNamePwd:"输入用户名、密码登录",
-        inputPublicIP:"输入公网IP地址",
+        inputPublicIP:"输入浮动IP地址",
         bindLinkIP:"绑定连接IP",    
         newMedia:"接入新媒体大楼办公网络",
         inputLinkIPAndPort:"输入连接IP地址、端口",

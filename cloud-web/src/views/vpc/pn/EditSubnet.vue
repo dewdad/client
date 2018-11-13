@@ -94,8 +94,7 @@ export default {
                 });
         },
         confirm() {
-            let form = this.$refs.form;
-            if (!this.$refs.form) return false;
+            let form = this.$refs.edform;
 
             // 表单验证
             form.validate(valid => {
