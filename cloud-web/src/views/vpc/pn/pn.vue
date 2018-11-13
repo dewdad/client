@@ -11,7 +11,7 @@
                 </el-button>
             </div>
         </page-header>
-        <div class="page-body">
+        <div class="page-body" v-loading="deleteing">
             <!-- 表格 -->
             <zt-table :loading="isLoading" :data="tableData" @search="getVpcList" :paging="searchObj.paging">
                 <el-table-column prop="title" label="VPCID/名称" min-width="300px">
@@ -72,6 +72,7 @@ export default {
     data() {
         return {
             region: '',
+            deleteing: false,
             isLoading: false,
             searchObj,
             ECS_STATUS,
@@ -132,12 +133,14 @@ export default {
                 type: 'danger'
             })
                 .then(() => {
+                    this.deleteing = true;
                     return deleteNetwork({
                         vpcId: row.id
                     });
                 })
                 .then(ret => {
                     $log('deleteNetwork ret <-', ret);
+                    this.deleteing = false;
                     if (ret) {
                         this.fetchData();
                         this.$message({
