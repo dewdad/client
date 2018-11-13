@@ -140,6 +140,7 @@ export default {
             if(item.quota){
                 this.form.quota = item.quota;
             }else{
+
                 this.form.quota = {
                     cpu:10,
                     instances:10,
@@ -157,8 +158,9 @@ export default {
                     backup:10,
                     backupSize:10
                 };
+                // this.getQuotaList();
             }
-            this.getQuotaList();
+
             return new Promise((resolve, reject) => {
                 this.reject = reject;
                 this.resolve = resolve;

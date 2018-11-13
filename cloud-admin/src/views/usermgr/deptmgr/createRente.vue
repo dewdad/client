@@ -180,7 +180,7 @@ export default {
             if(json.item) this.stateParams = json;
         }
         this.setOrigin();
-        this.selectAllProject();
+        // this.selectAllProject();
         
         
     },
