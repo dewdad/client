@@ -4,9 +4,9 @@
         <div class="row">
             <div class="login-bg">
                 <div class="txt">
-                    <p style="font-size:36px;margin-bottom:30px;color:#fff;">私有云管理重磅来袭</p>
-                    <p style="font-size:22px;margin-bottom:10px;color:#fff;">立足用户&nbsp;&nbsp;&nbsp;&nbsp;服务用户</p>
-                    <p style="font-size:22px;margin-bottom:10px;color:#fff;">持续创新&nbsp;&nbsp;&nbsp;&nbsp;云瞰未来</p>
+                    <p style="font-size:50px;margin-bottom:30px;color:#fff;">私有云管理重磅来袭</p>
+                    <p style="font-size:32px;margin-bottom:10px;color:#fff;">立足用户&nbsp;&nbsp;&nbsp;&nbsp;服务用户</p>
+                    <p style="font-size:32px;margin-bottom:10px;color:#fff;">持续创新&nbsp;&nbsp;&nbsp;&nbsp;云瞰未来</p>
                 </div>
             </div>
             <div class="login-box">
@@ -22,15 +22,15 @@
                             <el-form-item label="" prop="userName" :class="{'is-nomal': errorInput === ''}">
                                 <input type="text" id="username" style="display: none;" disabled autocomplete="off" />
                                 <input type="password" id="password" style="display: none;" disabled autocomplete="off" />
-                                <el-input ref="userName" name="username" key="userName" v-model.trim='user.userName' prefix-icon="iconfont icon-icon-test1" :maxlength="32" :clearable="true" placeholder="用户名" >
+                                <el-input ref="userName" name="username" key="userName" v-model.trim='user.userName' prefix-icon="iconfont icon-icon-test1" :maxlength="32" :clearable="true" placeholder="用户名">
                                 </el-input>
                             </el-form-item>
                             <el-form-item label="" prop="pwd">
-                                <el-input ref="pwd" key="pwd" name="password" type="password" v-model="user.pwd" @keyup.enter.native="submit" prefix-icon="iconfont icon-icon-test" :maxlength="32" :clearable="true" placeholder="密码"  auto-complete="off">
+                                <el-input ref="pwd" key="pwd" name="password" type="password" v-model="user.pwd" @keyup.enter.native="submit" prefix-icon="iconfont icon-icon-test" :maxlength="32" :clearable="true" placeholder="密码" auto-complete="off">
                                 </el-input>
                             </el-form-item>
-                            <el-form-item v-if="loginFailNums > 0" :error="codeError"  :class="{'imagecode': true, 'is-error': errorInput === 'imageCode'}" id="imageCode" prop="imageCode" label="">
-                                <image-code-input ref="imageCode" v-model.trim='user.imageCode' @keyup.enter.native="submit" @blur="inputBlur('imageCode', $event)" ></image-code-input>
+                            <el-form-item v-if="loginFailNums > 0" :error="codeError" :class="{'imagecode': true, 'is-error': errorInput === 'imageCode'}" id="imageCode" prop="imageCode" label="">
+                                <image-code-input ref="imageCode" v-model.trim='user.imageCode' @keyup.enter.native="submit" @blur="inputBlur('imageCode', $event)"></image-code-input>
                             </el-form-item>
                             <el-form-item label="" class="mb0">
                                 <el-button type="primary" long @click="submit" value="" class="btn-register">
@@ -60,7 +60,7 @@ export default {
                 if (result.code !== '0000') {
                     this.errorMsg = result.msg;
                     this.errorInput = 'imageCode';
-                } 
+                }
             }
             callback();
         };
@@ -186,7 +186,7 @@ export default {
                     if (this.loginFailNums > 0) {
                         return this.checkData('imageCode');
                     }
-                    return Promise.resolve(); 
+                    return Promise.resolve();
                 })
                 .then(() => {
                     // 第四步：登录
@@ -203,7 +203,7 @@ export default {
             userLogin({
                 loginNo: this.user.userName,
                 loginPass: this.user.pwd,
-                imageCode: this.user.imageCode,
+                imageCode: this.user.imageCode
             })
                 .then(async result => {
                     this.isLoging = false;
@@ -217,7 +217,7 @@ export default {
                         });
                         // 记录用户信息
                         this.$store.commit('user/SET_USERINFO', result.data);
-                    
+
                         let redirect = this.$route.query.c;
                         if (!isEmpty(redirect)) {
                             // 如果路由中存在redirect参数 跳转到redirect对应的页面
@@ -230,7 +230,6 @@ export default {
                             } else {
                                 window.location.href = '/admin/';
                             }
-                            
                         }
                     } else {
                         this.errorMsg = result.msg;
@@ -266,12 +265,12 @@ export default {
 .login-bg {
     flex: 3;
     height: 100%;
-    background: #000000 url(../../assets/images/bg.png) bottom right;
+    background: #000000 url(../../assets/images/login-bg.jpg) top left;
     background-repeat: no-repeat;
-    background-size: 600px;
+    background-size: cover;
     .txt {
         position: absolute;
-        top: 5%;
+        top: 0;
         left: 10%;
         text-align: left;
         margin-top: calc(50vh - 160px);
@@ -297,7 +296,7 @@ export default {
         left: 0;
         right: 0;
         bottom: 20px;
-        text-align:center;
+        text-align: center;
     }
 }
 </style>
