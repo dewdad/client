@@ -2,7 +2,7 @@
     <div class="page-main">
         <ecs-inst-detail-header :ecsInst='ecsInst' @refresh="search(1)"></ecs-inst-detail-header>
         <div class="page-body details-case" v-loading.fullscreen.lock="loadingBody">
-            <el-row :gutter="10">
+            <el-row :gutter="10" style="min-width:1095px;">
                 <el-col :span="7" class="leftInfo" style="width: 31.172%">
                     <!-- 基本信息 -->
                     <div class="panel panel-default">
@@ -159,7 +159,7 @@
                         <div class="panel-heading chart-heading">
                             <i class="iconfont icon-Monitoringinformati mr5 color-title"></i>
                             <span class="color-title">{{ $t('ecs.inst.details.title.monitorInfo') }}</span>
-                            <el-radio-group v-model="searchDate" @change="dataChangeType" size="mini" class="pull-right header-radio-group ml80">
+                            <el-radio-group v-model="searchDate" @change="dataChangeType" size="mini" class="pull-right header-radio-group ml20">
                                 <el-radio border name="1小时" label="1h">1小时</el-radio>
                                 <el-radio border name="6小时" label="6h">6小时</el-radio>
                                 <el-radio border name="1天" label="1d">1天</el-radio>
