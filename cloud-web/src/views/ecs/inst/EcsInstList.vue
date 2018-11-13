@@ -24,10 +24,10 @@
                 <el-table-column prop="name" :label="getLabel('name')" min-width="183">
                     <template slot-scope="scope">
                         <div class="id-column table-row-list">
-                            <div class="text-nowrap table-row-list-item hoverToShowContent">
+                            <div class="text-nowrap table-row-list-item hoverToShowContent ">
                                 <!-- <router-link :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,item:scope.row}}">e-m5e3k7ais9uf86u9m1pu</router-link> <copy-text class="hoverToShow" :bindText="scope.row.id"></copy-text> -->
-                                <router-link :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,flavorId:scope.row.flavorId,item:scope.row}}">{{ scope.row.id }}</router-link>
-                                <copy-text class="hoverToShow finger-cursor font12" :bindText="scope.row.id" position="right"></copy-text>
+                                <router-link class="text-ellipsis" style="display: inline-block;width:80%;" :disabled="dropdownActive(scope.row.status, modifyConfigActivedStatus)" :to="{name:'app.ecs.inst.detail',params:{id:scope.row.id,flavorId:scope.row.flavorId,item:scope.row}}">{{ scope.row.id }}</router-link>
+                                <copy-text class="hoverToShow finger-cursor font12" style="top:-5px;" :bindText="scope.row.id" position="right"></copy-text>
                             </div>
                             <div class="flex text-nowrap flex-align-center table-row-list-item hoverToShowContent">
                                 <!-- hoverToShow -->
