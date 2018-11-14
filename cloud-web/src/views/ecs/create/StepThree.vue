@@ -31,7 +31,7 @@
                             <div class="font12">
                                 <template v-for="disk in createEcsFormData.storage.dataDisk">
                                     <template v-for="d in disk.diskNum">
-                                        <span :key="d">{{disk.diskPerformance.label}} {{disk.diskSize}}{{$t('abbr.gb')}}<br/></span>
+                                        <span :key="d">{{disk.diskPerformance.label}} {{disk.diskSize}}{{$t('abbr.gb')}}<br /></span>
                                     </template>
                                 </template>
                             </div>
@@ -51,8 +51,8 @@
                 <el-row class="mt5">
                     <el-col :span="8">
                         <span>{{$t('common.net')}}：</span>{{$t('common.privateNet')}}</el-col>
-                    <el-col :span="8">
-                        <span>{{$t('common.privateNet')}}：</span>{{get(createEcsFormData,'netWorkInfo.netWork.name')}}</el-col>
+                    <!-- <el-col :span="8">
+                        <span>{{$t('common.privateNet')}}：</span>{{get(createEcsFormData,'netWorkInfo.netWork.name')}}</el-col> -->
                     <!-- <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'isReady'">
                         <span>{{$t('common.publicNetworkIP')}}：</span>{{get(createEcsFormData,'broadBand.ipAdd.ipAdd')}} / {{get(createEcsFormData,'broadBand.ipAdd.name')}}</el-col>
                     <el-col :span="8" v-if="get(createEcsFormData, 'broadBand.checked') && get(createEcsFormData,'broadBand.type') === 'newCreate'">
