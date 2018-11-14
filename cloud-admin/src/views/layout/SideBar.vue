@@ -13,7 +13,7 @@
                 <el-menu-item v-show="false" index="0000"></el-menu-item>          
             </el-menu>
         </div>
-        <div class="sidebar-submenu" v-if="submenus.length">
+        <div class="sidebar-submenu" v-if="submenus.length > 0">
             <el-menu :default-active="activeRouteHref" unique-opened @select="goto">           
                 <template v-for="submenu in submenus">
                     <el-menu-item  :index="submenu.routeHref" :key="submenu.menuCode" v-if="submenu.menuName != '网络'&&submenu.menuName != '磁盘管理'">
@@ -129,8 +129,8 @@ export default {
 
                     console.log('this.activeRouteHref',this.activeRouteHref);
                     if( 'app.overview' == this.activeRouteHref){
-                        if(submenuItems) localStorage.removeItem('submenuItems');
                         this.submenus = [];
+                        if(submenuItems) localStorage.removeItem('submenuItems');
                         console.log('removedItems',submenuItems);
                     }
                     navlist.forEach( (menu) =>{
