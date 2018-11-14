@@ -118,8 +118,8 @@ export default {
                 })
                 .then(ret => {
                     $log('deleteSubnet ret <-', ret);
+                    this.deleteing = false;
                     if (ret) {
-                        this.deleteing = false;
                         this.$message.success('删除成功');
                         this.fetchData();
                     }
