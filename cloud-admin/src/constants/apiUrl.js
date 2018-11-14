@@ -116,7 +116,7 @@ export const DEPT = {
     projectList: USER_RSA + '/project/list',//租户列表
     selectAllUsers: USER_RSA + '/user/list',//根据租户ID查询用户集合
     createRenter: USER_RSA + '/project/',//创建租户
-    viewProjectUsage: USER_RSA + '/project/quota/',//查看租户配额
+    viewProjectUsage: USER_RSA + '/project/getUserUsagesAndQuota',//查看租户配额
     changeRenterQuota: USER_RSA + '/project/quota',//修改租户配额
     delRenter: USER_RSA + '/project',//删除租户
     createUser: USER_RSA + '/user/',//创建用户
@@ -124,7 +124,7 @@ export const DEPT = {
     delUser: USER_RSA + '/user/',//删除用户
     viewUsage: USER_RSA + '/project/getUserUsagesAndQuota',//查看使用量
     searchRentQuota: USER_RSA + '/project/quota/',//租户配额查询
-    changeQuota: USER_RSA + '/project/quota',//修改配额
+    changeQuota: USER_RSA + '/project/quota/',//修改配额
     searchByProjectId: USER_RSA + '/project/getUserByProject',//通过租户id查找用户
     editRente: USER_RSA + '/project/',//修改租户
     editUser: USER_RSA + '/user/',//修改用户
