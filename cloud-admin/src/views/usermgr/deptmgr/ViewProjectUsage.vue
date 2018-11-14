@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="查看配额" :visible.sync="isShow" width="600px"   v-dialogDrag>
+    <el-dialog title="查看租户配额" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-row class="table top">
             <el-col :span="8">资源</el-col>
             <el-col :span="8">使用量</el-col>
@@ -7,83 +7,83 @@
         </el-row>
         <el-row class="table">
             <el-col :span="8">CPU</el-col>
-            <el-col :span="8">{{dept.usage.cores || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.cpu || '-'}}</el-col>
+            <el-col :span="8">{{dept.CPU || '-'}}</el-col>
+            <el-col :span="8">{{dept.qCpu || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">实例</el-col>
-            <el-col :span="8">{{dept.usage.instances || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.instances || '-'}}</el-col>
+            <el-col :span="8">{{dept.INSTANCES || '-'}}</el-col>
+            <el-col :span="8">{{dept.qInstances || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">磁盘</el-col>
-            <el-col :span="8">{{dept.usage.volumes || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.volumes || '-'}}</el-col>
+            <el-col :span="8">{{dept.VOLUMES || '-'}}</el-col>
+            <el-col :span="8">{{dept.qVolumes || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">快照</el-col>
-            <el-col :span="8">{{dept.usage.snapshots || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.snapshot || '-'}}</el-col>
+            <el-col :span="8">{{dept.SNAPSHOTS || '-'}}</el-col>
+            <el-col :span="8">{{dept.qSnapshot || '-'}}</el-col>
         </el-row>
         <el-row class="table">
-            <el-col :span="8">磁盘快照大小(GB)</el-col>
-            <el-col :span="8">{{dept.usage.gigabytes || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.volumeSize || '-'}}</el-col>
+            <el-col :span="8">磁盘大小(GB)</el-col>
+            <el-col :span="8">{{dept.VOLUME_SIZE || '-'}}</el-col>
+            <el-col :span="8">{{dept.qVolumeSize || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">内存(GB)</el-col>
-            <el-col :span="8">{{dept.usage.ram || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.ram || '-'}}</el-col>
+            <el-col :span="8">{{dept.RAM || '-'}}</el-col>
+            <el-col :span="8">{{dept.qRam || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组</el-col>
-            <el-col :span="8">{{dept.usage.security_group || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.securityGroup || '-'}}</el-col>
+            <el-col :span="8">{{dept.SECURITY_GROUP || '-'}}</el-col>
+            <el-col :span="8">{{dept.qSecutityGroup || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组规则</el-col>
-            <el-col :span="8">{{dept.usage.security_group_rule || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.securityGroupRule || '-'}}</el-col>
+            <el-col :span="8">{{dept.SECURITY_GROUP_RULE || '-'}}</el-col>
+            <el-col :span="8">{{dept.qSecutityGroupRule || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">浮动IP</el-col>
-            <el-col :span="8">{{dept.usage.floatingip || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.floatingIps || '-'}}</el-col>
+            <el-col :span="8">{{dept.FLOATINGIP || '-'}}</el-col>
+            <el-col :span="8">{{dept.qFloatingIps || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">网络</el-col>
-            <el-col :span="8">{{dept.usage.network || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.network || '-'}}</el-col>
+            <el-col :span="8">{{dept.NETWORK || '-'}}</el-col>
+            <el-col :span="8">{{dept.qNetwork || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">端口</el-col>
-            <el-col :span="8">{{dept.usage.port || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.ports || '-'}}</el-col>
+            <el-col :span="8">{{dept.PORTS || '-'}}</el-col>
+            <el-col :span="8">{{dept.qPorts || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">路由</el-col>
-            <el-col :span="8">{{dept.usage.router || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.routers || '-'}}</el-col>
+            <el-col :span="8">{{dept.ROUTER || '-'}}</el-col>
+            <el-col :span="8">{{dept.qRouters || '-'}}</el-col>
         </el-row>
-        <el-row class="table">
-            <el-col :span="8">子网</el-col>
-            <el-col :span="8">{{dept.usage.subnet || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.subnet || '-'}}</el-col>
-        </el-row>
-        <el-row class="table">
-            <el-col :span="8">备份</el-col>
-            <el-col :span="8">{{dept.usage.backup || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.backup || '-'}}</el-col>
-        </el-row>
-        <el-row class="table">
-            <el-col :span="8">备份大小(GB)</el-col>
-            <el-col :span="8">{{dept.usage.backupSize || '-'}}</el-col>
-            <el-col :span="8">{{dept.quota.backupSize || '-'}}</el-col>
-        </el-row>
+        <!--<el-row class="table">-->
+            <!--<el-col :span="8">子网</el-col>-->
+            <!--<el-col :span="8">{{dept.usage.subnet || '-'}}</el-col>-->
+            <!--<el-col :span="8">{{dept.quota.subnet || '-'}}</el-col>-->
+        <!--</el-row>-->
+        <!--<el-row class="table">-->
+            <!--<el-col :span="8">备份</el-col>-->
+            <!--<el-col :span="8">{{dept.usage.backup || '-'}}</el-col>-->
+            <!--<el-col :span="8">{{dept.quota.backup || '-'}}</el-col>-->
+        <!--</el-row>-->
+        <!--<el-row class="table">-->
+            <!--<el-col :span="8">备份大小(GB)</el-col>-->
+            <!--<el-col :span="8">{{dept.usage.backupSize || '-'}}</el-col>-->
+            <!--<el-col :span="8">{{dept.quota.backupSize || '-'}}</el-col>-->
+        <!--</el-row>-->
     </el-dialog>
 </template>
 <script>
-import {searchQuota} from '@/service/usermgr/deptmgr.js';
+import {viewProjectUsage} from '@/service/usermgr/deptmgr.js';
 export default {
     name: 'app',
 
@@ -100,43 +100,7 @@ export default {
             isShow: false,
             resolve: null,
             reject: null,
-            dept:{
-                usage:{
-                    cores: '',
-                    instances: '',
-                    volumes: '',
-                    snapshots: '',
-                    gigabytes: '',
-                    ram: '',
-                    security_group: '',
-                    security_group_rule: '',
-                    floatingip: '',
-                    network: '',
-                    port: '',
-                    router: '',
-                    subnet: '',
-                    region: '',
-                    backup: '',
-                    backupSize: ''
-                },
-                quota:{
-                    cpu: '',
-                    instances: '',
-                    volumes: '',
-                    snapshot: '',
-                    volumeSize: '',
-                    ram: '',
-                    securityGroup: '',
-                    securityGroupRule: '',
-                    floatingIps: '',
-                    network: '',
-                    ports: '',
-                    routers: '',
-                    subnet: '',
-                    backup: '',
-                    backupSize: ''
-                }
-            },
+            dept:{},
             item:{}
 
         };
@@ -148,11 +112,7 @@ export default {
         show(item) {
             this.isShow = true;
             this.item = item;
-            this.searchQuota();
-            // if(item.usage && item.quota){
-            //     this.dept.usage = item.usage;
-            //     this.dept.quota = item.quota;
-            // }
+            this.viewProjectUsage(item);
             console.log('item',item);
             return new Promise((resolve, reject) => {
                 this.reject = reject;
@@ -161,16 +121,14 @@ export default {
 
         },
         //通过租户id查找用户
-        searchQuota(){
-            searchQuota(this.item.id).then(ret => {
-                $log('list....searchByProjectId', ret);
+        viewProjectUsage(item){
+            let param = {
+                projectId:item.id
+            };
+            viewProjectUsage(param).then(ret => {
+                $log('list....viewProjectUsage', ret);
                 let resData = ret.data;
-                this.dept.quota = {};
-                this.dept.usage = {};
-                if((resData && resData.quota) || (resData && resData.usage)){
-                    this.dept.quota = resData.quota || [];
-                    this.dept.usage = resData.usage || [];
-                }
+                this.dept = resData[0];
             });
         },
         hide() {

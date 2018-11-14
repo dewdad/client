@@ -8,10 +8,10 @@
             <el-form-item label="实例：" prop="quota.instances" :label-width="formLabelWidth" required>
                 <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.instances"></el-input-number>
             </el-form-item>
-            <el-form-item label="卷：" prop="quota.volumes" :label-width="formLabelWidth" required>
+            <el-form-item label="磁盘：" prop="quota.volumes" :label-width="formLabelWidth" required>
                 <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.volumes"></el-input-number>
             </el-form-item>
-            <el-form-item label="卷快照：" prop="quota.snapshot" :label-width="formLabelWidth" required>
+            <el-form-item label="快照：" prop="quota.snapshot" :label-width="formLabelWidth" required>
                 <el-input-number class="width-full" controls-position="right" :min="0"  :max="999999999" v-model="form.quota.snapshot"></el-input-number>
             </el-form-item>
             <el-form-item label="卷及快照总大小(GB)：" prop="quota.volumeSize" :label-width="formLabelWidth" required>

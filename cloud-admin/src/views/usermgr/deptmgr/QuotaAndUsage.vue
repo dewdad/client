@@ -7,7 +7,7 @@
         </el-row>
         <el-row class="table">
             <el-col :span="8">CPU</el-col>
-            <el-col :span="8">{{dept.usage.cores || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.cpu || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.cpu || '-'}}</el-col>
         </el-row>
         <el-row class="table">
@@ -22,12 +22,12 @@
         </el-row>
         <el-row class="table">
             <el-col :span="8">快照</el-col>
-            <el-col :span="8">{{dept.usage.snapshots || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.snapshot || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.snapshot || '-'}}</el-col>
         </el-row>
         <el-row class="table">
-            <el-col :span="8">磁盘快照大小(GB)</el-col>
-            <el-col :span="8">{{dept.usage.gigabytes || '-'}}</el-col>
+            <el-col :span="8">磁盘大小(GB)</el-col>
+            <el-col :span="8">{{dept.usage.volumeSize || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.volumeSize || '-'}}</el-col>
         </el-row>
         <el-row class="table">
@@ -37,17 +37,17 @@
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组</el-col>
-            <el-col :span="8">{{dept.usage.security_group || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.securityGroup || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.securityGroup || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组规则</el-col>
-            <el-col :span="8">{{dept.usage.security_group_rule || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.securityGroupRule || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.securityGroupRule || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">浮动IP</el-col>
-            <el-col :span="8">{{dept.usage.floatingip || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.floatingIps || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.floatingIps || '-'}}</el-col>
         </el-row>
         <el-row class="table">
@@ -57,12 +57,12 @@
         </el-row>
         <el-row class="table">
             <el-col :span="8">端口</el-col>
-            <el-col :span="8">{{dept.usage.port || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.ports || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.ports || '-'}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">路由</el-col>
-            <el-col :span="8">{{dept.usage.router || '-'}}</el-col>
+            <el-col :span="8">{{dept.usage.routers || '-'}}</el-col>
             <el-col :span="8">{{dept.quota.routers || '-'}}</el-col>
         </el-row>
         <el-row class="table">
