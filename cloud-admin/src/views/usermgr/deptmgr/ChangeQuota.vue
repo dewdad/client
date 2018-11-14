@@ -133,14 +133,13 @@ export default {
     },
     props: {},
     methods: {
-        show(item) {
+        show(item,optype) {
             this.isShow = true;
             this.item = item;
             console.log('item......',item);
             if(item.quota){
                 this.form.quota = item.quota;
-            }else{
-
+            }else if(optype === 2){
                 this.form.quota = {
                     cpu:10,
                     instances:10,
@@ -158,7 +157,8 @@ export default {
                     backup:10,
                     backupSize:10
                 };
-                // this.getQuotaList();
+            }else if(optype === 1){
+                this.getQuotaList();
             }
 
             return new Promise((resolve, reject) => {
@@ -187,8 +187,22 @@ export default {
             searchRentQuota(this.item.id).then(ret => {
                 $log('list....', ret);
                 let resData = ret.data;
-                if(resData && resData.id){
-                    this.form.quota = resData || [];
+                if(resData){
+                    this.form.quota.cpu = resData.cpu;
+                    this.form.quota.instances = resData.instances;
+                    this.form.quota.volumes = resData.volumes;
+                    this.form.quota.snapshot = resData.snapshot;
+                    this.form.quota.volumeSize = resData.volumeSize;
+                    this.form.quota.ram = resData.ram;
+                    this.form.quota.securityGroup = resData.securityGroup;
+                    this.form.quota.securityGroupRule = resData.securityGroupRule;
+                    this.form.quota.floatingIps = resData.floatingIps;
+                    this.form.quota.network = resData.network;
+                    this.form.quota.ports = resData.ports;
+                    this.form.quota.routers = resData.routers;
+                    this.form.quota.subnet = resData.subnet;
+                    this.form.quota.backup = resData.backup;
+                    this.form.quota.backupSize = resData.backupSize;
                 }
             });
         },
