@@ -7,7 +7,7 @@ export default {
     name: 'Overview',
     data() {
         return {
-            legendData: ['CPU使用率', '内存使用率'],
+            // legendData: ['CPU使用率', '内存使用率'],
             legendWarnData: ['监控警告'],
             xData_cpu: [],
             xData_mem: [],
@@ -44,15 +44,28 @@ export default {
         };
     },
     computed: {
+        legendData() {
+            let arr = [];
+            if (this.seriesData_cpu.length > 0 && this.seriesData_mem.length > 0) {
+                arr.push('CPU使用率');
+                if (this.seriesData_mem[0].seriesData.length) {
+                    arr.push('内存使用率');
+                }
+                return arr;
+            }
+            return arr;
+        },
         seriesData() {
             let arr = [];
             if (this.seriesData_cpu.length > 0 && this.seriesData_mem.length > 0) {
                 arr[0] = {
                     seriesData: this.seriesData_cpu[0].seriesData
                 };
-                arr[1] = {
-                    seriesData: this.seriesData_mem[0].seriesData
-                };
+                if (this.seriesData_mem[0].seriesData.length) {
+                    arr[1] = {
+                        seriesData: this.seriesData_mem[0].seriesData
+                    };
+                }
                 return arr;
             }
             return arr;
