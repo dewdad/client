@@ -60,6 +60,7 @@ export default {
     watch: {
         '$route': function(newVal) {
             if(newVal) {
+                console.log('newVal',newVal);
                 this.parseActivemenu(this.menuList);
             }
         }
@@ -129,6 +130,7 @@ export default {
                     console.log('this.activeRouteHref',this.activeRouteHref);
                     if( 'app.overview' == this.activeRouteHref){
                         if(submenuItems) localStorage.removeItem('submenuItems');
+                        this.submenus = [];
                         console.log('removedItems',submenuItems);
                     }
                     navlist.forEach( (menu) =>{
