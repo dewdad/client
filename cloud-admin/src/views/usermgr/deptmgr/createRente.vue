@@ -110,7 +110,7 @@ export default {
                         $log('createRenter...', ret);
                         if(ret.data.code === '0000'){
                             console.log('ret.data.data',ret.data.data);
-                            this.changeRentQuota(ret.data.data);
+                            this.changeRentQuota(ret.data.data,2);
                         }
                     });
                 } else {

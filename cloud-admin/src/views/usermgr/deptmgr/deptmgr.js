@@ -295,8 +295,8 @@ export default {
             this.$refs.ViewProjectUsage.show(item);
         },
         //修改配额
-        changeRentQuota(item, brunch) {
-            this.$refs.ChangeQuota.show(item, brunch).then(ret => {
+        changeRentQuota(item) {
+            this.$refs.ChangeQuota.show(item,1).then(ret => {
                 if (ret) this.getprojectList();
             });
         },

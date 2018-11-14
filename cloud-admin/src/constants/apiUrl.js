@@ -124,7 +124,7 @@ export const DEPT = {
     delUser: USER_RSA + '/user/',//删除用户
     viewUsage: USER_RSA + '/project/getUserUsagesAndQuota',//查看使用量
     searchRentQuota: USER_RSA + '/project/quota/',//租户配额查询
-    changeQuota: USER_RSA + '/project/quota/',//修改配额
+    changeQuota: USER_RSA + '/project/quota',//修改配额
     searchByProjectId: USER_RSA + '/project/getUserByProject',//通过租户id查找用户
     editRente: USER_RSA + '/project/',//修改租户
     editUser: USER_RSA + '/user/',//修改用户
