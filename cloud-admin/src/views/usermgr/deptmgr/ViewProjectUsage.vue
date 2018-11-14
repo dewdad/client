@@ -128,7 +128,7 @@ export default {
             viewProjectUsage(param).then(ret => {
                 $log('list....viewProjectUsage', ret);
                 let resData = ret.data;
-                this.dept = resData[0];
+                if(resData.length > 0) this.dept = resData[0];
             });
         },
         hide() {
