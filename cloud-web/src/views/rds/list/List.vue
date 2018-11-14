@@ -22,7 +22,7 @@
                                         <template slot-scope="props">
                                         </template>
                                     </el-table-column>
-                                    <el-table-column v-for="column in tableColums" :width="column.width ? column.width: 'auto'" :prop="column.prop" :label="column.label" :filters="column.filters" :filter-multiple="column.filterMultiple" :filtered-value="column.filteredValue" :key="column.label">
+                                    <el-table-column v-for="column in tableColums" :width="column.width ? column.width: 'auto'" :prop="column.prop" :label="column.label" :filters="column.filters" :filter-multiple="column.filterMultiple"  :key="column.label">
                                         <template v-if="column.render" slot-scope="scope">
                                             <!-- ID/名称 -->
                                             <div v-if="column.prop === 'name'" style="line-height:20px; padding-left: 25px; position: relative;">
@@ -102,7 +102,7 @@
                                 </el-table>
                             </template>
                         </el-table-column>
-                        <el-table-column v-for="column in tableColums" :width="column.width ? column.width: 'auto'" :prop="column.prop" :column-key="column.prop" :label="column.label" :filters="column.filters" :filter-multiple="column.filterMultiple" :filtered-value="column.filteredValue" :key="column.label">
+                        <el-table-column v-for="column in tableColums" :width="column.width ? column.width: 'auto'" :prop="column.prop" :column-key="column.prop" :label="column.label" :filters="column.filters" :filter-multiple="column.filterMultiple" :key="column.label">
                             <template v-if="column.render" slot-scope="scope">
                                 <!-- ID/名称 -->
                                 <div v-if="column.prop === 'name'" style="line-height:20px;position:relative;">

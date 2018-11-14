@@ -1,8 +1,8 @@
 /*
- * @Author: sunersheng 
- * @Date: 2018-07-23 15:39:00 
+ * @Author: sunersheng
+ * @Date: 2018-07-23 15:39:00
  * @Last Modified by: wenfang
- * @Last Modified time: 2018-11-06 14:04:41
+ * @Last Modified time: 2018-11-14 09:27:22
  * ecs模块 读取网络信息接口
  */
 
@@ -207,7 +207,7 @@ export async function createNetwork({...arg}) {
 export async function createSubnet({...arg}) {
     $log('GET /createSubnet ->', {...arg});
     let ret = await http.post(replaceParamVal(API_ECS.network.subnet, [arg.networkId]), {...arg});
-    return ret && ret.data && ret.data.code === ERRCODE.SUCCESS_CODE && ret.data.result;
+    return ret && ret.data;
 }
 
 /**

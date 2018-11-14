@@ -1,16 +1,26 @@
 <template>
     <el-dialog :title="dialogTitle" :visible.sync="isShow" width="600px" class="dlg-bindip" @close="cancel">
-        <zt-form inline-message :model="ruleForm" label-width="73px" style="width:392px;" size="small" ref="ruleForm">
+        <zt-form v-if="isShow" inline-message :model="ruleForm" label-width="73px" style="width:392px;" size="small" ref="ruleForm">
             <zt-form-item :label="$t('dialog.bindPublicip.currentInst')" class="lh-em1">
                 <span class="font12">{{ecsInst.name||ecsInst.id}}</span>
             </zt-form-item>
-            <zt-form-item label="网卡" prop="portId" class="mb0" :rules="rules">
-                <el-select v-if="this.opType === 1" key="bind" v-model="ruleForm.portId" size="small" :loading="remote" placeholder="请选择" popper-class="el-popper--small">
-                    <el-option v-for="item in netWorkListFilter" :key="item.id"  :label="item.name" :value="item.id">
+            <zt-form-item label="网卡" prop="portId" :rules="rules">
+                <el-select v-if="this.opType === 1" key="bind" v-model="ruleForm.portId" value-key="id" size="small" @change="getSubnetByNetId(ruleForm.netWork.id)" :loading="remote" placeholder="请选择" popper-class="el-popper--small">
+                    <el-option v-for="item in netWorkList" :key="item.id"  :label="item.name" :value="item">
                     </el-option>
                 </el-select>
                 <el-select v-if="this.opType === 2" key="unbind" v-model="ruleForm.portId" size="small" :loading="remote" placeholder="请选择" popper-class="el-popper--small">
                     <el-option v-for="item in netWorkList" :key="item.fixed_ips[0].ip_address" :label="item.fixed_ips[0].ip_address" :value="item.port_id">
+                    </el-option>
+                </el-select>
+            </zt-form-item>
+             <zt-form-item v-if="this.opType === 1"  label="子网"  prop="subNet" :rules="[{
+                    required: true,
+                    message: '请选择子网',
+                    trigger: ['submit', 'change']
+                }]">
+                <el-select v-model="ruleForm.subNet" ref="subNet" key="subnet" :placeholder="$t('form.input.subnet')" popper-class="el-popper--small" value-key="name" size="small" >
+                    <el-option v-for="sub in subNetListFilter" :key="sub.name"  :label="sub.name" :value="sub">
                     </el-option>
                 </el-select>
             </zt-form-item>
@@ -22,8 +32,9 @@
     </el-dialog>
 </template>
 <script>
-import {queryNetwork} from '@/service/ecs/network.js';
+import {getNetwork, getSubnetByNetId} from '@/service/v2.1/network';
 import {attachPort, detachPort, listPortAttachment} from '@/service/ecs/list';
+// import {isEmpty} from '@/utils/utils';
 export default {
     data() {
         return {
@@ -34,11 +45,14 @@ export default {
             remote: false,
             ecsInst: {},
             netWorkList: [],
+            subNetList: [],
             bandedPublicNetData: [],
             opType: 1,
             ruleForm: {
                 serverId: '',
-                portId: ''
+                portId: '',
+                netWork: '',
+                subNet: ''
             },
             rules: [
                 {
@@ -53,8 +67,8 @@ export default {
         dialogTitle() {
             return this.opType === 1 ? '添加网卡' : '分离网卡';
         },
-        netWorkListFilter() {
-            return this.netWorkList.filter(item => {
+        subNetListFilter() {
+            return this.subNetList.filter(item => {
                 // return item.hasOwnProperty(this.)
                 return this.ecsInst.addresses && this.ecsInst.addresses.addresses[item.name] ? false : true;
             });
@@ -65,11 +79,12 @@ export default {
             if (!newval) {
                 this.ruleForm = {
                     serverId: '',
-                    portId: ''
+                    portId: '',
+                    netWork: '',
+                    subNet: ''
                 };
                 this.loading = false;
                 this.ecsInst = {};
-                this.$refs.ruleForm.resetFields();
                 this.$refs.ruleForm.clearValidate();
             }
         }
@@ -125,7 +140,7 @@ export default {
                         handle = attachPort;
                     }
                     //提交后台
-                    handle(this.ecsInst.id, this.ruleForm.portId)
+                    handle(this.ecsInst.id, this.opType === 1 ? this.ruleForm.subNet.network_id : this.ruleForm.portId)
                         .then(async res => {
                             console.log('修改信息', res);
                             if (res.code === '0000') {
@@ -164,12 +179,31 @@ export default {
         // 查询网络列表
         queryNetwork: function() {
             this.remote = true;
-            queryNetwork({pageIndex: 1, limit: 9999})
+            getNetwork({pageIndex: 1, limit: 9999})
                 .then(res => {
-                    this.netWorkList = res.data || [];
+                    this.netWorkList = res.data.data || [];
+                    // if (!isEmpty(this.netWorkList)) {
+                    //     this.ruleForm.netWork = this.netWorkList[0];
+                    //     this.getSubnetByNetId(this.ruleForm.netWork.id);
+                    // }
                 })
                 .finally(() => {
                     this.remote = false;
+                });
+        },
+        getSubnetByNetId(netWorkId) {
+            let id = netWorkId || this.ruleForm.portId.id;
+            if (typeof id === undefined) return;
+            this.loading = true;
+            this.ruleForm.subNet = '';
+            getSubnetByNetId({networkId: id})
+                .then(res => {
+                    this.subNetList = res.data;
+                    $log('subnetlist', this.subNetList);
+                    // if (!isEmpty(this.subNetList)) this.ruleForm.subNet = this.subNetList[0];
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         }
     }

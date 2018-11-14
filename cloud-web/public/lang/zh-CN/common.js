@@ -65,7 +65,7 @@ export default {
     diskNumber: '磁盘数量',
     pn: '专有网络',
     os: '操作系统',
-    publicNetworkIP: '公网IP',
+    publicNetworkIP: '浮动IP',
     intranetIP: '内网IP',
     privateIP: '私有IP',
     publicIP: '弹性公网IP',
