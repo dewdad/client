@@ -135,7 +135,7 @@
                                 </span>
                             </div>
                             <div class="info-box-content" id="echartsLine" v-loading="loadingContent">
-                                <echarts-line v-if="seriesData.length > 0" :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" :seriesData="seriesData" :xAxisData="xData" legendIcon="rect" :markPointSymbolSize="['150','55']" :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
+                                <echarts-line v-if="seriesData.length > 0" ref="echartsLine" :isMarkPoint="false" :gridVal="gridVal" :legendData="legendData" :seriesData="seriesData" :xAxisData="xData" legendIcon="rect" :markPointSymbolSize="['150','55']" :mouldColor="['#ffad00', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4', 'b0e9c4']" :idString="'mychart'"></echarts-line>
                                 <div v-if="!loadingContent && seriesData.length === 0" class="color-secondary font20 text-c no-data">暂无数据</div>
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                                 </div>
                             </h5>
                             <div class="info-box-content">
-                                <echarts-bar v-if="xWarnData.length > 0" :legendData="legendWarnData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesWarnData" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
+                                <echarts-bar v-if="xWarnData.length > 0"  :legendData="legendWarnData" :isMarkPoint="false" :gridVal="gridVal2" :seriesData="seriesWarnData" :xAxisData="xWarnData" :markPointSymbolSize="['150','55']" :mouldColor="['#f77e28', '#0d7ef2', '#61a0a8', '#c4ccd3']" :dotStyle="['b0e9c4']" :idString="'mychart1'"></echarts-bar>
                                 <div v-else class="color-secondary text-c font20 no-data">暂无数据</div>
                             </div>
                         </div>

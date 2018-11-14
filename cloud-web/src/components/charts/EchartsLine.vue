@@ -209,6 +209,10 @@ export default {
                 this.againCanvas();
             }, 500);
         },
+        'legendData': function(newval) {
+            this.option.legend.data = newval;
+            this.againSetOption();
+        },
         seriesData() {
             this.arrangeSeries();
             this.option.xAxis['data'] = this.xAxisData;
@@ -236,7 +240,7 @@ export default {
             await this.arrangeSeries();
             setTimeout(() => {
                 let myChart = echarts.init(document.getElementById(this.idString));
-                myChart.setOption(this.option);
+                myChart.setOption(this.option, true);
             }, 200);
         },
         // 整理折线图条数
