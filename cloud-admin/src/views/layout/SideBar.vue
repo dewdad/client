@@ -156,7 +156,10 @@ export default {
                                 if (submenuItems) {
                                     this.submenus = JSON.parse(submenuItems);
                                 }
-                                console.log('this.oooooo',this.activeRouteHref);
+                                if( 'app.overview' == this.activeRouteHref){
+                                    this.submenus = [];
+                                    localStorage.removeItem('submenuItems');
+                                }
                                 that.activeMenuCode = '0000';
                             }
                         }
