@@ -6,6 +6,7 @@ import CreateDeptQuota from './CreateDeptQuota';
 import ProjectDetail from './ProjectDetail';
 import ChangeQuota from './ChangeQuota';
 import EditRente from './EditRente';
+import ViewProjectUsage from './ViewProjectUsage';
 import UserSelectMember from './UserSelectMember';
 import EditUser from './EditUser';
 import SelectMember from './SelectMember';
@@ -88,7 +89,8 @@ export default {
         EditRente,
         EditUser,
         UserSelectMember,
-        CreateDeptQuota
+        CreateDeptQuota,
+        ViewProjectUsage
 
     },
     computed:{
@@ -293,6 +295,10 @@ export default {
         //查看配额
         viewUsage(item,brunch){
             this.$refs.ViewUsage.show(item,brunch);
+        },
+        //查看租户配额
+        viewProjectUsage(item){
+            this.$refs.ViewProjectUsage.show(item);
         },
         //修改配额
         changeRentQuota(item,brunch){

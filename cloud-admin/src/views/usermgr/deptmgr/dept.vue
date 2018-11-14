@@ -100,7 +100,7 @@
                             <template v-for="col in rentcols">
                                 <!-- 用户名 -->
                                 <template v-if="col.column=='username'">
-                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column width="120" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <a class="font12 mr10" @click="showRentaDetail(scope.row)">{{scope.row.name}}</a>
                                         </template>
@@ -116,7 +116,7 @@
                                 </template>
                                 <!--创建时间-->
                                 <template v-if="col.column=='createtime'">
-                                    <el-table-column min-width="100" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column width="130" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.createTime | date }}</span>
                                         </template>
@@ -124,7 +124,7 @@
                                 </template>
                                 <!--激活-->
                                 <template v-if="col.column=='start'">
-                                    <el-table-column min-width="80" :prop="col.column" :label="col.text" :key="col.column">
+                                    <el-table-column width="60" :prop="col.column" :label="col.text" :key="col.column">
                                         <template slot-scope="scope">
                                             <span class="font12 mr10">{{scope.row.status =='1'?'是':'否' }}</span>
                                         </template>
@@ -135,6 +135,8 @@
                             <template>
                                 <el-table-column label="操作"  key="op"  min-width="200" style="width:25%" class-name="option-snaplist">
                                     <template slot-scope="scope">
+                                        <a @click="viewProjectUsage(scope.row)" class="btn-linker">查看配额</a>
+                                        <b class="link-division-symbol"></b>
                                         <a @click="changeRentQuota(scope.row,brunch)" class="btn-linker">修改配额</a>
                                         <b class="link-division-symbol"></b>
                                         <a @click="disableProject(scope.row,brunch)" v-if="scope.row.status == 1" class="btn-linker">禁用</a>
@@ -260,6 +262,8 @@
         <view-usage ref="ViewUsage"></view-usage>
         <!--修改配额-->
         <change-quota ref="ChangeQuota"></change-quota>
+        <!--查看租户配额-->
+        <view-project-usage ref="ViewProjectUsage"></view-project-usage>
         <!--关联用户-->
         <select-member ref="SelectMember"></select-member>
         <!--修改租户-->

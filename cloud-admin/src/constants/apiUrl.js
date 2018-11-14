@@ -116,6 +116,7 @@ export const DEPT = {
     projectList: USER_RSA + '/project/list',//租户列表
     selectAllUsers: USER_RSA + '/user/list',//根据租户ID查询用户集合
     createRenter: USER_RSA + '/project/',//创建租户
+    viewProjectUsage: USER_RSA + '/project/getUserUsagesAndQuota',//查看租户配额
     changeRenterQuota: USER_RSA + '/project/quota',//修改租户配额
     delRenter: USER_RSA + '/project',//删除租户
     createUser: USER_RSA + '/user/',//创建用户
