@@ -2,84 +2,60 @@
     <el-dialog title="查看租户配额" :visible.sync="isShow" width="600px"   v-dialogDrag>
         <el-row class="table top">
             <el-col :span="8">资源</el-col>
-            <el-col :span="8">使用量</el-col>
-            <el-col :span="8">总量</el-col>
+            <el-col :span="16">总量</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">CPU</el-col>
-            <el-col :span="8">{{dept.CPU || '-'}}</el-col>
-            <el-col :span="8">{{dept.qCpu || '-'}}</el-col>
+            <el-col :span="16">{{dept.cpu ==0 ? 0:dept.cpu}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">实例</el-col>
-            <el-col :span="8">{{dept.INSTANCES || '-'}}</el-col>
-            <el-col :span="8">{{dept.qInstances || '-'}}</el-col>
+            <el-col :span="16">{{dept.instances ==0 ? 0:dept.instances}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">磁盘</el-col>
-            <el-col :span="8">{{dept.VOLUMES || '-'}}</el-col>
-            <el-col :span="8">{{dept.qVolumes || '-'}}</el-col>
+            <el-col :span="16">{{dept.volumes ==0 ? 0:dept.volumes}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">快照</el-col>
-            <el-col :span="8">{{dept.SNAPSHOTS || '-'}}</el-col>
-            <el-col :span="8">{{dept.qSnapshot || '-'}}</el-col>
+            <el-col :span="16">{{dept.snapshot ==0 ? 0:dept.snapshot}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">磁盘大小(GB)</el-col>
-            <el-col :span="8">{{dept.VOLUME_SIZE || '-'}}</el-col>
-            <el-col :span="8">{{dept.qVolumeSize || '-'}}</el-col>
+            <el-col :span="16">{{dept.volumeSize ==0 ? 0:dept.volumeSize}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">内存(GB)</el-col>
-            <el-col :span="8">{{dept.RAM || '-'}}</el-col>
-            <el-col :span="8">{{dept.qRam || '-'}}</el-col>
+            <el-col :span="16">{{dept.ram ==0 ? 0:dept.ram}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组</el-col>
-            <el-col :span="8">{{dept.SECURITY_GROUP || '-'}}</el-col>
-            <el-col :span="8">{{dept.qSecutityGroup || '-'}}</el-col>
+            <el-col :span="16">{{dept.securityGroup ==0 ? 0:dept.securityGroup}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">安全组规则</el-col>
-            <el-col :span="8">{{dept.SECURITY_GROUP_RULE || '-'}}</el-col>
-            <el-col :span="8">{{dept.qSecutityGroupRule || '-'}}</el-col>
+            <el-col :span="16">{{dept.securityGroupRule ==0 ? 0:dept.securityGroupRule}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">浮动IP</el-col>
-            <el-col :span="8">{{dept.FLOATINGIP || '-'}}</el-col>
-            <el-col :span="8">{{dept.qFloatingIps || '-'}}</el-col>
+            <el-col :span="16">{{dept.floatingIps ==0 ? 0:dept.floatingIps}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">网络</el-col>
-            <el-col :span="8">{{dept.NETWORK || '-'}}</el-col>
-            <el-col :span="8">{{dept.qNetwork || '-'}}</el-col>
+            <el-col :span="16">{{dept.network ==0 ? 0:dept.network}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">端口</el-col>
-            <el-col :span="8">{{dept.PORTS || '-'}}</el-col>
-            <el-col :span="8">{{dept.qPorts || '-'}}</el-col>
+            <el-col :span="16">{{dept.ports ==0 ? 0:dept.ports}}</el-col>
         </el-row>
         <el-row class="table">
             <el-col :span="8">路由</el-col>
-            <el-col :span="8">{{dept.ROUTER || '-'}}</el-col>
-            <el-col :span="8">{{dept.qRouters || '-'}}</el-col>
+            <el-col :span="16">{{dept.routers ==0 ? 0:dept.routers}}</el-col>
         </el-row>
-        <!--<el-row class="table">-->
-            <!--<el-col :span="8">子网</el-col>-->
-            <!--<el-col :span="8">{{dept.usage.subnet || '-'}}</el-col>-->
-            <!--<el-col :span="8">{{dept.quota.subnet || '-'}}</el-col>-->
-        <!--</el-row>-->
-        <!--<el-row class="table">-->
-            <!--<el-col :span="8">备份</el-col>-->
-            <!--<el-col :span="8">{{dept.usage.backup || '-'}}</el-col>-->
-            <!--<el-col :span="8">{{dept.quota.backup || '-'}}</el-col>-->
-        <!--</el-row>-->
-        <!--<el-row class="table">-->
-            <!--<el-col :span="8">备份大小(GB)</el-col>-->
-            <!--<el-col :span="8">{{dept.usage.backupSize || '-'}}</el-col>-->
-            <!--<el-col :span="8">{{dept.quota.backupSize || '-'}}</el-col>-->
-        <!--</el-row>-->
+        <el-row class="table">
+            <el-col :span="8">子网</el-col>
+            <el-col :span="16">{{dept.subnet ==0 ? 0:dept.subnet}}</el-col>
+        </el-row>
     </el-dialog>
 </template>
 <script>
@@ -122,13 +98,30 @@ export default {
         },
         //通过租户id查找用户
         viewProjectUsage(item){
-            let param = {
-                projectId:item.id
-            };
-            viewProjectUsage(param).then(ret => {
+            viewProjectUsage(item.id).then(ret => {
                 $log('list....viewProjectUsage', ret);
                 let resData = ret.data;
-                if(resData.length > 0) this.dept = resData[0];
+                if(resData){
+                    this.dept = resData;
+                }else{
+                    this.dept = {
+                        cpu:10,
+                        instances:10,
+                        volumes:10,
+                        snapshot:10,
+                        volumeSize:100,
+                        ram:100,
+                        securityGroup:10,
+                        securityGroupRule:10,
+                        floatingIps:10,
+                        network:10,
+                        ports:10,
+                        routers:10,
+                        subnet:10,
+                        backup:10,
+                        backupSize:10
+                    };
+                }
             });
         },
         hide() {
@@ -151,6 +144,9 @@ export default {
         .el-col-8{
             padding-left:10px;
             border-right:1px solid #d1d5d7;
+        }
+        .el-col-16{
+            padding-left:10px;
         }
         .el-col-8:nth-child(3){
             border-right:0;

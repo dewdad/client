@@ -116,10 +116,9 @@ export async function searchQuota(data) {
  *查看租户配额
  * @param {*}
  */
-export async function viewProjectUsage(data) {
-    let response = await http.get(DEPT.viewProjectUsage,{
-        params: data
-    });
+export async function viewProjectUsage(id) {
+    let url = DEPT.viewProjectUsage + id;
+    let response = await http.get(url);
     return response.data;
 }
 /**
