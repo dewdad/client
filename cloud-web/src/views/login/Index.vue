@@ -39,7 +39,7 @@
                             </el-form-item>
                         </el-form>
                     </div>
-                    <div class="login-copyright">Copyright © {{currentYear}} 证通云版权所有</div>
+                    <div class="login-copyright">Copyright © {{currentYear}} 证通云版权所有 V2.1</div>
                 </div>
             </div>
         </div>
