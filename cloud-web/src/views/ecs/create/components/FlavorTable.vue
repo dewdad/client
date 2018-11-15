@@ -16,7 +16,7 @@
                     <el-radio v-model="currentFlavor" :label="scope.row"></el-radio>
                 </template>
             </el-table-column>
-            <el-table-column prop="types" :label="$t('common.flavor')" width="120">
+            <el-table-column prop="types" :label="$t('common.flavor')" >
                 <template slot-scope="scope">
                     {{scope.row.types}}
                     <!-- <el-popover placement="top" :title="tipsContent[flavor_type].title" :content="tipsContent[flavor_type].content" popper-class="el-popover--custom" width="318" trigger="hover">
@@ -26,25 +26,25 @@
                     </el-popover> -->
                 </template>
             </el-table-column>
-            <el-table-column prop="name" :label="$t('common.instSpec')" min-width="150px">
+            <el-table-column prop="name" :label="$t('common.instSpec')" >
             </el-table-column>
-            <el-table-column prop="vCPU" :label="$t('abbr.vcpu')" width="80">
+            <el-table-column prop="vCPU" :label="$t('abbr.vcpu')">
                 <template slot-scope="scope">
                     {{scope.row.vCpu}} {{$t('abbr.vcpu')}}
                 </template>
             </el-table-column>
-            <el-table-column prop="ram" :label="$t('common.memory')" width="80">
+            <el-table-column prop="ram" :label="$t('common.memory')" >
                 <template slot-scope="scope">
-                    {{scope.row.ram}} MB
+                    {{parseInt(scope.row.ram/1024)}} GiB
                 </template>
             </el-table-column>
-            <el-table-column prop="cpuType" :label="$t('common.cpuType')" min-width="180px">
+            <!-- <el-table-column prop="cpuType" :label="$t('common.cpuType')" min-width="180px">
             </el-table-column>
             <el-table-column prop="cpuSpeed" :label="$t('common.cpuSpeed')" width="120px">
                 <template slot-scope="scope">
                     {{scope.row.cpuSpeed}}
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <!-- <el-table-column prop="band" :label="$t('common.wapNet')" width="80">
                 <template slot-scope="scope">
                     {{scope.row.band || '8'}} Gbps
