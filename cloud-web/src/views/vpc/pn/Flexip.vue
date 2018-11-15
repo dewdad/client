@@ -16,7 +16,7 @@
             <zt-table @filterVal="filterHandler" :loading="isLoading" :data="tableData" :search="true" :search-condition="fields" @search="getScreenVal" :paging="searchObj.paging" size="small">
                 <el-table-column prop="title" label="ID" :min-width="180">
                     <template slot-scope="scope">
-                            <span class="font12">{{scope.row.floatingNetworkId}}</span>
+                            <span class="font12">{{scope.row.id}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="网络名称">
